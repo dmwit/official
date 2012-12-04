@@ -9,6 +9,9 @@
                     \item symmetric vs. asymmetric
                     \item stateful vs. delta vs. edit
                     \item strings vs. trees
+                    \item worth mentioning other stuff like quotient lenses,
+                        relation lenses, dictionary lenses, matching lenses,
+                        etc.? probably!
                 \end{itemize}
             \item why it's worth knowing more
                 \begin{itemize}
@@ -20,20 +23,42 @@
                         really, whether I want to get into that
                 \end{itemize}
             \item what's hard/what I'll work on
+                \begin{itemize}
+                    \item defining a model of edits for trees is step one
+                    \item current tree edits are mostly unconcerned with typing
+                    \item really want to classify carefully when an edit
+                        typechecks so that when we write lenses we know what
+                        assuming a well-typed edit \emph{means}
+                \end{itemize}
         \end{itemize}
     \item do something good with datalog
         \begin{itemize}
-            \item what's known
-            \item why it's worth knowing more
-            \item what's hard/what I'll work on
+            \item what's known: measure language (baroque and ad-hoc)
+            \item why it's worth knowing more: big companies want to make
+                predictions about their sales and do \emph{planning}:
+                figuring out what local (e.g. store-specific or
+                month-specific or product-specific) goals to set to achieve
+                global goals
+            \item recursion and disjunction are hard, so must identify a
+                fragment we can handle
         \end{itemize}
-    \item concrete proposal timeline
+    \item concrete proposal timeline (TODO: actually break things down
+        enough that I know how long to assign to each of these, but this
+        concrete start doesn't seem awful)
+        \begin{itemize}
+            \item six months on Datalog
+            \item six months on trees
+            \item two months writing
+        \end{itemize}
     \item failure modes
         \begin{itemize}
             \item I can't understand transducers, and that turns out to be
                 important
             \item I can't figure out what to do about sums
             \item Datalog is harder than I thought
+            \item dialogue with LogicBlox falters (though provided we learn enough
+                about what they need before this happens, can still aim at
+                getting some results)
         \end{itemize}
 \end{itemize}
 \end{document}
