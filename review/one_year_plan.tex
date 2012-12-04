@@ -1,0 +1,83 @@
+\documentclass{article}
+\begin{document}
+{\noindent\large Daniel Wagner}\\[3ex]
+
+There are several different directions that the current edit lens formalism
+could be extended.
+
+\begin{itemize}
+    \item The formalism of edit lenses includes a definition of some
+        collections of edits for various data structures. For now, we have
+        defined these edits in a somewhat ad-hoc way: we took some editing
+        operations that we thought would be useful for that data structure,
+        and closed them under composition. It might be interesting to look
+        for a more foundational account of the formation of edits for these
+        structures.
+    \item We may want to investigate how to create law-abiding lenses for
+        additional transformations. In particular, previous works on lenses
+        have often included some form of recursion, data structure folding
+        and unfolding, or iteration. Identifying a good way to perform this
+        kind of operation on edit lenses would be quite nice.
+    \item There are a variety of tree-based lens formalisms (e.g. designed
+        for XML or similar formats) available with a broad range of lens
+        transformations which we have not yet studied.
+    \item The modeling community is quite interested in finding a nice way
+        to discuss bidirectional graph transformations. One might like to
+        search for a way to represent graph types, edits, and
+        transformations in the compositional style afforded by lenses.
+    \item The Boomerang language remains somewhat popular, in part due to
+        its careful consideration of the representation of its abstract data
+        types as strings. Thus far, the edit lens work has largely ignored
+        the additional complications of translating string edits into
+        structured edits of the form expected by the various lenses; this
+        could be a very fruitful problem to study as well.
+    \item In a similar vein, finding a compositional way to express parsing
+        and pretty-printing at the same time (that is, with no real
+        ``transformation'' at the abstract structural level!) is a somewhat
+        studied and useful problem.
+\end{itemize}
+
+In fact, there are basically too many possible next steps to take; one must
+prioritize in some way and choose a best thing to study first. One way to do
+this is to identify a few concrete applications and take some time to turn
+them into a real piece of software. The creation of this artifact will make
+any drawbacks of the abstract formalism painfully clear. Therefore, I
+believe the next step to take is to do some programming. This has already
+begun somewhat with the creation of a small Haskell library for edit lenses.
+However, I propose the following starting points:
+
+\begin{itemize}
+    \item The unison file synchronizer is designed around polling: at each
+        run, it traverses a directory hierarchy looking for changes since
+        its last run. It then pushes any changed files via rsync to its
+        companion process (performing the same operation on a different
+        directory hierarchy, and often even on a different machine). Several
+        operating systems now offer notification services at the file-system
+        level. Extending unison to take advantage of these services -- and
+        using the formalism of edit lenses to guarantee that the choice of
+        synchronizing often rather than infrequently won't change the
+        resulting operations -- would be a very nice application.
+    \item Text editors often offer some features designed for editing
+        programming languages: syntax highlighting, cursor motions that are
+        based on the syntax of the language, integration with an interpreter
+        for speedy testing, integration with a compiler for speedy
+        error-detection, integration with a debugger, and so forth. Some top
+        examples include vim, emacs, and eclipse. Folklore says the
+        internals of eclipse are somewhat murky and complicated; on the
+        other hand, vim and emacs operate on what are essentially lexing
+        passes of a file (never parsing that into an actual syntax tree).
+        It would be quite interesting to try building a text editor that had
+        a clean, theoretical story for its maintenance of both a text buffer
+        and an abstract syntax tree that were kept synchronized.
+    \item Version control systems rely centrally on the recording and
+        tracking of edits to somewhat complicated data structures. Our
+        experience with defining and using edits could be useful in
+        designing a version control system with a clean formal model -- and
+        in particular could allow us to clearly articulate what behaviors
+        are guaranteed and what behaviors allowed.
+\end{itemize}
+
+Pushing forward these projects should motivate the choice of extensions to
+the theory of edits and lenses.
+
+\end{document}
