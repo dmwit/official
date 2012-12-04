@@ -1,0 +1,308 @@
+\documentclass{article}
+
+\usepackage{xspace}
+\newcommand{\undefined}{\ensuremath{\bot}\xspace}
+\newcommand{\apply}{\ensuremath{\mathbf{apply}}\xspace}
+\newcommand{\internal}{\ensuremath{\mathbf{internal}}\ }
+\newcommand{\leaf}{\ensuremath{\mathbf{leaf}}\ }
+\newcommand{\contains}{\ \ensuremath{\mathbf{contains}}\ }
+\newcommand{\relR}{\mathrel{R}}
+
+\begin{document}
+% TODO: title
+\title{Changes}
+\author{Daniel Wagner}
+\date{January 21, 2011}
+\maketitle
+\begin{abstract}
+    % TODO
+    We discuss various theories of changes, identifying various goals of
+    these theories and evaluating tradeoffs between different
+    representations of changes.
+\end{abstract}
+
+\section{Introduction}
+\begin{itemize}
+    \item lots of reasons to muck about with edits
+        \begin{itemize}
+            \item revision control
+            \item text editors (undo, redo)
+            \item \ldots also, other kinds of editors (worth mentioning?)
+            \item synchronization
+            \item database updates
+        \end{itemize}
+    \item each has its own success criteria
+        \begin{itemize}
+            \item ease of reasoning
+            \item conflict detection
+            \item merging updates
+            \item reordering/concurrent application
+            \item computing changes from two given objects
+            \item human readability
+            \item human writability
+            \item ease of generation
+        \end{itemize}
+    \item huge range of possible data objects and edit languages
+        \begin{itemize}
+            \item one end of the spectrum: simple sequences + diff/patch
+                format
+            \item another end: any data type + write a program in C that
+                edits it
+            \item in between: relations + SQL
+            \item in this paper: labelled, unordered trees + a variety of
+                languages that run across the spectrum from very simple to
+                very expressive
+        \end{itemize}
+    \item focus on three uses:
+        \begin{itemize}
+            \item formalizing the internals of a revision control system
+            \item efficiently computing diffs (for use as input to said RCS)
+            \item identifying re-orderings (to be used when optimizing
+                multiple updates)
+        \end{itemize}
+    \item misc. commonalities, typographical conventions, etc.
+        \begin{itemize}
+            \item $\apply(e,d)$ to apply edit $e$ (in the current edit
+                language) to data $d$
+            \item \undefined for undefined; always a possible result of
+                $\apply$
+            \item assume set of labels $L$, metavariable $\ell$ for
+                individual labels
+            \item metavariable $p$ for paths
+        \end{itemize}
+\end{itemize}
+
+\section{Semantics and conflict detection}
+\begin{itemize}
+    \item want to define
+        \begin{itemize}
+            \item repository (or patch history)
+            \item patch
+            \item working copy
+            \item successful merge, conflict (when synchronizing two
+                repositories)
+        \end{itemize}
+    \item as usual, for trees, but will generalize the approach somewhat -
+        definitions can be applied to repositories tracking other structures
+    \item somewhat unusual representation of trees
+        \begin{itemize}
+            \item collection of assertions + well-formedness invariant
+            \item assertions have form $\internal p$ or $\leaf p \contains
+                C$, where $C$ drawn from some set of possible contents
+            \item paths are just $\ell$ or $\ell/p$
+            \item well-formedness invariant says for each $p$:
+                \begin{itemize}
+                    \item if $\leaf p \contains C$, then no $C' \ne C$ such
+                        that $\leaf p \contains C'$
+                    \item if $\leaf p \contains C$, then no $\internal p$
+                    \item if $\internal p$, then no $\leaf p \contains C$
+                    \item if $\leaf p/\ell \contains C$ or $\internal
+                        p/\ell$, then $\internal p$
+                    \item essentially just enforcing that it's
+                        tree-structured
+                \end{itemize}
+        \end{itemize}
+    \item patches should preserve the invariants
+        \begin{itemize}
+            \item can achieve this with a precondition stating assertions
+                that must already be there and assertions that must not be
+                there
+            \item example: to add leaf node, must have parent internal node,
+                and must not have any pre-existing leaf node
+            \item patch is therefore a triple of assertion sets $(S,E,T)$
+                \begin{itemize}
+                    \item all assertions in $S$ must already exist
+                    \item no assertions in $E$ must exist unless they're
+                        also in $S$
+                    \item effect of the patch is to remove $S$ and add $T$
+                    \item maybe $S \cap T \ne \emptyset$: the parent
+                        directory in our example
+                \end{itemize}
+            \item $\apply((S,E,T),d)=d \triangle S \triangle T$, except when
+                it's \undefined
+        \end{itemize}
+    \item repository: multiset of patches
+    \item aside: WHY use this weird representation?
+        \begin{itemize}
+            \item uniform mathematical formalism for a variety of repository
+                structures
+            \item to get different structures, modify the assertion language
+                and the invariant
+            \item in a later subsection, show this flexibility by changing
+                the tree content or adding metadata
+            \item even with those changes, the definitions of the later bits
+                don't change -- they're independent of the actual data
+        \end{itemize}
+    \item comments on repositories
+        \begin{itemize}
+            \item build up the working copy from empty set of assertions
+            \item not all repositories make sense
+            \item \emph{consistent} when there is an order in which the
+                patches can be applied
+            \item any order ends at the same place (commutativity of
+                $\triangle$)
+        \end{itemize}
+    \item the payload: syncing two repositories
+        \begin{itemize}
+            \item sets $R_1, R_2$ of patches
+            \item set $P \subset R_2 \setminus R_1$ of patches to pull from
+                $R_2$ to $R_1$
+            \item define: \emph{conflict} when $R_1 \cup P$ is not
+                consistent
+            \item example goes here, plus how to deal with it (expanding $P$
+                or human intervention)
+        \end{itemize}
+    \item discussion
+        \begin{itemize}
+            \item theory as given so far impractical: infinite sets
+                \begin{itemize}
+                    \item in practice: representations of a few common kinds
+                        of patches
+                    \item appeal to the model when writing \apply or the
+                        function that checks preconditions
+                    \item example of a patch representation vs. patch triple
+                    \item for consistency, let this example be the edits
+                        from the next paper (sans inverses)
+                    \item compound patches
+                    \item similarly, more concrete repository, appealing to
+                        theory when verifying algorithm correctness
+                \end{itemize}
+            \item extensions: maybe do line-based files as example of this
+            \item other impracticality: algorithms for change detection,
+                consistency checking, minimal pulls not obviously
+                forthcoming (but see next section for one of these)
+        \end{itemize}
+\end{itemize}
+
+\section{Change detection}
+\begin{itemize}
+    \item have two working copies
+        \begin{itemize}
+            \item one from repository
+            \item one on disk
+        \end{itemize}
+    \item task: generate patch to convert one to the other
+        \begin{itemize}
+            \item using patches like those defined above
+            \item compound patches, inverse patches
+            \item footnote explaining that $(S,E,T)^{-1}=(T,E,S)$
+            \item problem actually ill-defined for now
+            \item obvious patch: delete whole tree, insert whole new tree
+            \item introduce cost function, find minimal patch
+        \end{itemize}
+    \item lots of approaches
+        \begin{itemize}
+            \item using variants of these patches
+            \item assuming node identity or not
+            \item various cost functions
+            \item figure out some other distinctions
+            \item a primary distinction: allowing moves/copies or not
+                \begin{itemize}
+                    \item (actually, real question is how cost function
+                        behaves on moves/copies compared to
+                        insertions/deletions)
+                    \item disallow them: surprise the humans
+                    \item allow them: NP-hard
+                \end{itemize}
+            \item cite other approaches
+        \end{itemize}
+    \item some decisions:
+        \begin{itemize}
+            \item exactly the patches defined above (+ inverses)
+            \item no node identities
+            \item cost function: constant for each kind of patch, plus
+                distance function for replacements
+            \item on allowing moves/copies: heuristic (potentially
+                non-optimal); will discuss approximation points as they
+                arise
+            \item will operate on $d_1$, $d_2$ as if they were trees, not
+                sets of assertions
+        \end{itemize}
+    \item main idea
+        \begin{itemize}
+            \item find minimal alignment
+            \item convert alignment to minimal edit
+        \end{itemize}
+    \item alignment
+        \begin{itemize}
+            \item operator $(-)^+$ adds distinct internal node with no
+                parent to a tree
+            \item an \emph{alignment} is a minimal edge cover of the
+                complete (unweighted) bipartite graph whose parts are the
+                nodes of $d_1^+$ and $d_2^+$
+            \item edge $(a,b)$ signals that node $a$ in $d_1$ became node
+                $b$ in $d_2$ by the edit corresponding to this alignment
+            \item special cases: edge $(a,+)$ means $a$ was deleted, $(+,b)$
+                means $b$ was created new, $(+,+)$ means nothing
+        \end{itemize}
+    \item cost of alignment = cost of resulting patch
+    \item minimal alignment? gotta know how to convert to a patch
+        \begin{itemize}
+            \item writing atomic update + ordering updates
+            \item writing atomic update is by case analysis
+                \begin{itemize}
+                    \item $(a,+)$: delete
+                    \item $(+,b)$: insert
+                    \item $(a,b)$: move/copy/inverse copy, maybe followed by
+                        update\ldots unless their parents have an edge
+                    \item some logic that evaluates such situations to
+                        minimize number of moves/copies
+                \end{itemize}
+            \item ordering updates: constraints generated during case
+                analysis above, then toposorted
+            \item give example where ordering matters (and helps)
+            \item comment: can't reach all edits this way
+                \begin{itemize}
+                    \item TODO: properties of edits we can reach
+                    \item description of edits we can't reach, plus how it
+                        might help make a smaller cost
+                    \item one point of approximation
+                \end{itemize}
+        \end{itemize}
+    \item observation: no such thing as ``cost of an edge'' in the
+        alignment; the cost of the updates generated by that edge depends on
+        what other edges are available
+    \item searching all possible minimal covers: exponential
+    \item approach: upper and lower bounds on edge costs
+    \item for now, skip how these are computed -- clever, but not central to
+        the idea
+    \item prune obviously bad edges, update cost bounds
+        \begin{itemize}
+            \item TODO: list pruning rules here
+        \end{itemize}
+    \item weighted matching on resulting (now, weighted) bipartite graph
+        \begin{itemize}
+            \item eh? resulting weighted graph? each edge has two weights
+            \item use lower bounds as estimate of actual cost of each edge
+                (or upper bounds, or average, or whatever)
+            \item another point of approximation
+        \end{itemize}
+    \item discussion
+        \begin{itemize}
+            \item bad things
+                \begin{itemize}
+                    \item both complicated and heuristic (no theoretical
+                        guarantees, so potentially unpredictable behavior)
+                    \item somewhat inflexible to edit variants -- conversion
+                        to (minimal) edit and cost estimation quite
+                        dependent on this exact set existing
+                \end{itemize}
+            \item good things
+                \begin{itemize}
+                    \item fairly fast
+                    \item extensible to files with tree-structured data
+                        (i.e. most non-binary files)
+                    \item flexible cost model
+                    \item move and copy big win not only for revision
+                        control, but for (stateful) lenses, too
+                \end{itemize}
+            \item somewhat philosophical whether the edits we can't reach
+                from an alignment are desirable or not
+        \end{itemize}
+\end{itemize}
+
+\section{Reordering}
+
+\section{Conclusion}
+
+\end{document}

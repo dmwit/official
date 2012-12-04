@@ -1,0 +1,37 @@
+\usepackage{textcomp}
+\usepackage{tikz}
+\usepackage{xspace}
+\usetikzlibrary{calc,chains,fit,positioning}
+
+\setbeamercolor{alerted text}{fg=green!55!black}
+\usebeamercolor{palette primary}
+\colorlet{navfg}{fg!80!white}
+\colorlet{navbg}{fg!40!white}
+\colorlet{bad}{red!80!black}
+\newcommand{\navradius}{0.25ex}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{
+    \tikz\draw[text height=2*\navradius,inner sep=0ex,rounded corners=\navradius]
+        node[fill=navbg,minimum width=\textwidth-\navradius](sectionback){} (sectionback.west)
+        node[fill=navfg,minimum width=(\insertpagenumber-\insertsectionstartpage)/(\insertsectionendpage-\insertsectionstartpage)*(\textwidth-\navradius),right]{}
+        (sectionback.south)
+        node[below,fill=navbg,minimum width=\textwidth-\navradius](totalback){} (totalback.west)
+        node[below,fill=navfg,minimum width=(\insertframenumber-1)/(\inserttotalframenumber-1)*(\textwidth-\navradius),right]{}
+        (totalback.south) node[below]{}
+        ;
+}
+
+\AtBeginSection{
+    \begin{frame}
+        \begin{center}
+            \huge\tableofcontents[sectionstyle=show/hide]
+        \end{center}
+    \end{frame}
+}
+
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+\newcommand{\vpause}{\vspace{5ex}}
+\newenvironment{tikzcenter}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}

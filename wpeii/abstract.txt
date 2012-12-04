@@ -1,0 +1,24 @@
+Title: Three Perspectives on Change
+
+Monday, February 7 10:00
+Levine 307
+
+Abstract: The venerable "diff" tool taught the tech world a valuable lesson:
+describing what it means to edit a document formally can be a valuable
+exercise.  Since then, an ever-growing collection of tools -- including
+revision control systems, database management systems, and text editors -- have
+benefited from formal studies of edits and changes. We examine three of these
+studies, examining which benefits we can adopt when designing edit-based
+synchronizers.
+
+In particular, we focus our attention on the problem of formalizing and
+modeling edits to tree-based data structures. The first study provides a
+theoretical backdrop, anchoring the discussion somewhat; the second boasts
+simplicity as well as a tractable algorithm for computing an approximately
+minimal edit; and the third allows for great expressiveness, but sacrifices the
+tractability of some problems.
+
+Committee:
+Zack Ives (chair)
+Sanjeev Khanna
+Benjamin Pierce

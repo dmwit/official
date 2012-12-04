@@ -1,0 +1,33 @@
+Data changes frequently, and we often want to manage these changes in various
+ways. For example, revision control tools like Subversion or git allow the user
+to record changes, share changes with collaborators, review versions of the
+data with and without the changes, detect and repair conflicting changes, and
+so on; synchronization tools like Unison allow users to reflect changes in one
+copy of data to many other copies; and birectional programs (using tools like
+Boomerang) can help to transform changes from one data representation to
+another. Applications such as these suggest a need for a good understanding of
+the nature of an edit, but this is a non-trivial task because there are many
+reasonable representations of data (relational, algebraic, functional, and so
+on) and many reasonable choices for representing changes to each kind of data
+representation.
+
+With that in mind, my goal in this WPE II will be to:
+
+- identify several research areas where edits are important
+- investigate differing goals and uses
+- compare tradeoffs in algorithmic complexity, space usage, expressiveness,
+  elegance, flexibility, etc.
+- ultimately, choose a model of edits to focus on when designing delta lenses
+  (bidirectional programs for translating edits between differing data
+  structures)
+
+Towards that end, I've chosen three papers to examine:
+
+- "A Principled Approach to Version Control", by Andres Löh, Wouter Swierstra,
+  and Daan Leijen, which approaches the problem from the point of view of
+  designing a revision control system
+- "Commutativity Analysis in XML Update Languages", by Giorgio Ghelli,
+  Kristoffer Rose, and Jérôme Siméon, which discusses efficiently extending
+  XQuery to allow updates to XML documents
+- "Meaningful Change Detection in Structured Data", by Sudarshan S. Chawathe
+  and Hector Garcia-Molina, which examines a heuristic tree-diff algorithm
