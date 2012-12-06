@@ -29,11 +29,29 @@
                     \item really want to classify carefully when an edit
                         typechecks so that when we write lenses we know what
                         assuming a well-typed edit \emph{means}
+                    \item must produce a definition of what it means to be a
+                        lens: what functions are available, what laws there
+                        are
+                    \item syntax for creating particular lenses
+                    \item some proof-of-concept indicating that the syntax
+                        can generate \emph{useful} lenses -- that is, that
+                        the definition of a lens is flexible enough to
+                        capture the transformations we want to write and
+                        that the syntax we chose is complete
+                    \item may need a type system/checker for soundness
                 \end{itemize}
         \end{itemize}
     \item do something good with datalog
         \begin{itemize}
             \item what's known: measure language (baroque and ad-hoc)
+                \begin{itemize}
+                    \item rules are ordered, and fragile to small changes
+                    \item manually write ``inverses''; no checking that
+                        these behave well
+                    \item much preferable: automatically derive inverses
+                        wherever possible with strong guarantees about
+                        behavior
+                \end{itemize}
             \item why it's worth knowing more: big companies want to make
                 predictions about their sales and do \emph{planning}:
                 figuring out what local (e.g. store-specific or
@@ -41,6 +59,9 @@
                 global goals
             \item recursion and disjunction are hard, so must identify a
                 fragment we can handle
+            \item even the problem statement isn't totally nailed down --
+                hard to find somebody who understands everything about the
+                measure language and what the customers want to use it for
         \end{itemize}
     \item concrete proposal timeline (TODO: actually break things down
         enough that I know how long to assign to each of these, but this
