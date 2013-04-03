@@ -1,87 +1,56 @@
 \documentclass{article}
 \begin{document}
 \begin{itemize}
-    \item intro: name two projects, quick overview, maybe table of contents
-    \item symmetric edit lenses for trees
+    \item project proposal: bidirectional spreadsheet
         \begin{itemize}
-            \item what's known
-                \begin{itemize}
-                    \item symmetric vs. asymmetric
-                    \item stateful vs. delta vs. edit
-                    \item strings vs. trees
-                    \item worth mentioning other stuff like quotient lenses,
-                        relation lenses, dictionary lenses, matching lenses,
-                        etc.? probably!
-                \end{itemize}
-            \item why it's worth knowing more
-                \begin{itemize}
-                    \item model transformation
-                    \item syntax transformations like hiding code, making
-                        documentation
-                    \item maybe talk about machine translation, and
-                        translating updated texts? a bit up in the air,
-                        really, whether I want to get into that
-                \end{itemize}
-            \item what's hard/what I'll work on
-                \begin{itemize}
-                    \item defining a model of edits for trees is step one
-                    \item current tree edits are mostly unconcerned with typing
-                    \item really want to classify carefully when an edit
-                        typechecks so that when we write lenses we know what
-                        assuming a well-typed edit \emph{means}
-                    \item must produce a definition of what it means to be a
-                        lens: what functions are available, what laws there
-                        are
-                    \item syntax for creating particular lenses
-                    \item some proof-of-concept indicating that the syntax
-                        can generate \emph{useful} lenses -- that is, that
-                        the definition of a lens is flexible enough to
-                        capture the transformations we want to write and
-                        that the syntax we chose is complete
-                    \item may need a type system/checker for soundness
-                    \item somewhere it would be nice to have a story about
-                        how to generate edits as inputs
-                \end{itemize}
+            \item unidirectional spreadsheet: cells may have value or
+                formula
+            \item cells with formulas display the result of computing the
+                formula
+            \item when updating a cell, any formula depending on that cell
+                is automatically updated
+            \item to bidirectionalize: let each cell have \emph{both} value
+                and formula
+            \item update value independently from formula
+            \item when updating a value: automatically compute new values
+                for cells the formula depends on that would have that output
+                as a result
         \end{itemize}
-    \item do something good with datalog
+    \item why it's useful: big companies want to make predictions about
+        their sales and do \emph{planning}: figuring out what local (e.g.
+        store-specific or month-specific or product-specific) goals to set
+        to achieve global goals
+    \item TODO: examples, start with an easy one and then show what's hard
+    \item why not just use a computer algebra system?
         \begin{itemize}
-            \item what's known: measure language (baroque and ad-hoc)
-                \begin{itemize}
-                    \item rules are ordered, and fragile to small changes
-                    \item manually write ``inverses''; no checking that
-                        these behave well
-                    \item much preferable: automatically derive inverses
-                        wherever possible with strong guarantees about
-                        behavior
-                \end{itemize}
-            \item why it's worth knowing more: big companies want to make
-                predictions about their sales and do \emph{planning}:
-                figuring out what local (e.g. store-specific or
-                month-specific or product-specific) goals to set to achieve
-                global goals
-            \item recursion and disjunction are hard, so must identify a
-                fragment we can handle
-            \item even the problem statement isn't totally nailed down --
-                hard to find somebody who understands everything about the
-                measure language and what the customers want to use it for
+            \item spreadsheets are a familiar paradigm; also some research
+                suggests that forming queries as a program up front (without
+                being able to visualize intermediate outputs) requires
+                significantly more skill than dealing with data directly
+            \item want to deal with data that is not only numbers, e.g.
+                product names, ID numbers, dates
+            \item depending on which CAS you choose, guarantees of solution
+                existence/uniqueness may be light/nonexistent -- perhaps
+                some type system can help with this
+            \item (pending literature search into just how exciting computer
+                algebra gets) perhaps there are some operations we want --
+                sorting, filtering, aggregations -- that are not readily
+                available in CASs
         \end{itemize}
-    \item concrete proposal timeline (TODO: actually break things down
-        enough that I know how long to assign to each of these, but this
-        concrete start doesn't seem awful)
+    \item why not just use a constraint satisfaction algorithm?
         \begin{itemize}
-            \item six months on Datalog
-            \item six months on trees
-            \item two months writing
+            \item once you've chosen an update, constraint satisfaction only
+                allows information to flow one way; when there's more than
+                one way to satisfy a constraint, one might like to use old
+                values of the satisfied constraint to choose the new way to
+                satisfy it
+            \item (pending more literature search into how exciting
+                constraint satisfaction gets) perhaps there is a story to
+                tell about how to model the user guiding the constraint
+                satisfaction process when there's many ways to satisfy a
+                constraint
         \end{itemize}
-    \item failure modes
-        \begin{itemize}
-            \item I can't understand transducers, and that turns out to be
-                important
-            \item I can't figure out what to do about sums
-            \item Datalog is harder than I thought
-            \item dialogue with LogicBlox falters (though provided we learn enough
-                about what they need before this happens, can still aim at
-                getting some results)
-        \end{itemize}
+    \item TODO: planned contributions
+    \item TODO: also, timeline, failure modes, related work, etc.
 \end{itemize}
 \end{document}
