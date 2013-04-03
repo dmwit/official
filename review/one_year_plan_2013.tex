@@ -1,0 +1,103 @@
+\documentclass{article}
+\begin{document}
+{\noindent\large Daniel Wagner}\\[3ex]
+
+As outlined in my research statement, there are three broad inquiries in
+lens research: designing a model, exploring algebraic properties, and
+inventing syntax. Over the past year, I have focused my efforts on inventing
+syntax for a language of edit lenses over tree-structured data.
+
+Trees are a natural model of many of the data structures used in day-to-day
+programming tasks. This makes it a good target for research energy, as good
+results in the area promise high payoff. Trees have been studied to some
+extent in the past within the classical lens framework of asymmetric,
+state-based lenses. However, one of the claimed benefits of our earlier work
+on symmetric, delta-based lenses is in improved use of alignment
+information. To this end, we hoped to instantiate the model of delta lenses
+with some syntax for transforming trees and validate this claim.
+
+The problem turned out to be surprisingly tricky. One of the nontrivial
+tasks in instantiating the edit-lens model is choosing a set of edits
+describing all the changes one might want to make to the data structure in
+question. For trees, there are many, many choices, but they break down
+broadly into two categories: one can either choose to specialize the set of
+edits based on information about the shapes of trees we intend to have as
+source and target of the transformation (let's call these \emph{typed
+edits}) or to design a type-agnostic set of edits to trees and share this
+set across all types (let's call these \emph{uniform edits}).
+
+Uniform edits have the advantage that their user-facing interface is much
+more clear than the one for typed edits. That is, imagining a user modifying
+a chunk of text representing a serialized tree, one must ask how the user's
+editing gestures map onto tree edits. One answer to this question would be
+to invent a tree diffing algorithm and run it; with uniform edits, this diff
+can be implemented once and for all, but for typed edits, each separate type
+must show how to implement a diff. (That is, typed edit languages are not as
+compositional as uniform edit languages.)
+
+On the other hand, uniform edits can allow some operations that do not make
+sense at a high level, such as moving a chunk of a tree representing (say) a
+person to a location where an event is expected because the shape of that
+chunk happens to have data that is ``nearly right'' -- say the event is
+named the same as the person was.
+
+Our work over the last year was an attempt to wed these approaches,
+attaching a type system to a set of uniform edits to produce a single,
+globally-available type-specific edit language. Unfortunately, while we were
+able to rule out some strange edits, it turned out that this approach was
+not obviously restrictive enough to make the implementation of edit lenses
+feasible. We have produced a workshop paper, ``Edit Lenses for Information
+Trees'', discussing this approach, which has been accepted at BX 2013.
+
+During the next year, I propose to work on three mostly separate projects in
+parallel:
+\begin{enumerate}
+    \item Continuing the work on edit lenses for trees.
+    \item Preparing and defending a thesis proposal.
+    \item Beginning a new track of research, in cooperation with
+        Atlanta-based big-data company LogicBlox.
+\end{enumerate}
+
+For the continuing work on tree edit lenses, I have two immediate goals:
+first, a journal version of our paper on a model for edit lenses (which is
+already near completion), and second, a cleanup of the workshop paper for
+the workshop post-proceedings. There may be some spare energy in the coming
+months to attempt to extend or improve these lenses, and I will continue to
+pursue that.
+
+I expect the preparation of a defendable proposal to take approximately two
+months effort. I intend to begin organizing my committee and setting a date
+in the next week or two; then my efforts can begin in earnest. I expect the
+bulk of my proposed work to consist of the final goal for this year, a new
+(and hopefully somewhat self-contained) track of research inspired by
+discussions with LogicBlox.
+
+As mentioned in my research statement, one of the simultaneously wonderful
+and frustrating things about lens design is that, once handed an update to a
+replica, there are often many correct choices about what update to make to
+the other replica. The bulk of the research in the area so far in dealing
+with this blessing and curse is to put control in the hands of the
+programmer -- the person writing the bidirectional program -- about which of
+these updates is chosen. However, the experience at LogicBlox is that it is
+common to want to give the user control of these choices; that is, to decide
+when running the bidirectional program and looking at the actual data rather
+than when writing it.
+
+The thrust of this new track of research is to design a model and syntax
+which captures this idea, giving the power to specify constraints on the
+updates at runtime and have the lens search for one update among the many
+possible ones that satisfy the constraints. Efforts to nail down exactly
+what behavior we want from such lenses has already begun, but I expect it
+will take several months of effort to produce something useful to the world
+at large.
+
+Taking these considerations into account, here is a rough timeline showing
+where I want to be through the rest of the year:
+\begin{itemize}
+    \item March: submit journal version of delta lenses paper
+    \item April: propose
+    \item May: submit post-proceedings version of tree lenses paper
+    \item June-October: prepare a submission on constraint lenses
+    \item November-December: begin preparations for dissertation
+\end{itemize}
+\end{document}

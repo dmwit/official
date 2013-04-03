@@ -14,10 +14,12 @@ file format; or, various applications, all attempting to solve the same
 problem, may want to share user data. (For example, browsers like Internet
 Explorer, Firefox, and Chrome often have facilities for importing bookmarks
 from their competitors.) Users with multiple computers may wish to
-synchronize directory hierarchies among their computers. Even a single
-program running on a single computer often keep various in-memory data
-structures storing related data, and maintain synchronization invariants
-between the structures. I work towards the goal of making the maintenance of
+synchronize directory hierarchies among their computers. Large websites
+often offer programming interfaces that can be modeled as presenting a
+small, modifiable view of their large set of data. Even a single program
+running on a single computer often keep various in-memory data structures
+storing related data, and maintain synchronization invariants between the
+structures. I work towards the goal of making the maintenance of
 synchronized data as painless as possible, so that ephemeral data structures
 and persistent data alike can benefit from formal correspondence guarantees.
 

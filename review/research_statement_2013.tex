@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\newcommand{\lens}{\leftrightarrow}
+\newcommand{\lget}{\mathsf{get}}
+\newcommand{\lput}{\mathsf{put}}
+\begin{document}
+{\noindent\large Daniel Wagner}\\[3ex]
+
+The problem of synchronization is ubiquitous in computing applications. In
+the database community, the so-called view-update problem involves keeping a
+database and the result of a query to that database in sync as updates occur
+to the database and to the query's result. In large software systems, two
+applications often want to share data, but have disparate preferences for
+file format; or, various applications, all attempting to solve the same
+problem, may want to share user data. (For example, browsers like Internet
+Explorer, Firefox, and Chrome often have facilities for importing bookmarks
+from their competitors.) Users with multiple computers may wish to
+synchronize directory hierarchies among their computers. Large websites
+often offer programming interfaces that can be modeled as presenting a
+small, modifiable view of their large set of data. Even a single program
+running on a single computer often keep various in-memory data structures
+storing related data, and maintain synchronization invariants between the
+structures. I work towards the goal of making the maintenance of
+synchronized data as painless as possible, so that ephemeral data structures
+and persistent data alike can benefit from formal correspondence guarantees.
+
+There is a fair amount of preexisting work on this problem. The database
+community in particular has a significant body of work on the problem of
+synchronizing relational data. The framework of asymmetric lenses aims to
+extend these ideas to other familiar data structures often available in
+programming languages (with varying but often fairly extensive language
+integration), such as strings and algebraic data types.
+% TODO: citations, more expansive related work
+
+Broadly speaking, there are three avenues of inquiry involved in designing a
+good bidirectional language (that are of course often quite intertwined):
+\begin{enumerate}
+    \item Designing a model. Here the goal is to carefully state, in
+        abstract terms, the components a bidirectional program is expected
+        to provide, along with a statement of the behavioral guarantees you
+        expect from these components.
+
+        The classical choice here is to discuss a lens between two sets $A$
+        and $B$ as having two components:
+        \begin{align*}
+            \lget &\in A \to B \\
+            \lput &\in B \times A \to A
+        \end{align*}
+        That is, we view $A$ as a database and $B$ as some summary of the
+        database; we demand that a lens provide a function to compute the
+        summary and a function to take a modified summary and produce a
+        modification to the database.
+
+        The demand, then, is that these functions really synchronize the
+        database and the summary. That is, if we provide the same summary as
+        we used to have, nothing should happen to the database, and if we
+        provide the database we just got from an update, our summaries
+        should match:
+        \begin{align*}
+            \lget(\lput(b,a)) &= b \\
+            \lput(\lget(a),a) &= a
+        \end{align*}
+
+        One thrust of my research is to challenge this classical approach,
+        varying the behavioral demands or the components required from a
+        bidirectional program, and see what happens.
+    \item Exploring algebraic properties. Once a model is fixed, one can
+        ask algebraic questions. In almost all cases, the class of models
+        forms a category, and as a result it is possible to use intuitions
+        from category theory to ask good questions about what operations are
+        implementable.
+
+        One key property required to take advantage of category theoretical
+        insights is that the models be compositional: one must show that, in
+        whatever model has been chosen, the process of running first one and
+        then another lens in sequence provides the same interface and
+        satisfies the same behavioral guarantees when taken as a whole as
+        each of the pieces do.  (Having this operation available is also a
+        quite practical programming advantage: it is common to create a lens
+        for a large and complicated transformation by combining many small
+        lenses doing easy-to-understand portions of the transformation.)
+
+        For example, there is a fairly standard categorical understanding of
+        various data structures constructed from sums, products, recursion,
+        and similar constructs. Exploring which of the operations required
+        to support these features are available as bidirectional programs
+        says quite a lot about the power of the model chosen.
+    \item Inventing syntax. This is all about exploring which programs can
+        be bidirectionalized, and inventing a library of independent,
+        understandable lenses that can be combined to write them. The
+        algebraic study often gives a head start here, but there are many
+        practical functions that people wish to compute that are not
+        algebraically-inspired. When done well, this design phase will
+        validate a good choice of model: a model is only useful and helpful
+        if it tells you something about the programs you want to write.
+
+        A big part of this phase involves the problem of alignment: how do
+        we detect the relationship between old versions of the data and new
+        versions, and once we have detected this, how do we use the
+        information? Much of the answer here lies in the design and use of
+        good heuristics and in providing programmer control over their use.
+\end{enumerate}
+
+Thus, my interest is in the intersection of bidirectional program design and
+language design: my goal is to create useful, usable languages with strong
+behavioral guarantees that can be used to synchronize multiple data sources.
+
+\end{document}
