@@ -1,0 +1,355 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\newtheorem{definition}{Definition}
+\newtheorem{success}{Success criterion}
+\newcommand{\defined}{\downarrow}
+% TODO: success criteria: what operations are supported? (do we have a
+% syntax?)
+% TODO: Benjamin's proposed success criteria:
+%   - generalize lenses (symmetric and asymmetric)
+%   - generalize spreadsheets (x2 criteria: one is you can encode vanilla
+%   spreadsheets, the other is that you can bidirectionalize a spreadsheet
+%   and then when you use it in the way you would a unidirectional
+%   spreadsheet its behavior is the same)
+%   - give a way to modify an output and specify an input that should be the
+%   only one that changes, and do it whenever that's possible
+% TODO: tell the simple solutions that don't satisfy some of these solutions
+%   - non-associative composition
+%   - tree-structured stuff
+%   - linear constraints
+%   - the spreadsheet case: one method per constraint
+% TODO: be clearer about design axes vs success criteria vs desiderata
+\begin{document}
+
+Lenses keep two similar pieces of data consistent; as either one evolves,
+the lens finds analogous evolutions for the other. However, current lenses
+don't generalize smoothly to more than two pieces of data. Spreadsheets
+manage many pieces (cells) of data that are related to each other, but they
+are generally unidirectional: some cells are special automatically-updated
+cells, and the values in these cells are always computed by the system and
+cannot be changed by the user. Constraint propagation systems generalize
+spreadsheets to be many-directional when possible. However, current systems
+do not use old states of the system to guide the computation of new states;
+any system state which satisfies the given constraints is allowed.
+
+The goal of the hyperlenses project is to merge the three systems, giving a
+way of maintaining constraints between many pieces of data that, when given
+an update to some part of the system, finds an ``analogous'' update to the
+rest of the system. Below we discuss criteria on which the success of the
+hyperlenses project can be judged.
+
+In typical constraint propagation systems, there are variables and
+constraints. Constraints may involve any number of variables, and are simply
+relations on valuations of those variables. In the following, many of the
+relations we care about will be of the form
+\[\{(x_1,\ldots,x_m,y_1,\ldots,y_n) \mid f(\overline x) = g(\overline y)\}\]
+and so we will simply write these as
+$f(\overline x) = g(\overline y)$
+when it is clear from context that a relation is expected.
+
+\section{Simple Example}
+A user might draw up a vacation expenditures spreadsheet that looks like
+this:
+
+\begin{tabular}[h]{lrrrr}
+    Day     & Travel    & Lodging   & Food  & Total \\
+    1       & 750       & 120       & 45    & 915   \\
+    2       & 30        & 120       & 18    & 168   \\
+    3       & 0         & 120       & 150   & 270   \\
+    4       & 15        & 120       & 30    & 165   \\
+    5       & 750       & 0         & 15    & 765   \\
+    Total   & 1545      & 480       & 258   & 2283  \\
+\end{tabular}
+
+Along with the table, we would expect to see some constraints like
+\begin{align*}
+    \mathrm{Travel}_\mathrm{Total} &=
+    \mathrm{Travel}_1+\mathrm{Travel}_2+\mathrm{Travel}_3+\mathrm{Travel}_4+\mathrm{Travel}_5
+    \\
+    \mathrm{Total}_1 &= \mathrm{Travel_1}+\mathrm{Lodging}_1+\mathrm{Food}_1
+\end{align*}
+and so on, with ten constraints in all (one each for days 1, 2, 3, 4, 5, and
+Total, and one each for categories Travel, Lodging, Food, and Total). Here
+are some things a user might want to do with this setup:
+\begin{itemize}
+    \item The user might go on another vacation, and want to make an
+        estimate of how much he spent on food given his credit card balance
+        at the end of the trip. To do this, he might update
+        $\mathrm{Total}_\mathrm{Total}$ to his balance and look in the
+        $\mathrm{Food}_\mathrm{Total}$ cell to get a guess.
+    \item The user might like to plan a vacation to a certain
+        location with a certain budget; then he could fix the
+        $\mathrm{Total}_\mathrm{Total}$ cell and update the travel prices
+        for the first and last day's plane tickets to get an estimate of how
+        much he can spend on the various other days and categories while
+        staying in his budget.
+    \item Perhaps the user discovers that he is missing a category for
+        entertainment and wants to add a new column, initially populated
+        with zeros. He did not keep careful track of his daily spending for
+        this on the last vacation, but he knows that in total he spent about
+        \$800 on entertainment, so he updates the new
+        $\mathrm{Entertainment}_\mathrm{Total}$ cell to 800.
+\end{itemize}
+
+% TODO: this organization structure doesn't quite work: section 2.2 doesn't
+% fit in section 2
+\section{Topology}
+Fix a linearly ordered set $N$ of names and a universe $U$ of values. Since
+we are dealing with partial functions, we will use the convention that
+$a = b$ whenever both $a$ and $b$ are undefined or whenever $a$ and $b$ are
+defined and identical. Likewise, $a \in b$ means that both $a$ and $b$ are
+undefined or they are both defined and $a$ is a member of $b$.
+
+\begin{definition}
+    A \emph{valuation} is a finite map from $N$ to $U$.
+\end{definition}
+
+We generalize valuation application from names to finite sets of names using
+the linear ordering on $N$: whenever $x_1 < \cdots < x_m$ is an increasing
+chain, $f(\{x_1,\ldots,x_m\}) = (f(x_1),\ldots,f(x_m))$.
+
+\begin{definition}
+    A \emph{constraint} is a finite set $n \subset N$ together with a relation $R
+    \subset U^{|n|}$.
+\end{definition}
+
+\begin{definition}
+    A valuation $f$ \emph{satisfies} constraint $(n,R)$ when $f(n) \in R$.
+\end{definition}
+
+% \begin{definition}
+%     A \emph{method} for constraint $(n,R)$ is a set $i \subset n$ and a
+%     partial function $f \in U^{|n|} \to U^{|n|}$ satisfying \emph{extension}
+%     and \emph{completeness}:
+%     \[f(g,v) = g(v) \mbox{ whenever } v \in i\]
+%     \[f(g)\defined \mbox{ whenever } \exists h \in R. h|_i = g\]
+% \end{definition}
+% % TODO: generalize to methods which only change some of the variables in
+% % $n$?
+% % TODO: define \defined; talk about coercing between tuples and valuations
+% % implicitly; talk about valuation restriction
+
+% TODO: wording: the CSG induced by a set of constraints is...
+\begin{definition}
+    A \emph{constraint system graph} is an undirected bipartite graph whose
+    nodes are drawn from $N$ in one part and constraints in the other, and
+    which has an edge $(v,(n,R))$ iff $v \in n$.
+\end{definition}
+
+One success criteria involves how exciting we allow the topology of the
+constraint system graph to be.
+
+Lenses correspond to a very strong restriction on graph topology: there are
+always exactly two variable nodes with exactly one constraint connecting
+them. This makes choosing an update plan particularly simple, since we must
+always update the nodes attached to the single constraint.
+
+In fact, this observation generalizes slightly: if the constraint system
+graph is a tree and we allow the update of only a single node, then we may
+direct the constraint graph by treating the updated node as a root and
+update nodes attached to constraints in topological order (provided we
+promise not to update a given node's value twice).
+
+Here are some topologies which require greater effort.
+
+\subsection{Cycles}
+Suppose we have three variables, $x$, and $y$, and $z$, and three
+constraints, one on each pair of variables. We will allow ourselves to
+assume we also have a collection of methods for each individual constraint
+that can take an update to one of the variables and produce a value of the
+other variable that satisfies the constraint. The question now becomes: can
+we take an update to one variable, say, $x$, and produce updates to the
+other two that reinstate all three constraints?
+
+The naive approach, where we compute $y$ from our assumed method that
+reinstates the $\{x,y\}$ constraint and $z$ from our assumed method that
+reinstates the $\{x,z\}$ constraint doesn't necessarily work, since there is
+no guarantee that the $y$ and $z$ computed this way satisfy the $\{y,z\}$
+constraint.
+
+Consider our simple example above: there are two ``paths'' in the constraint
+graph from the $\mathrm{Total}_\mathrm{Total}$ node to the
+$\mathrm{Travel}_1$ node, namely via $\mathrm{Total}_1$ and via
+$\mathrm{Travel}_\mathrm{Total}$. What we would be asking for is a guarantee
+that, for example, the way we choose to spread an update over the category
+totals and thereafter over the individual cells is compatible with the way
+we choose to spread an update over the day totals and thereafter over the
+individual cells. In the case of our simple example, we could certainly
+achieve this using arithmetic facts, but in more complicated examples the
+way forward is less clear.
+
+\begin{success}
+Which cyclic constraint graphs can be solved? (None? Those
+that also have some other special graph structure? Those which use a
+restricted syntax? Those that have some special semantic property? All?)
+\end{success}
+
+\subsection{Multiple update}
+Many constraint propagation systems support the update of multiple variables
+simultaneously. As discussed in our simple running example, making a
+vacation plan on a budget might involve setting the grand total and the
+travel costs all at once. This is distinct from setting them one at a time,
+since we want the system to guarantee that all three values can coexist,
+whereas when we set them one at a time each update may disrupt the values of
+the other two.
+
+\begin{success}
+When can multiple variables be updated? (Never? Some statically
+known sets? Dynamically known sets? Valuations with some system-specific
+semantic property? Always?)
+\end{success}
+
+\subsection{Method availability}
+% TODO
+Not sure how to explain/motivate this one well. Currently, we demand that
+all methods partition their constraint's variables into input variables and
+output variables, but otherwise work with whatever methods are available.
+
+\section{Update guidance}
+Since one of the major selling points of hyperlenses over current constraint
+propagation systems is that they help choose among the many possible
+consistent valuations, we have:
+
+% TODO: Benjamin thinks having this criterion at all is stupid.
+\begin{success}
+Can the update mechanism inspect old values while computing new values?
+\end{success}
+
+However, there are many situations where even with the old values in hand,
+there are many good choices for a new consistent valuation. In these
+situations, we must trade off language complexity and user flexibility.
+
+\subsection{Intra-constraint ambiguity}
+Consider the very simple constraint system which has only one constraint, $z
+= x+y$. Giving a value for $z$ gives us a classical ``underconstrained
+system'': there are infinitely many choices for $x$ and $y$ that satisfy
+this constraint. For example, we might choose to keep $y$ and only update
+$x$, we might choose to increase $x$ and $y$ by the same summand, we might
+ignore the old values of $x$ and $y$ altogether and make them both be
+particular fractions of $z$, we might attempt to preserve the product $x*y$,
+etc. In our simple example, when we update the grand total, one reasonable
+choice would be to scale all the summands by the same factor the grand total
+was scaled by.
+
+More abstractly, we might wish to have some runtime control over how
+constraint solutions are being chosen in case there is ambiguity.
+
+\begin{success}
+    What control is there over the way individual constraints are resolved?
+    (None -- the system makes all the choices? Spreadsheet-creation time
+    control? Runtime control?)
+\end{success}
+
+\begin{success}
+    How much control is there over the way individual constraints are
+    resolved? (None? Some global pre-defined defaults? Constraint-level
+    defaults? All -- you write a function and the system will run it?)
+\end{success}
+
+\subsection{Inter-constraint ambiguity}
+Above, we discussed the possibility of constraint system graphs with cycles
+in them. We observed that in such situations, it may be that no ordering of
+the constraints' methods may result in a consistent state; however, there
+are also situations where many orderings each result in a consistent state
+-- and indeed, the chosen consistent states may even differ. As a very
+simple example, consider this system that has some seemingly redundant
+variables:
+\begin{align*}
+    z_1 &= x+y \\
+    z_2 &= x+y
+\end{align*}
+We will assume that each constraint either allows us to update $z_i$ alone
+given $x$ and $y$ or allows us to update $z_i$ and $y$ together. The first
+constraint uses the update policy
+\[(z_1',y') = \left(z_1 + \frac{x'-x}2, y - \frac{x'-x}2\right)\]
+which spreads half the change to each variable, while the second constraint
+uses the update policy
+\[(z_2',y') = \left(z_2 + \frac{x'-x}3, y - \frac{2(x'-x)}3\right)\]
+which spreads only a third of the change to $z_1$ and the rest to $y$.
+% TODO: picture
+
+Suppose we start from the all-zero valuation and then update $x$ to $6$.
+There are (at least) two reasonable update plans that guarantee consistency:
+update $z_1$ and $y$ together to $3$ and $-3$, respectively, then update
+$z_2$ to $3$, or the symmetric plan that updates $z_2$ and $y$ together to
+$2$ and $-4$, then updates $z_1$ to $2$.
+
+\begin{success}
+    How well are ambiguous updates handled? (Not handled -- the system picks
+    one arbitrarily? With a heuristic? The programmer/user has some control?
+    complete control? The system is designed in such a way that this does
+    not arise?)
+\end{success}
+
+\subsection{Inter-constraint coordination}
+It would be nice if the hyperlens associated with
+\begin{align*}
+    x &= a+b \\
+    y &= x+c
+\end{align*}
+behaved ``similarly'' to the hyperlens associated with
+\begin{align*}
+    x &= b+c \\
+    y &= a+x
+\end{align*}
+in the sense that an update to $y$ in either system resulted in the same
+updates to $a$, $b$, and $c$. This is nice from a language design point of
+view because it means you need not introduce separate $+$ functions for each
+arity, and is nice from a usability point of view because it means that
+there is no price to pay for modularity: you can split up your code into
+whatever units make sense to you and get the same program out.
+
+\begin{success}
+    How much global information can constraints usefully access when making
+    update choices? (None? Programmer can coordinate constraints when
+    they're thrown together? Information about other constraints of the same
+    form? Subgraphs with a restricted syntax can share data freely? All
+    constraints understand each other?)
+\end{success}
+
+\subsection{High level guidance}
+The guidance methods suggested so far are fairly low-level, and many require
+an intricate understanding of the execution engine itself to employ
+gainfully. One might wonder what high-level guidance can be given (and
+perhaps translated by the system into low-level guidance of the kinds
+suggested above) -- such as ``shunt as much of the change to this cell as
+possible'', ``update as many cells as possible'', ``always go this direction
+through the constraint if possible'', etc.
+
+\begin{success}
+    Can we give high-level descriptions of what a desirable update is? (No?
+    Yes, but the translation to low-level instructions is undecidable?
+    exponential? polynomial?)
+\end{success}
+
+\section{Miscellaneous}
+There are several other criteria that are important but have no unifying
+theme.
+
+\subsection{System updates}
+handling constraint system updates -- new cells, new constraints, etc.
+
+\subsection{Efficiency}
+single-pass (or at least terminating (or at least a decidable halting problem))
+
+\subsection{Totality}
+% TODO: needs significantly more flesh
+Consider our simple running example and a user who tries something crazy:
+updating all of the values in the Travel column (even the total). We may
+have to inform the poor user that their request cannot be satisfied.
+
+Static check: is there an instantiation of the constraints and updates to
+these variables such that there is no solution?
+
+Dynamic check: can we use facts about our constraints and this instantiation
+to pick a solution, even though other constraints would make it fail?
+
+If there is a solution, are we guaranteed to find it?
+
+\subsection{Compositionality}
+compositional (associative? commutative?)
+
+\subsection{Complexity}
+language complexity: it should not be painful to program in
+\end{document}
