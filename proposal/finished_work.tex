@@ -523,4 +523,558 @@ $\partition$.
 \iffull
 
 \section{Edit lenses}
-% TODO
+
+\begin{figure}
+    \begin{center}
+        \vspace*{-2ex}
+        \includegraphics[width=75mm]{images/ex1-init.pdf} \\
+        (a) initial replicas \\[1.5ex]
+        \includegraphics[width=75mm]{images/ex1-1.pdf} \\
+        (b) a new composer is added to one replica \\[2ex]
+        \includegraphics[width=75mm]{images/ex1-2.pdf} \\
+        (c) the lens adds the new composer to the other replica \\[1.5ex]
+        \includegraphics[width=75mm]{images/ex1-3.pdf} \\
+        (d) the curator makes some corrections \\[.8ex]
+        \includegraphics[width=75mm]{images/ex1-4.pdf} \\[-3ex]
+        (e) the lens transports a small edit \\[1.5ex]
+        \includegraphics[width=75mm]{images/ex1-5.pdf} \\
+        (f) two different edits with the same effect on the left
+    \end{center}
+\iflater
+\discuss{Change the font everywhere to sf}
+\fi
+    \caption{A simple (complement-less) {\edit} lens in action.}
+    \label{fig:example-simple}
+\end{figure}
+
+Before diving into technicalities, let's take a brief tour of the main
+ideas via some examples.
+%
+Figure~\ref{fig:example-simple} demonstrates a simple use of {\edit} lenses
+to synchronize two replicas.\footnote{We use the word ``synchronize''
+  informally to mean simply ``maintain a correspondence between two replicas
+  by propagating edits in both directions.''  A full-blown synchronization
+  tool would also include, at a minimum, some mechanism for dealing with
+  conflicts between disconnected edits to the two structures, which is
+  outside the scope of this paper.  \iffull Note, though, that we go beyond most
+  synchronization tools in allowing the replicas to be structured
+  differently and to share only a part of their information.\fi}  In part (a),
+we see the initial replicas, which are in a synchronized state.  On the
+left, the replica is a list of records describing composers' birth and death
+years; on the right,  a list of records describing the same
+composers' countries of origin.  In part (b), the user interacting with the
+left-hand replica decides to add a new composer, {\sf Monteverdi}, at the
+end of the list.  This change is described by the edit script
+{\sf
+ins(3); mod(3, (``Monteverdi'', ``1567-1643''))}.
+The script says to first
+\emph{insert} a dummy record at index three, then \emph{modify} this record by
+replacing the left field with ``{\sf Monteverdi}'' and replacing the 
+right field with ``{\sf 1567-1643}''.  (One could of course imagine other edit
+languages where the insertion would be done in one step.  We represent it
+this way because this is closer to how our generic ``container mapping''
+combinator will do things.)  The
+lens connecting the two replicas now converts this edit script into a
+corresponding edit 
+script that adds {\sf Monteverdi} to the right-hand replica, shown in part (c):
+{\sf
+ins(3); mod(3, (``Monteverdi'', \ONE))}.
+Note that the translated {\sf mod} command overwrites the name component but
+leaves the country component with its default value, ``{\sf
+  ?country?}.''  This is the best it can do, since the edit was in
+the left-hand replica, which doesn't mention countries.  
+%
+Later, an eagle-eyed editor notices the missing country information and
+fills it in, at the same time correcting a spelling error in {\sf
+  Schumann}'s name, as shown in (d). In part (e), we see that the lens
+discards the country information when
+translating the edit from right to left, but propagates the spelling
+correction. 
+
+Of course, a particular new replica state can potentially be
+achieved by many different edits, and these edits may be translated differently.
+%
+Consider part (f) of Figure~\ref{fig:example-simple}, where the left-hand
+replica ends up with a row for {\sf Monteverdi} at the beginning of the
+list, instead of at the end. Two edit scripts that achieve this
+effect are shown. The upper script deletes
+the old {\sf Monteverdi} record and inserts a brand new one (which happens
+to have 
+the same data) at the top; the lower script rearranges the order of the
+list.  The translation of the upper edit leaves {\sf Monteverdi} with a
+default country, while the lower edit is translated to a
+rearrangement, preserving all the information associated with {\sf
+  Monteverdi}.% 
+
+We do not address the question of where these edits come from or who
+decides, in cases like part (f), which of several possible edits is
+intended.  As argued in~\cite{Matching10}, answers to these questions will
+tend to be intertwined with the specifics of particular editing and/or
+diffing tools and will tend to be messy, heuristic, and
+domain-specific---unpromising material for a foundational theory.  Rather,
+our aim is to construct a theory that shows how edits, however
+generated, can be translated between replicas of different shapes.
+
+\iflater\finish{A lot of people got lost at this point.  We need to go much more
+  gently.  (In particular, start with a roadmap.)  It would help to rename
+  $X,Y,Z$ to something more mnemonic.}\fi
+
+Abstractly, the lens we are discussing maps between structures of the form
+$(X \times Y)^*$ and ones of the form $(X \times Z)^*$, where $X$ is the set
+of composer names, $Y$ the set of date strings, and $Z$ the set of
+countries.  We want to build it compositionally---that is, the whole lens
+should have the form $\ell^*$, where $*$ is a ``list mapping'' lens
+combinator and $\ell$ is a lens for translating edits to a
+single record---i.e., $\ell$ is a lens from $X \times Y$ to $X \times Z$.
+Moreover, $\ell$ itself should be built as the product $\ell_1 \times
+\ell_2$ of a lens $\ell_1 \in X \to X$ that translates composer edits
+verbatim, while $\ell_2$ is a ``disconnect'' lens that maps every edit on
+either side to a trivial identity edit on the other side.
+
+In analogous fashion, the edit languages for the top-level structures will
+be constructed compositionally.  The set of edits for structures of the form
+$(X \times Y)^*$, written $\partial ((X \times Y)^*)$, will be defined
+together with the list constructor $*$.  Its elements will have the form
+$\mlins{i}$ where $i$ is a position, $\mldel{i}$,
+$\mlreorder{i_1,\ldots,i_n}$ where $i_1,\ldots,i_n$ is a permutation on
+positions (compactly represented, e.g. as a branching program),
+\iflater\discuss{people will be suspicious here---how do we know we
+  can represent it compactly?}\fi and $\mlmod{p}{\dv}$, where $\dv \in
+\partial (X\times Y)$ is an edit for $X \times Y$ structures.  Pair edits
+$\dv \in \partial (X \times Y)$ have the form $\partial X \times
+\partial Y$, where $\partial X$ is the set of edits to composers and
+$\partial Y$ is the set of edits to dates.  Finally, both $\partial
+X$ and $\partial Y$ are sets of primitive ``overwrite edits'' that completely
+replace one string with another, together with an identity edit $\ONE$
+that does nothing at all; so $\partial X$ can be just $\{\unit\} + X$ (with
+$\ONE = \mlinl\unit$) and similarly for $Y$ and $Z$.
+
+%% We write $\ONE$ instead of $\mlinl\ONE$ and {\sf
+%%   ``x''} instead of $\mlinr x$ in contexts where it is clear that an edit of
+%% this form is expected.
+
+%% We can represent an edit to an element of $X \times Y$ as a pair of
+%% edits to $X$ and $Y$; that is, $\partial(X \times Y) = \partial X \times
+%% \partial Y$.  The application function $\odot_{X \times Y}$ simply applies
+%% each of the component edits to the appropriate parts of the
+%% product:
+%% \iffull \[ \else $ \fi
+%% (\dx,\dy) \odot_{X \times Y} (x, y) = (\dx \odot_X x, \dy \odot_Y y)
+%% \iffull .\] \else $. \fi
+%% We sometimes write $\mlonl\dx$ as an alias for $(\dx,\ONE)$ when we want to
+%% emphasize that a particular edit affects only one part of a tuple, and
+%% similarly for $\mlonr\dy$.
+
+Our lens $\ell^*$ will consist of two components---one for transporting edits
+from the left side to the right, written $(\ell^*).\dputr \in \partial(X
+\times Y)^* \to \partial(X \times Z)^*$,\footnote{The symbol $\dputr$ is
+  pronounced ``put an edit through the lens from left to right,'' or just
+  ``put right.''  It is the {\edit}-analog of the $\putr$ function of the
+  state-based symmetric lenses in~\cite{HofmannPierceWagner10} and the
+  $\PUT$ function of the state-based asymmetric lenses
+  in~\cite{Focal2005,Boomerang07}.} and another for transporting
+edits from right to left, written $(\ell^*).\dputl \in \partial(X \times
+Z)^* \to \partial(X \times Y)^*$.
+%
+
+%% The next step is to lift this translation to lists.  There are two kinds of
+%% edits to lists in the example\finish{why is it this way?}:
+%% \emph{rearrangements}, which modify the 
+%% structure of the list via insertions of dummy elements, deletions, 
+%% reorderings (but which do not modify the elements themselves), and
+%% \emph{modifications} of the values in the list using the underlying element
+%% edits (which do not affect the list structure or order).  We already know
+%% how to translate modifications, and rearrangements are easy because the list
+%% structure is the same on both sides.  Putting these observations together
+%% gives us a translation function $\ell^*.\dputr \in \partial((X\times Y)^*)
+%% \to \partial((X \times Z)^*)$ for list edits (the $\dputl$ function is
+%% similar): 
+%% \iffull
+%%   \begin{align*}
+%%     \ell^*.\dputr(\mlins i) &= \mlins i \\
+%%     \ell^*.\dputr(\mldel i) &= \mldel i \\
+%%     \ell^*.\dputr(\mlreorder{i_0,\ldots,i_n}) &= \mlreorder{i_0,\ldots,i_n} \\
+%%     \ell^*.\dputr(\mlmod ie) &= \mlmod i{\ell.\dputr(e)}
+%%   \end{align*}
+%% \else
+%% \[
+%% \begin{array}{lcl}
+%%     \ell^*.\dputr(\di) &=& \di \\&& \mbox{if $\di$ is an $\mlins$,
+%%     $\mldel$, or $\mlreorder$}\\
+%%     \ell^*.\dputr(\mlmod ie) &=& \mlmod i{\ell.\dputr(e)}
+%% \end{array}
+%% \]
+%% \fi
+%% \iflater
+%% \bcp{Not exactly sure what we want to say about this---cutting from the
+%%   short version.}
+%% The reader may wonder why we break list insertions into
+%% two stages---first inserting a dummy element and then modifying this dummy
+%% element with desired data. The ease of writing the above function is 
+%% the answer: since the former stage does not mention elements of the list at
+%% all, we need not do any translation, and since the latter stage is
+%% simply an edit script, we may dispatch to the underlying lens. 
+%% \fi
+%% %% Additionally,
+%% %% the breakdown lets us preserve a nice factorization property that we discuss
+%% %% in the next section.\bcp{where? refer to it by number?}
+
+\begin{figure}
+    \begin{tabular}{c}
+        \includegraphics[width=75mm]{images/ex2-0.pdf} \\[.9ex]
+        \parbox \linewidth{(a) the initial replicas: a tagged list of composers and authors on
+        the left; a pair of lists on the right; a complement storing just
+        the tags}
+        \\[3ex]
+        \includegraphics[width=75mm]{images/ex2-1.pdf} \\
+        \parbox \linewidth{\begin{center}(b) an element is added to one of
+            the partitions\end{center}} \\[2ex]
+        \includegraphics[width=75mm]{images/ex2-2.pdf} \\
+        \parbox \linewidth{\begin{center}(c) the complement tells how to translate the
+            index\end{center}} \\[.7ex]
+    \end{tabular}
+    \caption{A lens with complement.}
+    \label{fig:example-partition}
+\end{figure}
+
+We sometimes need lenses to have a little more structure than this simple
+example suggests. 
+To see why, consider defining a {\em partitioning} lens $p$ between
+the sets $\partial((X+Y)^*)$ and $\partial(X^* \times Y^*)$.
+Figure~\ref{fig:example-partition} demonstrates the behavior of this lens.
+%
+In part (a), we show the original replicas: on the left, a single list that
+intermingles authors and composers (with {\sf inl/inr} tags showing which is
+which), and on the right a pair of homogeneous (untagged) lists, one for
+authors and one for composers. Now consider an edit, as in (b), that inserts
+a new element somewhere in the author list on the right. It is clear that we
+should transport this into an insertion on the left replica, but where, exactly,
+should we insert it?  If the $\dputl$ function is given just an
+insertion edit for the homogeneous author list and nothing else, there is no
+way it can translate this edit into a sensible position in the combined list
+on the left, since it doesn't know how the lists of authors and composers
+are interleaved on the left.  
+
+\iflater\bcp{People were not clear on why the complement was needed.  Also, in this
+  example, even with the complement, there is still some arbitrary choice in
+  where an inserted element on the right appears in the list on the left.}\fi
+
+The solution is to store a small list, called a {\em complement}, off to the
+side, recording the \emph{tags} ($\ml{inl}$ or $\ml{inr}$) from the
+original, intermingled list, and pass this list as an extra argument to
+translation.  We then enrich the types of the edit translation functions to
+accept a complement and return a new complement, so that
+%
+\iffull \[ \else $ \fi
+p.\dputr \in \partial((X+Y)^*) \times C \to \partial(X^* \times Y^*)
+\times C
+\iffull \] \else $ \fi
+and
+\iffull \[ \else $ \fi
+p.\dputl \in \partial(X^* \times Y^*) \times C \to \partial((X+Y)^*)
+\times C
+\iffull .\] \else $. \fi
+Part (c)
+demonstrates the use (and update) of the complement when translating the
+insertion.
+
+Note that the complement stores just the {\sf inl/inr} tags, not the actual
+names of the authors and composers in the left-hand list.  \iflater\finish{This next
+statement made people suspicious---we need to go into more detail.}\fi In general, the
+information stored in $C$ will be much smaller than the
+information in the replicas; indeed, our earlier example illustrates the
+common
+case in which $C$ is the trivial single-element set $\Unit$.  The
+translation functions manipulate just the complements and the edits, which
+are also small compared to the size of the replicas.
+
+%% \finish{Someplace, we need to talk about what happens to edits that don't
+%%   make sense on the current state.  There are three possibilities, with a
+%%   tradeoff between size of representations and ``accuracy'' of edits:
+%%   \begin{itemize}
+%%   \item Embed a description of the exact state in the edit and say that the
+%%   edit only applies to this state.  This is what Diskin, etc., do.  But it
+%%   means that edits are very large.
+%%   \item Allow any edit to apply to any state.  Then there are two
+%%   sub-possibilities:
+%%   \begin{itemize}
+%%   \item keep it total but make it behave like the identity (or some other
+%%   arbitrary choice) anywhere it doesn't ``make sense''
+%%   \item make it partial
+%%   \end{itemize}
+%%   \end{itemize}
+%% }
+%% \finish{
+%% Old text: Other authors model {\edit}s in other ways; for example, Stevens
+%% \finish{citation} chooses functions whose domain and range are equal.
+%% Functions are a nice model in some circumstances, but are difficult to
+%% inspect: the only operation that can be performed is to apply them to some
+%% concrete argument.  Monoids subsume these functions, and some instantiations
+%% offer more reflective representations of edits.}
+
+\subsection{Edit Lenses}
+\label{sec:semantics}
+
+A key design decision in our formulation of edit lenses is to separate the
+{\em description} of edits from the {\em action} of applying an edit to a
+state.  This separation is captured by the standard mathematical notions of
+{\em monoid} and {\em monoid action}.
+
+\begin{definition}
+%% \bcp{why do we say a triple here and in
+%%     3.2.3, but other places just name the components (e.g., defn of
+%%     category)?} 
+A \emph{monoid} is a triple $\left<M,\cdot_M,\ONE_M\right>$ of a set
+$M$, an associative binary operation $\cdot_M \in M \times M
+\to M$, and a unit element $\ONE_M \in M$ --- that is, with $\cdot_M$ and $\ONE_M$ such that
+\iffull
+\begin{eqnarray*}
+x\cdot_M(y\cdot_M z) = (x\cdot_M y) \cdot_M z\\
+\ONE_M\cdot_M x = x = x \cdot_M \ONE_M .
+\end{eqnarray*}
+\else
+$x\cdot_M(y\cdot_M z) = (x\cdot_M y) \cdot_M z $ and
+$\ONE_M\cdot_M x = x = x \cdot_M \ONE_M$.
+\fi
+\end{definition}
+When no confusion results, we use $M$ to denote both the set and the
+monoid, drop subscripts from $\cdot$ and $\ONE$, and write $mn$ for
+$m \cdot n$.  
+%% In more standard terminology, a ``monoid'' in our sense would
+%% be called a \emph{partial monoid}\iflater~\cite{partialmonoids}\fi, but
+%% since we always work with partial monoids we find it convenient to drop the
+%% qualifier.
+
+The unit element represents a ``change nothing'' edit.  Multiplication of
+edits corresponds to packaging up multiple edits into a single one
+representing their combined effects\iffull{} (this might be useful, for example, for
+offline editing)\fi.
+
+Modeling edits as monoid elements gives us great flexibility in 
+concrete representations.
+%
+The simplest edit language is a {free monoid} whose elements are just words
+over some set of primitive edits and whose multiplication is
+concatenation.  
+%
+However, it may be useful to put 
+more structure on edits, either (a) to allow 
+more compact representations or (b) to capture the intuition that edits to
+different parts of a structure do not interfere with each other and can thus
+be applied in any order.
+%
+The monoid framework can also accommodate more abstract notions of edit.  For
+example, the set of all total functions from a set $X$ to itself forms a
+monoid, where the multiplication operation is function composition.  This is
+essentially the form of edits considered by
+Stevens~\cite{stevens2008tat}\iflater\finish{Not just Stevens---we should
+  find a few more citations for this idea.}\fi.  \iflater\bcp{Same question for this one.  At a minimum, we should say that we are not dealing with these examples in detail in the rest of the paper.}\fi
+%
+We mostly focus on the simple case where edit languages are free monoids.
+Laws can be added to the product and sum lens constructions, and possibly
+for lists and general containers as well.
+
+\begin{definition}
+    Given a  monoid $M$ and a set $X$, a \emph{monoid action} on $M$ and $X$
+    is a partial function $\odot \in M \times X \partialto X$ satisfying two laws:
+\iffull
+    \infax{\ONE \odot x = x}
+    \infax{(m \cdot n) \odot x = m \odot (n \odot x)}
+\else
+$\ONE \odot x = x$ and $(m \cdot n) \odot x = m \odot (n \odot x)$.
+\fi
+\end{definition}
+%
+As with monoid multiplication, we often elide the monoid action symbol,
+writing $mx$ for $m \odot x$.  In standard mathematical terminology, a
+monoid action in our sense might instead be called a ``partial monoid
+action,'' but since we always work with partial actions we find it
+convenient to drop the qualifier.
+
+A bit of discussion of partiality is in order.  
+Multiplication of edits is a total operation: given two descriptions of
+edits, we can always find a description of the composite actions of doing
+both in sequence.  On the other hand, {\em applying} an edit to a particular
+state may sometimes fail.
+%
+This means we need to work with expressions and equations involving
+partial operations. As usual, any term that contains an undefined
+application of an operation to operands is undefined---there is no way of
+``catching'' undefinedness. An equation between possibly undefined terms 
+(e.g., as in the definition above) 
+means that if either side is defined then so is the other, and their values
+are equal (Kleene equality).
+
+Why deal with failure explicitly, rather than keeping edit application total
+and simply defining our monoid actions so that applying an edit in a state
+where it is not appropriate yields the same state again (or perhaps some
+other state)?  One reason is that it seems natural to directly address the
+fact that some edits are not applicable in some states, and to have a
+canonical outcome in all such cases.  A more technical reason is that, when
+we work with monoids with nontrivial equations, making inapplicable edits
+behave like the identity is actually
+wrong.%
+%
+\footnote{Here is a slightly contrived example.  Suppose that the set of
+  states is natural numbers and that edits have the form $(x\mapsto y)$,
+  where the intended interpretation is that, if the current state is $x$,
+  then the edit yields state $y$.  It is reasonable to impose the equation
+  $(y\mapsto z)\cdot(x\mapsto y) = (x\mapsto z)$, allowing us to represent
+  sequences of edits in a compact form.  But now consider what happens when
+  we apply the edit $(5\mapsto 7)\cdot(3\mapsto 5)$ to the state $5$.  The
+  second monoid action law demands that $((5\mapsto 7)\cdot(3\mapsto 5))
+  \odot 5 = (5\mapsto 7)\odot((3\mapsto 5) \odot 5)$, which, by the equation
+  we imposed, is the same as $(3\mapsto 7) \odot 5 = (5\mapsto
+  7)\odot((3\mapsto 5) \odot 5)$.  But the left-hand side is equal to $5$
+  (since the edit $(3\mapsto 7)$ does not apply to the state $5$), while the
+  right-hand side is equal to $7$ (since the first edit, $(3\mapsto 5)$, is
+  inapplicable to the state $5$, so it behaves like the identity and returns
+  $5$ from which $(5\mapsto 7)$ takes us to $7$), so the action law is
+  violated.}
+
+However, although the framework allows for the possibility of edits failing,
+we still want to know that the edits produced by our lenses will never
+actually fail when applied to replica states arising in practice.  This
+requirement, corresponding to the {\em totality} property of previous
+presentations of lenses~\cite{Focal2005}, is formalized and proven.
+In general, we adopt the design principle that partiality
+should be kept to a minimum; this simplifies the definitions.
+
+%% Notice that the second law implies that if $m\odot(n\odot x)$ is
+%% defined then $m\cdot n$ must be defined and conversely, if $n\odot x$
+%% is undefined then $(m\cdot n)\odot x$ must also be undefined for all
+%% $m$ even if $m\cdot n$ is defined.
+
+\iflater
+\finish{A monoid action is a monoid homomorphism from $M$ to $X \to X$. Can
+tie this back to the Stevens work, too, maybe?}
+\fi
+
+It is convenient to bundle a particular choice of monoid and monoid
+action, plus an initial element, into a single structure:
+
+\begin{definition}
+    A \emph{module} is a tuple $\left<X,\, \init_X,\, \partial
+    X,\,\odot_X\right>$ comprising a set $X$, an element $\init_X\in X$, a monoid 
+    $\partial X$, and a monoid action $\odot_X$ of $\partial X$ on $X$.
+\end{definition}
+If $X$ is a module, we refer to its first component by either
+$|X|$ or just $X$, and to its last component by $\odot$ or simple
+juxtaposition.
+
+We will use modules to represent the structures connected by lenses.  Before
+coming to the definition of lenses, however, we need one last ingredient:
+the notion of a {\em stateful homomorphism} between monoids.  As we saw in
+the examples, there are situations where the information in an
+edit may be insufficient to determine how it should be translated---we may
+need to know something more about how the two structures correspond. The
+exact nature of the extra information needed varies according to the lens.
+%
+To give lenses a place to store such auxiliary information, we
+follow~\cite{HofmannPierceWagner10} and allow the edit-transforming
+components of a lens (the $\dputr$ and $\dputl$ functions) to take a {\em
+  complement} as an extra input and return an updated complement as an extra
+output.
+%
+\iflater
+\discuss{Not sure there's time to change it now, but I found while writing
+  that explanation that the word ``complement'' was quite awkward---I kept
+  wanting to say just ``state.''  Moreover, the term is technically a bit
+  tenuous now, since what we store is not, in fact, anything like a
+  complement in the old database sense.}  \soon{complement becomes correspondence}
+\fi
+
+\begin{definition}
+Given monoids $M$ and $N$ and a {\em complement set} $C$, a \emph{stateful monoid
+  homomorphism} from $M$ to $N$ over $C$ is a function $h \in M \times C \to
+N \times C$ satisfying two laws:
+%
+\vspace*{-1ex}
+\infrule{}{h(\ONE_M,c) = (\ONE_N,c)}
+\infrule{
+         h(m,c) = (n,c') \andalso h(m',c') = (n',c'')
+}{
+         h(m' \cdot_M m,c) = (n' \cdot_N n,c'')
+}
+%
+These are basically just the standard monoid homomorphism laws, except that
+$h$ is given access to some internal state $c \in C$ that it uses (and
+updates) when mapping from $M$ to $N$; in the second law, we must thread the
+state $c'$ produced by the first $h$ into the second use of $h$, and we
+demand that both the result and the effect on the state should be the same
+whether we send a composite element $m' \cdot m$ through $h$ all at once or
+in two pieces.
+\end{definition}
+
+The intended usage of an edit lens is as follows. There are two users,
+one holding an element of $X$ the other one an element of $Y$, both
+referred to hereafter as {\em replicas}.  Initially, they hold $\init_X$ and
+$\init_Y$, respectively, and the lens is initialized with complement
+$\ell.\missing$. The users then perform actions and propagate them across
+the lens. An action consists of producing an edit $\dx$ (or $\dy$), applying
+it to one's current replica $x$ (resp.\ $y$), putting the edit through the lens
+to obtain an edit $\dy$ (resp.\ $\dx$), and asking the user on the other
+side to apply $\dy$ ($\dx$) to their replica.  In the process, the internal
+state $c$ of the lens is updated to reflect the new correspondence between
+the two replicas.
+\iffull
+
+\fi%
+We further assume there is some {\em consistency} relation $K$ between $X$,
+$Y$, and $C$, which describes the ``synchronized states'' of the replicas
+and complement.  This gives us a natural way to state the totality
+requirement discussed above: if we start in a consistent state, make a
+successful edit (one that does not fail at the initiating side), and put it
+through the lens, the resulting edit is guaranteed (a) to be applicable on
+the receiving side and (b) to lead again to a consistent state.  We make no
+guarantees about edits that fail at the initiating side: these should not be
+put through the lens.
+
+\begin{definition}
+A \emph{symmetric edit lens} between modules $X$ and $Y$ consists of a
+complement set $C$, a distinguished element $\missing\in C$, 
+two stateful monoid homomorphisms 
+\iffull
+\[
+\begin{array}{lcl}
+\dputr &\in& \partial X \times C \to \partial Y \times C \\
+\dputl &\in& \partial Y \times C \to \partial X \times C
+\end{array}
+\]
+\else
+$\dputr \in \partial X \times C \to \partial Y \times C$ and
+$\dputl \in \partial Y \times C \to \partial X \times C$, 
+\fi
+%
+%% total functions 
+%% \[
+%% \begin{array}{lcl}
+%% \dputr &\in& \partial X \times C \to \partial Y \times C \\
+%% \dputl &\in& \partial Y \times C \to \partial X \times C
+%% \end{array}
+%% \]
+%% such that \infax{\dputr(\ONE,c)=(\ONE,c) \qquad \dputl(\ONE,c)=(\ONE,c)}
+%% \infrule{ \dputr(\dx_2,c)=(\dy_2,c') \quad
+%%   \dputr(\dx_1,c')=(\dy_1,c'') }{ \dputr(\dx_1\ \dx_2,c)=(\dy_1\
+%%   \dy_2, c'') } \infrule{ \dputl(\dy_2,c)=(\dx_2,c') \quad
+%%   \dputl(\dy_1,c')=(\dx_1,c'') }{ \dputl(\dy_1\ \dy_2,c)=(\dx_1\
+%%   \dx_2, c'') } 
+and a ternary {\em consistency relation}
+$K\subseteq |X|\times C\times |Y|$ such that
+\begin{itemize}
+\item $(\init_X,\missing,\init_Y)\in K$;
+\item if $(x,c,y)\in K$ and $\dx\ x$ is defined and $\dputr(\dx,c)=(\dy,c')$, then $\dy\ y$ is also defined and $(\dx\ x,c',\dy\ y)\in K$;
+\item if $(x,c,y)\in K$ and $\dy\ y$ is defined and $\dputl(\dy,c)=(\dx,c')$, then $\dx\ x$ is also defined and $(\dx\ x,c',\dy\ y)\in K$.%
+%
+\iffull
+\footnote{One might consider a more general format with ``creation''
+  operations $\creater\in X\rightarrow Y\times C$ and symmetrically
+  $\createl$.  This format actually arises as a special case of the one
+  above by choosing the edit monoids to include operations of the form
+  $\text{set}(x)$ for $x\in X$, with action $\text{set}(x)\odot x'=x$. One
+  can then define $\creater(x,c) = \dputr(\text{set}(x),c)$.}
+\fi
+%
+\end{itemize}
+% \discuss{BCP will add a note about binary consistency relations.  Dual role: Important sanity check on dputs, but also a part of the external specification of the lens.}
+\end{definition}
