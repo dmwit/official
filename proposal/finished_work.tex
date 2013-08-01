@@ -1,5 +1,526 @@
-% TODO
+% TODO: cleanup
+\section{Background}
+\newif \iftext  \texttrue
+\newif \iffull  \fulltrue
+\newif \ifdraft \draftfalse
+\newif \ifdelta \deltafalse
+\newif \iflater \laterfalse  % (for things that we're going to think about later)
+\newif \iftikz  \tikztrue
+To set the stage, let's review the standard definition of
+asymmetric lenses.  
+%
+(Other definitions can be given, featuring weaker or stronger laws, but this
+version is widely accepted.)
+%
+Suppose $X$ is some set of source structures (say, the possible states of a
+database) and $Y$ a set of target structures (views of the database).
+%
+An asymmetric lens from $X$ to $Y$ has two components:
+\[ 
+\begin{array}{r@{\ \;}c@{\ \;}l}
+\GET &\in& X \arrow Y\\
+\PUT &\in& Y \times X \arrow X
+\end{array}
+\]
+The \GET{} component is the forward transformation, a total function from
+$X$ to $Y$.  The \PUT{} component takes an old $X$ and a modified $Y$ and
+yields a correspondingly modified $X$.  These components
+must obey two ``round-tripping'' laws for every $x \in X$ and $y
+\in Y$:
+%
+\infax[GetPut]{
+  \PUT\; (\GET \; x)\; x = x 
+}
+\infax[PutGet]{
+  \GET\; (\PUT \; y \; x) = y  
+}
+%
+It is also useful to be able to create an element of $x$ given just an
+element of $y$, with no ``original $x$'' to put it into; in order to handle
+this in a 
+uniform way, each lens is also equipped with a
+function $\CREATE\in Y\arrow X$, and we assume one more axiom:
+\infax[CreateGet]{
+    \GET\; (\CREATE \; y) = y
+}
+
 \section{Symmetric lenses}
-% TODO
+First, we show that lenses can be generalized from their usual asymmetric
+presentation---where one of the structures is always a ``view'' of the
+other---to a 
+fully {\em symmetric} version where each of the two structures may 
+contain information that is not present in the other.
+This generalization is significantly more expressive than any previously
+known: although symmetric variants of lenses have been
+studied~\cite{Meertens98,stevens2008tat,DBLP:conf/models/Diskin08}, they
+all lack a notion of sequential composition of lenses, a significant
+technical and practical limitation.
+%
+As we will see, the extra structure that we need to support composition is
+nontrivial; in particular, constructions involving
+symmetric lenses need to be proved correct modulo a notion of {\em behavioral
+  equivalence}.
+
+Second, we undertake a systematic investigation of the {\em
+  algebraic structure} of the space of lenses, using the concepts of
+elementary category theory as guiding and organizing principles.  (Our
+presentation is self contained, but some prior familiarity
+with basic concepts of category theory will be helpful.)
+
+The key  step toward symmetric lenses is the notion
+of {\em complements}.  The idea dates back to a famous paper in the
+database literature on the view update
+problem~\cite{DBLP:journals/tods/BancilhonS81} and was adapted to
+lenses in~\cite{Matching10} (and, for a slightly different
+definition,~\cite{matsuda2007btb}), and it is quite simple.  If we think of
+the    
+\GET{} component of a lens as a sort of projection function, then we can find
+another projection from $X$ into some set $C$ that
+keeps all the information discarded by \GET{}.  Equivalently, we can think
+of \GET{} as returning two results---an element of $Y$ and an element of
+$C$---that together contain all the information needed to reconstitute the
+original element of $X$.  Now the \PUT{} function doesn't need a whole $x\in
+X$ to recombine with some updated $y\in Y$; it can
+just take the complement $c\in C$ generated from $x$ by the \GET, since this
+will 
+contain all the information that is missing from $y$.  Moreover, instead of
+a separate
+$\CREATE$ function, we can simply pick a distinguished element
+$\missing\in C$ and define $\CREATE(y)$ as $\PUT(y,\missing)$.
+
+Formally, an {\em asymmetric lens with complement}
+mapping between $X$ and $Y$ consists of a set $C$, a
+distinguished element $\missing \in C$, and two functions
+\[
+\begin{array}{r@{\ \;}c@{\ \;}l}
+\GET &\in& X \arrow Y \times C\\
+\PUT &\in& Y \times C \arrow X
+\end{array}
+\]
+obeying the following laws for every $x \in X$, $y \in Y$, and $c \in C$:%
+\footnote{We can convert back and
+forth between the two presentations; in particular, if $(\GET, \PUT,
+\CREATE)$ are the components of a traditional lens, then we define a
+canonical complement by $C=\{f\in Y{\rightarrow}X\mid \forall
+y.\;\GET(f(y))=y\}$. We then define the components $\missing'$, $\GET'$, and
+$\PUT'$ 
+of an asymmetric lens with complement as $\missing'=\CREATE$ and
+$\GET'(x)=(\GET(x),\lambda y.\PUT(y,x))$ and $\PUT'(y,f)=f(y)$.
+\iffull
+Going the other way, if $(\aget, \aput, \missing)$ are the components of an
+asymmetric lens with complement, we can define a traditional lens by
+$\aget'(x) = \mlfst(\aget(x))$ and $\aput'(y,x) = \aput(y,\mlsnd(\aget(x)))$
+and $\acreate(y) = \aput(y,\missing)$.
+\fi
+}
+%
+\infrule[GetPut]{
+  \GET\; x = (y,c)
+}{
+  \PUT\; (y,c) = x 
+}
+\infrule[PutGet]{
+  \GET\; (\PUT \; (y,c)) = (b',c')
+}{
+  b' = y
+}
+Note that the type is just ``lens from $X$ to $Y$'': the set
+$C$ is an internal component, not part of the externally visible type.
+In symbols, $ \mathit{Lens}(X,Y) =
+\exists C.\; \{ \mathord{\missing}:\, C,\; \GET:\,X \arrow Y
+\times C,\; \PUT:\,Y \times C \arrow X \}$.
+
+Now we can symmetrize.  
+First, instead of having only \GET{} return a complement, we make \PUT{}
+return a complement too, and we take this complement as a second argument
+to $\GET$.
+%
+\iffull
+\[
+\begin{array}{r@{\ \;}c@{\ \;}l}
+\GET &\in& X \times C_Y \arrow Y \times C_X\\
+\PUT &\in& Y \times C_X \arrow X \times C_Y
+\end{array}
+\]
+\else
+So we have $\GET \in X \times C_Y \arrow Y \times C_X$ and 
+$\PUT \in Y \times C_X \arrow X \times C_Y$.
+\fi
+%
+Intuitively, $C_X$ is the ``information from $X$ that is discarded by
+\GET,'' and $C_Y$ is the ``information from $Y$ that is discarded by
+\PUT.''  Next we observe that we can, without loss of generality, use the
+same set $C$ as the complement in both directions.  \iffull (This ``tweak''
+is actually critical: it is what allows us to define composition of symmetric
+lenses.)\fi
+\iffull
+\[
+\begin{array}{r@{\ \;}c@{\ \;}l}
+\GET &\in& X \times C \arrow Y \times C\\
+\PUT &\in& Y \times C \arrow X \times C
+\end{array}
+\]
+\else
+So now we have 
+$\GET \in X \times C \arrow Y \times C$ and
+$\PUT \in Y \times C \arrow X \times C$.
+\fi
+%
+Intuitively, we can think of the combined complement $C$ as $C_X \times
+C_Y$---that is, each complement contains some ``private information from
+$X$'' and some ``private information from $Y$''; by convention, the \GET{}
+function reads the $C_Y$ part and writes the $C_X$ part, while the \PUT{}
+reads the $C_X$ part and writes the $C_Y$ part.  
+%
+Lastly, now that everything is symmetric, the \GET{} / \PUT{} distinction is not
+helpful, so we rename the functions to \PUTR{} and \PUTL.  This brings us to
+our core definition.
+
+\iftikz
+\iffull
+\begin{figure*}[t!] \centering
+\vspace*{-4ex}
+\hspace*{-1em}
+\begin{tabular}{@{}cc}
+  \ifpdf\tikz\pdf{symmetric-minus};\vspace*{-1ex}
+  \else \tikz\pdf{symmetric-minus}node[below=8.2ex]{};
+  \fi
+ &
+  \tikz\pdf{symmetric};
+  \ifpdf\vspace*{-2ex}\fi
+ \\
+(a) Initial replicas & (b) Initial complement 
+\vspace*{4ex} \\
+  \ifpdf\tikz\pdf{symmetric-edit};\vspace*{-.7ex}
+  \else \tikz\pdf{symmetric-edit}node[below=10ex]{};
+  \fi
+&
+  \tikz\pdf{symmetric-propagatex};
+\\
+(c) One replica edited & (d) Propagating the edit 
+\vspace*{3ex}
+\\
+  \ifpdf\vspace*{3ex}\tikz\pdf{symmetric-edit2};\vspace*{-8ex}
+  \else \tikz\pdf{symmetric-edit2}node[below=12.9ex]{};
+  \fi
+&
+  \ifpdf\tikz\pdf{symmetric-propagate2};\vspace*{-1ex}
+  \else \tikz\pdf{symmetric-propagate2}node[below=12.9ex]{};
+  \fi
+\\
+(e) Second replica is edited & (f) This change is propagated
+\vspace*{1.5ex}
+\\
+\end{tabular}
+\caption{Behavior of a symmetric lens}\vspace*{2ex}
+\label{fig:symm}
+\end{figure*}
+\else
+\begin{figure*}[t!] \centering
+\vspace*{-4ex}
+\hspace*{-1em}
+\begin{tabular}{@{}ccc}
+  \ifpdf\tikz\pdf{symmetric-minus};\vspace*{-1ex}
+  \else \tikz\pdf{symmetric-minus}node[below=8.2ex]{};
+  \fi
+ &
+  \tikz\pdf{symmetric};
+  \ifpdf\vspace*{-1ex}\fi
+&
+  \ifpdf\tikz\pdf{symmetric-edit};\vspace*{-3ex}
+  \else \tikz\pdf{symmetric-edit}node[below=10ex]{};
+  \fi
+ \\
+(a) Initial replicas & (b) Initial complement & (c) One replica edited 
+\vspace*{2ex} \\
+  \tikz\pdf{symmetric-propagatex};
+&
+  \ifpdf\vspace*{3ex}\tikz\pdf{symmetric-edit2};\vspace*{-4ex}
+  \else \tikz\pdf{symmetric-edit2}node[below=12.9ex]{};
+  \fi
+&
+  \ifpdf\tikz\pdf{symmetric-propagate2};\vspace*{-1ex}
+  \else \tikz\pdf{symmetric-propagate2}node[below=12.9ex]{};
+  \fi
+\\
+(d) Propagating the edit & (e) Second replica is edited & (f) This change is propagated
+\vspace*{1ex}
+\\
+\end{tabular}
+\caption{Behavior of a symmetric lens}
+\label{fig:symm}
+\end{figure*}
+\fi
+\fi
+
+\begin{definition}[Symmetric lens]
+A lens $\ell$ from $X$ to 
+$Y$ (written $\ell \in X \lens Y$) has three parts:
+a set of complements $C$, a distinguished element $\missing \in
+C$, and two functions
+\begin{eqnarray*}
+    \putr &\in& X \times C \to Y \times C\\
+    \putl &\in& Y \times C \to X \times C
+\end{eqnarray*}
+satisfying the following round-tripping laws:
+\infrule[PutRL]{\putr(x,c) = (y,c')}{\putl(y,c') = (x,c')}
+\infrule[PutLR]{\putl(y,c) = (x,c')}{\putr(x,c') = (y,c')}
+When several lenses are under discussion, we use record notation to identify
+their parts, writing $\ell.C$ for the complement set of $\ell$, etc. 
+\end{definition}
+
+\iftext The force of the \rn{PutRL} and \rn{PutLR} laws is to establish some
+``consistent'' or ``steady-state'' triples $(x,y,c)$, for which \PUT{}s of $x$
+from the left or $y$ from the right will have no effect---that is, will not
+change the complement. The conclusion of each rule has the same variable
+$c'$ on both sides of the equation to reflect this.  We will use the
+equation $\putr(x,c) = (y,c)$ to characterize the steady states.  In
+general, a \PUT{} of a new $x'$ from the left entails finding a $y'$ and a
+$c'$ that restore consistency.  Additionally, we often wish this
+process to involve the
+complement $c$ from the previous steady state; as a result, it can be
+delicate to choose a good value of $\missing$. This value can often be
+chosen compositionally; each of our primitive lenses and lens combinators
+specify one good choice for $\missing$.
+
+\iflater\finish{There's a good technical discussion of the options for
+  dealing with creation in symmetric.v --- might be worth including it
+  here.}\fi \fi
+
+\iffull\else One can imagine other laws.  In particular, the long version of
+the paper considers symmetric forms of the asymmetric ``\rn{PutPut}'' laws,
+which specify that two \PUT{} operations in a row should have the same
+effect as the second one alone.  As with asymmetric lenses, these
+laws appear too strong to be desirable in practice.  \fi
+
+%% %
+%% We say that lenses $l$ and $l'$ are {\em equivalent} if there exists a
+%% relation $\mathord{\equivl} \subseteq C \times \C{l'}$ such that:
+%% \infax[MissingC]{l.\missing \equivl l'.\missing}
+%% \infrule[PutrC]{
+%%   c \equivl c' 
+%%   \andalso
+%%   l.\PUTR (a, c) = (b,c_1)
+%%   \andalso
+%%   l'.\PUTR (a, c') = (b,c_1')
+%% }{
+%%   b = b' \ \wedge\   c_1 \equivl c_1'
+%% }
+%% \infrule[PutlC]{
+%%   c \equivl c' 
+%%   \andalso
+%%   l.\PUTL (b, c) = (a,c_1)
+%%   \andalso
+%%   l'.\PUTL (b, c') = (a,c_1')
+%% }{
+%%   a = a' \ \wedge\   c_1 \equivl c_1'
+%% }
+
+%% With these definitions in place, we can develop some basic
+%% structure.  For every set $A$, we can define is an identity lens $\mathit{id}$
+%% (with a trivial complement) from $A$ to itself.  If we have a lens $l$
+%% from $A$ to $B$ and a lens $l'$ from $B$ to $X$, we can compose them to form
+%% a lens $(l;l')$ from $A$ to $X$, using $l.C \times l'.C$ as the complement.
+%% %
+%% We can also show that, up to equivalence, composition is associative and
+%% \emph{id} is its unit---i.e., symmetric lenses form a category.  
+
+%% \iffull \else \iftext \finish{Briefly mention the PutPut laws and the fact
+%%   that, as usual, they are too strong.} \fi \fi
+%% \iffull
+
+\paragraph*{Examples} Figure~\ref{fig:symm} illustrates the use of a
+symmetric lens.  
+%
+The structures in this example are lists of textual records describing
+composers. The partially synchronized records (a) have a name and two dates
+on the left and a name and a country on the right.
+%
+The complement (b) contains all the information that is discarded by both
+$\PUT$s---all the dates from the left-hand structure and all the countries
+from the right-hand structure.  (It can be viewed as a pair of lists of
+strings, or equivalently as a list of pairs of strings; the way we build
+list lenses later actually corresponds to the latter.)  If we add a
+new record to the left hand structure (c) and use the $\PUTR$ operation to
+propagate it through the lens (d), we copy the shared information (the new
+name) directly from left to right, store the private information (the new
+dates) in the complement, and use a default string to fill in both the
+private information on the right and the corresponding right-hand part of
+the complement.  If we now update the right-hand structure to fill in the
+missing information and correct a typo in one of the other names
+(e), then a $\PUTL$ operation will propagate the edited country to the
+complement, propagate the edited name to the other structure, and use the
+complement to restore the dates for all three composers.
+
+Viewed more abstractly, the
+connection between the information about a single composer in the two tables
+is a lens from $X \times Y$ to $Y \times Z$, with complement $X
+\times Z$---let's call this lens $e$.  Its \PUTR{} component is given $(x,y)$ as
+input and has $(x',z)$ in its complement; it constructs a new complement by
+replacing $x'$ by $x$ to form $(x,z)$, and it constructs its output by
+pairing the $y$ from its input and the $z$ from its complement to form
+$(y,z)$. The \PUTL{} component does the opposite, replacing the $z$ part of
+the complement and retrieving the $x$ part.  Then the
+top-level lens in Figure~\ref{fig:symm}---let's call it
+$e\LIST$---abstractly has type $(X \times Y)\LIST \lens (Y \times Z)\LIST$
+and can be thought of as the ``lifting'' of $e$ from elements
+to lists.  
+
+There are several plausible implementations of
+$e\LIST$, with slightly different behaviors when list elements are
+added and removed---i.e., when the input and complement arguments to \PUTR{}
+or \PUTL{} are lists
+of different lengths.  One possibility is to take $e\LIST.C = (e.C)\LIST$
+and maintain the invariant that the complement list in the output is the same length as
+the input list. When the lists in the input have different lengths, we can
+restore the 
+invariant by either truncating the complement list or padding it with
+$e.\missing$.
+% \iffull
+For example, taking $X = \{a,b,c,\ldots\}$, $Y = \{1,2,3,\ldots\}$, $Z =
+\{A,B,C,\ldots\}$, and $e.\missing = (m,M)$, and writing
+$\left<a,b,c\right>$ for the sequence with the three elements $a$, $b$, and
+$c$, we could have:
+\[
+\begin{array}{ll}
+& \PUTR (\left<(a,1)\right>,\;
+         \left<(p,P),(q,Q)\right>)
+\\
+= &\PUTR (\left<(a,1)\right>,\;
+         \left<(p,P)\right>)\mbox{\hspace{7.7em}(truncating)}
+\\
+= & ( \left<(1,P)\right>,\; \left<(a,P)\right>)
+\\ [1.5ex]
+& \PUTR (\left<(a,1),(b,2)\right>,\;
+         \left<(a,P)\right>)
+\\
+= &\PUTR (\left<(a,1),(b,2)\right>,\;
+         \left<(a,P),(m,M)\right>)\mbox{\qquad(padding)}
+\\
+= & (\left<(1,P),(2,M)\right>,\;
+         \left<(a,P),(b,M)\right>)
+\end{array}
+\]
+% \fi
+Notice that, after the first \PUTR{}, the information in the second
+element of the complement list $(q,Q)$ is lost.
+The second \PUTR{} creates a brand new second element for the list, so the value $Q$ is
+gone forever; what's left is the default value $M$.
+
+Another possibility---arguably better behaved---is to keep
+  an {\em 
+  infinite} list of complements.  Whenever we do a \PUT{}, we use (and
+update) a prefix of the complement list of the same length as the current
+value being \PUT, but we keep the infinite tail so that, later, we have
+  values to use when the list being \PUT{} is longer.
+%% \finish{Probably we should ``iffull'' the following display once it's been
+%%   checked, to save space.}
+% \iffull
+\[
+\begin{array}{ll}
+& \PUTR (\left<(a,1)\right>,\;
+         \left<(p,P),(q,Q),(m,M),(m,M),\ldots\right>) 
+\\
+= & ( \left<(1,P)\right>,\; \left<(a,P),(q,Q),(m,M),(m,M),\ldots\right>)
+\\ [1.5ex]
+& \PUTR (\left<(a,1),(b,2)\right>,\;
+         \left<(a,P),(q,Q),(m,M),(m,M),\ldots\right>)
+\\
+= & (\left<(1,P),(2,Q)\right>,\;
+         \left<(a,P),(b,Q),(m,M),\ldots\right>)
+\end{array}
+\]
+% \fi
+
+We call the first form the {\em forgetful} list mapping lens and the second
+the {\em retentive} list mapping lens.  We will see, later, that the
+difference between these two precisely boils down to a difference in the
+behavior of the lens-summing operator $\oplus$ in the specification
+$e\LIST \simeq \id_\Unit \oplus (e \otimes e\LIST)$ of the list mapping lens.
+
+\iftikz
+\begin{figure*}[t!] \centering
+\vspace*{-4ex}
+\begin{tabular}{@{}ccc}
+  \tikz\pdf{sums1};
+  &
+  \tikz\pdf{sums2};
+  \ifpdf\else\vspace*{2ex}\fi
+  \\
+  (a) Initial replicas & (b) Alphabetizing the right
+  \vspace*{2ex} \\
+  \tikz\pdf{sums3};
+  &
+  \tikz\pdf{sums4};
+  \ifpdf\else\vspace*{2ex}\fi
+  \\
+  (c) Inserting Chopin on the left & (d) Deleting Beethoven from the left
+\end{tabular}
+\caption{Synchronizing lists of sums}
+\label{fig:sums}
+\end{figure*}
+\fi
+Figure~\ref{fig:sums} illustrates another use of symmetric lenses. The
+structures in this example are lists of categorized data; each name on the
+left is either a composer (tagged {\tt inl}) or an author (tagged
+{\tt inr}), and each name 
+on the right is either a composer or an actor.  The
+lens under consideration will synchronize just the composers between the two
+lists, leaving the authors untouched on the left and the actors untouched on
+the right. The synchronized state (a) shows a complement with two lists,
+each with holes for the composers.  If we re-order the
+right-hand structure (b), the change in order will be
+reflected on the left by swapping the two composers. Adding another composer
+on the left
+(c) involves adding a new hole to each complement; on the left, the location
+of the hole is determined by the new list, and on the right it simply shows
+up at the end. Similarly, if we remove a composer (d), the
+final hole on the other side disappears.
+
+Abstractly, to achieve this behavior we need to define a lens $\comp$
+between $(X+Y)\LIST$ and 
+$(X+Z)\LIST$.  To do this, it is convenient to first define a lens that
+connects $(X+Y)\LIST$ and $X\LIST \times Y\LIST$; call this lens $\partition$.
+The complement of the $\partition$ is a list of booleans telling whether the
+corresponding element of the left list is an $X$ or a $Y$. The $\putr$
+function is fairly simple: we separate the $(X+Y)$ list into $X$ and $Y$
+lists by checking the tag of each element, and set the complement to exactly
+match the tags. For example:
+\begin{align*}
+\putr(\left<\mlinl a,\mlinl b,\mlinr 1\right>,c) &=
+    ((\left<a,b\right>,\left<1\right>),\left<\false,\false,\true\right>) \\
+\putr(\left<\mlinl a,\mlinr 1,\mlinl b\right>,c) &=
+    ((\left<a,b\right>,\left<1\right>),\left<\false,\true,\false\right>)
+\end{align*}
+These examples demonstrate that $\putr$ ignores the complement entirely,
+fabricating a completely new one from its input. The $\putl$ function, on
+the other hand, relies entirely on the complement for its ordering
+information. When there are extra entries (not accounted for by the
+complement), it adds them at the 
+end. Consider taking the output of the second $\putr$ above and
+adding $c$ to the $X$ list and $2$ to the $Y$ list:
+\\[1.5ex]
+\noindent\begin{tabular}{l}
+$\putl((\left<a,b,c\right>,\left<1,2\right>),\left<\false,\true,\false\right>) =$ \\
+\qquad$(\left<\mlinl a,\mlinr 1,\mlinl b,\mlinl c,\mlinr 2\right>,$ \\
+\qquad$\left<\false,\true,\false,\false,\true\right>)$
+\end{tabular}
+\\[1.5ex]
+\noindent The $\putl$ fills in as much of the beginning of the list as it
+can, using the complement to indicate whether to draw elements from $X\LIST$
+or from $Y\LIST$.  (How the remaining $X$ and $Y$ elements are interleaved
+is a free choice, not specified by the lens laws, since this case only
+arises when we are {\em not} in a round-tripping situation. The strategy
+shown here, where all new $X$ entries precede all new $Y$ entries, is just
+one possibility.)
+
+Given $\partition$, we can obtain $\comp$ by composing three lenses in
+sequence: from $(X+Y)\LIST$ we get to $X\LIST \times Y\LIST$ using
+$\partition$, then to $X\LIST \times Z\LIST$ using a variant of the lens $e$ 
+discussed above, and finally to $(X+Z)\LIST$ using a ``backwards''
+$\partition$. 
+
+\iffull
+
 \section{Edit lenses}
 % TODO

@@ -2,6 +2,9 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{bcprules}
+\usepackage{tikz}
+\usetikzlibrary{fit,shadows,positioning}
 \newtheorem{definition}{Definition}
 \newtheorem{desiderata}{Desiderata}
 \newcommand{\defined}{\downarrow}
@@ -10,10 +13,33 @@
 \newcommand{\putr}{\mathit{putr}}
 \newcommand{\putl}{\mathit{putl}}
 \newcommand{\op}{^\mathit{op}}
-\newcommand{\rn}[1]{{\sc #1}}
 \newcommand{\dputr}{\mathord{\Rrightarrow}}
 \newcommand{\dputl}{\mathord{\Lleftarrow}}
 \newcommand{\discuss}[1]{}
+\newcommand{\LIST}{^\star}
+\newcommand{\GET}{\ensuremath{\aget}}
+\newcommand{\CREATE}{\ensuremath{\acreate}}
+\newcommand{\PUT}{\ensuremath{\aput}}
+\newcommand{\PUTR}{\ensuremath{\putr}}
+\newcommand{\PUTL}{\ensuremath{\putl}}
+\newcommand{\missing}{\mathit{missing}}
+\newcommand{\aget}{\mathit{get}}
+\newcommand{\acreate}{\mathit{create}}
+\newcommand{\aput}{\mathit{put}}
+\newcommand{\arrow}{\rightarrow}
+\newcommand{\ml}[1]{\mathsf{#1}}
+\newcommand{\mlinl}{\ml{inl}\ }
+\newcommand{\mlinr}{\ml{inr}\ }
+\newcommand{\true}{\ml{true}}
+\newcommand{\false}{\ml{false}}
+\newcommand{\comp}{\mathit{comp}}
+\newcommand{\partition}{\mathit{partition}}
+\newcommand{\mlfst}{\ml{fst}}
+\newcommand{\mlsnd}{\ml{snd}}
+\newcommand{\lens}{\leftrightarrow}
+\newcommand{\id}{\mathit{id}}
+\newcommand{\Unit}{\mathit{Unit}}
+\newcommand{\pdf}[1]{\node[scale=.27]{\pgfimage{pdf/#1}}}
 \begin{document}
 \include{abstract}
 \chapter{Introduction}  \include{introduction}
