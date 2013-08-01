@@ -6,15 +6,16 @@ import Development.Shake.FilePath
 sources = ["paper", "abstract", "finished_work", "introduction", "related_work", "spreadsheets"]
 bibs = map (++".bib") ["bcp", "delta", "harmony", "symmetric"]
 sourcesWith s = [f ++ "." ++ s | f <- sources]
+pdflatex out = system' "pdflatex" ["-interaction=nonstopmode", dropExtension out]
 
 main = shakeArgs shakeOptions $ do
 	want ["paper.pdf"]
 	sourcesWith "aux" *>> \_ -> do
 		need (sourcesWith "tex")
-		system' "pdflatex" ["paper"]
+		pdflatex "paper"
 	["*.blg", "*.bbl"] *>> \[blg, bbl] -> do
 		need (sourcesWith "aux" ++ bibs)
 		system' "bibtex" [dropExtension blg]
 	"*.pdf" *> \out -> do
 		need (replaceExtension out "tex" : replaceExtension out "bbl" : sourcesWith "aux")
-		system' "pdflatex" [dropExtension out]
+		pdflatex out
