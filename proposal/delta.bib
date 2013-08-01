@@ -1,0 +1,199 @@
+@conference{meijer1991functional,
+  title={{Functional programming with bananas, lenses, envelopes and barbed wire}},
+  author={Meijer, E. and Fokkinga, M. and Paterson, R.},
+  booktitle={Functional Programming Languages and Computer Architecture},
+  pages={124--144},
+  year={1991},
+  organization={Springer}
+}
+@article{hasegawa2002two,
+  title={{Two applications of analytic functors}},
+  author={Hasegawa, R.},
+  journal={Theoretical Computer Science},
+  volume={272},
+  number={1-2},
+  pages={113--175},
+  year={2002},
+  publisher={Elsevier}
+}
+@conference{abbott2003categories,
+  title={{Categories of containers}},
+  author={Abbott, M. and Altenkirch, T. and Ghani, N.},
+  booktitle={Foundations of Software Science and Computation Structures},
+  pages={23--38},
+  year={2003},
+  organization={Springer}
+}
+@article{joyal1986foncteurs,
+  title={{Foncteurs analytiques et especes de structures}},
+  author={Joyal, A.},
+  journal={Combinatoire {\'e}num{\'e}rative},
+  pages={126--159},
+  year={1986},
+  publisher={Springer}
+}
+@phdthesis{vene2000categorical,
+    title={{Categorical Programming with Inductive and Coinductive Types}},
+    author={Vene, Varmo},
+    school={Universitatis Tartuensis},
+    year={2000}
+}
+
+% The following three very similar papers discuss how to do operational
+% transformations on structured data (i.e. not on simple sequences). The CoWord
+% paper (Collaborative Word Processing) discusses sequences of records; the
+% other two discuss forests (with ordered children).
+%
+% Perhaps the most useful bits of these papers is the edit language for
+% forests. (They don't spend much time considering what a good set of edits is,
+% but do at least have a proposal.) For them, each tree in the forest is given
+% a unique label. A path in the forest is a label indicating which tree to use
+% together with a sequence of naturals; each natural in the sequence indicates
+% which child of the current node to go to. An edit is then an insertion,
+% deletion, or mutation, with the following notable pieces:
+%
+% 1. Insertion is really reparenting; you give a path and a tree label, and the
+%    entire subtree indicated by that label is transplanted to that path
+%    location. (If no tree has that label, a single new node is made.)
+% 2. Deletion is also reparenting; you give a path and a tree label, and the
+%    entire subtree indicated by the path is cut out as a new tree with the
+%    given label. They discuss garbage collection briefly.
+% 3. Mutation doesn't change the structure, only the properties of an existing
+%    node.
+%
+% The interesting thing here is that their version of insertion and deletion
+% make things like tree rotations, etc. pretty easy.
+
+@conference{sun2004operational,
+  title={{Operational transformation for collaborative word processing}},
+  author={Sun, D. and Xia, S. and Sun, C. and Chen, D.},
+  booktitle={Proceedings of the 2004 ACM conference on Computer supported cooperative work},
+  pages={437--446},
+  year={2004},
+  organization={ACM}
+}
+@conference{davis2002generalizing,
+  title={{Generalizing operational transformation to the standard general markup language}},
+  author={Davis, A.H. and Sun, C. and Lu, J.},
+  booktitle={Proceedings of the 2002 ACM conference on Computer supported cooperative work},
+  pages={67},
+  year={2002},
+  organization={ACM}
+}
+
+% Probably not relevant to our work. As a quick background: the operational
+% transformation literature usually includes a "precedes" relation "a -> b"
+% that means that transformation "a" happened before "b". There's also a
+% "parallel" relation "a || b" that means that neither precedes the other. It
+% turns out that this relation is insufficient for a lot of very real-world
+% transformation sequences, and gets especially complicated as you extend from
+% basic transformations into the world of undo, more than three collaborators,
+% etc.
+%
+% This paper proposes a new way of thinking of the different relationships
+% between transformations. Much like darcs, it associates a "document context"
+% with each transformation, which is simply the set of transformations that
+% were executed before the current transformation was created. From this, you
+% can then define a "precedes" relation via context subset, and a "parallel"
+% relation similarly. But you can also talk about much more complicated
+% relationships. They show how to use the contexts to resolve several
+% long-standing oddities in the OT literature.
+
+@conference{sun2006operation,
+  title={{Operation context and context-based operational transformation}},
+  author={Sun, D. and Sun, C.},
+  booktitle={Proceedings of the 2006 20th anniversary conference on Computer supported cooperative work},
+  pages={288},
+  year={2006},
+  organization={ACM}
+}
+
+% This paper shows that writing lenses that don't change the state/complement
+% in one direction is quite restrictive. In particular, all edits must be
+% completely undoable: if m transports across the lens to m', there must be n
+% that transports across the lens to n' such that mm' = 1 *and* nn' = 1 (you
+% must be able to undo the effects on both the source and the view).  They
+% argue (unconvincingly, I think) that this nevertheless is a property you want
+% of your lenses, claiming that users have a difficult time understanding what
+% a lens without this property will do.
+
+@conference{lechtenbörger2003impact,
+  title={{The impact of the constant complement approach towards view updating}},
+  author={Lechtenb{\\"o}rger, J.},
+  booktitle={Proceedings of the twenty-second ACM SIGMOD-SIGACT-SIGART symposium on Principles of database systems},
+  pages={55},
+  year={2003},
+  organization={ACM}
+}
+
+% A description of Flapjax, an FRP-style javascript library (plus
+% contract-based typechecker/compiler). A good source of ideas for things we
+% would probably want to support in a GUI library, plus some discussion of
+% subtle bugs to watch out for.
+
+@conference{meyerovich2009flapjax,
+  title={{Flapjax: A programming language for Ajax applications}},
+  author={Meyerovich, L.A. and Guha, A. and Baskin, J. and Cooper, G.H. and Greenberg, M. and Bromfield, A. and Krishnamurthi, S.},
+  booktitle={Proceeding of the 24th ACM SIGPLAN conference on Object oriented programming systems languages and applications},
+  pages={1--20},
+  year={2009},
+  organization={ACM}
+}
+
+% Simultaneously an introduction to basic FRP ideas and a discussion of
+% efficient implementation strategies. FRP involves events (that is, pieces of
+% data that arrive at discrete times) and behaviors (continuous functions of
+% time). Rendering behaviors would seem to require something akin to polling --
+% checking every few milliseconds to see if any of the behaviors yield a
+% different value now than they did last poll interval -- but polling is a bad
+% match for GUI design. (GUI's are mostly idle, so there will be lots of wasted
+% cycles, and there can be response latency of up to one entire poll interval.)
+% This paper discusses how to combine event-driven periods and poll-driven
+% periods.
+%
+% Bits of interest:
+% * This formulation already has quite sophisticated kinds of compositionality.
+% * There are some quite subtle pitfalls about comparing the times of events;
+%   translating these into the lens framework to see if they still make sense
+%   would probably be worthwhile.
+% * "unamb"'s speculative concurrency is just cool (though may ultimately not
+%   be relevant to us). The idea is to run two computations that promise to
+%   give the same result (assuming they both give a result) in parallel;
+%   whichever answers first wins.
+% * In the end, there seems to be something of a disconnect between the
+%   beautiful FRP backend and the frontend. For example, in reactive-glut, one
+%   of the two libraries on Hackage that uses the implementation discussed in
+%   this paper, it seems like the programmer is responsible for maintaining
+%   consistency between his program's state and what's showing on the screen.
+%   Maybe this is good (i.e. you can write a lot of different things) and maybe
+%   it isn't (i.e. it's easy to screw up); I think maybe some programming
+%   experience is the only way to know for sure.
+
+@conference{elliott2009push,
+  title={{Push-pull functional reactive programming}},
+  author={Elliott, C.M.},
+  booktitle={Proceedings of the 2nd ACM SIGPLAN symposium on Haskell},
+  pages={25--36},
+  year={2009},
+  organization={ACM}
+}
+
+% This paper is interesting because it gives some ideas of what "composability"
+% might mean in the context of an object with internal relationships (e.g. in a
+% GUI).
+@techreport{xiongbeanbag,
+  title={{Beanbag: Operation-based synchronization with intra-relations}},
+  author={Xiong, Y. and Zhao, H. and Hu, Z. and Takeichi, M. and Song, H. and Mei, H.},
+  institution={Technical Report GRACETR-2008-04, Center for Global Research in Advanced Software Science and Engineering, National Institute of Informat iontics, Japan, dec 2008. http://gracecenter. jp/downloads/GRACE-TR-2008-04. pdf}
+}
+
+@article{huet1997zipper,
+  title={The zipper},
+  author={Huet, G.},
+  journal={Journal of Functional Programming},
+  volume={7},
+  number={05},
+  pages={549--554},
+  year={1997},
+  publisher={Cambridge Univ Press}
+}
