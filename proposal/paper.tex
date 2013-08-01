@@ -1,9 +1,19 @@
 \documentclass{book}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{amsthm}
 \newtheorem{definition}{Definition}
 \newtheorem{desiderata}{Desiderata}
 \newcommand{\defined}{\downarrow}
+\newcommand{\relRx}[1]{\mathrel{R_{#1}}}
+\newcommand{\relR}{\relRx{}}
+\newcommand{\putr}{\mathit{putr}}
+\newcommand{\putl}{\mathit{putl}}
+\newcommand{\op}{^\mathit{op}}
+\newcommand{\rn}[1]{{\sc #1}}
+\newcommand{\dputr}{\mathord{\Rrightarrow}}
+\newcommand{\dputl}{\mathord{\Lleftarrow}}
+\newcommand{\discuss}[1]{}
 \begin{document}
 \include{abstract}
 \chapter{Introduction}  \include{introduction}
