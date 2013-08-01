@@ -258,35 +258,50 @@ state-based lenses.
 %% \fi
 
 \section{Spreadsheets}
-% TODO
-\begin{itemize}
-    \item why not just use a computer algebra system?
-        \begin{itemize}
-            \item spreadsheets are a familiar paradigm; also some research
-                suggests that forming queries as a program up front (without
-                being able to visualize intermediate outputs) requires
-                significantly more skill than dealing with data directly
-            \item want to deal with data that is not only numbers, e.g.
-                product names, ID numbers, dates
-            \item depending on which CAS you choose, guarantees of solution
-                existence/uniqueness may be light/nonexistent -- perhaps
-                some type system can help with this
-            \item (pending literature search into just how exciting computer
-                algebra gets) perhaps there are some operations we want --
-                sorting, filtering, aggregations -- that are not readily
-                available in CASs
-        \end{itemize}
-    \item why not just use a constraint satisfaction algorithm?
-        \begin{itemize}
-            \item once you've chosen an update, constraint satisfaction only
-                allows information to flow one way; when there's more than
-                one way to satisfy a constraint, one might like to use old
-                values of the satisfied constraint to choose the new way to
-                satisfy it
-            \item (pending more literature search into how exciting
-                constraint satisfaction gets) perhaps there is a story to
-                tell about how to model the user guiding the constraint
-                satisfaction process when there's many ways to satisfy a
-                constraint
-        \end{itemize}
-\end{itemize}
+The spreadsheet model proposed here draws significant inspiration from the
+field of constraint programming systems, which dates back to at least the
+Sketchpad drawing system of 1963~\cite{sutherland1964sketch}. A good survey
+of the huge body of work done in this area is given
+in~\cite{wallace1996practical}.
+%
+In constraint programming languages, programs typically include a series of
+declarations defining what valuations are valid and invalid; the language
+runtime is then tasked with finding a valuation which satisfies the
+constraints. Our proposed work would maintain this broad framework, but
+extend it by providing more control over which of many possible valuations
+may be chosen. In particular, our proposal is to model information both
+about satisfying valuations (as is done in previous systems) \emph{and}
+about the evolution of valuations. To achieve this, the modules responsible
+for re-instating individual declared constraints must be given data about
+both the old satisfying valuation and the desired new valuation.
+Additionally, we propose an investigation of methods for separately
+specifying whether a valuation is valid and how desirable a valuation is.
+
+There is a chain of work on DeltaBlue, a particular constraint programming
+system, which adds the ability to rank constraints, and break low-ranked
+constraints during the constraint solution
+stage~\cite{sannella1994analyzing,sannella1994skyblue,sannella1993multi}.
+This gives one way of influencing ambiguous solutions: add low-ranked
+constraints expressing the desirable properties of your valuation. When
+there are multiple valuations possible on the high-ranked constraints, the
+low-ranked ones may be used to choose between them. We believe some
+properties of ``desirability'' are not naturally representable as
+constraints, especially when ``desirable'' means ``the new valuation is
+close to the old one in this way''.
+
+The Commutative Monoid paper takes composition seriously, but not ambiguity.
+
+``A spreadsheet based on constraints'' is an implementation, but only has
+equality constraints, makes no promises about when it can/can't update the
+spreadsheet, doesn't have a very promising story about incorporating new
+data types.
+
+Automatic Generation and Maintenance of Correct Spreadsheets takes location
+seriously but is unidirectional.
+
+Tiresias and Caravan: fun for databases, but we think this is a more natural
+model for spreadsheets.
+
+% TODO: mention ``Towards the Bidirectionalization of Spreadsheet Formulas''
+% at all?
+% TODO: see spreadsheet_resources.txt in triple-threat repository

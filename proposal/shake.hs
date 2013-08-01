@@ -5,7 +5,7 @@ import Development.Shake.FilePath
 -- TODO: handle graphics files and stuff
 
 sources = ["paper", "abstract", "finished_work", "introduction", "related_work", "spreadsheets"]
-bibs = map (++".bib") ["bcp", "delta", "harmony", "symmetric"]
+bibs = map (++".bib") ["bcp", "delta", "harmony", "spreadsheets", "symmetric"]
 sourcesWith s = [f ++ "." ++ s | f <- sources]
 pdflatex out = system' "pdflatex" ["-interaction=nonstopmode", dropExtension out]
 
