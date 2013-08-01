@@ -1,0 +1,9 @@
+abstract                - 0/0.25 pages
+introduction            - 0.5/2 pages
+finished work
+    - symmetric lenses  - 2/4 pages
+    - edit lenses       - 2/4 pages
+spreadsheets            - 6/9 pages
+related work
+    - spreadsheets      - 0/3 pages
+    - other lenses      - 3/3 pages
