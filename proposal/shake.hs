@@ -3,6 +3,7 @@ import Development.Shake.FilePath
 
 -- TODO: learn enough more stuff about shake that you understand why this doesn't work correctly
 -- TODO: handle graphics files and stuff
+-- TODO: make a "clean" target
 
 sources = ["paper", "finished_work", "front_matter", "introduction", "related_work", "spreadsheets"]
 bibs = map (++".bib") ["bcp", "delta", "harmony", "spreadsheets", "symmetric"]
