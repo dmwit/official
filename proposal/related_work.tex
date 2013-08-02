@@ -289,19 +289,46 @@ properties of ``desirability'' are not naturally representable as
 constraints, especially when ``desirable'' means ``the new valuation is
 close to the old one in this way''.
 
-The Commutative Monoid paper takes composition seriously, but not ambiguity.
+% TODO: also, many (most?) of the constraint propagation systems are about
+% making GUIs, which we aren't really that interested in primarily: the data
+% we're munging is user-visible (perhaps this is a serious point to make!)
 
-``A spreadsheet based on constraints'' is an implementation, but only has
-equality constraints, makes no promises about when it can/can't update the
-spreadsheet, doesn't have a very promising story about incorporating new
-data types.
+The algebraic properties of constraint propagation systems have been
+explored somewhat~\cite{jarvi2012expressing}. J\"arvi et al. discuss the
+model we intend to used as a starting point, and show that it can be
+decomposed into a structure with an associative, commutative composition and
+an algorithm which traverses this structure for update planning without
+losing efficiency. However, because determinism is not a goal for them, they
+make no efforts to resolve the ambiguity that can arise from the existence
+of multiple update plans.
 
-Automatic Generation and Maintenance of Correct Spreadsheets takes location
-seriously but is unidirectional.
+There are several systems with proposed solutions that are not based on
+constraint propagation systems. For example, a GUI resembling a spreadsheet
+is discussed in~\cite{stadelmann1993spreadsheet}. Numerical constraints --
+including constraints representing assignments of values to particular cells
+-- are shipped out to Mathematica for solution. A significant advantage of
+this approach is that it can take advantage of the significant solving power
+of Mathematica. However, this methodology is restricted to data types known
+by Mathematica; does not provide old cell values to use when updating the
+spreadsheet; provides little control over which of many satisfying
+valuations are chosen; and does not attempt to make any guarantees about
+totality.
 
-Tiresias and Caravan: fun for databases, but we think this is a more natural
-model for spreadsheets.
+Another such system is Tiresias, which extends Datalog with bidirectional
+capabilities for numeric computations~\cite{meliou2012tiresias}. They give a
+variant of Datalog that allows for nondeterministic predicates (that is,
+where tuples may or may not appear) and show how to pick a deterministic
+instantiation of those predicates that satisfies a Datalog query. The choice
+of instantiation can also be guided by an objective function to be maximized
+or minimized.  This seems to be a very promising approach, but does have a
+few important limitations: first, there is a topological constraint (the
+Datalog query must be stratified); and second, it is not clear that the
+approach can be easily generalized beyond the small collection of arithmetic
+predicates that it currently supports.
 
-% TODO: mention ``Towards the Bidirectionalization of Spreadsheet Formulas''
-% at all?
+% Probably not worth discussing:
+% Caravan (summarize the database so that I can change my query and still get a fast answer just by looking at the summary)
+% Automatic Generation and Maintenance of Correct Spreadsheets (takes 2D structure seriously, but is unidirectional so not all that related)
+% Towards the Bidirectionalization of Spreadsheet Formulas (no actual results, just a claim that it's worth studying)
+
 % TODO: see spreadsheet_resources.txt in triple-threat repository
