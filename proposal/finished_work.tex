@@ -6,16 +6,13 @@
 \newif \ifdelta \deltafalse
 \newif \iflater \laterfalse  % (for things that we're going to think about later)
 \newif \iftikz  \tikztrue
-To set the stage, let's review the standard definition of
+To set the stage, let's review one standard definition of
 asymmetric lenses.
-%
-(Other definitions can be given, featuring weaker or stronger laws, but this
-version is widely accepted.)
 %
 Suppose $X$ is some set of source structures (say, the possible states of a
 database) and $Y$ a set of target structures (views of the database).
 %
-An asymmetric lens from $X$ to $Y$ has two components:
+An asymmetric state-based lens from $X$ to $Y$ has two components:
 \[
 \begin{array}{r@{\ \;}c@{\ \;}l}
 \GET &\in& X \arrow Y\\
@@ -35,8 +32,8 @@ must obey two ``round-tripping'' laws for every $x \in X$ and $y
   \GET\; (\PUT \; y \; x) = y
 }
 %
-It is also useful to be able to create an element of $x$ given just an
-element of $y$, with no ``original $x$'' to put it into; in order to handle
+It is also useful to be able to create an element of $X$ given just an
+element of $Y$, with no ``original $x$'' to put it into; in order to handle
 this in a
 uniform way, each lens is also equipped with a
 function $\CREATE\in Y\arrow X$, and we assume one more axiom:
@@ -45,29 +42,26 @@ function $\CREATE\in Y\arrow X$, and we assume one more axiom:
 }
 
 \section{Symmetric lenses}
-First, we show that lenses can be generalized from their usual asymmetric
+Lenses can be generalized from this asymmetric
 presentation---where one of the structures is always a ``view'' of the
 other---to a
 fully {\em symmetric} version where each of the two structures may
 contain information that is not present in the other.
-This generalization is significantly more expressive than any previously
-known: although symmetric variants of lenses have been
+Although symmetric variants of lenses have been
 studied~\cite{Meertens98,stevens2008tat,DBLP:conf/models/Diskin08}, they
 all lack a notion of sequential composition of lenses, a significant
 technical and practical limitation.
 %
-As we will see, the extra structure that we need to support composition is
+The extra structure needed to support composition is
 nontrivial; in particular, constructions involving
 symmetric lenses need to be proved correct modulo a notion of {\em behavioral
   equivalence}.
+%
+However, once that structure is in place, we find that there is a rich
+\emph{algebra} on the space of lenses, which can be used as the theoretical
+basis for a language of symmetric lenses.
 
-Second, we undertake a systematic investigation of the {\em
-  algebraic structure} of the space of lenses, using the concepts of
-elementary category theory as guiding and organizing principles.  (Our
-presentation is self contained, but some prior familiarity
-with basic concepts of category theory will be helpful.)
-
-The key  step toward symmetric lenses is the notion
+The key step toward symmetric lenses is the notion
 of {\em complements}.  The idea dates back to a famous paper in the
 database literature on the view update
 problem~\cite{DBLP:journals/tods/BancilhonS81} and was adapted to
@@ -88,91 +82,28 @@ a separate
 $\CREATE$ function, we can simply pick a distinguished element
 $\missing\in C$ and define $\CREATE(y)$ as $\PUT(y,\missing)$.
 
-Formally, an {\em asymmetric lens with complement}
-mapping between $X$ and $Y$ consists of a set $C$, a
-distinguished element $\missing \in C$, and two functions
-\[
-\begin{array}{r@{\ \;}c@{\ \;}l}
-\GET &\in& X \arrow Y \times C\\
-\PUT &\in& Y \times C \arrow X
-\end{array}
-\]
-obeying the following laws for every $x \in X$, $y \in Y$, and $c \in C$:%
-\footnote{We can convert back and
-forth between the two presentations; in particular, if $(\GET, \PUT,
-\CREATE)$ are the components of a traditional lens, then we define a
-canonical complement by $C=\{f\in Y{\rightarrow}X\mid \forall
-y.\;\GET(f(y))=y\}$. We then define the components $\missing'$, $\GET'$, and
-$\PUT'$
-of an asymmetric lens with complement as $\missing'=\CREATE$ and
-$\GET'(x)=(\GET(x),\lambda y.\PUT(y,x))$ and $\PUT'(y,f)=f(y)$.
-\iffull
-Going the other way, if $(\aget, \aput, \missing)$ are the components of an
-asymmetric lens with complement, we can define a traditional lens by
-$\aget'(x) = \mlfst(\aget(x))$ and $\aput'(y,x) = \aput(y,\mlsnd(\aget(x)))$
-and $\acreate(y) = \aput(y,\missing)$.
-\fi
-}
-%
-\infrule[GetPut]{
-  \GET\; x = (y,c)
-}{
-  \PUT\; (y,c) = x
-}
-\infrule[PutGet]{
-  \GET\; (\PUT \; (y,c)) = (b',c')
-}{
-  b' = y
-}
+So far, this perspective has retained the assumption that elements of $X$
+have richer structure than elements of $Y$; hence, the complement need only
+store the extra rich parts of $X$. For symmetry, we will lose this
+assumption, and allow the complement set $C$ to contain information about
+both $X$ elements and $Y$ elements. As a result, \emph{both} the \GET{} and
+\PUT{} functions may need to inspect and update the complement. It will be
+the responsibility of those functions to decompose the complement into the
+``private information from $X$'' and the ``private information from $Y$'';
+then we expect that \GET{} will read the part about $Y$ and write the part
+about $X$ and \PUT{} will read the part about $X$ and write the part about
+$Y$. Thus, our new types for \GET{} and \PUT{} are
+\begin{align*}
+    \aget &\in X \times C \arrow Y \times C \\
+    \aput &\in Y \times C \arrow X \times C
+\end{align*}
 Note that the type is just ``lens from $X$ to $Y$'': the set
 $C$ is an internal component, not part of the externally visible type.
 In symbols, $ \mathit{Lens}(X,Y) =
-\exists C.\; \{ \mathord{\missing}:\, C,\; \GET:\,X \arrow Y
-\times C,\; \PUT:\,Y \times C \arrow X \}$.
+\exists C.\; \{ \mathord{\missing}:\, C,\; \GET:\,X \times C \arrow Y
+\times C,\; \PUT:\,Y \times C \arrow X \times C \}$.
 
-Now we can symmetrize.
-First, instead of having only \GET{} return a complement, we make \PUT{}
-return a complement too, and we take this complement as a second argument
-to $\GET$.
-%
-\iffull
-\[
-\begin{array}{r@{\ \;}c@{\ \;}l}
-\GET &\in& X \times C_Y \arrow Y \times C_X\\
-\PUT &\in& Y \times C_X \arrow X \times C_Y
-\end{array}
-\]
-\else
-So we have $\GET \in X \times C_Y \arrow Y \times C_X$ and
-$\PUT \in Y \times C_X \arrow X \times C_Y$.
-\fi
-%
-Intuitively, $C_X$ is the ``information from $X$ that is discarded by
-\GET,'' and $C_Y$ is the ``information from $Y$ that is discarded by
-\PUT.''  Next we observe that we can, without loss of generality, use the
-same set $C$ as the complement in both directions.  \iffull (This ``tweak''
-is actually critical: it is what allows us to define composition of symmetric
-lenses.)\fi
-\iffull
-\[
-\begin{array}{r@{\ \;}c@{\ \;}l}
-\GET &\in& X \times C \arrow Y \times C\\
-\PUT &\in& Y \times C \arrow X \times C
-\end{array}
-\]
-\else
-So now we have
-$\GET \in X \times C \arrow Y \times C$ and
-$\PUT \in Y \times C \arrow X \times C$.
-\fi
-%
-Intuitively, we can think of the combined complement $C$ as $C_X \times
-C_Y$---that is, each complement contains some ``private information from
-$X$'' and some ``private information from $Y$''; by convention, the \GET{}
-function reads the $C_Y$ part and writes the $C_X$ part, while the \PUT{}
-reads the $C_X$ part and writes the $C_Y$ part.
-%
-Lastly, now that everything is symmetric, the \GET{} / \PUT{} distinction is not
+Now that everything is symmetric, the \GET{} / \PUT{} distinction is not
 helpful, so we rename the functions to \PUTR{} and \PUTL.  This brings us to
 our core definition.
 
