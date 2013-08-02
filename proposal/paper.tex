@@ -2,12 +2,8 @@
 
 % following stanza stolen from
 % http://www.math.upenn.edu/grad/thesisstyle.html
-\documentclass[12pt]{report}
-\setlength{\headheight}{0in}
-\setlength{\textheight}{8.5in}
-\setlength{\oddsidemargin}{0.55in}
-\setlength{\textwidth}{5.87in}
-\setlength{\headsep}{-.19in}
+\documentclass[11pt]{report}
+\usepackage{fullpage}
 \pagestyle{plain}
 \newcommand{\doublespaced}{\renewcommand{\baselinestretch}{2}\normalfont}
 \newcommand{\singlespaced}{\renewcommand{\baselinestretch}{1}\normalfont}
@@ -19,7 +15,7 @@
 \def\theadvisor{Benjamin C. Pierce, Advisor}
 \def\THEAUTHOR  {Daniel Wagner}
 \def\THEADVISOR {Benjamin C. Pierce}
-\def\theyear{2014}
+\def\theyear{2013}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -86,6 +82,6 @@
 \chapter{Finished work} \include{finished_work}
 \chapter{Spreadsheets}  \include{spreadsheets}
 \chapter{Related work}  \include{related_work}
-\bibliographystyle{plainnat}
+\bibliographystyle{plain}
 \bibliography{bcp,delta,harmony,spreadsheets,symmetric}
 \end{document}
