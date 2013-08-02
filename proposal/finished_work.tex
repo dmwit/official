@@ -7,7 +7,7 @@
 \newif \iflater \laterfalse  % (for things that we're going to think about later)
 \newif \iftikz  \tikztrue
 To set the stage, let's review the standard definition of
-asymmetric lenses.  
+asymmetric lenses.
 %
 (Other definitions can be given, featuring weaker or stronger laws, but this
 version is widely accepted.)
@@ -16,7 +16,7 @@ Suppose $X$ is some set of source structures (say, the possible states of a
 database) and $Y$ a set of target structures (views of the database).
 %
 An asymmetric lens from $X$ to $Y$ has two components:
-\[ 
+\[
 \begin{array}{r@{\ \;}c@{\ \;}l}
 \GET &\in& X \arrow Y\\
 \PUT &\in& Y \times X \arrow X
@@ -29,15 +29,15 @@ must obey two ``round-tripping'' laws for every $x \in X$ and $y
 \in Y$:
 %
 \infax[GetPut]{
-  \PUT\; (\GET \; x)\; x = x 
+  \PUT\; (\GET \; x)\; x = x
 }
 \infax[PutGet]{
-  \GET\; (\PUT \; y \; x) = y  
+  \GET\; (\PUT \; y \; x) = y
 }
 %
 It is also useful to be able to create an element of $x$ given just an
 element of $y$, with no ``original $x$'' to put it into; in order to handle
-this in a 
+this in a
 uniform way, each lens is also equipped with a
 function $\CREATE\in Y\arrow X$, and we assume one more axiom:
 \infax[CreateGet]{
@@ -47,8 +47,8 @@ function $\CREATE\in Y\arrow X$, and we assume one more axiom:
 \section{Symmetric lenses}
 First, we show that lenses can be generalized from their usual asymmetric
 presentation---where one of the structures is always a ``view'' of the
-other---to a 
-fully {\em symmetric} version where each of the two structures may 
+other---to a
+fully {\em symmetric} version where each of the two structures may
 contain information that is not present in the other.
 This generalization is significantly more expressive than any previously
 known: although symmetric variants of lenses have been
@@ -73,7 +73,7 @@ database literature on the view update
 problem~\cite{DBLP:journals/tods/BancilhonS81} and was adapted to
 lenses in~\cite{Matching10} (and, for a slightly different
 definition,~\cite{matsuda2007btb}), and it is quite simple.  If we think of
-the    
+the
 \GET{} component of a lens as a sort of projection function, then we can find
 another projection from $X$ into some set $C$ that
 keeps all the information discarded by \GET{}.  Equivalently, we can think
@@ -82,7 +82,7 @@ $C$---that together contain all the information needed to reconstitute the
 original element of $X$.  Now the \PUT{} function doesn't need a whole $x\in
 X$ to recombine with some updated $y\in Y$; it can
 just take the complement $c\in C$ generated from $x$ by the \GET, since this
-will 
+will
 contain all the information that is missing from $y$.  Moreover, instead of
 a separate
 $\CREATE$ function, we can simply pick a distinguished element
@@ -103,7 +103,7 @@ forth between the two presentations; in particular, if $(\GET, \PUT,
 \CREATE)$ are the components of a traditional lens, then we define a
 canonical complement by $C=\{f\in Y{\rightarrow}X\mid \forall
 y.\;\GET(f(y))=y\}$. We then define the components $\missing'$, $\GET'$, and
-$\PUT'$ 
+$\PUT'$
 of an asymmetric lens with complement as $\missing'=\CREATE$ and
 $\GET'(x)=(\GET(x),\lambda y.\PUT(y,x))$ and $\PUT'(y,f)=f(y)$.
 \iffull
@@ -117,7 +117,7 @@ and $\acreate(y) = \aput(y,\missing)$.
 \infrule[GetPut]{
   \GET\; x = (y,c)
 }{
-  \PUT\; (y,c) = x 
+  \PUT\; (y,c) = x
 }
 \infrule[PutGet]{
   \GET\; (\PUT \; (y,c)) = (b',c')
@@ -130,7 +130,7 @@ In symbols, $ \mathit{Lens}(X,Y) =
 \exists C.\; \{ \mathord{\missing}:\, C,\; \GET:\,X \arrow Y
 \times C,\; \PUT:\,Y \times C \arrow X \}$.
 
-Now we can symmetrize.  
+Now we can symmetrize.
 First, instead of having only \GET{} return a complement, we make \PUT{}
 return a complement too, and we take this complement as a second argument
 to $\GET$.
@@ -143,7 +143,7 @@ to $\GET$.
 \end{array}
 \]
 \else
-So we have $\GET \in X \times C_Y \arrow Y \times C_X$ and 
+So we have $\GET \in X \times C_Y \arrow Y \times C_X$ and
 $\PUT \in Y \times C_X \arrow X \times C_Y$.
 \fi
 %
@@ -161,7 +161,7 @@ lenses.)\fi
 \end{array}
 \]
 \else
-So now we have 
+So now we have
 $\GET \in X \times C \arrow Y \times C$ and
 $\PUT \in Y \times C \arrow X \times C$.
 \fi
@@ -170,7 +170,7 @@ Intuitively, we can think of the combined complement $C$ as $C_X \times
 C_Y$---that is, each complement contains some ``private information from
 $X$'' and some ``private information from $Y$''; by convention, the \GET{}
 function reads the $C_Y$ part and writes the $C_X$ part, while the \PUT{}
-reads the $C_X$ part and writes the $C_Y$ part.  
+reads the $C_X$ part and writes the $C_Y$ part.
 %
 Lastly, now that everything is symmetric, the \GET{} / \PUT{} distinction is not
 helpful, so we rename the functions to \PUTR{} and \PUTL.  This brings us to
@@ -189,7 +189,7 @@ our core definition.
   \tikz\pdf{symmetric};
   \ifpdf\vspace*{-2ex}\fi
  \\
-(a) Initial replicas & (b) Initial complement 
+(a) Initial replicas & (b) Initial complement
 \vspace*{4ex} \\
   \ifpdf\tikz\pdf{symmetric-edit};\vspace*{-.7ex}
   \else \tikz\pdf{symmetric-edit}node[below=10ex]{};
@@ -197,7 +197,7 @@ our core definition.
 &
   \tikz\pdf{symmetric-propagatex};
 \\
-(c) One replica edited & (d) Propagating the edit 
+(c) One replica edited & (d) Propagating the edit
 \vspace*{3ex}
 \\
   \ifpdf\vspace*{3ex}\tikz\pdf{symmetric-edit2};\vspace*{-8ex}
@@ -231,7 +231,7 @@ our core definition.
   \else \tikz\pdf{symmetric-edit}node[below=10ex]{};
   \fi
  \\
-(a) Initial replicas & (b) Initial complement & (c) One replica edited 
+(a) Initial replicas & (b) Initial complement & (c) One replica edited
 \vspace*{2ex} \\
   \tikz\pdf{symmetric-propagatex};
 &
@@ -254,7 +254,7 @@ our core definition.
 \fi
 
 \begin{definition}[Symmetric lens]
-A lens $\ell$ from $X$ to 
+A lens $\ell$ from $X$ to
 $Y$ (written $\ell \in X \lens Y$) has three parts:
 a set of complements $C$, a distinguished element $\missing \in
 C$, and two functions
@@ -266,7 +266,7 @@ satisfying the following round-tripping laws:
 \infrule[PutRL]{\putr(x,c) = (y,c')}{\putl(y,c') = (x,c')}
 \infrule[PutLR]{\putl(y,c) = (x,c')}{\putr(x,c') = (y,c')}
 When several lenses are under discussion, we use record notation to identify
-their parts, writing $\ell.C$ for the complement set of $\ell$, etc. 
+their parts, writing $\ell.C$ for the complement set of $\ell$, etc.
 \end{definition}
 
 \iftext The force of the \rn{PutRL} and \rn{PutLR} laws is to establish some
@@ -298,7 +298,7 @@ laws appear too strong to be desirable in practice.  \fi
 %% relation $\mathord{\equivl} \subseteq C \times \C{l'}$ such that:
 %% \infax[MissingC]{l.\missing \equivl l'.\missing}
 %% \infrule[PutrC]{
-%%   c \equivl c' 
+%%   c \equivl c'
 %%   \andalso
 %%   l.\PUTR (a, c) = (b,c_1)
 %%   \andalso
@@ -307,7 +307,7 @@ laws appear too strong to be desirable in practice.  \fi
 %%   b = b' \ \wedge\   c_1 \equivl c_1'
 %% }
 %% \infrule[PutlC]{
-%%   c \equivl c' 
+%%   c \equivl c'
 %%   \andalso
 %%   l.\PUTL (b, c) = (a,c_1)
 %%   \andalso
@@ -323,14 +323,14 @@ laws appear too strong to be desirable in practice.  \fi
 %% a lens $(l;l')$ from $A$ to $X$, using $l.C \times l'.C$ as the complement.
 %% %
 %% We can also show that, up to equivalence, composition is associative and
-%% \emph{id} is its unit---i.e., symmetric lenses form a category.  
+%% \emph{id} is its unit---i.e., symmetric lenses form a category.
 
 %% \iffull \else \iftext \finish{Briefly mention the PutPut laws and the fact
 %%   that, as usual, they are too strong.} \fi \fi
 %% \iffull
 
 \paragraph*{Examples} Figure~\ref{fig:symm} illustrates the use of a
-symmetric lens.  
+symmetric lens.
 %
 The structures in this example are lists of textual records describing
 composers. The partially synchronized records (a) have a name and two dates
@@ -364,7 +364,7 @@ the complement and retrieving the $x$ part.  Then the
 top-level lens in Figure~\ref{fig:symm}---let's call it
 $e\LIST$---abstractly has type $(X \times Y)\LIST \lens (Y \times Z)\LIST$
 and can be thought of as the ``lifting'' of $e$ from elements
-to lists.  
+to lists.
 
 There are several plausible implementations of
 $e\LIST$, with slightly different behaviors when list elements are
@@ -373,7 +373,7 @@ or \PUTL{} are lists
 of different lengths.  One possibility is to take $e\LIST.C = (e.C)\LIST$
 and maintain the invariant that the complement list in the output is the same length as
 the input list. When the lists in the input have different lengths, we can
-restore the 
+restore the
 invariant by either truncating the complement list or padding it with
 $e.\missing$.
 % \iffull
@@ -408,7 +408,7 @@ The second \PUTR{} creates a brand new second element for the list, so the value
 gone forever; what's left is the default value $M$.
 
 Another possibility---arguably better behaved---is to keep
-  an {\em 
+  an {\em
   infinite} list of complements.  Whenever we do a \PUT{}, we use (and
 update) a prefix of the complement list of the same length as the current
 value being \PUT, but we keep the infinite tail so that, later, we have
@@ -419,7 +419,7 @@ value being \PUT, but we keep the infinite tail so that, later, we have
 \[
 \begin{array}{ll}
 & \PUTR (\left<(a,1)\right>,\;
-         \left<(p,P),(q,Q),(m,M),(m,M),\ldots\right>) 
+         \left<(p,P),(q,Q),(m,M),(m,M),\ldots\right>)
 \\
 = & ( \left<(1,P)\right>,\; \left<(a,P),(q,Q),(m,M),(m,M),\ldots\right>)
 \\ [1.5ex]
@@ -463,7 +463,7 @@ $e\LIST \simeq \id_\Unit \oplus (e \otimes e\LIST)$ of the list mapping lens.
 Figure~\ref{fig:sums} illustrates another use of symmetric lenses. The
 structures in this example are lists of categorized data; each name on the
 left is either a composer (tagged {\tt inl}) or an author (tagged
-{\tt inr}), and each name 
+{\tt inr}), and each name
 on the right is either a composer or an actor.  The
 lens under consideration will synchronize just the composers between the two
 lists, leaving the authors untouched on the left and the actors untouched on
@@ -478,7 +478,7 @@ up at the end. Similarly, if we remove a composer (d), the
 final hole on the other side disappears.
 
 Abstractly, to achieve this behavior we need to define a lens $\comp$
-between $(X+Y)\LIST$ and 
+between $(X+Y)\LIST$ and
 $(X+Z)\LIST$.  To do this, it is convenient to first define a lens that
 connects $(X+Y)\LIST$ and $X\LIST \times Y\LIST$; call this lens $\partition$.
 The complement of the $\partition$ is a list of booleans telling whether the
@@ -496,7 +496,7 @@ These examples demonstrate that $\putr$ ignores the complement entirely,
 fabricating a completely new one from its input. The $\putl$ function, on
 the other hand, relies entirely on the complement for its ordering
 information. When there are extra entries (not accounted for by the
-complement), it adds them at the 
+complement), it adds them at the
 end. Consider taking the output of the second $\putr$ above and
 adding $c$ to the $X$ list and $2$ to the $Y$ list:
 \\[1.5ex]
@@ -516,9 +516,9 @@ one possibility.)
 
 Given $\partition$, we can obtain $\comp$ by composing three lenses in
 sequence: from $(X+Y)\LIST$ we get to $X\LIST \times Y\LIST$ using
-$\partition$, then to $X\LIST \times Z\LIST$ using a variant of the lens $e$ 
+$\partition$, then to $X\LIST \times Z\LIST$ using a variant of the lens $e$
 discussed above, and finally to $(X+Z)\LIST$ using a ``backwards''
-$\partition$. 
+$\partition$.
 
 \iffull
 
@@ -569,27 +569,27 @@ end of the list.  This change is described by the edit script
 ins(3); mod(3, (``Monteverdi'', ``1567-1643''))}.
 The script says to first
 \emph{insert} a dummy record at index three, then \emph{modify} this record by
-replacing the left field with ``{\sf Monteverdi}'' and replacing the 
+replacing the left field with ``{\sf Monteverdi}'' and replacing the
 right field with ``{\sf 1567-1643}''.  (One could of course imagine other edit
 languages where the insertion would be done in one step.  We represent it
 this way because this is closer to how our generic ``container mapping''
 combinator will do things.)  The
 lens connecting the two replicas now converts this edit script into a
-corresponding edit 
+corresponding edit
 script that adds {\sf Monteverdi} to the right-hand replica, shown in part (c):
 {\sf
 ins(3); mod(3, (``Monteverdi'', \ONE))}.
 Note that the translated {\sf mod} command overwrites the name component but
 leaves the country component with its default value, ``{\sf
   ?country?}.''  This is the best it can do, since the edit was in
-the left-hand replica, which doesn't mention countries.  
+the left-hand replica, which doesn't mention countries.
 %
 Later, an eagle-eyed editor notices the missing country information and
 fills it in, at the same time correcting a spelling error in {\sf
   Schumann}'s name, as shown in (d). In part (e), we see that the lens
 discards the country information when
 translating the edit from right to left, but propagates the spelling
-correction. 
+correction.
 
 Of course, a particular new replica state can potentially be
 achieved by many different edits, and these edits may be translated differently.
@@ -599,12 +599,12 @@ replica ends up with a row for {\sf Monteverdi} at the beginning of the
 list, instead of at the end. Two edit scripts that achieve this
 effect are shown. The upper script deletes
 the old {\sf Monteverdi} record and inserts a brand new one (which happens
-to have 
+to have
 the same data) at the top; the lower script rearranges the order of the
 list.  The translation of the upper edit leaves {\sf Monteverdi} with a
 default country, while the lower edit is translated to a
 rearrangement, preserving all the information associated with {\sf
-  Monteverdi}.% 
+  Monteverdi}.
 
 We do not address the question of where these edits come from or who
 decides, in cases like part (f), which of several possible edits is
@@ -679,8 +679,8 @@ Z)^* \to \partial(X \times Y)^*$.
 
 %% The next step is to lift this translation to lists.  There are two kinds of
 %% edits to lists in the example\finish{why is it this way?}:
-%% \emph{rearrangements}, which modify the 
-%% structure of the list via insertions of dummy elements, deletions, 
+%% \emph{rearrangements}, which modify the
+%% structure of the list via insertions of dummy elements, deletions,
 %% reorderings (but which do not modify the elements themselves), and
 %% \emph{modifications} of the values in the list using the underlying element
 %% edits (which do not affect the list structure or order).  We already know
@@ -688,7 +688,7 @@ Z)^* \to \partial(X \times Y)^*$.
 %% structure is the same on both sides.  Putting these observations together
 %% gives us a translation function $\ell^*.\dputr \in \partial((X\times Y)^*)
 %% \to \partial((X \times Z)^*)$ for list edits (the $\dputl$ function is
-%% similar): 
+%% similar):
 %% \iffull
 %%   \begin{align*}
 %%     \ell^*.\dputr(\mlins i) &= \mlins i \\
@@ -710,10 +710,10 @@ Z)^* \to \partial(X \times Y)^*$.
 %%   short version.}
 %% The reader may wonder why we break list insertions into
 %% two stages---first inserting a dummy element and then modifying this dummy
-%% element with desired data. The ease of writing the above function is 
+%% element with desired data. The ease of writing the above function is
 %% the answer: since the former stage does not mention elements of the list at
 %% all, we need not do any translation, and since the latter stage is
-%% simply an edit script, we may dispatch to the underlying lens. 
+%% simply an edit script, we may dispatch to the underlying lens.
 %% \fi
 %% %% Additionally,
 %% %% the breakdown lets us preserve a nice factorization property that we discuss
@@ -738,7 +738,7 @@ Z)^* \to \partial(X \times Y)^*$.
 \end{figure}
 
 We sometimes need lenses to have a little more structure than this simple
-example suggests. 
+example suggests.
 To see why, consider defining a {\em partitioning} lens $p$ between
 the sets $\partial((X+Y)^*)$ and $\partial(X^* \times Y^*)$.
 Figure~\ref{fig:example-partition} demonstrates the behavior of this lens.
@@ -753,7 +753,7 @@ should we insert it?  If the $\dputl$ function is given just an
 insertion edit for the homogeneous author list and nothing else, there is no
 way it can translate this edit into a sensible position in the combined list
 on the left, since it doesn't know how the lists of authors and composers
-are interleaved on the left.  
+are interleaved on the left.
 
 \iflater\bcp{People were not clear on why the complement was needed.  Also, in this
   example, even with the complement, there is still some arbitrary choice in
@@ -823,7 +823,7 @@ state.  This separation is captured by the standard mathematical notions of
 \begin{definition}
 %% \bcp{why do we say a triple here and in
 %%     3.2.3, but other places just name the components (e.g., defn of
-%%     category)?} 
+%%     category)?}
 A \emph{monoid} is a triple $\left<M,\cdot_M,\ONE_M\right>$ of a set
 $M$, an associative binary operation $\cdot_M \in M \times M
 \to M$, and a unit element $\ONE_M \in M$ --- that is, with $\cdot_M$ and $\ONE_M$ such that
@@ -839,7 +839,7 @@ $\ONE_M\cdot_M x = x = x \cdot_M \ONE_M$.
 \end{definition}
 When no confusion results, we use $M$ to denote both the set and the
 monoid, drop subscripts from $\cdot$ and $\ONE$, and write $mn$ for
-$m \cdot n$.  
+$m \cdot n$.
 %% In more standard terminology, a ``monoid'' in our sense would
 %% be called a \emph{partial monoid}\iflater~\cite{partialmonoids}\fi, but
 %% since we always work with partial monoids we find it convenient to drop the
@@ -850,15 +850,15 @@ edits corresponds to packaging up multiple edits into a single one
 representing their combined effects\iffull{} (this might be useful, for example, for
 offline editing)\fi.
 
-Modeling edits as monoid elements gives us great flexibility in 
+Modeling edits as monoid elements gives us great flexibility in
 concrete representations.
 %
 The simplest edit language is a {free monoid} whose elements are just words
 over some set of primitive edits and whose multiplication is
-concatenation.  
+concatenation.
 %
-However, it may be useful to put 
-more structure on edits, either (a) to allow 
+However, it may be useful to put
+more structure on edits, either (a) to allow
 more compact representations or (b) to capture the intuition that edits to
 different parts of a structure do not interfere with each other and can thus
 be applied in any order.
@@ -891,7 +891,7 @@ monoid action in our sense might instead be called a ``partial monoid
 action,'' but since we always work with partial actions we find it
 convenient to drop the qualifier.
 
-A bit of discussion of partiality is in order.  
+A bit of discussion of partiality is in order.
 Multiplication of edits is a total operation: given two descriptions of
 edits, we can always find a description of the composite actions of doing
 both in sequence.  On the other hand, {\em applying} an edit to a particular
@@ -900,8 +900,8 @@ state may sometimes fail.
 This means we need to work with expressions and equations involving
 partial operations. As usual, any term that contains an undefined
 application of an operation to operands is undefined---there is no way of
-``catching'' undefinedness. An equation between possibly undefined terms 
-(e.g., as in the definition above) 
+``catching'' undefinedness. An equation between possibly undefined terms
+(e.g., as in the definition above)
 means that if either side is defined then so is the other, and their values
 are equal (Kleene equality).
 
@@ -955,7 +955,7 @@ action, plus an initial element, into a single structure:
 
 \begin{definition}
     A \emph{module} is a tuple $\left<X,\, \init_X,\, \partial
-    X,\,\odot_X\right>$ comprising a set $X$, an element $\init_X\in X$, a monoid 
+    X,\,\odot_X\right>$ comprising a set $X$, an element $\init_X\in X$, a monoid
     $\partial X$, and a monoid action $\odot_X$ of $\partial X$ on $X$.
 \end{definition}
 If $X$ is a module, we refer to its first component by either
@@ -1032,8 +1032,8 @@ put through the lens.
 
 \begin{definition}
 A \emph{symmetric edit lens} between modules $X$ and $Y$ consists of a
-complement set $C$, a distinguished element $\missing\in C$, 
-two stateful monoid homomorphisms 
+complement set $C$, a distinguished element $\missing\in C$,
+two stateful monoid homomorphisms
 \iffull
 \[
 \begin{array}{lcl}
@@ -1043,10 +1043,10 @@ two stateful monoid homomorphisms
 \]
 \else
 $\dputr \in \partial X \times C \to \partial Y \times C$ and
-$\dputl \in \partial Y \times C \to \partial X \times C$, 
+$\dputl \in \partial Y \times C \to \partial X \times C$,
 \fi
 %
-%% total functions 
+%% total functions
 %% \[
 %% \begin{array}{lcl}
 %% \dputr &\in& \partial X \times C \to \partial Y \times C \\
@@ -1058,7 +1058,7 @@ $\dputl \in \partial Y \times C \to \partial X \times C$,
 %%   \dputr(\dx_1,c')=(\dy_1,c'') }{ \dputr(\dx_1\ \dx_2,c)=(\dy_1\
 %%   \dy_2, c'') } \infrule{ \dputl(\dy_2,c)=(\dx_2,c') \quad
 %%   \dputl(\dy_1,c')=(\dx_1,c'') }{ \dputl(\dy_1\ \dy_2,c)=(\dx_1\
-%%   \dx_2, c'') } 
+%%   \dx_2, c'') }
 and a ternary {\em consistency relation}
 $K\subseteq |X|\times C\times |Y|$ such that
 \begin{itemize}

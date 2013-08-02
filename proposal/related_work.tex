@@ -6,8 +6,8 @@
 \newif \ifdelta \deltafalse
 \newif \iflater \laterfalse  % (for things that we're going to think about later)
 
-% If you want to build without tikz, put 
-%    \tikzfalse 
+% If you want to build without tikz, put
+%    \tikzfalse
 % in a separate texdirectives.tex file...
 \newif \iftikz  \tikztrue
 There is a large literature on lenses and related approaches to
@@ -48,19 +48,19 @@ Let $X$ be the set of nonempty context free grammars over some alphabet, and let
 $Y$ be the set of words over that same alphabet. Let $R\subseteq
 X\times Y$ be given by $G \relR x\iff x\in L(G)$. It is easy to define
 computable maintainer functions making this relation a constraint
-maintainer. Composing this relation with its opposite yields an 
+maintainer. Composing this relation with its opposite yields an
 undecidable relation (namely, whether the intersection of two context-free
 grammars is nonempty), so there cannot be computable maintainer functions.
 
 We can transform any constraint maintainer into a  symmetric lens as
 follows: take the relation $R$ itself (viewed as a set of pairs) as
 the complement, and define $\putl(x',(x,y))=(x'\triangleright
-y,(x',x'\triangleright y))$ and similarly 
+y,(x',x'\triangleright y))$ and similarly
 for $\putr$. If we compose such a symmetric lens with its opposite
 we obtain $R\times R\op$ as the complement and, for example,
-$\putr(x',((x_1,y_1),(y_2,x_2))) = 
+$\putr(x',((x_1,y_1),(y_2,x_2))) =
 (x_2\triangleleft(x'\triangleright y_1), ((x',x'\triangleright
-y_1),(x'\triangleright y_1,x_2\triangleleft(x'\triangleright y_1))))$. 
+y_1),(x'\triangleright y_1,x_2\triangleleft(x'\triangleright y_1))))$.
 %
 For Meertens' counterexample, we would have complements of the form
 $((G_1,w_1),(w_2,G_2))$, with $w_1\in L(G_1)$
@@ -82,7 +82,7 @@ chains have not been explored.
 
 For asymmetric lenses, a number of alternative \iffull choices of behavioral
 \fi
-laws 
+laws
 have been explored.  Some of these are \iffull strictly \fi weaker than ours; for
 example, a number of papers from a community of researchers based in Tokyo
 replace the \rn{PutGet} law with a somewhat looser \rn{PutGetPut} law,
@@ -114,7 +114,7 @@ how to marry it with lenses)  \finish{BCP will look for a good canonical
 \item lens-like things that have used deltas~\cite{Hu04,Meertens98,MuAlgebraic2004,HuModels07}
 \item old update transformation
 \item old view update stuff
-\item new Waterloo stuff 
+\item new Waterloo stuff
 \begin{itemize}
 \item flexibility, not efficiency
 \item no proposal for syntax---composition is the only operator they study
@@ -127,17 +127,17 @@ at all
 % TODO: cleanup (remove ifs, rework wording so it fits in this document)
 \newif \iffull  \fulltrue
 \newif \ifspaceisnoissue  \spaceisnoissuefalse
-\newif \ifdraft \drafttrue 
+\newif \ifdraft \drafttrue
 \newif \ifanon  \anonfalse
 \newif \iflater \laterfalse  % (for things that we're going to think about later)
 \newif \iffailed \failedfalse % to remove some bits we think we don't need
 
-%\fullfalse \draftfalse  % for final version 
+%\fullfalse \draftfalse  % for final version
 
 \iffull\spaceisnoissuetrue\fi  % space is no issue in the full version
 
-% If you want to build without tikz, put 
-%    \tikzfalse 
+% If you want to build without tikz, put
+%    \tikzfalse
 % in a separate texdirectives.tex file...
 \newif \iftikz  \tikztrue
 The most closely related attempt at developing a theory of update
@@ -157,9 +157,9 @@ $\dputr$ then complete the picture. No concrete
 examples are given of sd-lenses, no composition, no notion of equivalence, and
 no combinators for constructing sd-lenses; the focus of the paper is
 rather on the discovery of suitable axioms, such as invertibility and
-undoability of edits, and a 
+undoability of edits, and a
 generalization of {\em hippocraticness} in the sense of
-Stevens~\cite{Stevens07}. They also develop a comparison 
+Stevens~\cite{Stevens07}. They also develop a comparison
 with the state-based framework. In
 our opinion, the separation of edits and correspondences according to
 the states that they apply to or relate has two important
@@ -168,10 +168,10 @@ and the same edit applies to more than one state and can be
 meaningfully propagated (and more compactly represented) as such. For example, while many of the
 container edits tend to only work for a particular shape, they are
 completely polymorphic in the contents of the container. Second, the
-fact that state sets are already categories suggests 
+fact that state sets are already categories suggests
 that a category of sd-lenses would be
 2-categorical in flavor, entailing extra technical difficulties such as
-coherence conditions. 
+coherence conditions.
 
 %% \finish{Here's a quick start from a brief scan of their most recent
 %%   paper~\cite{Diskin-Delta11} by BCP...
@@ -182,16 +182,16 @@ coherence conditions.
 %%   their ``sameness'' relations---what they say makes sense for ``flat''
 %%   structures like lists or simple graphs, but not for more structured data
 %%   (where you'd want to know about correspondences at various levels of
-%%   structure). 
+%%   structure).
 %%   \item They don't say anything about the size of their deltas, and at
 %%   least a naive representation would be big.  We're much more careful about
-%%   this. 
+%%   this.
 %%   \item They propose two new laws (weak invertability and undoability).  I'm
 %%   not sure what to say about these, but I guess it's an important point of
 %%   comparison, since it's one of the main points of their paper.
 %%   \item They don't handle $\missing$ (a small point)
 %%   \item They don't define any combinators, just the semantic space itself (a
-%%   larger point, and related) 
+%%   larger point, and related)
 %%   \item Their Definition 19 and Theorem 5 relate their delta-lenses to our
 %%   symmetric lenses.  I'm not completely sure how to interpret it (does our
 %%   ``trivial module'' correspond to their ``simple graph''?), but in any case
@@ -215,9 +215,9 @@ whole states, but these states are internally annotated with tags showing
 where edits have been applied---e.g., marking inserted or deleted elements
 of lists.
 %
-Barbosa et al.'s {\em matching lenses}~\cite{Matching10} offer another 
+Barbosa et al.'s {\em matching lenses}~\cite{Matching10} offer another
 approach to dealing with issues of alignment in the framework of pure
-state-based lenses.  
+state-based lenses.
 
 
 %% \noindent
@@ -225,21 +225,21 @@ state-based lenses.
 %% \begin{itemize}
 %% \item Diskin's ``tile algebras'' \cite{DBLP:conf/gttse/Diskin09}
 %% \item The other delta-lens papers that Diskin refers to in the intro
-%% of~\cite{Diskin-Delta11} 
+%% of~\cite{Diskin-Delta11}
 %% \item Other papers addressing the alignment problem in different ways (e.g.,
 %% our Matching Lenses~\cite{Matching10}, Tokyo group papers such
 %% as~\cite{Mu2004} and maybe the ICFP10 paper on bidirectional graph
 %% transformations)
 %% \item Maybe some papers on edits in the context of version management (see
 %% last year's grant proposal for some citations)
-%% \item other lens-like things that have used some kind of deltas~\cite{HuModels07} 
+%% \item other lens-like things that have used some kind of deltas~\cite{HuModels07}
 %% \begin{itemize}
 %% \item \finish{Meertens \cite{Meertens98} introduces edit operations in section 5.3
 %% (p. 68ff) to talk about edits to lists.  I have not grokked yet exactly how
 %% all this works, or how it fits into his general framework of constraint
 %% maintainers.  Some possible text:}
 
-%% \item 
+%% \item
 %% \end{itemize}
 %% \end{itemize}
 
@@ -250,7 +250,7 @@ state-based lenses.
 %%     \item other research on edit lenses
 %%     \item practical tools that use notions of an edit
 %%     \item Is there any correspondence with other tools like SVN, Unison,
-%%     ...? 
+%%     ...?
 %% \item operation transform papers?
 %% \end{itemize}
 %% }
