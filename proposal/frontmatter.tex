@@ -1,0 +1,78 @@
+\pagenumbering{roman}
+\doublespaced
+\large\newlength{\oldparskip}\setlength\oldparskip{\parskip}\parskip=.3in
+\thispagestyle{empty}
+\begin{center}
+\vspace*{\fill}
+\thetitle
+
+\theauthor
+
+
+A Dissertation Proposal
+
+in
+
+Computer Science
+\end{center}
+
+
+% XXX: phantoms below are to cut out stuff that should be in the thesis but
+% not the proposal
+\noindent\singlespaced\large
+\phantom{Presented to the Faculties of the University of Pennsylvania in Partial
+Fulfillment of the Requirements for the Degree of Doctor of Philosophy}
+
+
+\doublespaced\large
+\begin{center}
+\theyear
+\end{center}
+
+
+\phantom{%
+\noindent\makebox[0in][l]{\rule[2ex]{3in}{.3mm}}
+\singlespaced
+Advisor's Name\\
+Supervisor of Dissertation}
+
+
+\phantom{%
+\noindent\makebox[0in][l]{\rule[2ex]{3in}{.3mm}} 
+\singlespaced
+Graduate Chair's Name\\
+Graduate Group Chairperson}
+\vspace*{\fill}
+
+\normalsize\parskip=\oldparskip
+
+
+\newpage
+\doublespaced
+
+\chapter*{Acknowledgments}
+
+\newpage
+%\vspace*{\fill}
+\begin{center}
+  ABSTRACT\\
+\thetitle\\
+\vspace{.5in}
+  \theauthor\\
+  \theadvisor
+\end{center}
+
+\doublespaced
+\noindent
+
+% TODO: put the content of the abstract here
+
+\vspace*{\fill}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+\draftspaced
+\pagenumbering{arabic}

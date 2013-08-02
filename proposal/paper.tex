@@ -1,4 +1,25 @@
-\documentclass{book}
+\documentclass[12pt]{report}
+
+% following stanza stolen from
+% http://www.math.upenn.edu/grad/thesisstyle.html
+\setlength{\headheight}{0in}
+\setlength{\textheight}{8.5in}
+\setlength{\oddsidemargin}{0.55in}
+\setlength{\textwidth}{5.87in}
+\setlength{\headsep}{-.19in}
+\pagestyle{plain}
+\newcommand{\doublespaced}{\renewcommand{\baselinestretch}{2}\normalfont}
+\newcommand{\singlespaced}{\renewcommand{\baselinestretch}{1}\normalfont}
+\newcommand{\draftspaced}{\singlespaced} % for draft only
+%\newcommand{\draftspaced}{\doublespaced} % for final version
+%\numberwithin{equation}{section}
+\def\thetitle{Lens Extensions}
+\def\theauthor{Daniel Wagner}
+\def\theadvisor{Benjamin C. Pierce, Advisor}
+\def\THEAUTHOR  {Daniel Wagner}
+\def\THEADVISOR {Benjamin C. Pierce}
+\def\theyear{2014}
+
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -59,7 +80,7 @@
 \newcommand{\createl}{\mathit{createl}}
 \newcommand{\pdf}[1]{\node[scale=.27]{\pgfimage{pdf/#1}}}
 \begin{document}
-\include{abstract}
+\include{frontmatter}
 \chapter{Introduction}  \include{introduction}
 \chapter{Finished work} \include{finished_work}
 \chapter{Spreadsheets}  \include{spreadsheets}
