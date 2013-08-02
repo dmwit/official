@@ -4,7 +4,7 @@ import Development.Shake.FilePath
 -- TODO: learn enough more stuff about shake that you understand why this doesn't work correctly
 -- TODO: handle graphics files and stuff
 
-sources = ["paper", "finished_work", "frontmatter", "introduction", "related_work", "spreadsheets"]
+sources = ["paper", "finished_work", "front_matter", "introduction", "related_work", "spreadsheets"]
 bibs = map (++".bib") ["bcp", "delta", "harmony", "spreadsheets", "symmetric"]
 sourcesWith s = [f ++ "." ++ s | f <- sources]
 pdflatex out = system' "pdflatex" ["-interaction=nonstopmode", dropExtension out]
