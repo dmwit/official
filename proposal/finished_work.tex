@@ -41,9 +41,79 @@ function $\CREATE\in Y\arrow X$, and we assume one more axiom:
     \GET\; (\CREATE \; y) = y
 }
 
+\section{Limitations}
+\label{sec:asymm-limitations}
+
+Figure~\ref{fig:example-simple} gives a simple example of a pair of
+repositories and operations on those repositories that the asymmetric,
+state-based lenses above do not model well. In part (a),
+we see the initial replicas, which are in a synchronized state.  On the
+left, the replica is a list of records describing composers' birth and death
+years; on the right, a list of records describing the same
+composers' countries of origin. Of particular relevance here is that the
+right-hand repository contains countries, which do not appear in the left-hand
+repository---this means we cannot write a \GET{} function from
+left to right---while the left-hand repository contains dates, which do not
+appear in the right-hand repository---meaning we also cannot write a
+\GET{} function from right to left.
+
+In part (b), the user interacting with the
+left-hand replica decides to add a new composer, {\sf Monteverdi}, at the
+end of the list. The lens connecting the two replicas now converts this into
+a corresponding change that adds {\sf Monteverdi} to the right-hand replica,
+shown in part (c).
+%
+Note that the translation includes the name component but
+leaves the country component with its default value, ``{\sf
+  ?country?}.''  This is the best it can do, since the
+left-hand replica doesn't mention countries.
+%
+Later, an eagle-eyed editor notices the missing country information and
+fills it in, at the same time correcting a spelling error in {\sf
+  Schumann}'s name, as shown in (d). In part (e), we see that the lens
+discards the country information when
+translating from right to left, but propagates the spelling
+correction.
+
+In some extraordinary cases, there may be many reasonable ways to keep the
+two repositories synchronized.
+Consider part (f) of Figure~\ref{fig:example-simple}, where the left-hand
+replica ends up with a row for {\sf Monteverdi} at the beginning of the
+list, instead of at the end.
+%
+There are at least two reasonable user intentions that could lead to this
+effect: either the user could mean to delete the old {\sf Monteverdi} record
+and insert a brand new one (which happens to have similar data to the old
+record), or the user could mean to rearrange the order of the records. The
+upper row shows how the other repository should change in the former
+situation (it leaves {\sf Monteverdi} with a default country), while the
+lower row shows what should happen in the latter situation (it reorders the
+other repository's records, preserving all the information associated with
+{\sf Monteverdi}).
+
+\begin{figure}
+    \begin{center}
+        \vspace*{-2ex}
+        \includegraphics[width=75mm]{images/ex1-init.pdf} \\
+        (a) initial replicas \\[1.5ex]
+        \includegraphics[width=75mm]{images/ex1-1.pdf} \\
+        (b) a new composer is added to one replica \\[1.5ex]
+        \includegraphics[width=75mm]{images/ex1-2.pdf} \\
+        (c) the lens adds the new composer to the other replica \\[1.5ex]
+        \includegraphics[width=75mm]{images/ex1-3.pdf} \\
+        (d) the curator makes some corrections \\[1.5ex]
+        \includegraphics[width=75mm]{images/ex1-4.pdf} \\
+        (e) the lens transports a small edit \\[1.5ex]
+        \includegraphics[width=75mm]{images/ex1-5.pdf} \\
+        (f) two different edits with the same effect on the left
+    \end{center}
+    \caption{A simple (complement-less) {\edit} lens in action.}
+    \label{fig:example-simple}
+\end{figure}
+
 \section{Symmetric lenses}
-Lenses can be generalized from this asymmetric
-presentation---where one of the structures is always a ``view'' of the
+Lenses can be generalized from the asymmetric
+presentation above---where one of the structures is always a ``view'' of the
 other---to a
 fully {\em symmetric} version where each of the two structures may
 contain information that is not present in the other.
@@ -260,12 +330,9 @@ laws appear too strong to be desirable in practice.  \fi
 %%   that, as usual, they are too strong.} \fi \fi
 %% \iffull
 
-\paragraph*{Examples} Figure~\ref{fig:symm} illustrates the use of a
-symmetric lens.
-%
-The structures in this example are lists of textual records describing
-composers. The partially synchronized records (a) have a name and two dates
-on the left and a name and a country on the right.
+\paragraph*{Examples} Figure~\ref{fig:symm} shows how this model might be
+instantiated to synchronize the repositories discussed earlier in
+Section~\ref{sec:asymm-limitations}.
 %
 The complement (b) contains all the information that is discarded by both
 $\PUT$s---all the dates from the left-hand structure and all the countries
@@ -337,37 +404,6 @@ Notice that, after the first \PUTR{}, the information in the second
 element of the complement list $(q,Q)$ is lost.
 The second \PUTR{} creates a brand new second element for the list, so the value $Q$ is
 gone forever; what's left is the default value $M$.
-
-Another possibility---arguably better behaved---is to keep
-  an {\em
-  infinite} list of complements.  Whenever we do a \PUT{}, we use (and
-update) a prefix of the complement list of the same length as the current
-value being \PUT, but we keep the infinite tail so that, later, we have
-  values to use when the list being \PUT{} is longer.
-%% \finish{Probably we should ``iffull'' the following display once it's been
-%%   checked, to save space.}
-% \iffull
-\[
-\begin{array}{ll}
-& \PUTR (\left<(a,1)\right>,\;
-         \left<(p,P),(q,Q),(m,M),(m,M),\ldots\right>)
-\\
-= & ( \left<(1,P)\right>,\; \left<(a,P),(q,Q),(m,M),(m,M),\ldots\right>)
-\\ [1.5ex]
-& \PUTR (\left<(a,1),(b,2)\right>,\;
-         \left<(a,P),(q,Q),(m,M),(m,M),\ldots\right>)
-\\
-= & (\left<(1,P),(2,Q)\right>,\;
-         \left<(a,P),(b,Q),(m,M),\ldots\right>)
-\end{array}
-\]
-% \fi
-
-We call the first form the {\em forgetful} list mapping lens and the second
-the {\em retentive} list mapping lens.  We will see, later, that the
-difference between these two precisely boils down to a difference in the
-behavior of the lens-summing operator $\oplus$ in the specification
-$e\LIST \simeq \id_\Unit \oplus (e \otimes e\LIST)$ of the list mapping lens.
 
 \iftikz
 \begin{figure*}[t!] \centering
@@ -451,91 +487,30 @@ $\partition$, then to $X\LIST \times Z\LIST$ using a variant of the lens $e$
 discussed above, and finally to $(X+Z)\LIST$ using a ``backwards''
 $\partition$.
 
+% TODO: things we know that aren't discussed here:
+% - all the lens operations needed to implement the transformations we
+%   discussed here, plus some for containers
+% - recursion (right?)
+% - machinery needed to show these operations are ``well-behaved'' (in
+%   particular, have categorical descriptions)
+% - exploration of different choices for several operators that are still
+%   ``well-behaved'', and their tradeoffs
+
 \iffull
 
 \section{Edit lenses}
 
-\begin{figure}
-    \begin{center}
-        \vspace*{-2ex}
-        \includegraphics[width=75mm]{images/ex1-init.pdf} \\
-        (a) initial replicas \\[1.5ex]
-        \includegraphics[width=75mm]{images/ex1-1.pdf} \\
-        (b) a new composer is added to one replica \\[2ex]
-        \includegraphics[width=75mm]{images/ex1-2.pdf} \\
-        (c) the lens adds the new composer to the other replica \\[1.5ex]
-        \includegraphics[width=75mm]{images/ex1-3.pdf} \\
-        (d) the curator makes some corrections \\[.8ex]
-        \includegraphics[width=75mm]{images/ex1-4.pdf} \\[-3ex]
-        (e) the lens transports a small edit \\[1.5ex]
-        \includegraphics[width=75mm]{images/ex1-5.pdf} \\
-        (f) two different edits with the same effect on the left
-    \end{center}
-\iflater
-\discuss{Change the font everywhere to sf}
-\fi
-    \caption{A simple (complement-less) {\edit} lens in action.}
-    \label{fig:example-simple}
-\end{figure}
-
-Before diving into technicalities, let's take a brief tour of the main
-ideas via some examples.
-%
-Figure~\ref{fig:example-simple} demonstrates a simple use of {\edit} lenses
-to synchronize two replicas.\footnote{We use the word ``synchronize''
-  informally to mean simply ``maintain a correspondence between two replicas
-  by propagating edits in both directions.''  A full-blown synchronization
-  tool would also include, at a minimum, some mechanism for dealing with
-  conflicts between disconnected edits to the two structures, which is
-  outside the scope of this paper.  \iffull Note, though, that we go beyond most
-  synchronization tools in allowing the replicas to be structured
-  differently and to share only a part of their information.\fi}  In part (a),
-we see the initial replicas, which are in a synchronized state.  On the
-left, the replica is a list of records describing composers' birth and death
-years; on the right,  a list of records describing the same
-composers' countries of origin.  In part (b), the user interacting with the
-left-hand replica decides to add a new composer, {\sf Monteverdi}, at the
-end of the list.  This change is described by the edit script
-{\sf
-ins(3); mod(3, (``Monteverdi'', ``1567-1643''))}.
-The script says to first
-\emph{insert} a dummy record at index three, then \emph{modify} this record by
-replacing the left field with ``{\sf Monteverdi}'' and replacing the
-right field with ``{\sf 1567-1643}''.  (One could of course imagine other edit
-languages where the insertion would be done in one step.  We represent it
-this way because this is closer to how our generic ``container mapping''
-combinator will do things.)  The
-lens connecting the two replicas now converts this edit script into a
-corresponding edit
-script that adds {\sf Monteverdi} to the right-hand replica, shown in part (c):
-{\sf
-ins(3); mod(3, (``Monteverdi'', \ONE))}.
-Note that the translated {\sf mod} command overwrites the name component but
-leaves the country component with its default value, ``{\sf
-  ?country?}.''  This is the best it can do, since the edit was in
-the left-hand replica, which doesn't mention countries.
-%
-Later, an eagle-eyed editor notices the missing country information and
-fills it in, at the same time correcting a spelling error in {\sf
-  Schumann}'s name, as shown in (d). In part (e), we see that the lens
-discards the country information when
-translating the edit from right to left, but propagates the spelling
-correction.
-
-Of course, a particular new replica state can potentially be
-achieved by many different edits, and these edits may be translated differently.
-%
-Consider part (f) of Figure~\ref{fig:example-simple}, where the left-hand
-replica ends up with a row for {\sf Monteverdi} at the beginning of the
-list, instead of at the end. Two edit scripts that achieve this
-effect are shown. The upper script deletes
-the old {\sf Monteverdi} record and inserts a brand new one (which happens
-to have
-the same data) at the top; the lower script rearranges the order of the
-list.  The translation of the upper edit leaves {\sf Monteverdi} with a
-default country, while the lower edit is translated to a
-rearrangement, preserving all the information associated with {\sf
-  Monteverdi}.
+The two frameworks discussed, asymmetric state-based lenses and symmetric
+state-based lenses, are both somewhat ``extensional''. That is: the
+\PUT{} functions have access only to extensional information about the
+states of the repository before and after any user changes. As shown in (f)
+of Figure~\ref{fig:example-simple}, this information is not always enough to
+determine a best modification to the unchanged repository to restore
+synchrony: one wants ``intentional'' information about how a change was made
+in addition to the effect that change had. Additionally, the description of
+what has changed since the last synchronization point can often be
+represented much more compactly than the new value of the repository. The
+goal of edit lenses is to address these two concerns.
 
 We do not address the question of where these edits come from or who
 decides, in cases like part (f), which of several possible edits is
