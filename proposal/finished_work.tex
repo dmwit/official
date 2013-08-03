@@ -521,20 +521,21 @@ domain-specific---unpromising material for a foundational theory.  Rather,
 our aim is to construct a theory that shows how edits, however
 generated, can be translated between replicas of different shapes.
 
-\iflater\finish{A lot of people got lost at this point.  We need to go much more
-  gently.  (In particular, start with a roadmap.)  It would help to rename
-  $X,Y,Z$ to something more mnemonic.}\fi
+Below, we discuss how to build an edit lens synchronizing the data
+structures in the introductory example in Figure~\ref{fig:example-simple},
+paralleling the discussion of symmetric lenses. The primary difference is
+that each lens must also be associated with the set of edits that it knows
+how to translate. In the following, we will discuss how to build this
+association compositionally; the role that complements play in edit lenses;
+and the formal definition of edit lenses.
 
-Abstractly, the lens we are discussing maps between structures of the form
-$(X \times Y)^*$ and ones of the form $(X \times Z)^*$, where $X$ is the set
-of composer names, $Y$ the set of date strings, and $Z$ the set of
-countries.  We want to build it compositionally---that is, the whole lens
+\subsection{Building edit languages}
+As with symmetric lenses, we will build our edit lens between $(X \times
+Y)^*$ and $(X \times Z)^*$ compositionally---that is, the whole lens
 should have the form $\ell^*$, where $*$ is a ``list mapping'' lens
-combinator and $\ell$ is a lens for translating edits to a
-single record---i.e., $\ell$ is a lens from $X \times Y$ to $X \times Z$.
-Moreover, $\ell$ itself should be built as the product $\ell_1 \times
+combinator and $\ell$ itself is a product $\ell_1 \times
 \ell_2$ of a lens $\ell_1 \in X \to X$ that translates composer edits
-verbatim, while $\ell_2$ is a ``disconnect'' lens that maps every edit on
+verbatim, while $\ell_2 \in Y \to Z$ is a ``disconnect'' lens that maps every edit on
 either side to a trivial identity edit on the other side.
 
 In analogous fashion, the edit languages for the top-level structures will
@@ -575,13 +576,14 @@ Our lens $\ell^*$ will consist of two components---one for transporting edits
 from the left side to the right, written $(\ell^*).\dputr \in \partial(X
 \times Y)^* \to \partial(X \times Z)^*$,\footnote{The symbol $\dputr$ is
   pronounced ``put an edit through the lens from left to right,'' or just
-  ``put right.''  It is the {\edit}-analog of the $\putr$ function of the
-  state-based symmetric lenses in~\cite{HofmannPierceWagner10} and the
-  $\PUT$ function of the state-based asymmetric lenses
-  in~\cite{Focal2005,Boomerang07}.} and another for transporting
+  ``put right.''  It is the {\edit}-analog of the $\putr$ function.} and another for transporting
 edits from right to left, written $(\ell^*).\dputl \in \partial(X \times
 Z)^* \to \partial(X \times Y)^*$.
 %
+
+% TODO: part of the point of this is that all that can be done without
+% complements, and this point needs to be made somehow for the next section
+% to make sense
 
 %% The next step is to lift this translation to lists.  There are two kinds of
 %% edits to lists in the example\finish{why is it this way?}:
@@ -625,6 +627,7 @@ Z)^* \to \partial(X \times Y)^*$.
 %% %% the breakdown lets us preserve a nice factorization property that we discuss
 %% %% in the next section.\bcp{where? refer to it by number?}
 
+\subsection{Complements}
 \begin{figure}
     \begin{tabular}{c}
         \includegraphics[width=75mm]{images/ex2-0.pdf} \\[.9ex]
@@ -665,7 +668,7 @@ are interleaved on the left.
   example, even with the complement, there is still some arbitrary choice in
   where an inserted element on the right appears in the list on the left.}\fi
 
-The solution is to store a small list, called a {\em complement}, off to the
+The solution is to store a complement off to the
 side, recording the \emph{tags} ($\ml{inl}$ or $\ml{inr}$) from the
 original, intermingled list, and pass this list as an extra argument to
 translation.  We then enrich the types of the edit translation functions to
@@ -718,7 +721,7 @@ are also small compared to the size of the replicas.
 %% concrete argument.  Monoids subsume these functions, and some instantiations
 %% offer more reflective representations of edits.}
 
-\subsection{Edit Lenses}
+\subsection{Formal definition}
 \label{sec:semantics}
 
 A key design decision in our formulation of edit lenses is to separate the
