@@ -142,9 +142,6 @@ chain, $f(\{x_1,\ldots,x_m\}) = (f(x_1),\ldots,f(x_m))$.
     $v \in n$.
 \end{definition}
 
-\subsection{Linear constraints}
-% TODO
-
 \subsection{Spreadsheets}
 % TODO: write about unidirectional methods
 
@@ -161,6 +158,136 @@ graph is a tree and we allow the update of only a single node, then we may
 direct the constraint graph by treating the updated node as a root and
 update nodes attached to constraints in topological order (provided we
 promise not to update a given node's value twice).
+
+\subsection{Linear constraints}
+Here is a simple spreadsheet which nevertheless fails the tree-structured
+property described previously:
+\begin{align*}
+    tax &= 0.08*base \\
+    total &= base + tax
+\end{align*}
+Despite the mildly interesting structure of the constraint system graph, it
+is still definitely possible to bidirectionalize this spreadsheet.
+
+Suppose each constraint in the spreadsheet is \emph{linear}, that is, has
+the form
+\[x = b+\sum_ic_iy_i\]
+for some constants $b$ and $\bf c$. We can form a \emph{directed} constraint
+system graph where the edges for the constraint associated with this
+equation point from the $y_i$ and towards the $x$. Then, in addition to the
+linearity assumption, we will assume that there are no directed cycles in
+the directed constraint system graph and that each node has in-degree at
+most one. (Undirected cycles, however, are allowed; for example, the
+two-equation spreadsheet above has undirected but not directed cycles in its
+directed constraint system graph.) Call nodes with in-degree zero (that is,
+nodes with no defining equation) \emph{root nodes}.
+
+Under these assumptions, a simple argument shows that, given a cell in the
+spreadsheet, we can write an affine formula which maps the values of root
+cells to the value of the given cell. The argument goes by induction on the
+length of the longest path from a root cell to the given one, and proceeds
+by substituting in affine formulas for each non-root variable at each step.
+In fact, we can go a step farther: we can write affine transformations from
+root cells to any set of cells. If we manage to give a characterization of
+when these affine transformations can be bidirectionalized, then we will
+have given an account of how to handle the multi-update problem and relax
+the simple structure requirement in the parts of the spreadsheet where only
+affine formulae are used.
+
+Thus, we can now frame our problem in another way: what is the right way to
+bidirectionalize an affine transformation? Accordingly, we will now step
+away from spreadsheets and frame our discussion in linear algebra terms.
+
+A function $\aget \in \R^m \to \R^n$ is affine exactly when there is a matrix
+$M$ of dimension $n \times m$ and vector $\mathbf b \in \R^n$ such that $\aget(\x) =
+M\x +\mathbf b$.  Affine functions are surjective (and hence bidirectionalizable)
+just when $M$ has rank $n$, so we assume this. When $m=n$, $f$ is a
+bijection. The put function in this case is particularly boring, because it
+ignores the original source:
+\[\aput(\x,\y) = M^{-1}(\y-\mathbf b)\]
+The more interesting case is when $m>n$, and where each $\y$ is therefore
+the image of a nontrivial subspace of $\R^m$. There are many heuristics one
+may choose to identify a particular point in this subspace; we choose the
+specification:
+\[\aput(\x,\y) = \argmin{\x',\aget(\x')=\y}||\x' - \x||\]
+
+\begin{lemma}
+    There exists an $m \times n$ matrix $N$ such that
+    \[\aput(\x,\y) = \x + N(\y - \aget(\x))\]
+    satisfies the specification above.
+\end{lemma}
+\emph{Proof sketch.} The intuition is that we wish to move as little as
+possible in source-space to match the move in target-space. This can be
+achieved by minimizing how far we move in the null space of $M$, since
+(exactly) these motions result in no motion in target-space.
+
+Take a basis $\{\x_1,\ldots,\x_{m-n}\}$ for the null space of $M$. Then
+we will take:
+\begin{align*}
+    B &= \left[\begin{array}{c}
+            \x_1\transpose \\
+            \vdots \\
+            \x_{m-n}\transpose
+        \end{array}\right] \\
+    N &= \left[\begin{array}{c}
+            M \\
+            B
+        \end{array}\right]^{-1}
+        \left[\begin{array}{c}
+            I_n \\
+            \mathbf 0_{m-n,n}
+        \end{array}\right] \\
+\end{align*}
+Turning the sketch into a proof involves arguing three things: that the
+square matrix in the definition of $N$ is invertible; that $N$ produces a
+put function that roundtrips; and that the put function produced by $N$
+produces minimal changes. The definition above was crafted so that (assuming
+for the moment that $N$ exists) we have $MN = I$, which is used to show the
+roundtrip property, and $BN = \mathbf 0$, which is used to show minimality.
+
+% TODO: finish this proof and replace the above sketch, maybe
+%\begin{proof}
+%    The intuition is that we wish to move as little as possible in
+%    source-space to match the move in target-space. This can be achieved by
+%    minimizing how far we move in the null space of $M$, since (exactly)
+%    these motions result in no motion in target-space.
+%
+%    Take a basis $\{\x_1,\ldots,\x_{m-n}\}$ for the null space of $M$. Then
+%    we will take:
+%    \begin{align*}
+%        B &= \left[\begin{array}{c}
+%                \x_1\transpose \\
+%                \vdots \\
+%                \x_{m-n}\transpose
+%            \end{array}\right] \\
+%        N &= \left[\begin{array}{c}
+%                M \\
+%                B
+%            \end{array}\right]^{-1}
+%            \left[\begin{array}{c}
+%                I_n \\
+%                \mathbf 0_{m-n,n}
+%            \end{array}\right] \\
+%    \end{align*}
+%    We must now argue three things: that the square matrix in the definition
+%    of $N$ is invertible; that $N$ produces a put function that roundtrips;
+%    and that the put function produced by $N$ produces minimal changes. The
+%    definition above was crafted so that (assuming for the moment that $N$
+%    exists) we have $MN = I$, which is used to show the roundtrip property,
+%    and $BN = \mathbf 0$, which is used to show minimality.
+%
+%    invertible: (TODO)
+%
+%    roundtrip:
+%        \begin{align*}
+%            \aget(\aput(\x,\y))
+%                &= M(\x+N(\y-M\x-\mathbf b))+\mathbf b & \mbox{definition of }\aget,\aput \\
+%                &= MN\y + M\x + \mathbf b - MN(M\x + \mathbf b) & \mbox{rearranging terms} \\
+%                &= \y & MN=I
+%        \end{align*}
+%
+%    minimal: (TODO)
+%\end{proof}
 
 \subsection{Non-associative composition}
 % TODO: pick a better subsection name
