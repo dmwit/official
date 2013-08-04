@@ -142,22 +142,54 @@ chain, $f(\{x_1,\ldots,x_m\}) = (f(x_1),\ldots,f(x_m))$.
     $v \in n$.
 \end{definition}
 
+In some systems we discuss below, each constraint will have a clear notion
+of ``output'' variable. In these systems it will be convenient to also have
+a directed variant of the constraint system graph.
+
+\begin{definition}
+    A \emph{pointed constraint} is a pair $(v,(n,R))$ of a constraint and a
+    designated variable $v\in n$.
+\end{definition}
+
+\begin{definition}
+    The \emph{directed constraint system graph} induced by a set of pointed
+    constraints is a directed bipartite graph whose nodes are drawn from $N$
+    in one part and pointed constraints in the other. It has an edge from
+    $v$ to $(v',(n,R))$ iff $v \ne v'$ and $v \in n$, and it has an edge
+    from $(v',(n,R))$ to $v$ iff $v=v'$.
+\end{definition}
+
+\begin{definition}
+    A \emph{root node} is a node in a directed graph with in-degree zero.
+\end{definition}
+
+\begin{definition}
+    A node has \emph{high in-degree} if its in-degree is greater than one.
+\end{definition}
+
+In a directed constraint system graph, a root node corresponds to a name
+that is not the output of any constraint.
+
 \subsection{Spreadsheets}
-% TODO: write about unidirectional methods
+One particularly simple regime is where there is a directed constraint
+system graph with no cycles, no nodes with high in-degree, and edits are
+made only to root nodes. This corresponds to how most well-known
+spreadsheets behave. However, the restriction that you may only edit root
+nodes is quite limiting: it essentially means that the system is
+unidirectional.
 
 \subsection{Tree topology}
-% TODO
+The lens frameworks discussed in \ref{chap:finished_work} amount to having a
+constraint system graph with exactly two variables and exactly one
+constraint connecting them. You may only edit one of the variables at a
+time. Then, to propagate the change, you spread the change from the changed
+variable to the unchanged one.
 
-Lenses correspond to a very strong restriction on graph topology: there are
-always exactly two variable nodes with exactly one constraint connecting
-them. This makes choosing an update plan particularly simple, since we must
-always update the nodes attached to the single constraint.
-
-In fact, this observation generalizes slightly: if the constraint system
-graph is a tree and we allow the update of only a single node, then we may
-direct the constraint graph by treating the updated node as a root and
-update nodes attached to constraints in topological order (provided we
-promise not to update a given node's value twice).
+We can take the idea of propagating change from changed variables to
+untouched ones somewhat: when the constraint system graph is a tree, an
+update to a single node may be propagated through the entire graph by
+treating the updated node as a root of the tree and updating the values of
+nodes in topologically-sorted order.
 
 \subsection{Linear constraints}
 Here is a simple spreadsheet which nevertheless fails the tree-structured
@@ -172,15 +204,11 @@ is still definitely possible to bidirectionalize this spreadsheet.
 Suppose each constraint in the spreadsheet is \emph{linear}, that is, has
 the form
 \[x = b+\sum_ic_iy_i\]
-for some constants $b$ and $\bf c$. We can form a \emph{directed} constraint
-system graph where the edges for the constraint associated with this
-equation point from the $y_i$ and towards the $x$. Then, in addition to the
-linearity assumption, we will assume that there are no directed cycles in
-the directed constraint system graph and that each node has in-degree at
-most one. (Undirected cycles, however, are allowed; for example, the
-two-equation spreadsheet above has undirected but not directed cycles in its
-directed constraint system graph.) Call nodes with in-degree zero (that is,
-nodes with no defining equation) \emph{root nodes}.
+for some constants $b$ and $\bf c$. Additionally, we take the topological
+constraints that the directed constraint system graph has no (directed)
+cycles or nodes with high in-degree. (Note that the two-equation spreadsheet
+above has cycles in its constraint system graph but not its directed
+constraint system graph.)
 
 Under these assumptions, a simple argument shows that, given a cell in the
 spreadsheet, we can write an affine formula which maps the values of root
