@@ -29,3 +29,16 @@ Transcript written on
 ^$
 ^pdfTeX warning: pdflatex (file .*): PDF inclusion: Page Group d
 ^etected which pdfTeX can't handle. Ignoring it.
+/usr/share/texlive
+^This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian)
+^ restricted \\write18 enabled.
+^LaTeX2e <2011/06/27>
+^Babel <3.9f> and hyphenation patterns for 78 languages loaded.
+/var/lib/texmf
+texmf-dist/fonts
+^\[Loading MPS to PDF converter (version 2006\.09\.02)\.\]
+ABD: EveryShipout initializing macros
+^pdfTeX warning: pdflatex (file .*): PDF inclusion: multiple pdf
+^s with page group included in a single page
+^\([(<]*[a-z._/][>) ]*\)*$
+^This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
