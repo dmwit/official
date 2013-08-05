@@ -1,17 +1,57 @@
-% TODO: expand each sentence here to a paragraph
-Bidirectional situations are all around us. We synchronize bookmarks, keep
-clones of our data on our mobile devices, edit collaboratively, use GUIs to
-visualize and modify chunks of our data, etc. So designing tools that
-support the creation and maintenance of these transformations is important.
+As the electronic world grows increasingly interconnected, it grows
+increasingly common to need good tools for synchronizing replicated data. In
+many cases, the data stores being replicated are not identical---each store
+is tailored to the device or application that is using the replica.
+Traditional tools for maintaining synchrony between differing data formats
+provide separate transformation tools for each pair of formats. However, as
+the formats and transformations grow complex, maintaining separate tools can
+grow more difficult and error-prone.
 
-Lots of nice things have been done (e.g. the asymmetric state-based lens
-model and its instantiation in Boomerang), but there are many niches where
-we might want more targeted support. For decentralized applications, neither
-repository is canonical and you want a way to deal with that. For big data,
-you want small descriptions of changes. Some data structures aren't most
-naturally represented as strings, but as trees, relations, grids, graphs, or
-other structures instead.
+% TODO: definitely needs a citation here
+The lens framework attempts to address this problem by giving a language of
+transformations that can be interpreted \emph{bidirectionally}: a lens
+between data formats $A$ and $B$ describes \emph{both} a transformation from
+$A$ to $B$ \emph{and} a transformation from $B$ to $A$. Recent work has
+developed some nice tooling for lenses, but there remain many use cases that
+call for generalizations of lenses. We will discuss three such situations in
+this document.
 
-My thesis will be an exploration of these issues and what can be done to
-deal with them; the major unfinished work that I will be proposing is
-grid-structured data.
+One core assumption of the lens framework is that one of the two replicas
+being synchronized is ``canonical'': it stores enough information to
+reconstruct the other replica in its entirety. In many cases, this is
+untrue: the two replicas have some shared information, but each also has
+some information that is not shared with the other.
+Section~\ref{sec:symmetric_lenses} briefly discusses a symmetric variant of
+lenses that relaxes this assumption; the complete dissertation will also
+discuss in-depth the additional machinery needed for lens equivalence, the
+algebraic structure of symmetric lenses, and a syntax for writing symmetric
+lenses that includes rich support for lists and generic containers.
+
+A second core assumption is that lenses can operate on entire replicas as a
+single object. For large data sets, this can be a problem: one may not wish
+to transmit entire replicas during synchronization, but instead short
+descriptions of what has changed since the last synchronization point.
+Section~\ref{sec:edit_lenses} briefly discusses the formalism needed to
+generalize lenses so that they operate on edits; the complete dissertation
+will also discuss (analogously to the discussion for symmetric lenses) edit
+lens equivalence, algebraic structure, and a syntax for edit lenses that
+includes some support for list and generic container operations.
+
+Finally, the lens framework focuses itself on the problem of synchronizing
+two (potentially large) replicas at a time. The main new work proposed in
+this document is to produce a generalization of lenses that can synchronize
+very many (potentially quite small and loosely-related) replicas. For
+concreteness, imagine a multi-directional spreadsheet: each cell is a
+replica. Some cells are computed from others; these computations are the
+transformations that we would like to bidirectionalize.
+Section~\ref{chap:spreadsheets} discusses the major goals of this work as
+well as some simple solutions that we have already explored and the major
+challenges we foresee.
+
+In the remainder of the document, we will formally introduce the lens
+framework (\ref{sec:background}), briefly discuss the formalisms of
+symmetric and edit lenses (\ref{sec:symmetric_lenses} and
+\ref{sec:edit_lenses}), introduce the hyperlens multi-directional
+spreadsheet project's goals (\ref{sec:goal_statement}), challenges
+(\ref{sec:design_axes}), and timeline (\ref{sec:timeline}), and give an
+overview of related work (\ref{chap:related_work}).

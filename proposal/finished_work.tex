@@ -1,5 +1,6 @@
 % TODO: clean up the source (remove ifs and stuff like that)
 \section{Background}
+\label{sec:background}
 \newif \iftext  \texttrue
 \newif \iffull  \fulltrue
 \newif \ifdraft \draftfalse
@@ -103,15 +104,16 @@ other repository's records, preserving all the information associated with
         \includegraphics[width=75mm]{images/ex1-3.pdf} \\
         (d) the curator makes some corrections \\[1.5ex]
         \includegraphics[width=75mm]{images/ex1-4.pdf} \\
-        (e) the lens transports a small edit \\[1.5ex]
+        (e) the lens transports only the relevant part of the corrections \\[1.5ex]
         \includegraphics[width=75mm]{images/ex1-5.pdf} \\
         (f) two different edits with the same effect on the left
     \end{center}
-    \caption{A simple (complement-less) {\edit} lens in action.}
+    \caption{The desired behavior of a simple lens.}
     \label{fig:example-simple}
 \end{figure}
 
 \section{Symmetric lenses}
+\label{sec:symmetric_lenses}
 Lenses can be generalized from the asymmetric
 presentation above---where one of the structures is always a ``view'' of the
 other---to a
@@ -499,7 +501,7 @@ $\partition$.
 \iffull
 
 \section{Edit lenses}
-
+\label{sec:edit_lenses}
 The two frameworks discussed, asymmetric state-based lenses and symmetric
 state-based lenses, are both somewhat ``extensional''. That is: the
 \PUT{} functions have access only to extensional information about the

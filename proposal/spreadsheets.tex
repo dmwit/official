@@ -69,6 +69,7 @@ are some things a user might want to do with this setup:
 \end{itemize}
 
 \section{Goal statement}
+\label{sec:goal_statement}
 {\bf A hyperlens should be a generalization of both lenses and spreadsheets that
 supports high-level planning.}
 
@@ -509,7 +510,7 @@ choosing one of these $m$-in-the-middle orderings.
 %Conjecture: all these lenses and combinators are well-behaved.
 
 \section{Design axes}
-
+\label{sec:design_axes}
 A full solution could reasonably build on either the restrictive constraints
 or the restrictive topology solutions given above. Because it seems
 difficult to extend the restrictive constraints solution sufficiently to
@@ -637,15 +638,37 @@ the other two.
 \end{desiderata}
 
 \subsection{Other difficulties}
-
-% TODO: motivate why each of these is nice and why each is hard
+\subsubsection{Algebraic structure}
+Experience with programming in other lens languages has shown that
+sequential composition is a key feature for modularity. Hyperlens
+composition may not necessarily be sequential, but there should be some
+tools for developing hyperlenses in a modular way. For this to make sense,
+we expect that the programmer will wish for composition to be associative
+(so that how modules are combined does not matter) and may even wish for
+composition to be commutative (so that the order modules are defined does
+not matter).
 \begin{desiderata}
     Provide an associative, commutative composition operation.
+\end{desiderata}
+\subsubsection{Efficiency}
+We would like the hyperlens project to produce a framework that is usable
+for very large data sets, even when there is a lot of ambiguity. It is very
+easy to design constraint system graph topologies where certain updates
+produce an enormous number of reasonable full update plans; a good solution
+to the problem should be able to not only choose one of these plans, but
+also do so in an efficient way.
+\begin{desiderata}
+    Select an update plan in polynomial time in the size of the hyperlens.
 \end{desiderata}
 \begin{desiderata}
     Reinstate coherence in a single pass: for each constraint, execute one
     method at most once.
 \end{desiderata}
+\subsubsection{Syntax}
+Any sensible formalism can be instantiated; for example, a sensible
+hyperlens formalism should include operations that correspond to some of the
+basic computations done with spreadsheets: some arithmetic, perhaps some
+simple string operations, aggregations, composition, and so on.
 \begin{desiderata}
     Provide a syntax for basic spreadsheet programming.
 \end{desiderata}
@@ -671,7 +694,8 @@ whatever units make sense to you and get the same program out.
 \begin{desiderata}
     Allow constraints to interact during system update.
 \end{desiderata}
-\section{Time line}
+\section{Timeline}
+\label{sec:timeline}
 % TODO: a few sentences on: why this is a good order; what is the fallback
 % plan (perhaps have a stretch schedule and a fallback schedule? or perhaps
 % the fallback position is what we know now, and each of these is a time
