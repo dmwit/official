@@ -112,23 +112,23 @@ Some particularly simple regimes have already been explored. Four such
 regimes are discussed below, but it will be helpful to have a few
 conventions in place first.
 
-Fix a linearly ordered set $N$ of names and a universe $U$ of values. Since
-we are dealing with partial functions, we will use the convention that
+Fix a linearly ordered set $\Names$ of names and a universe $U$ of values.
+Since we are dealing with partial functions, we will use the convention that
 $a = b$ whenever both $a$ and $b$ are undefined or whenever $a$ and $b$ are
 defined and identical. Likewise, $a \in b$ means that both $a$ and $b$ are
 undefined or they are both defined and $a$ is a member of $b$.
 
 \begin{definition}
-    A \emph{valuation} is a finite map from $N$ to $U$.
+    A \emph{valuation} is a finite map from $\Names$ to $U$.
 \end{definition}
 
 We generalize valuation application from names to finite sets of names using
-the linear ordering on $N$: whenever $x_1 < \cdots < x_m$ is an increasing
-chain, $f(\{x_1,\ldots,x_m\}) = (f(x_1),\ldots,f(x_m))$.
+the linear ordering on $\Names$: whenever $x_1 < \cdots < x_m$ is an
+increasing chain, $f(\{x_1,\ldots,x_m\}) = (f(x_1),\ldots,f(x_m))$.
 
 \begin{definition}
-    A \emph{constraint} is a finite set $n \subset N$ together with a relation $R
-    \subset U^{|n|}$.
+    A \emph{constraint} is a finite set $n \subset \Names$ together with a
+    relation $R \subset U^{|n|}$.
 \end{definition}
 
 \begin{definition}
@@ -137,9 +137,9 @@ chain, $f(\{x_1,\ldots,x_m\}) = (f(x_1),\ldots,f(x_m))$.
 
 \begin{definition}
     The \emph{constraint system graph} induced by a set of constraints is
-    the undirected bipartite graph whose nodes are drawn from $N$ in one
-    part and constraints in the other, and which has an edge $(v,(n,R))$ iff
-    $v \in n$.
+    the undirected bipartite graph whose nodes are drawn from $\Names$ in
+    one part and constraints in the other, and which has an edge $(v,(n,R))$
+    iff $v \in n$.
 \end{definition}
 
 In some systems we discuss below, each constraint will have a clear notion
@@ -153,10 +153,10 @@ a directed variant of the constraint system graph.
 
 \begin{definition}
     The \emph{directed constraint system graph} induced by a set of pointed
-    constraints is a directed bipartite graph whose nodes are drawn from $N$
-    in one part and pointed constraints in the other. It has an edge from
-    $v$ to $(v',(n,R))$ iff $v \ne v'$ and $v \in n$, and it has an edge
-    from $(v',(n,R))$ to $v$ iff $v=v'$.
+    constraints is a directed bipartite graph whose nodes are drawn from
+    $\Names$ in one part and pointed constraints in the other. It has an
+    edge from $v$ to $(v',(n,R))$ iff $v \ne v'$ and $v \in n$, and it has
+    an edge from $(v',(n,R))$ to $v$ iff $v=v'$.
 \end{definition}
 
 \begin{definition}
@@ -184,16 +184,18 @@ constraint system graph with exactly two variables and exactly one
 constraint connecting them. You may only edit one of the variables at a
 time. Then, to propagate the change, you spread the change from the changed
 variable to the unchanged one.
-
+%
 We can take the idea of propagating change from changed variables to
 untouched ones somewhat: when the constraint system graph is a tree, an
 update to a single node may be propagated through the entire graph by
 treating the updated node as a root of the tree and updating the values of
 nodes in topologically-sorted order.
 
+We leave the discussion here short because this solution is completely
+subsumed by the solution in Section~\ref{sec:nonassociative_composition}.
+
 \subsection{Linear constraints}
-Here is a simple spreadsheet which nevertheless fails the tree-structured
-property described previously:
+Consider this simple, non-tree-structured spreadsheet:
 \begin{align*}
     tax &= 0.08*base \\
     total &= base + tax
@@ -240,8 +242,8 @@ specification:
 \[\aput(\x,\y) = \argmin{\x',\aget(\x')=\y}||\x' - \x||\]
 
 \begin{lemma}
-    There exists an $m \times n$ matrix $N$ such that
-    \[\aput(\x,\y) = \x + N(\y - \aget(\x))\]
+    There exists an $m \times n$ matrix $P$ such that
+    \[\aput(\x,\y) = \x + P(\y - \aget(\x))\]
     satisfies the specification above.
 \end{lemma}
 \emph{Proof sketch.} The intuition is that we wish to move as little as
@@ -257,7 +259,7 @@ we will take:
             \vdots \\
             \x_{m-n}\transpose
         \end{array}\right] \\
-    N &= \left[\begin{array}{c}
+    P &= \left[\begin{array}{c}
             M \\
             B
         \end{array}\right]^{-1}
@@ -267,11 +269,11 @@ we will take:
         \end{array}\right] \\
 \end{align*}
 Turning the sketch into a proof involves arguing three things: that the
-square matrix in the definition of $N$ is invertible; that $N$ produces a
-put function that roundtrips; and that the put function produced by $N$
+square matrix in the definition of $P$ is invertible; that $P$ produces a
+put function that roundtrips; and that the put function produced by $P$
 produces minimal changes. The definition above was crafted so that (assuming
-for the moment that $N$ exists) we have $MN = I$, which is used to show the
-roundtrip property, and $BN = \mathbf 0$, which is used to show minimality.
+for the moment that $P$ exists) we have $MP = I$, which is used to show the
+roundtrip property, and $BP = \mathbf 0$, which is used to show minimality.
 
 % TODO: finish this proof and replace the above sketch, maybe
 %\begin{proof}
@@ -288,7 +290,7 @@ roundtrip property, and $BN = \mathbf 0$, which is used to show minimality.
 %                \vdots \\
 %                \x_{m-n}\transpose
 %            \end{array}\right] \\
-%        N &= \left[\begin{array}{c}
+%        P &= \left[\begin{array}{c}
 %                M \\
 %                B
 %            \end{array}\right]^{-1}
@@ -298,28 +300,213 @@ roundtrip property, and $BN = \mathbf 0$, which is used to show minimality.
 %            \end{array}\right] \\
 %    \end{align*}
 %    We must now argue three things: that the square matrix in the definition
-%    of $N$ is invertible; that $N$ produces a put function that roundtrips;
-%    and that the put function produced by $N$ produces minimal changes. The
-%    definition above was crafted so that (assuming for the moment that $N$
-%    exists) we have $MN = I$, which is used to show the roundtrip property,
-%    and $BN = \mathbf 0$, which is used to show minimality.
+%    of $P$ is invertible; that $P$ produces a put function that roundtrips;
+%    and that the put function produced by $P$ produces minimal changes. The
+%    definition above was crafted so that (assuming for the moment that $P$
+%    exists) we have $MP = I$, which is used to show the roundtrip property,
+%    and $BP = \mathbf 0$, which is used to show minimality.
 %
 %    invertible: (TODO)
 %
 %    roundtrip:
 %        \begin{align*}
 %            \aget(\aput(\x,\y))
-%                &= M(\x+N(\y-M\x-\mathbf b))+\mathbf b & \mbox{definition of }\aget,\aput \\
-%                &= MN\y + M\x + \mathbf b - MN(M\x + \mathbf b) & \mbox{rearranging terms} \\
-%                &= \y & MN=I
+%                &= M(\x+P(\y-M\x-\mathbf b))+\mathbf b & \mbox{definition of }\aget,\aput \\
+%                &= MP\y + M\x + \mathbf b - MP(M\x + \mathbf b) & \mbox{rearranging terms} \\
+%                &= \y & MP=I
 %        \end{align*}
 %
 %    minimal: (TODO)
 %\end{proof}
 
-\subsection{Non-associative composition}
-% TODO: pick a better subsection name
-% TODO: write
+\subsection{Biased graph combination}
+\label{sec:nonassociative_composition}
+In the three previous solutions, we have carefully restricted the allowed
+graph topologies and valuation updates so that there is at most one best
+strategy for reinstating constraints. This skirts one of the major goals of
+the hyperlens project: developing tools that embrace ambiguous updates and
+provide tools for disambiguating. In this section, we will explore a setting
+with some slight ambiguity and a way to give programmer control. We will
+also allow multi-update, and give a type system describing statically
+solvable updates. The high-level idea is to combine two small constraints on
+variable sets $S$ and $T$ into a single large constraint on variable set $S
+\cup T$ in a biased way: the programmer designates one of the two
+constraints as special, and whenever an update could be resolved by
+resolving the two constraints in either order, we choose to resolve the
+special constraint first.
+
+Consider the spreadsheet given by these two schematic constraints:
+\begin{align*}
+    o_1 &= f(i_1, i_2) \\
+    o_2 &= g(i_1, i_2)
+\end{align*}
+Given an update to $i_1$, it may be possible to resolve these two
+constraints in either of the following two ways:
+\begin{itemize}
+    \item First, update $i_2$ and $o_1$ to restore the $f$ constraint.
+        Then, update $o_2$ without modifying $i_1$ or $i_2$ (so as not to
+        disrupt the already-restored $f$ constraint) to restore the $g$
+        constraint.
+    \item Symmetrically, first update $i_2$ and $o_2$ to restore the $g$
+        constraint, then update $o_1$ without modifying $i_1$ or $i_2$ to
+        restore the $f$ constraint.
+\end{itemize}
+It is perfectly reasonable for these two plans to choose different updated
+values for $i_2$. One way to resolve the tie is to give either $f$ or $g$
+higher priority.
+
+Let us call the objects of this simple solution \emph{multiway lenses}. We
+will give a definition, show how to combine multiway lenses (so that e.g.
+the above example would be the combination of one multiway lens for the $f$
+constraint and one for the $g$ constraint), and briefly discuss some
+limitations of this approach.
+
+\begin{definition}
+    Given $N\subset\Names$, a \emph{multiway lens} $\ell \in \mlens N$
+    is a triple $(\danger,\mput,K)$ where
+    \begin{itemize}
+        \item $\danger \in 2^{2^N}$ is a predicate on sets of names called the \emph{danger
+            zone} of $\ell$,
+        \item $\mput \in 2^N \to (N \to U) \to (N \to U)$ is an update
+            function which takes a set of names and a valuation on $N$ and
+            produces another valuation, and
+        \item $K$ is an invariant expressed as a predicate on valuations on
+            $N$.
+    \end{itemize}
+\end{definition}
+
+The danger zone will be our ``type system'': updates to sets of variables
+that are in the danger zone are statically unsolvable. The first argument to
+the $\mput$ function should be read as marking which variables have been
+updated. There are some well-formedness conditions on multiway lenses.
+First, we will want an analog of the lens framework's roundtrip laws. We
+will also ask that danger zones be sensible in the sense that updating more
+variables does not make the constraint system more solvable, and that the
+$\mput$ function restrain itself to modifying parts of the valuation that
+are not inputs.
+
+% TODO: define upwards-closed
+\begin{definition}
+    A multiway lens $\ell$ is \emph{well-formed} when it satisfies the
+    following laws:
+    \begin{itemize}
+        \item $\mput(i,f) \in K$ whenever $i \notin \danger$
+        \item $\mput(i,f) = f$ whenever $f \in K$
+        \item $\danger$ is upwards-closed
+        \item $\left.\mput(i,f)\right|_i = \left.f\right|_i$
+    \end{itemize}
+\end{definition}
+
+In the definition of multiway lens composition below, it will be convenient
+to extend $\mput$ functions so that they act on valuations that cover extra
+variables by leaving the extra variables' values unchanged.
+\begin{definition}
+    Suppose we have $N \subset M \subset \Names$, a lens $k \in \mlens{N}$,
+    a set of names $i \subset M$, and $f$ is a valuation on $M$. Then
+    $\focus(k,i,f)$ is a valuation on $M$:
+    \begin{align*}
+        \focus(k,i,f)(x) &= \cond{
+            k.\mput(i \cap N,f|_N)(x) & x \in N \\
+            f(x) & x \notin N
+        }
+    \end{align*}
+\end{definition}
+
+\begin{definition}
+    Suppose $k \in \mlens{N_k}$ and $\ell \in \mlens{N_\ell}$ and let $S =
+    N_k \cap N_\ell$ be the set of shared variables. Then the composition
+    $k\mid\ell \in \mlens{N_k \cup N_\ell}$ of $k$ and $\ell$ has:
+    \begin{align*}
+        \danger &= k.\danger \cup \ell.\danger \cup
+            \{(d_k \cup d_\ell) \setminus S
+            \mid d_k \in k.\danger, d_\ell \in \ell.\danger\} \\
+        \mput(i) &= \cond{
+            \focus(\ell,i\cup S) \circ \focus(k,i)
+                & i \notin k.\danger \land i\cup S \notin \ell.\danger \\
+            \focus(k,i\cup S) \circ \focus(\ell,i)
+                & \mbox{otherwise}
+            } \\
+        K(f) &= k.K(f|_{N_k}) \land \ell.K(f|_{N_\ell})
+    \end{align*}
+\end{definition}
+
+\begin{lemma}
+    $k\mid\ell$ is well-formed whenever $k$ and $\ell$ are.
+\end{lemma}
+
+In the definition of $(k\mid\ell).\mput$, there are two clauses
+corresponding to running $k$ first and running $\ell$ first, respectively.
+The side condition on the first clause---$i \notin k.\danger \land i \cup S
+\notin \ell.\danger$---itself has two parts that amount to
+checking that we can safely run $k.\mput$ and that we can treat all of the
+outputs of $k.\mput$ as inputs when running $\ell.\mput$, respectively. The
+bias alluded to above arises from the fact that the second clause is active
+only when the first clause fails; in cases where it is safe to run either
+$k$ or $\ell$ first, we arbitrarily choose to run $k$ first.
+
+The danger zone defined for composition ensures that it is safe to run one
+of the two sub-multiway lenses first. Returning to our example, suppose the
+base lenses $\ell_f$ and $\ell_g$ for the $f$ and $g$ constraints had danger
+zones saying only that we can not update all three variables involved at
+once, that is:
+\begin{align*}
+    \ell_f.\danger &= \{\{i_1,i_2,o_1\}\} \\
+    \ell_g.\danger &= \{\{i_1,i_2,o_2\}\}
+\end{align*}
+Then, the danger zone for $\ell_f \mid \ell_g$ would be
+\[\{\{i_1,i_2,o_1\},\{i_1,i_2,o_2\},\{o_1,o_2\}\}\]
+which says that an update is dangerous if it's dangerous for either of the
+sub-multiway lenses \emph{or} if it changes both outputs at once. In the
+latter case, it would not be safe to run either sub-multiway lens first,
+since this would over-constrain the other sub-multiway lens.
+
+Multiway lenses are an attractively simple formalism, but they do have some
+serious drawbacks. For example, it is clear by design that composition is
+not commutative. A more subtle and important failing is that composition is
+not \emph{associative}. This is because the composition discussed here
+treats its components as black boxes: it will run each of its components as
+a chunk. As a result, we find that $(k \mid \ell) \mid m$ will always run
+$m$ either first or last---never in between $k$ and $\ell$---and will
+therefore sometimes fail where $k \mid (\ell \mid m)$ can succeed by
+choosing one of these $m$-in-the-middle orderings.
+
+%We can also define renaming on names in the lens' domain.
+%\begin{definition}
+%    Given $\ell \in \mlens N$ and two names $V \in N$ and $W \notin N$, we can
+%    give the renaming $\ell[W/V]$:
+%    \begin{align*}
+%        \danger &= \{d[W/V] \mid d \in \ell.\danger\} \\
+%        \mput(i,f) &= \ell.\mput(i[V/W], f[V/W])[W/V] \\
+%        K(f) &= \ell.K(f[V/W])
+%    \end{align*}
+%\end{definition}
+%
+%\subsection{Primitive Lenses}
+%\begin{definition}
+%    The identity lens $\id : \mlens{\{A,B\}}$ is defined as follows:
+%    \begin{align*}
+%        \danger &= \{\{A,B\}\} \\
+%        \mput(\{A\},f) &= f[B \mapsto f(A)] \\
+%        \mput(\{B\},f) &= f[A \mapsto f(B)] \\
+%        \mput(\{\},f) &= f[A \mapsto f(B)] \\
+%        K(f) &= f(A) == f(B)
+%    \end{align*}
+%\end{definition}
+%
+%For a value $u \in U$, we define a constant lens which enforces the
+%invariant that a cell is always equal to $u$.
+%
+%\begin{definition}
+%    If $u \in U$ then the constant lens
+%    $\const(u) : \mlens{\{A\}}$ is defined as:
+%    \begin{align*}
+%        \danger &= A \\
+%        \mput(i,f) &= \lambda v. u \\
+%        K(f) &= f(A) == u
+%    \end{align*}
+%\end{definition}
+%
+%Conjecture: all these lenses and combinators are well-behaved.
 
 \section{Design axes}
 
@@ -484,3 +671,32 @@ whatever units make sense to you and get the same program out.
 \begin{desiderata}
     Allow constraints to interact during system update.
 \end{desiderata}
+\section{Time line}
+% TODO: a few sentences on: why this is a good order; what is the fallback
+% plan (perhaps have a stretch schedule and a fallback schedule? or perhaps
+% the fallback position is what we know now, and each of these is a time
+% limit on investigations into each extension)
+% TODO: just one instance of 1 month for publishing, and have it be ``in
+% parallel'' so to speak
+\begin{itemize}
+    \item low-level ambiguity guides (2 months)
+    \item high-level ambiguity guides (1 months)
+    \item publish (1 month)
+    \item incorporating linear black boxes and cyclic solvers (1 months)
+    \item extending linear solution to more exciting functions (2 months)
+    \item publish (1 month)
+    \item unfinished journal papers (1 month)
+    \item defense writing (3 months)
+\end{itemize}
+Potential publication targets:
+\begin{itemize}
+% TODO: PADL
+    \item ICSE (mid-September)
+    \item ESOP (early October)
+    \item PLDI (mid-November)
+    \item FLOPS (mid-December)
+    \item ICLP (mid-April)
+\end{itemize}
+\begin{center}
+\includegraphics[scale=0.6]{timeline.pdf}
+\end{center}
