@@ -27,8 +27,8 @@ Transcript written on
 > <\./[^.]*.pdf
 ^<\(images\|pdf\)/[^.]*\.pdf
 ^$
-^pdfTeX warning: pdflatex (file .*): PDF inclusion: Page Group d
-^etected which pdfTeX can't handle. Ignoring it.
+^pdfTeX warning: pdflatex (file .*): PDF inclusion: Page Group
+which pdfTeX can't handle. Ignoring it.
 /usr/share/texlive
 ^This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian)
 ^ restricted \\write18 enabled.
