@@ -9,6 +9,9 @@ spreadsheets to be many-directional when possible. However, current systems
 do not use old states of the system to guide the computation of new states;
 any system state which satisfies the given constraints is allowed.
 
+% TODO: Benjamin says: ``This intro is going to get some more polishing,
+% right?''
+
 The goal of the hyperlenses project is to merge the three systems, giving a
 way of maintaining constraints between many pieces of data that, when given
 an update to some part of the system, finds an ``analogous'' update to the
@@ -49,6 +52,7 @@ and so on, with ten constraints in all (one each for days 1, 2, 3, 4, 5, and
 Total, and one each for categories Travel, Lodging, Food, and Total). Here
 are some things a user might want to do with this setup:
 \begin{itemize}
+    % TODO: about this \item, Benjamin says: ``?''
     \item The user might go on another vacation, and want to make an
         estimate of how much he spent on food given his credit card balance
         at the end of the trip. To do this, he might update
@@ -66,6 +70,9 @@ are some things a user might want to do with this setup:
         this on the last vacation, but he knows that in total he spent about
         \$800 on entertainment, so he updates the new
         $\mathrm{Entertainment}_\mathrm{Total}$ cell to 800.
+        % TODO: Benjamin says: ``And then...?
+        %
+        % Overall, it seems like these use cases could be crisper.``
 \end{itemize}
 
 \section{Goal statement}
@@ -104,8 +111,9 @@ that there is some holistic language (that is, which does not require
 intimate knowledge of the structure of the term used to define the
 hyperlens) for expressing the relative desirability of the various coherent
 updates to the system. The system should then be able to compute the most
-desirable update. For example, one such language might be, ``spread as much
-of the change as possible to such-and-such a variable''.
+desirable update. For example, being able to request that a particular
+variable be a sink for as much of the change as possible would satisfy this
+requirement.
 
 % TODO: cite a few use cases with the high-level planning we want for each
 \section{Simplistic solutions}
@@ -160,6 +168,7 @@ a directed variant of the constraint system graph.
     an edge from $(v',(n,R))$ to $v$ iff $v=v'$.
 \end{definition}
 
+% TODO: Benjamin says: ``We need an example to follow all this.''
 \begin{definition}
     A \emph{root node} is a node in a directed graph with in-degree zero.
 \end{definition}
@@ -187,7 +196,7 @@ time. Then, to propagate the change, you spread the change from the changed
 variable to the unchanged one.
 %
 We can take the idea of propagating change from changed variables to
-untouched ones somewhat: when the constraint system graph is a tree, an
+untouched ones somewhat further: when the constraint system graph is a tree, an
 update to a single node may be propagated through the entire graph by
 treating the updated node as a root of the tree and updating the values of
 nodes in topologically-sorted order.
@@ -208,7 +217,7 @@ is still definitely possible to bidirectionalize this spreadsheet.
 Suppose each constraint in the spreadsheet is \emph{linear}, that is, has
 the form
 \[x = b+\sum_ic_iy_i\]
-for some constants $b$ and $\bf c$. Additionally, we take the topological
+for some constants $b$ and $\overline c$. Additionally, we take the topological
 constraints that the directed constraint system graph has no (directed)
 cycles or nodes with high in-degree. (Note that the two-equation spreadsheet
 above has cycles in its constraint system graph but not its directed
@@ -252,6 +261,7 @@ specification:
 possible in source-space to match the move in target-space. This can be
 achieved by minimizing how far we move in the null space of $M$, since
 (exactly) these motions result in no motion in target-space.
+% TODO: Benjamin says: ``Remind what the null space is?''
 
 Take a basis $\{\x_1,\ldots,\x_{m-n}\}$ for the null space of $M$. Then
 we will take:
@@ -513,12 +523,13 @@ choosing one of these $m$-in-the-middle orderings.
 \section{Design axes}
 \label{sec:design_axes}
 A full solution could reasonably build on either the restrictive constraints
-or the restrictive topology solutions given above. Because it seems
+of the linear solution
+or the restrictive topology of the tree-structured solution. Because it seems
 difficult to extend the restrictive constraints solution sufficiently to
 achieve our top-level goal of embedding all asymmetric, state-based lenses,
 the approach of extending the restrictive topology solution seems more
 promising. Below, we discuss some of the difficulties that should be addressed
-by a successful extension.
+by a successful generalization.
 
 There is a distinction between the dynamic and static semantics of a
 constraint system graph. Unless specified otherwise, all discussion is of
@@ -529,11 +540,13 @@ the static semantics.
             requested updates have multiple satisfying valuations.
         \item[Dynamically unsolvable] means the current set of constraints and
             requested updates have no satisfying valuations.
+            % TODO: these definitions of statically ambiguous and statically
+            % unsolvable are awful
         \item[Statically ambiguous] means there is a set of requested updates
             and a set of constraints whose graph is the current one which is
             dynamically ambiguous.
         \item[Statically unsolvable] means there is a set of requested updates
-            and a set of constraints whose graph the current one which is
+            and a set of constraints whose graph is the current one which is
             dynamically unsolvable.
     \end{description}
 \end{definition}
@@ -603,6 +616,9 @@ that can take an update to one of the variables and produce a value of the
 other variable that satisfies the constraint. The question now becomes: can
 we take an update to one variable, say, $x$, and produce updates to the
 other two that reinstate all three constraints?
+% TODO: Benjamin says: ``Overall, the document needs a bunch of high-level
+% signposting. The reader needs to understand why they are being told all
+% this stuff, not just the stuff...''
 
 The naive approach, where we compute $y$ from our assumed method that
 reinstates the $\{x,y\}$ constraint and $z$ from our assumed method that
@@ -695,6 +711,9 @@ whatever units make sense to you and get the same program out.
 \begin{desiderata}
     Allow constraints to interact during system update.
 \end{desiderata}
+% TODO: Benjamin says: ``Some discussion is needed about (a) what's been
+% done and learned so far, and (b) what, concretely, you plan to do, and
+% what you expect the result to be.''
 \section{Timeline}
 \label{sec:timeline}
 Currently, the most promising approach is to use local constraint
