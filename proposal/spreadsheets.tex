@@ -259,11 +259,12 @@ specification:
 \end{lemma}
 \emph{Proof sketch.} The intuition is that we wish to move as little as
 possible in source-space to match the move in target-space. This can be
-achieved by minimizing how far we move in the null space of $M$, since
-(exactly) these motions result in no motion in target-space.
-% TODO: Benjamin says: ``Remind what the null space is?''
-
-Take a basis $\{\x_1,\ldots,\x_{m-n}\}$ for the null space of $M$. Then
+achieved by minimizing how far we move in the null space of
+$M$\footnote{Recall that the null space of $M$ is the set $\{x\mid
+Mx=\mathbf 0\}$.}, since (exactly) these motions result in no motion in
+target-space.
+%
+Choose a basis $\{\x_1,\ldots,\x_{m-n}\}$ for the null space of $M$. Then
 we will take:
 \begin{align*}
     B &= \left[\begin{array}{c}
@@ -398,7 +399,14 @@ variables does not make the constraint system more solvable, and that the
 $\mput$ function restrain itself to modifying parts of the valuation that
 are not inputs.
 
-% TODO: define upwards-closed
+% TODO: perhaps we can get away without having upwards closure at all! just
+% change the meaning of the danger zone: instead of listing all dangerous
+% inputs, it lists the ``dangerous bases'', so to speak
+\begin{definition}
+    A set $D$ is \emph{upwards-closed} if $i \in D$ and $N \subset \Names$
+    implies $i \cup N \in D$.
+\end{definition}
+
 \begin{definition}
     A multiway lens $\ell$ is \emph{well-formed} when it satisfies the
     following laws:
@@ -460,7 +468,7 @@ $k$ or $\ell$ first, we arbitrarily choose to run $k$ first.
 The danger zone defined for composition ensures that it is safe to run one
 of the two sub-multiway lenses first. Returning to our example, suppose the
 base lenses $\ell_f$ and $\ell_g$ for the $f$ and $g$ constraints had danger
-zones saying only that we can not update all three variables involved at
+zones saying only that we cannot update all three variables involved at
 once, that is:
 \begin{align*}
     \ell_f.\danger &= \{\{i_1,i_2,o_1\}\} \\
@@ -537,20 +545,31 @@ constraint system graph. Unless specified otherwise, all discussion is of
 the static semantics.
 \begin{definition} Semantics:
     \begin{description}
-        \item[Dynamically ambiguous] means the current set of constraints and
-            requested updates have multiple satisfying valuations.
-        \item[Dynamically unsolvable] means the current set of constraints and
-            requested updates have no satisfying valuations.
-            % TODO: these definitions of statically ambiguous and statically
-            % unsolvable are awful
-        \item[Statically ambiguous] means there is a set of requested updates
-            and a set of constraints whose graph is the current one which is
-            dynamically ambiguous.
-        \item[Statically unsolvable] means there is a set of requested updates
-            and a set of constraints whose graph is the current one which is
-            dynamically unsolvable.
+        \item[Dynamically ambiguous] means the current instantiation of the
+            graph's constraints and requested updates have multiple
+            satisfying valuations.
+        \item[Dynamically unsolvable] means the current instantiation of the
+            graph's constraints and requested updates have no satisfying
+            valuations.
+        \item[Statically ambiguous] means the graph can be instantiated with
+            constraints and requested updates which have multiple satisfying
+            valuations.
+        \item[Statically unsolvable] means the graph can be instantiated
+            with constraints and requested updates which have no satisfying
+            valuation.
     \end{description}
 \end{definition}
+For an example of the difference between dynamic and static, consider the
+very simple spreadsheet:
+\begin{align*}
+    x &= y \\
+    x &= z
+\end{align*}
+The requested update $\{y=3,z=3\}$ is dynamically solvable because we can
+choose $x=3$ to get a complete, consistent valuation. On the other hand,
+$\{y=3,z=4\}$ is dynamically unsolvable. Because there are requested values
+for $y$ and $z$ that are dynamically unsolvable, the requested update
+$\{y=3,z=3\}$ is statically unsolvable.
 
 \subsection{Sources of ambiguity}
 \subsubsection{Intra-constraint ambiguity}

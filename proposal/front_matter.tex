@@ -68,44 +68,40 @@ Graduate Group Chairperson}
 
 Bidirectional situations are all around us: we synchronize bookmarks, keep
 clones of our data on our mobile devices, edit collaboratively, use GUIs to
-visualize and modify chunks of our data. In these situations, we must write
-programs that translate back and forth between two data sets which
-potentially use different storage formats and sometimes even record
-differing characteristics of the data. The framework of lenses has been
-% TODO: citation, maybe?
-proposed as one tool to aid in the creation and maintenance of these
-translations by giving a single program which can be interpreted as both a
-forward and backward translation.
+visualize and modify chunks of our data, and more. In these situations, we
+must write programs that translate back and forth between two data sets
+which potentially use different storage formats and sometimes even record
+differing characteristics of the data. The framework of
+lenses~\cite{FosterThesis} aids in the creation and maintenance of these
+translations by allowing the programmer to write a single program which can
+be interpreted as both a forward and backward translation.
 
 The basic lens framework, however, makes some assumptions about how the
 transformations they describe will be used:
 \begin{enumerate}
-    \item There is a ``source repository'' which stores all of the data of
-        interest and ``view repository'' which stores less data.
-    \item It is reasonable to transmit and traverse entire repositories.
-    \item There are two repositories of interest (or at least, if there are
-        many repositories, they can reasonably be linked pairwise).
+    \item One data set is less informative than the other, and can be
+        completely recreated just by examining the more informative data
+        set.
+    \item It is reasonable to transmit and traverse entire data sets.
+    \item There are just two data sets being synchronized (or at least, if
+        there are many data sets, they can reasonably be linked pairwise).
 \end{enumerate}
-For some decentralized applications, there are two repositories which share
+For some decentralized applications, there are two data sets which share
 some data, but which also each have their own unshared data; because there
-is no master source repository, assumption (1) is violated. For large data
-sets, it is reasonable to hope that one could store and transmit small
-descriptions of recent changes to the repositories, which violates
-assumption (2). Finally, some business applications can be phrased as having
-many data repositories with intricate webs of connections between them,
-violating assumption (3).
+is no master data set, assumption (1) is violated. For large data sets, it
+is reasonable to hope that one could store and transmit small descriptions
+of recent changes (e.g. transmitting a diff rather than an entire updated
+file), which violates assumption (2). Finally, a variant of spreadsheets
+(where formulas for computing cell values are made bidirectional) can be
+understood as many data sets---one for each cell---with intricate webs of
+connections between them, violating assumption (3).
 
 We will describe the generalized lens frameworks of symmetric lenses, which
 relax assumption (1), and edit lenses, which relax assumption (2). We
 propose a novel lens framework based on local constraint propagation which
 relaxes assumption (3).
-% TODO
-% - don't talk about business applications, talk about spreadsheets
-% - repositories is jargon
-% - in general, make a pass to make sure that everything is understandable
-%   to outsiders
-% - add to the last paragraph: have one paragraph on what will be in the
-%   dissertation, and one on what is in the proposal
+% TODO: add to the last paragraph: have one paragraph on what will be in the
+% dissertation, and one on what is in the proposal
 
 \vspace*{\fill}
 
