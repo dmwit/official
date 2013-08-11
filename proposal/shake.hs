@@ -1,5 +1,6 @@
 import Development.Shake
 import Development.Shake.FilePath
+import System.Posix.Env
 
 -- TODO: learn enough more stuff about shake that you understand why this doesn't work correctly
 -- TODO: handle graphics files and stuff
@@ -11,13 +12,17 @@ sourcesWith s = [f ++ "." ++ s | f <- sources]
 pdflatex out = system' "pdflatex" ["-interaction=nonstopmode", dropExtension out]
 
 main = shakeArgs shakeOptions $ do
-	want ["paper.pdf"]
+	want ["paper.pdf", "presentation.pdf"]
 	sourcesWith "aux" *>> \_ -> do
 		need (sourcesWith "tex")
 		pdflatex "paper"
 	["*.blg", "*.bbl"] *>> \[blg, bbl] -> do
 		need (sourcesWith "aux" ++ bibs)
 		system' "bibtex" [dropExtension blg]
-	"*.pdf" *> \out -> do
+	"paper.pdf" *> \out -> do
 		need (replaceExtension out "tex" : replaceExtension out "bbl" : sourcesWith "aux")
+		pdflatex out
+	"presentation.pdf" *> \out -> do
+		need [replaceExtension out "tex", replaceExtension out "aux"]
+		liftIO $ setEnv "TEXINPUTS" "..:" True
 		pdflatex out
