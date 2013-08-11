@@ -1,0 +1,100 @@
+=== Done ===
+
+% TODO: citation, maybe?
+proposed as one tool to aid in the creation and maintenance of these
+% TODO: definitely needs a citation here
+The lens framework attempts to address this problem by giving a language of
+% TODO
+% - don't talk about business applications, talk about spreadsheets
+% - repositories is jargon
+% - in general, make a pass to make sure that everything is understandable
+%   to outsiders
+            % TODO: these definitions of statically ambiguous and statically
+            % unsolvable are awful
+% TODO: define upwards-closed
+\begin{definition}
+% TODO: Benjamin says: ``Remind what the null space is?''
+
+
+=== High priority ===
+
+% - add to the last paragraph: have one paragraph on what will be in the
+%   dissertation, and one on what is in the proposal
+% TODO: Benjamin says: ``This chapter needs to open with some text about the
+% state of this part of the work and what, if anything, remains to be done
+% to it.''
+
+% TODO: Benjamin says: ``This intro is going to get some more polishing,
+% right?''
+
+=== Unprioritized ===
+
+% TODO: part of the point of this is that all that can be done without
+% complements, and this point needs to be made somehow for the next section
+% to make sense
+
+% TODO: comments from Benjamin:
+% A small suggestion is that you may want to explain stratification.
+%
+% A slightly bigger one is that if Tiresias is very close to your work you
+% may want to explain it in more detail.
+%
+% An open ended one is that you may get questions at your defense about how
+% sure you are that you've found all the work that's related.  But you can
+% do some more literature search between now and then -- this seems fine for
+% the document.
+
+    % TODO: about this \item, Benjamin says: ``?''
+    \item The user might go on another vacation, and want to make an
+        % TODO: Benjamin says: ``And then...?
+        %
+% TODO: cite a few use cases with the high-level planning we want for each
+\section{Simplistic solutions}
+% TODO: Benjamin says: ``We need an example to follow all this.''
+\begin{definition}
+% TODO: Benjamin says: ``Overall, the document needs a bunch of high-level
+% signposting. The reader needs to understand why they are being told all
+% this stuff, not just the stuff...''
+
+% TODO: Benjamin says: ``Some discussion is needed about (a) what's been
+% done and learned so far, and (b) what, concretely, you plan to do, and
+% what you expect the result to be.''
+\section{Timeline}
+
+=== If there's time: ===
+
+% TODO: things we know that aren't discussed here:
+% - all the lens operations needed to implement the transformations we
+%   discussed here, plus some for containers
+% - recursion (right?)
+% - machinery needed to show these operations are ``well-behaved'' (in
+%   particular, have categorical descriptions)
+% - exploration of different choices for several operators that are still
+%   ``well-behaved'', and their tradeoffs
+% TODO: see spreadsheet_resources.txt in triple-threat repository
+Lenses keep two similar pieces of data consistent; as either one evolves,
+
+=== Probably not that useful: ===
+
+% TODO: picture
+
+% TODO: also, many (most?) of the constraint propagation systems are about
+% making GUIs, which we aren't really that interested in primarily: the data
+% we're munging is user-visible (perhaps this is a serious point to make!)
+
+% TODO: how to remove the enormous space after each chapter heading?
+% (seems the memoir class can do this; look into it if there's time to mess
+% with such prettification)
+
+=== Definitely not happening: ===
+
+% TODO: finish this proof and replace the above sketch, maybe
+
+% TODO: fill in the acknowledgments section
+%\chapter*{Acknowledgments}
+% TODO: cleanup (remove ifs, rework wording so it fits in this document)
+\newif \iftext  \texttrue
+% TODO: cleanup (remove ifs, rework wording so it fits in this document)
+\newif \iffull  \fulltrue
+% TODO: clean up the source (remove ifs and stuff like that)
+\section{Background}
