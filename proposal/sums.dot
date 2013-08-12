@@ -1,0 +1,8 @@
+digraph sums {
+subgraph { rank = same; A1 -> plus1;   B1 -> plus1; plus1 -> sum1; }
+subgraph { rank = same; A2 -> plus2;   B2 -> plus2; plus2 -> sum2; }
+subgraph { rank = same; A1 -> plusA;   B1 -> plusB;                sum1 -> plussumcol; }
+subgraph { rank = same; A2 -> plusA;   B2 -> plusB;                sum2 -> plussumcol; }
+subgraph { rank = same; plusA -> Asum; plusB -> Bsum;              plussumcol -> sumsum; }
+subgraph { rank = same; Asum -> plussumrow; Bsum -> plussumrow; plussumrow -> sumsum; }
+}
