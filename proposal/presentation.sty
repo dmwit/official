@@ -39,7 +39,8 @@
             \draw
                 #1
                 node[on chain,anchor=north]  (\name-web-pic) {\lolcat{\name}}
-                node                         (\name-web-tag) {}
+                (\name-web-pic)
+                node[anchor=center]          (\name-web-tag) {}
                 ;
         }
     \end{scope}

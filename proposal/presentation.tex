@@ -495,5 +495,40 @@
     \end{center}
 \end{frame}
 
+\begin{frame}
+    \begin{center}
+        \begin{tikzpicture}
+            \lolcattags{}
+                {palindrome/{costume,food},
+                 gamer/{costume},
+                 froghead/{costume},
+                 burrito/{food,onlyface},
+                 withperson/{\ }}
+            \webborder{palindrome}{withperson}
+            \lolcatnotags{(palindrome-web-pic.north east) ++(4,0)}
+                {palindrome/{},
+                 gamer/{},
+                 froghead/{}}
+            \webborder{palindrome}{froghead}
+            \path (web.south) node[below] {costume};
+            \lolcatnotags{(palindrome-web-pic.north east) ++(2,0)}
+                {palindrome/{},
+                 burrito/{}}
+            \webborder{palindrome}{burrito}
+            \path (web.south) node[below] {food};
+            \lolcatnotags{(burrito-web-pic.south) ++(0,-1.5)}
+                {burrito/{}}
+            \webborder{burrito}{burrito}
+            \path (web.south) node[below] {onlyface};
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \includegraphics[scale=0.5]{images/spreadsheet.png}
+    \end{center}
+\end{frame}
+
 \section{Logistics}
 \end{document}
