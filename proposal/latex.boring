@@ -42,3 +42,36 @@ ABD: EveryShipout initializing macros
 ^s with page group included in a single page
 ^\([(<]*[a-z._/][>) ]*\)*$
 ^This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
+^This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013)
+^Babel <3.9f> and hyphenation patterns for 2 languages loaded.
+^cs-revision e81e0c94bcc6)
+^)$
+^\*geometry\* driver: auto-detecting
+^\*geometry\* detected driver: pdftex
+-dictionary/translator-[a-z]*-dictionary-English.dict
+^Package hyperref Message: Stopped early.
+^Package hyperref Message: Driver (autodetected): hpdftex.
+^LaTeX Font Warning: Font shape `[a-zA-Z1-9/]*' in size <[1-9.]*> not available
+^(Font)              size <[1-9.]*> substituted on input line
+^LaTeX Font Warning: Size substitutions with differences
+^(Font)              up to 1\.0pt have occurred.
+^\\OT1/cmr/m/n/10\.95 As with sym-met-ric lenses, we will build our edit lens be-t
+^ween \\$(\OML/cmm/m/it/10.95 X \OMS/cmsy/m/n/10.95 \^\^B \OML/cmm/m/it/10\.95 Y\\OT1/
+^cmr/m/n/10\.95 )\[\]\$ and \$(\\OML/cmm/m/it/10.95 X \\OMS/cmsy/m/n/10.95 \^\^B \\OML/cmm
+^/m/it/10\.95 Z\\OT1/cmr/m/n/10.95 )\[\]\$ compositionally---
+^fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+^This is BibTeX, Version 0\.99d (TeX Live 2013)
+^Underfull \\hbox (badness 10000) has occurred while \\output is active
+^ )$
+^pe1/public/amsfonts/cm/cmss8.pfb>$
+^[][ ]*$
+<\(use \)\?cats/[a-z]*_full.jpg
+^Overfull 
+^Underfull 
+^Semantic Package v2\.0(epsilon) \[2003/10/28\]$
+^CVSId: \$Id: semantic\.dtx,v 1\.11 2003/10/28 13:45:57 turtle Exp \$$
+^Loading features: $
+^ math mode ligatures,$
+^ inference rules,$
+^)  short hands,$
+^) (\./presentation\.aux)$

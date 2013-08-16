@@ -1,16 +1,368 @@
 \documentclass[14pt]{beamer}
+\author{Daniel Wagner}
 \usepackage{tikz}
-\usepackage{beamer_minimal}
+\usepackage[draft]{beamer_minimal}
+\usepackage{presentation}
+\usepackage{amssymb}
+\usepackage{semantic}
+% TODO: related work throughout
+% TODO: be clear throughout about collaborators
 \begin{document}
 
+% TODO: graphic?
 \title{Generalizing Lenses}
-\author{Daniel Wagner}
 \date[University of Pennsylvania]{August 19, 2013}
 \maketitle
 
-\section{Start}
 \begin{frame}
-    \frametitle{Frame 1}
-    Look, a proposal defense!
+    \frametitle{Thesis Proposal}
+    \alert<2>{There are many fundamentally bidirectional settings}
+    \alert<3>{that call for generalizations of traditional lenses}
+    \alert<4>{where a language is possible and helpful.}
 \end{frame}
+
+% TODO: make it clear which bits predate me, which bits I helped with, which
+% bits are not yet done
+\begin{frame}
+    \frametitle{Overview}
+    \tableofcontents
+\end{frame}
+
+\section{Traditional lenses}
+\begin{frame}
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[short picture tree]
+                node (root) {} child {
+                    node (Jan) {Jan}
+                        \lolcatchildren{palindrome,gamer}
+                } child {
+                    node (May) {May}
+                        \lolcatchildren{froghead}
+                }
+                ;
+            \lolcatnotagsdef{froghead-fs-pic}
+                {palindrome/{costume,food},gamer/{costume},froghead/{costume}}
+            \fswebborder{palindrome}{froghead}
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[short picture tree]
+                node (root) {} child {
+                    node (Jan) {Jan}
+                        \lolcatchildren{palindrome,gamer}
+                } child {
+                    node (May) {May}
+                        \lolcatchildren{froghead}
+                }
+                ;
+            \lolcatnotagsdef{froghead-fs-pic}
+                {palindrome/{costume,food},gamer/{costume},froghead/{costume},burrito/{onlyface}}
+            \node[fit=(burrito-web-pic)] (burrito-web-alert) {};
+            \path[rounded corners,draw=alertgreen]
+                ($(burrito-web-alert.north west) +(0.25,-0.25)$) rectangle
+                ($(burrito-web-alert.south east) +(-0.25,0.25)$);
+            \fsborder{palindrome}{froghead}
+            \webborder{palindrome}{burrito}
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[short picture tree]
+                node (root) {} child {
+                    node (Jan) {Jan}
+                        \lolcatchildren{palindrome,gamer}
+                } child {
+                    node (May) {May}
+                        \lolcatchildren{froghead}
+                } child {
+                    node        (burrito-fs-name) {\tiny ???}
+                    node[below] (burrito-fs-pic)  {\lolcat{burrito}}
+                }
+                ;
+            \lolcatnotagsdef{burrito-fs-pic}
+                {palindrome/{costume,food},gamer/{costume},froghead/{costume},burrito/{onlyface}}
+            \fswebborder{palindrome}{burrito}
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[narrow picture tree]
+                node (root) {} child {
+                    node (Jan) {Jan}
+                        \lolcatchildren{palindrome,gamer}
+                } child {
+                    node (May) {May}
+                        \lolcatchildren{froghead}
+                } child[sibling distance=1.33cm] {
+                    node        (burrito-fs-name) {\tiny burrito.jpg}
+                    node[below] (burrito-fs-pic)  {\lolcat{burrito}}
+                } child[sibling distance=1.33cm] {
+                    node        (withperson-fs-name) {\tiny withperson.jpg}
+                    node[below] (withperson-fs-pic)  {\lolcat{withperson}}
+                }
+                ;
+            \node[fit=(withperson-fs-name) (withperson-fs-pic)] (withperson-fs-alert) {};
+            \path[rounded corners,draw=alertgreen]
+                ($(withperson-fs-alert.north west) +(0.25,-0.25)$) rectangle
+                ($(withperson-fs-alert.south east) +(-0.25,0.25)$);
+            \lolcatnotags{(root.north -| withperson-fs-pic.east) +(1.3,0)}
+                {palindrome/{costume,food},
+                 gamer/{costume},
+                 froghead/{costume},
+                 burrito/{food,onlyface}}
+            \fsborder{palindrome}{withperson}
+            \webborder{palindrome}{burrito}
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[narrow picture tree]
+                node (root) {} child {
+                    node (Jan) {Jan}
+                        \lolcatchildren{palindrome,gamer}
+                } child {
+                    node (May) {May}
+                        \lolcatchildren{froghead}
+                } child[sibling distance=1.33cm] {
+                    node        (burrito-fs-name) {\tiny burrito.jpg}
+                    node[below] (burrito-fs-pic)  {\lolcat{burrito}}
+                } child[sibling distance=1.33cm] {
+                    node        (withperson-fs-name) {\tiny withperson.jpg}
+                    node[below] (withperson-fs-pic)  {\lolcat{withperson}}
+                }
+                ;
+            \lolcatnotags{(root.north -| withperson-fs-pic.east) +(1.3,0)}
+                {palindrome/{costume,food},
+                 gamer/{costume},
+                 froghead/{costume},
+                 burrito/{food,onlyface},
+                 withperson/{\ }}
+             \fswebborder{palindrome}{withperson}
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    % TODO: forgot create!
+    \frametitle{Abstract model}
+    A lens $\ell \in X \aslens Y$ has components
+    \begin{align*}
+        get &\in X \to Y \\
+        put &\in Y \times X \to X
+    \end{align*}
+    \pause
+    Synchronizing too often doesn't hurt.
+    \begin{align*}
+        get(put(y,x))&=y \\
+        put(get(x),x)&=x \\
+        \only<3>{\color{gray}put(y_2,put(y_1,x))&\color{gray}=put(y_2,x)}
+    \end{align*}
+    \only<3>{\color{gray}Not synchronizing often enough doesn't hurt.}
+\end{frame}
+
+% TODO: list the reams of work here on point-free instantiation languages,
+% including for strings, relational databases, trees, etc.
+
+\section{Symmetry}
+\begin{frame}
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[narrow picture tree]
+                node (root) {} child {
+                    node (Jan) {Jan}
+                        \lolcatchildren{palindrome,gamer}
+                } child {
+                    node (May) {May}
+                        \lolcatchildren{froghead}
+                } child[sibling distance=1.33cm] {
+                    node        (burrito-fs-name) {\tiny burrito.jpg}
+                    node[below] (burrito-fs-pic)  {\lolcat{burrito}}
+                } child[sibling distance=1.33cm] {
+                    node        (withperson-fs-name) {\tiny withperson.jpg}
+                    node[below] (withperson-fs-pic)  {\lolcat{withperson}}
+                }
+                ;
+            \lolcatnotags{(root.north -| withperson-fs-pic.east) +(1.3,0)}
+                {palindrome/{costume,food},
+                 gamer/{costume},
+                 froghead/{costume},
+                 burrito/{food,onlyface},
+                 withperson/{\ }}
+             \fswebborder{palindrome}{withperson}
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[narrow picture tree]
+                node (root) {} child {
+                    node (Jan) {Jan}
+                        \lolcatchildren{palindrome,gamer}
+                } child {
+                    node (May) {May}
+                        \lolcatchildren{froghead}
+                } child[sibling distance=1.33cm] {
+                    node        (burrito-fs-name) {\tiny burrito.jpg}
+                    node[below] (burrito-fs-pic)  {\lolcat{burrito}}
+                } child[sibling distance=1.33cm] {
+                    node        (withperson-fs-name) {\tiny withperson.jpg}
+                    node[below] (withperson-fs-pic)  {\lolcat{withperson}}
+                }
+                ;
+            \lolcattags{(root.north -| withperson-fs-pic.east) +(1.3,0)}
+                {palindrome/{costume,food},
+                 gamer/{costume},
+                 froghead/{costume},
+                 burrito/{food,onlyface},
+                 withperson/{\ }}
+             \fswebborder{palindrome}{withperson}
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[narrow picture tree]
+                node (root) {} child {
+                    node (Jan) {Jan} child {
+                        node        (palindrome-fs-name) {\tiny palindrome.jpg}
+                        node[below] (palindrome-fs-tag)  {\tiny [costume,food]} (palindrome-fs-tag)
+                        node[below] (palindrome-fs-pic)  {\lolcat{palindrome}}
+                    } child {
+                        node        (gamer-fs-name) {\tiny gamer.jpg}
+                        node[below] (gamer-fs-tag)  {\tiny [costume]} (gamer-fs-tag)
+                        node[below] (gamer-fs-pic)  {\lolcat{gamer}}
+                    }
+                } child {
+                    node (May) {May} child {
+                        node        (froghead-fs-name) {\tiny froghead.jpg}
+                        node[below] (froghead-fs-tag)  {\tiny [costume]} (froghead-fs-tag)
+                        node[below] (froghead-fs-pic)  {\lolcat{froghead}}
+                    }
+                } child[sibling distance=1.33cm] {
+                    node        (burrito-fs-name) {\tiny burrito.jpg}
+                    node[below] (burrito-fs-tag)  {\tiny [food,onlyface]} (burrito-fs-tag)
+                    node[below] (burrito-fs-pic)  {\lolcat{burrito}}
+                } child[sibling distance=1.33cm] {
+                    node        (withperson-fs-name) {\tiny withperson.jpg}
+                    node[below] (withperson-fs-tag)  {\tiny [\ ]} (withperson-fs-tag)
+                    node[below] (withperson-fs-pic)  {\lolcat{withperson}}
+                }
+                ;
+            \lolcattags{(root.north -| withperson-fs-pic.east) +(1.3,0)}
+                {palindrome/{costume,food},
+                 gamer/{costume},
+                 froghead/{costume},
+                 burrito/{food,onlyface},
+                 withperson/{\ }}
+             \fswebborder{palindrome}{withperson}
+             \path[use as bounding box] (fs.north west) -- (web.south east);
+             \draw<2>[line width=0.6cm,red!70!black] (fs.center)
+                circle (3.2cm)
+                +(135:3.2cm) -- +(315:3.2cm)
+                ;
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[narrow picture tree]
+                node (root) {} child {
+                    node (Jan) {Jan}
+                        \lolcatchildren{palindrome,gamer}
+                } child {
+                    node (May) {May}
+                        \lolcatchildren{froghead}
+                } child[sibling distance=1.33cm] {
+                    node        (burrito-fs-name) {\tiny burrito.jpg}
+                    node[below] (burrito-fs-pic)  {\lolcat{burrito}}
+                } child[sibling distance=1.33cm] {
+                    node        (withperson-fs-name) {\tiny withperson.jpg}
+                    node[below] (withperson-fs-pic)  {\lolcat{withperson}}
+                }
+                ;
+            \lolcattags{(root.north -| withperson-fs-pic.east) +(1.3,0)}
+                {palindrome/{costume,food},
+                 gamer/{costume},
+                 froghead/{costume},
+                 burrito/{food,onlyface},
+                 withperson/{\ }}
+             \fswebborder{palindrome}{withperson}
+             \path[tiny complement tree] (fs.south) ++(-0.8cm, -0.6cm)
+                node (complement-root) {} child {
+                    node (complement-Jan) {Jan} child {
+                        node (complement-palindrome) {palindrome\strut}
+                    } child {
+                        node (complement-gamer) {gamer\strut}
+                    }
+                } child {
+                    node (complement-May) {May} child {
+                        node (complement-froghead) {froghead\strut}
+                    }
+                } child {
+                    node (complement-burrito) {burrito\strut}
+                } child {
+                    node (complement-withperson) {withperson\strut}
+                }
+                ;
+                \begin{scope}[start chain=going below,node distance=0,inner sep=0.2ex,font=\tiny]
+                    \path (complement-root) ++(3.5cm,-0.1cm)
+                        node[on chain] (complement-palindrome-tag) {[costume,food]}
+                        node[on chain] (complement-gamer-tag)      {[costume]}
+                        node[on chain] (complement-froghead-tag)   {[costume]}
+                        node[on chain] (complement-burrito-tag)    {[food,onlyface]}
+                        node[on chain] (complement-withperson-tag) {[\ ]}
+                        ;
+                \end{scope}
+                \path<2>
+                    node[fit=(complement-root)
+                             (complement-palindrome)
+                             (complement-palindrome-tag)
+                             (complement-withperson-tag)] (complement) {}
+                    (complement) node[anchor=center,scale=3] (complement-check)
+                        {\Large\color{alertgreen}\checkmark}
+                    ;
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Abstract model}
+    A lens $\ell \in X \sslens Y$ has a set $C$ and components
+    \begin{align*}
+        putr &\in X\times C \to Y\times C \\
+        putl &\in Y\times C \to X\times C
+    \end{align*}
+    \pause
+    Synchronizing too often doesn't hurt.
+    % TODO: why isn't this centered?
+    \begin{center}
+        \inference{putr(x,c)=(y,c')}{putl(y,c')=(x,c')}
+    \end{center}
+    % TODO:
+    %\only<3>{\color{gray}Not synchronizing often enough doesn't hurt.}
+\end{frame}
+
+\section{Edits}
+\section{Multidirectionality}
+\section{Logistics}
 \end{document}

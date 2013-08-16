@@ -1,0 +1,82 @@
+\usetikzlibrary{chains,fit,calc}
+\colorlet{alertgreen}{green!55!black}
+\setbeamercolor{alerted text}{fg=alertgreen}
+
+\newcommand{\lolcat}[1]{\includegraphics[width=1cm]{cats/#1_full.jpg}}
+\newcommand{\lolcattagsdef}[1]{\lolcattags{(root.north -| #1.east) +(2,0)}}
+\newcommand{\lolcatnotagsdef}[1]{\lolcatnotags{(root.north -| #1.east) +(2,0)}}
+\newcommand{\lolcatchildren}[1]{
+    child foreach \name in {#1} {
+        node        (\name-fs-name) {\tiny \name.jpg}
+        node[below] (\name-fs-pic)  {\lolcat{\name}}
+    }
+}
+\newcommand{\lolcattags}[2]{
+    \begin{scope}[start chain=going below,node distance=0]
+        \foreach \name/\tags in {#2} {
+            \draw
+                #1
+                node[on chain,anchor=north]  (\name-web-pic) {\lolcat{\name}}
+                node[right=of \name-web-pic] (\name-web-tag) {\tiny [\tags]}
+                ;
+        }
+    \end{scope}
+}
+\newcommand{\lolcatnotags}[2]{
+    \begin{scope}[start chain=going below,node distance=0]
+        \foreach \name/\tags in {#2} {
+            \draw
+                #1
+                node[on chain,anchor=north]  (\name-web-pic) {\lolcat{\name}}
+                node                         (\name-web-tag) {}
+                ;
+        }
+    \end{scope}
+}
+\newcommand{\fsborder}[2]{
+    \draw[rounded corners]
+        node[fit=(#1-fs-name) (#1-fs-pic)  (#2-fs-name) (#2-fs-pic) (root)] (fs)  {}
+        (fs.north west) rectangle (fs.south east)
+        ;
+}
+\newcommand{\webborder}[2]{
+    \draw[rounded corners]
+        node[fit=(#1-web-tag) (#1-web-pic) (#2-web-tag) (#2-web-pic)]       (web) {}
+        (web.north west) rectangle (web.south east)
+        ;
+}
+\newcommand{\fswebborder}[2]{\fsborder{#1}{#2}\webborder{#1}{#2}}
+
+\tikzstyle{short picture tree}=[
+    level distance=1cm,
+    level 1/.style={sibling distance=2cm},
+    level 2/.style={sibling distance=1.5cm},
+    level 3/.style={sibling distance=1.24cm}
+    ]
+
+\tikzstyle{narrow picture tree}=[
+    level distance=1cm,
+    level 1/.style={sibling distance=1.83cm},
+    level 2/.style={sibling distance=1.33cm},
+    level 3/.style={sibling distance=1.08cm}
+    ]
+\tikzstyle{tiny complement tree}=[
+    font=\tiny,
+    level distance=0.7cm,
+    level 1/.style={sibling distance=1.3cm},
+    level 2/.style={sibling distance=0.9cm}
+    ]
+
+\AtBeginSection{
+    \begin{frame}
+        \begin{center}
+            \huge\tableofcontents[sectionstyle=show/hide]
+        \end{center}
+    \end{frame}
+}
+
+% a/s: asymmetric/symmetric
+% s/e: state-based/edit-based
+\newcommand{\aslens}{\ensuremath{\stackrel a\leftrightarrow}}
+\newcommand{\sslens}{\ensuremath{\stackrel s\leftrightarrow}}
+\newcommand{\selens}{\ensuremath{\stackrel \delta\leftrightarrow}}
