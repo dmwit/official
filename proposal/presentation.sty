@@ -22,6 +22,17 @@
         }
     \end{scope}
 }
+\newcommand{\lolcattagstiny}[2]{
+    \begin{scope}[start chain=going below,node distance=0]
+        \foreach \name/\tags in {#2} {
+            \draw
+                #1
+                node[on chain,anchor=north,scale=0.06]  (\name-web-pic) {\lolcat{\name}}
+                node[right=of \name-web-pic,scale=0.06] (\name-web-tag) {\tiny [\tags]}
+                ;
+        }
+    \end{scope}
+}
 \newcommand{\lolcatnotags}[2]{
     \begin{scope}[start chain=going below,node distance=0]
         \foreach \name/\tags in {#2} {
@@ -66,6 +77,12 @@
     level 1/.style={sibling distance=1.3cm},
     level 2/.style={sibling distance=0.9cm}
     ]
+\tikzstyle{busy picture tree}=[
+    level distance=0.3cm,
+    level 1/.style={sibling distance=3cm},
+    level 2/.style={sibling distance=0.25cm},
+    level 3/.style={sibling distance=0.05cm}
+]
 
 \AtBeginSection{
     \begin{frame}
@@ -80,3 +97,5 @@
 \newcommand{\aslens}{\ensuremath{\stackrel a\leftrightarrow}}
 \newcommand{\sslens}{\ensuremath{\stackrel s\leftrightarrow}}
 \newcommand{\selens}{\ensuremath{\stackrel \delta\leftrightarrow}}
+
+\newcommand{\ONE}{\mathbf1}

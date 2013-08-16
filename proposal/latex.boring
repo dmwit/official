@@ -75,3 +75,4 @@ ABD: EveryShipout initializing macros
 ^ inference rules,$
 ^)  short hands,$
 ^) (\./presentation\.aux)$
+^ (\./presentation.toc)$
