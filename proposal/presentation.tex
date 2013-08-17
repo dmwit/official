@@ -530,5 +530,85 @@
     \end{center}
 \end{frame}
 
+\begin{frame}[fragile]
+    \begin{center}
+        \begin{tikzpicture}
+            \matrix[font=\tiny]{
+                % title row
+                 &
+                \node[replica]{Students\strut}; &
+                 &
+                \node[replica]{Equipment\strut}; &
+                 &
+                 &
+                \node[replica]{Total\strut}; \\
+                % lens row
+                &&&&&\node[lens](2012-lens){$+$};\\
+                % 2012 row
+                \node[replica]{2012}; &
+                \node[replica](2012-students){70000}; &
+                 &
+                \node[replica](2012-equipment){9000}; &
+                 &&
+                \node[replica](2012-total){79000}; \\
+                % lens row
+                &&&&&\node[lens](2013-lens){$+$};\\
+                % 2013 row
+                \node[replica]{2013}; &
+                \node[replica](2013-students){70000}; &
+                 &
+                \node[replica](2013-equipment){4000}; &
+                 &
+                 &
+                \node[replica](2013-total){74000}; \\
+                % vertical lens row
+                 &
+                 &
+                \node[lens](lens-students){$+$}; &
+                 &
+                \node[lens](lens-equipment){$+$}; &
+                 &
+                 &
+                \node[lens](lens-total){$+$}; \\
+                % horizontal lens row
+                &&&&&\node[lens](total-lens){$+$}; \\
+                % total row
+                \node[replica]{Total\strut}; &
+                \node[replica](total-students){140000}; &
+                 &
+                \node[replica](total-equipment){13000}; &
+                 &
+                 &
+                \node[replica](total-total){153000}; \\
+            };
+            \draw[bend left=10]
+                (2012-students)   to (2012-lens)
+                (2012-equipment)  to (2012-lens)
+                (2012-lens)       to (2012-total)
+
+                (2013-students)   to (2013-lens)
+                (2013-equipment)  to (2013-lens)
+                (2013-lens)       to (2013-total)
+
+                (total-students)  to (total-lens)
+                (total-equipment) to (total-lens)
+                (total-lens)      to (total-total)
+
+                (2012-students)   to (lens-students)
+                (2013-students)   to (lens-students)
+                (lens-students)   to (total-students)
+
+                (2012-equipment)  to (lens-equipment)
+                (2013-equipment)  to (lens-equipment)
+                (lens-equipment)  to (total-equipment)
+
+                (2012-total)      to (lens-total)
+                (2013-total)      to (lens-total)
+                (lens-total)      to (total-total)
+                ;
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
 \section{Logistics}
 \end{document}
