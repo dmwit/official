@@ -34,10 +34,10 @@
         \begin{tikzpicture}
             \draw[short picture tree]
                 node (root) {} child {
-                    node (Jan) {Jan}
+                    node (Jan) {Jan\strut}
                         \lolcatchildren{palindrome,gamer}
                 } child {
-                    node (May) {May}
+                    node (May) {May\strut}
                         \lolcatchildren{froghead}
                 }
                 ;
@@ -53,10 +53,10 @@
         \begin{tikzpicture}
             \draw[short picture tree]
                 node (root) {} child {
-                    node (Jan) {Jan}
+                    node (Jan) {Jan\strut}
                         \lolcatchildren{palindrome,gamer}
                 } child {
-                    node (May) {May}
+                    node (May) {May\strut}
                         \lolcatchildren{froghead}
                 }
                 ;
@@ -77,10 +77,10 @@
         \begin{tikzpicture}
             \draw[short picture tree]
                 node (root) {} child {
-                    node (Jan) {Jan}
+                    node (Jan) {Jan\strut}
                         \lolcatchildren{palindrome,gamer}
                 } child {
-                    node (May) {May}
+                    node (May) {May\strut}
                         \lolcatchildren{froghead}
                 } child {
                     node        (burrito-fs-name) {\tiny ???}
@@ -89,6 +89,10 @@
                 ;
             \lolcatnotagsdef{burrito-fs-pic}
                 {palindrome/{costume,food},gamer/{costume},froghead/{costume},burrito/{onlyface}}
+            \node[fit=(burrito-fs-pic) (burrito-fs-name)] (burrito-fs-alert) {};
+            \path[rounded corners,draw=alertgreen]
+                ($(burrito-fs-alert.north west) +(0.25,-0.25)$) rectangle
+                ($(burrito-fs-alert.south east) +(-0.25,0.25)$);
             \fswebborder{palindrome}{burrito}
         \end{tikzpicture}
     \end{center}
@@ -99,10 +103,10 @@
         \begin{tikzpicture}
             \draw[narrow picture tree]
                 node (root) {} child {
-                    node (Jan) {Jan}
+                    node (Jan) {Jan\strut}
                         \lolcatchildren{palindrome,gamer}
                 } child {
-                    node (May) {May}
+                    node (May) {May\strut}
                         \lolcatchildren{froghead}
                 } child[sibling distance=1.33cm] {
                     node        (burrito-fs-name) {\tiny burrito.jpg}
@@ -132,10 +136,10 @@
         \begin{tikzpicture}
             \draw[narrow picture tree]
                 node (root) {} child {
-                    node (Jan) {Jan}
+                    node (Jan) {Jan\strut}
                         \lolcatchildren{palindrome,gamer}
                 } child {
-                    node (May) {May}
+                    node (May) {May\strut}
                         \lolcatchildren{froghead}
                 } child[sibling distance=1.33cm] {
                     node        (burrito-fs-name) {\tiny burrito.jpg}
@@ -151,6 +155,10 @@
                  froghead/{costume},
                  burrito/{food,onlyface},
                  withperson/{\ }}
+            \node[fit=(withperson-web-pic)] (withperson-web-alert) {};
+            \path[rounded corners,draw=alertgreen]
+                ($(withperson-web-alert.north west) +(0.25,-0.25)$) rectangle
+                ($(withperson-web-alert.south east) +(-0.25,0.25)$);
              \fswebborder{palindrome}{withperson}
         \end{tikzpicture}
     \end{center}
@@ -169,7 +177,7 @@
     \begin{align*}
         get(put(y,x))&=y \\
         put(get(x),x)&=x \\
-        \uncover<3>{\color{gray}put(y_2,put(y_1,x))&\color{gray}=put(y_2,x)}
+        \uncover<3>{\color{gray}put(y',put(y,x))&\color{gray}=put(y',x)}
     \end{align*}
     \uncover<3>{\color{gray}Not synchronizing often enough doesn't hurt.}
 \end{frame}
@@ -213,10 +221,10 @@
         \begin{tikzpicture}
             \draw[narrow picture tree]
                 node (root) {} child {
-                    node (Jan) {Jan}
+                    node (Jan) {Jan\strut}
                         \lolcatchildren{palindrome,gamer}
                 } child {
-                    node (May) {May}
+                    node (May) {May\strut}
                         \lolcatchildren{froghead}
                 } child[sibling distance=1.33cm] {
                     node        (burrito-fs-name) {\tiny burrito.jpg}
@@ -242,10 +250,10 @@
         \begin{tikzpicture}
             \draw[narrow picture tree]
                 node (root) {} child {
-                    node (Jan) {Jan}
+                    node (Jan) {Jan\strut}
                         \lolcatchildren{palindrome,gamer}
                 } child {
-                    node (May) {May}
+                    node (May) {May\strut}
                         \lolcatchildren{froghead}
                 } child[sibling distance=1.33cm] {
                     node        (burrito-fs-name) {\tiny burrito.jpg}
@@ -271,7 +279,7 @@
         \begin{tikzpicture}
             \draw[narrow picture tree]
                 node (root) {} child {
-                    node (Jan) {Jan} child {
+                    node (Jan) {Jan\strut} child {
                         node        (palindrome-fs-name) {\tiny palindrome.jpg}
                         node[below] (palindrome-fs-tag)  {\tiny [costume,food]} (palindrome-fs-tag)
                         node[below] (palindrome-fs-pic)  {\lolcat{palindrome}}
@@ -281,7 +289,7 @@
                         node[below] (gamer-fs-pic)  {\lolcat{gamer}}
                     }
                 } child {
-                    node (May) {May} child {
+                    node (May) {May\strut} child {
                         node        (froghead-fs-name) {\tiny froghead.jpg}
                         node[below] (froghead-fs-tag)  {\tiny [costume]} (froghead-fs-tag)
                         node[below] (froghead-fs-pic)  {\lolcat{froghead}}
@@ -317,10 +325,10 @@
         \begin{tikzpicture}
             \draw[narrow picture tree]
                 node (root) {} child {
-                    node (Jan) {Jan}
+                    node (Jan) {Jan\strut}
                         \lolcatchildren{palindrome,gamer}
                 } child {
-                    node (May) {May}
+                    node (May) {May\strut}
                         \lolcatchildren{froghead}
                 } child[sibling distance=1.33cm] {
                     node        (burrito-fs-name) {\tiny burrito.jpg}
@@ -339,13 +347,13 @@
              \fswebborder{palindrome}{withperson}
              \path[tiny complement tree] (fs.south) ++(-0.8cm, -0.6cm)
                 node (complement-root) {} child {
-                    node (complement-Jan) {Jan} child {
+                    node (complement-Jan) {Jan\strut} child {
                         node (complement-palindrome) {palindrome\strut}
                     } child {
                         node (complement-gamer) {gamer\strut}
                     }
                 } child {
-                    node (complement-May) {May} child {
+                    node (complement-May) {May\strut} child {
                         node (complement-froghead) {froghead\strut}
                     }
                 } child {
@@ -388,7 +396,7 @@
     \[\inference{putr(x,c)=(y,c')}{putl(y,c')=(x,c')}\]
     \pause
     \color{gray}Not synchronizing often enough doesn't hurt.
-    \[\inference{putr(x_1,c_0)=(y_1,c_1) \\ putr(x_2,c_1) = (y_2,c_2)}{putr(x_2,c_0)=(y_2,c_2)}\]
+    \[putr(x,c)=putr(x,c')\]
 \end{frame}
 
 \begin{frame}
@@ -399,9 +407,11 @@
                 node[on chain] (A) {A}
                 node[on chain] (B) {B}
                 node[on chain] (C) {C}
+                node[on chain] (D) {D}
                 ;
             \draw[<->] (A) -- node[above] {\tiny$a$} node[below] {$k$}    (B);
             \draw[<->] (B) -- node[above] {\tiny$a$} node[below] {$\ell$} (C);
+            \draw[<->] (C) -- node[above] {\tiny$a$} node[below] {$m$}    (D);
         \end{tikzpicture}
     \end{center}
     Nice property of asymmetric lenses:
@@ -414,7 +424,7 @@
     \frametitle{In dissertation}
     \begin{itemize}
         \item Observational equivalence
-        \item Point-free functional programming language
+        \item Point-free programming language
             \begin{itemize}
                 \item Basic (non-recursive) data types
                 \item Lists, with folds and unfolds
@@ -427,7 +437,7 @@
 \begin{frame}
     \frametitle{Related work: other symmetric approaches}
     \begin{itemize}
-        \footnotesize
+        \small
         \item Symmetric Constraint Maintainers
 
             \quad (Meertens; 1998)
@@ -455,10 +465,10 @@
         \begin{tikzpicture}
             \draw[narrow picture tree]
                 node (root) {} child {
-                    node (Jan) {Jan}
+                    node (Jan) {Jan\strut}
                         \lolcatchildren{palindrome,gamer}
                 } child {
-                    node (May) {May}
+                    node (May) {May\strut}
                         \lolcatchildren{froghead}
                 } child[sibling distance=1.33cm] {
                     node        (burrito-fs-name) {\tiny burrito.jpg}
@@ -550,10 +560,10 @@
         \begin{tikzpicture}
             \draw[narrow picture tree]
                 node (root) {} child {
-                    node (Jan) {Jan}
+                    node (Jan) {Jan\strut}
                         \lolcatchildren{palindrome,gamer}
                 } child {
-                    node (May) {May}
+                    node (May) {May\strut}
                         \lolcatchildren{froghead}
                 } child[sibling distance=1.33cm] {
                     node        (burrito-fs-name) {\tiny burrito.jpg}
@@ -735,28 +745,28 @@
             \draw
                 node (center) {}
 
-                node[replica,above left of=center]  (i1-left)  {$I_1$}
-                node[replica,below left of=center]  (i2-left)  {$I_2$}
+                node[replica,above left of=center]  (i1-left)  {\textrm I}
+                node[replica,below left of=center]  (i2-left)  {$O_2$}
                 node[lens,below left of=i1-left]    (k)        {$k$}
                 node[replica,left of=k]             (o1)       {$O_1$}
                 (k) -- (i1-left)
                 (k) -- (i2-left)
                 (k) -- (o1)
 
-                node[replica,above right of=center] (i1-right) {$I_1$}
-                node[replica,below right of=center] (i2-right) {$I_2$}
+                node[replica,above right of=center] (i1-right) {\textrm I}
+                node[replica,below right of=center] (i2-right) {$O_2$}
                 node[lens,below right of=i1-right]  (l)        {$\ell$}
-                node[replica,right of=l]            (o2)       {$O_2$}
+                node[replica,right of=l]            (o2)       {$O_3$}
                 (l) -- (i1-right)
                 (l) -- (i2-right)
                 (l) -- (o2)
 
                 node[below=3em of center]            (makes)     {$\Downarrow$}
-                node[replica,below=0.2em of makes]   (i1-bottom) {$I_1$}
+                node[replica,below=0.2em of makes]   (i1-bottom) {\textrm I}
                 node[lens,below of=i1-bottom]        (kl)        {$k;\ell$}
                 node[replica,below left of=kl]       (o1-bottom) {$O_1$}
-                node[replica,below of=kl]            (i2-bottom) {$I_2$}
-                node[replica,below right of=kl]      (o2-bottom) {$O_2$}
+                node[replica,below of=kl]            (i2-bottom) {$O_2$}
+                node[replica,below right of=kl]      (o2-bottom) {$O_3$}
                 (kl) -- (i1-bottom)
                 (kl) -- (i2-bottom)
                 (kl) -- (o1-bottom)
@@ -771,12 +781,12 @@
     \begin{center}
         \begin{tikzpicture}[node distance=3em]
             \path
-                node[replica] (i1) {$I_1$}
+                node[replica] (i1) {\textrm I}
                 node[lens,below left of=i1] (k) {$k$}
-                node[replica,below right of=k] (i2) {$I_2$}
+                node[replica,below right of=k] (i2) {$O_2$}
                 node[replica,left of=k] (o1) {$O_1$}
                 node[lens,below right of=i1] (l) {$\ell$}
-                node[replica,right of=l] (o2) {$O_2$}
+                node[replica,right of=l] (o2) {$O_3$}
                 ;
             \draw[->] (i1) -- (k) ;
             \draw[->] (k)  -- (o1);
@@ -788,12 +798,12 @@
         \vfill
         \begin{tikzpicture}[node distance=3em]
             \path
-                node[replica] (i1) {$I_1$}
+                node[replica] (i1) {\textrm I}
                 node[lens,below left of=i1] (k) {$k$}
-                node[replica,below right of=k] (i2) {$I_2$}
+                node[replica,below right of=k] (i2) {$O_2$}
                 node[replica,left of=k] (o1) {$O_1$}
                 node[lens,below right of=i1] (l) {$\ell$}
-                node[replica,right of=l] (o2) {$O_2$}
+                node[replica,right of=l] (o2) {$O_3$}
                 ;
             \draw[->] (i1) -- (l) ;
             \draw[->] (l)  -- (o2);
