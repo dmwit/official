@@ -96,10 +96,13 @@
     \end{frame}
 }
 
+\newcommand<>{\change}[2]{\temporal#3{#1}{\alert{#2}}{#2}}
+
 % a/s: asymmetric/symmetric
 % s/e: state-based/edit-based
 \newcommand{\aslens}{\ensuremath{\stackrel a\leftrightarrow}}
 \newcommand{\sslens}{\ensuremath{\stackrel s\leftrightarrow}}
 \newcommand{\selens}{\ensuremath{\stackrel \delta\leftrightarrow}}
+\newcommand{\hyperlens}[1]{\mathcal{M}\left(#1\right)}
 
 \newcommand{\ONE}{\mathbf1}

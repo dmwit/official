@@ -5,7 +5,7 @@
 \usepackage{presentation}
 \usepackage{amssymb}
 \usepackage{semantic}
-% TODO: related work throughout
+% TODO: update related work slides on symmetry/edits -- ESPECIALLY edits
 % TODO: be clear throughout about collaborators
 \begin{document}
 
@@ -169,13 +169,43 @@
     \begin{align*}
         get(put(y,x))&=y \\
         put(get(x),x)&=x \\
-        \only<3>{\color{gray}put(y_2,put(y_1,x))&\color{gray}=put(y_2,x)}
+        \uncover<3>{\color{gray}put(y_2,put(y_1,x))&\color{gray}=put(y_2,x)}
     \end{align*}
-    \only<3>{\color{gray}Not synchronizing often enough doesn't hurt.}
+    \uncover<3>{\color{gray}Not synchronizing often enough doesn't hurt.}
 \end{frame}
 
-% TODO: list the reams of work here on point-free instantiation languages,
-% including for strings, relational databases, trees, etc.
+% TODO: check this list of the reams of work on point-free instantiation
+% languages to make sure it includes the stuff on strings, relational
+% databases, trees, etc.
+\begin{frame}
+    \frametitle{Related work: asymmetric lenses}
+    \begin{itemize}
+        \small
+        \item Combinators for Bidirectional Tree Transformations
+
+            \quad (Foster, Greenwald, Moore, Pierce, Schmitt;
+
+            \quad POPL 2005)
+        \item Relational Lenses: A Language For Updateable Views
+
+            \quad (Bohannon, Vaughn, and Pierce; PODS 2006)
+        \item Boomerang: Resourceful Lenses for String Data
+
+            \quad (Bohannon, Foster, Pierce, Pilkiewicz, and Schmitt;
+
+            \quad POPL 2008)
+
+        \item Bidirectional Programming Languages
+
+            \quad (Foster; thesis 2009)
+        \item Bidirectionalizing Graph Transformations
+
+            \quad (Hidaka, Hu, Inaba, and Kato; ICFP 2010)
+        \item Update Semantics of Relational Views
+
+            \quad (Bancilhon and Spyratos; 1981)
+    \end{itemize}
+\end{frame}
 
 \section{Symmetry}
 \begin{frame}
@@ -393,7 +423,30 @@
     \end{itemize}
 \end{frame}
 
-% TODO: related work
+\begin{frame}
+    \frametitle{Related work: other symmetric approaches}
+    \begin{itemize}
+        \footnotesize
+        \item Symmetric Constraint Maintainers
+
+            \quad (Meertens; 1998)
+        \item Towards an Algebraic Theory of Bidirectional Transformations
+
+            \quad (Stevens; ICGT 2008)
+        \item Bidirectional Model Transformations in QVT: Semantic Issues
+            and Open Questions
+
+            \quad (Stevens; MoDELS 2007)
+        \item Algebraic Models for Bidirectional Model Synchronization
+
+            \quad (Diskin; MoDELS 2008)
+
+        \item Supporting Parallel Updates with Bidirectional Model
+            Transformations
+
+            \quad (Xiong, Song, Hu, and Takeichi; ICMT 2009)
+    \end{itemize}
+\end{frame}
 
 \section{Edits}
 \begin{frame}
@@ -462,7 +515,32 @@
     \end{itemize}
 \end{frame}
 
-% TODO: related work
+\begin{frame}
+    \frametitle{Related work: other edit-based approaches}
+    \begin{itemize}
+        \small
+        \item Towards an Algebraic Theory of Bidirectional Transformations
+
+            \quad (Stevens; ICGT 2008)
+        \item Matching Lenses: Alignment and View Update
+
+            \quad (Barbosa, Cretin, Foster, Greenberg, and Pierce;
+
+            \quad ICFP 2010)
+        \item From State- to Delta-based Bidirectional Model Transformations
+
+            \quad (Diskin, Xiong, Czarnecki; TPMT 2010)
+        \item From State- to Delta-based Bidirectional Model
+            Transformations: The Symmetric Case
+
+            \quad (Diskin, Xiong, Czarnecki, Ehrig, Hermann,
+
+            \quad and Orejas; MoDELS 2011)
+        \item Delta Lenses over Inductive Types
+
+            \quad (Pacheco, Cunha, Hu; ECEASST 2012)
+    \end{itemize}
+\end{frame}
 
 \section{Multidirectionality}
 % TODO: deduplicate using beamer's method of setting up pointers and whatnot
@@ -531,84 +609,230 @@
 \end{frame}
 
 \begin{frame}[fragile]
+    \frametitle{New interaction mode}
     \begin{center}
         \begin{tikzpicture}
-            \matrix[font=\tiny]{
+            \matrix{
                 % title row
                  &
-                \node[replica]{Students\strut}; &
-                 &
-                \node[replica]{Equipment\strut}; &
-                 &
-                 &
-                \node[replica]{Total\strut}; \\
-                % lens row
-                &&&&&\node[lens](2012-lens){$+$};\\
+                \node{Students\strut}; &
+                \node{Equipment\strut}; &
+                \node{Total\strut}; \\
                 % 2012 row
-                \node[replica]{2012}; &
-                \node[replica](2012-students){70000}; &
-                 &
-                \node[replica](2012-equipment){9000}; &
-                 &&
-                \node[replica](2012-total){79000}; \\
-                % lens row
-                &&&&&\node[lens](2013-lens){$+$};\\
+                \node{2012}; &
+                \node(2012-students){70000}; &
+                \node(2012-equipment){\change<4>{9000}{18000}}; &
+                \node(2012-total){\change<5>{79000}{88000}}; \\
                 % 2013 row
-                \node[replica]{2013}; &
-                \node[replica](2013-students){70000}; &
-                 &
-                \node[replica](2013-equipment){4000}; &
-                 &
-                 &
-                \node[replica](2013-total){74000}; \\
-                % vertical lens row
-                 &
-                 &
-                \node[lens](lens-students){$+$}; &
-                 &
-                \node[lens](lens-equipment){$+$}; &
-                 &
-                 &
-                \node[lens](lens-total){$+$}; \\
-                % horizontal lens row
-                &&&&&\node[lens](total-lens){$+$}; \\
+                \node{2013}; &
+                \node(2013-students){70000}; &
+                \node(2013-equipment){\change<4>{4000}{8000}}; &
+                \node(2013-total){\change<5>{74000}{78000}}; \\
                 % total row
-                \node[replica]{Total\strut}; &
-                \node[replica](total-students){140000}; &
-                 &
-                \node[replica](total-equipment){13000}; &
-                 &
-                 &
-                \node[replica](total-total){153000}; \\
+                \node{Total\strut}; &
+                \node(total-students){\color<2>{gray}140000}; &
+                \node(total-equipment){\change<3>{13000}{26000}}; &
+                \node(total-total){\change<2>{153000}{166000}}; \\
             };
-            \draw[bend left=10]
-                (2012-students)   to (2012-lens)
-                (2012-equipment)  to (2012-lens)
-                (2012-lens)       to (2012-total)
+        \end{tikzpicture}
+    \end{center}
+    \uncover<7>{\ldots and this happens behind the scenes, too.}
+\end{frame}
 
-                (2013-students)   to (2013-lens)
-                (2013-equipment)  to (2013-lens)
-                (2013-lens)       to (2013-total)
+\begin{frame}
+    \frametitle{Straw-man abstract model}
+    For universe $U$, lens $\ell \in \hyperlens N$ has components
+    \begin{align*}
+        put &\in 2^N \to U^N \to U^N \\
+        K &\in 2^{U^N}
+    \end{align*}
+    \pause
+    Inputs are really inputs and consistency is restored.
+    \begin{align*}
+        put(S,f)|_S &= f|_S \\
+        put(S,f) &\in K \\
+        \uncover<3>{put(\emptyset,f) &= f}
+    \end{align*}
+    \uncover<3>{Synchronizing too often doesn't hurt.}
+\end{frame}
 
-                (total-students)  to (total-lens)
-                (total-equipment) to (total-lens)
-                (total-lens)      to (total-total)
+\begin{frame}[fragile]
+    \frametitle{Unsolvable updates}
+    \begin{center}
+        \begin{tikzpicture}
+            \matrix{
+                % title row
+                 &
+                \node{Students\strut}; &
+                \node{Equipment\strut}; &
+                \node{Total\strut}; \\
+                % 2012 row
+                \node{2012}; &
+                \node(2012-students){70000}; &
+                \node(2012-equipment){9000}; &
+                \node(2012-total){79000}; \\
+                % 2013 row
+                \node{2013}; &
+                \node(2013-students){70000}; &
+                \node(2013-equipment){4000}; &
+                \node(2013-total){74000}; \\
+                % total row
+                \node{Total\strut}; &
+                \node(total-students){\alert{0}}; &
+                \node(total-equipment){\alert{0}}; &
+                \node(total-total){\alert{1}}; \\
+            };
+        \end{tikzpicture}
+    \end{center}
+    Track sets of names that are always solvable.
+\end{frame}
 
-                (2012-students)   to (lens-students)
-                (2013-students)   to (lens-students)
-                (lens-students)   to (total-students)
+\begin{frame}
+    \frametitle{Composition intuition}
+    \begin{center}
+        \begin{tikzpicture}[node distance=3em]
+            \uncover<+->{\draw
+                node (center-top) {}
+                node[replica,left of=center-top]       (Y-left-top)  {$Y$}
+                node[lens,left of=Y-left-top]          (k-top)       {$k$}
+                node[replica,left of=k-top]            (X-top)       {$X$}
+                node[replica,right of=center-top]      (Y-right-top) {$Y$}
+                node[lens,right of=Y-right-top]        (l-top)       {$\ell$}
+                node[replica,right of=l-top]           (Z-top)       {$Z$}
+                (X-top) -- (k-top) -- (Y-left-top)
+                (Y-right-top) -- (l-top) -- (Z-top)
+                ;
+            }
+            \uncover<+->{\draw
+                node[replica,below of=center-top]      (Y-middle)    {$Y$}
+                node[lens,left of=Y-middle]            (k-middle)    {$k$}
+                node[replica,left of=k-middle]         (X-middle)    {$X$}
+                node[lens,right of=Y-middle]           (l-middle)    {$\ell$}
+                node[replica,right of=l-middle]        (Z-middle)    {$Z$}
+                (X-middle) -- (k-middle) -- (Y-middle) -- (l-middle) -- (Z-middle)
+                ;
+            }
+            \uncover<+->{\draw
+                node[replica,below of=Y-middle]        (Y-bottom)    {$Y$}
+                node[lens,below of=Y-bottom]           (kl-bottom)   {$k;\ell$}
+                node[replica,left of=kl-bottom]  (X-bottom)    {$X$}
+                node[replica,right of=kl-bottom] (Z-bottom)    {$Z$}
+                (kl-bottom) -- (X-bottom)
+                (kl-bottom) -- (Y-bottom)
+                (kl-bottom) -- (Z-bottom)
+                ;
+            }
+        \end{tikzpicture}
+    \end{center}
+    \uncover<3>{Safe updates: $\{X\}$ or $\{Z\}$.}
+\end{frame}
 
-                (2012-equipment)  to (lens-equipment)
-                (2013-equipment)  to (lens-equipment)
-                (lens-equipment)  to (total-equipment)
+\begin{frame}
+    \frametitle{Ambiguous updates}
+    \begin{center}
+        \begin{tikzpicture}[node distance=3em]
+            \draw
+                node (center) {}
 
-                (2012-total)      to (lens-total)
-                (2013-total)      to (lens-total)
-                (lens-total)      to (total-total)
+                node[replica,above left of=center]  (i1-left)  {$I_1$}
+                node[replica,below left of=center]  (i2-left)  {$I_2$}
+                node[lens,below left of=i1-left]    (k)        {$k$}
+                node[replica,left of=k]             (o1)       {$O_1$}
+                (k) -- (i1-left)
+                (k) -- (i2-left)
+                (k) -- (o1)
+
+                node[replica,above right of=center] (i1-right) {$I_1$}
+                node[replica,below right of=center] (i2-right) {$I_2$}
+                node[lens,below right of=i1-right]  (l)        {$\ell$}
+                node[replica,right of=l]            (o2)       {$O_2$}
+                (l) -- (i1-right)
+                (l) -- (i2-right)
+                (l) -- (o2)
+
+                node[below=3em of center]            (makes)     {$\Downarrow$}
+                node[replica,below=0.2em of makes]   (i1-bottom) {$I_1$}
+                node[lens,below of=i1-bottom]        (kl)        {$k;\ell$}
+                node[replica,below left of=kl]       (o1-bottom) {$O_1$}
+                node[replica,below of=kl]            (i2-bottom) {$I_2$}
+                node[replica,below right of=kl]      (o2-bottom) {$O_2$}
+                (kl) -- (i1-bottom)
+                (kl) -- (i2-bottom)
+                (kl) -- (o1-bottom)
+                (kl) -- (o2-bottom)
                 ;
         \end{tikzpicture}
     \end{center}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Two plans}
+    \begin{center}
+        \begin{tikzpicture}[node distance=3em]
+            \path
+                node[replica] (i1) {$I_1$}
+                node[lens,below left of=i1] (k) {$k$}
+                node[replica,below right of=k] (i2) {$I_2$}
+                node[replica,left of=k] (o1) {$O_1$}
+                node[lens,below right of=i1] (l) {$\ell$}
+                node[replica,right of=l] (o2) {$O_2$}
+                ;
+            \draw[->] (i1) -- (k) ;
+            \draw[->] (k)  -- (o1);
+            \draw[->] (k)  -- (i2);
+            \draw[->] (i1) -- (l) ;
+            \draw[->] (i2) -- (l) ;
+            \draw[->] (l)  -- (o2);
+        \end{tikzpicture}
+        \vfill
+        \begin{tikzpicture}[node distance=3em]
+            \path
+                node[replica] (i1) {$I_1$}
+                node[lens,below left of=i1] (k) {$k$}
+                node[replica,below right of=k] (i2) {$I_2$}
+                node[replica,left of=k] (o1) {$O_1$}
+                node[lens,below right of=i1] (l) {$\ell$}
+                node[replica,right of=l] (o2) {$O_2$}
+                ;
+            \draw[->] (i1) -- (l) ;
+            \draw[->] (l)  -- (o2);
+            \draw[->] (l)  -- (i2);
+            \draw[->] (i1) -- (k) ;
+            \draw[->] (i2) -- (k) ;
+            \draw[->] (k)  -- (o1);
+        \end{tikzpicture}
+    \end{center}
+    Observational equivalence is no help.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Remaining questions}
+    \begin{itemize}
+        \item Complete strategies for disambiguation?
+        \item Behavioral specifications for disambiguation?
+        \item How can we extend the static update check?
+        \item What dynamic update checks are possible?
+    \end{itemize}
+\end{frame}
+
+% TODO: related work (though how is the flow going to work? should it really
+% go here, or earlier, or later, or... dunno lol)
+\begin{frame}
+    \frametitle{Related work: bidirectional spreadsheets}
+    % TODO
+\end{frame}
+
 \section{Logistics}
+\begin{frame}
+    \frametitle{Timeline}
+    \begin{center}
+        \includegraphics[scale=0.45]{timeline.pdf}
+    \end{center}
+    \begin{itemize}
+        \item Nailing ambiguity resolution is lynchpin
+        \item Extending static and dynamic checks is polish
+        \item Bad case: trade black box time for additional ambiguity time
+        \item Worst case: biased composition
+    \end{itemize}
+\end{frame}
 \end{document}
