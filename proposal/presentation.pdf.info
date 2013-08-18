@@ -1,0 +1,84 @@
+# -*- coding: iso-8859-1 -*-
+
+Fullscreen = False
+TransitionDuration = 200
+AvailableTransitions = [Crossfade]
+Overscan = 0
+
+PageProps = {
+  3: {
+       'overview': False
+     },
+  4: {
+       'overview': False
+     },
+  5: {
+       'overview': False
+     },
+  9: {
+       'overview': False
+     },
+ 10: {
+       'overview': False
+     },
+ 11: {
+       'overview': False
+     },
+ 13: {
+       'overview': False
+     },
+ 14: {
+       'overview': False
+     },
+ 21: {
+       'overview': False
+     },
+ 23: {
+       'overview': False
+     },
+ 24: {
+       'overview': False
+     },
+ 25: {
+       'overview': False
+     },
+ 27: {
+       'overview': False
+     },
+ 34: {
+       'overview': False
+     },
+ 35: {
+       'overview': False
+     },
+ 37: {
+       'overview': False
+     },
+ 45: {
+       'overview': False
+     },
+ 46: {
+       'overview': False
+     },
+ 47: {
+       'overview': False
+     },
+ 48: {
+       'overview': False
+     },
+ 49: {
+       'overview': False
+     },
+ 51: {
+       'overview': False
+     },
+ 52: {
+       'overview': False
+     },
+ 55: {
+       'overview': False
+     },
+ 56: {
+       'overview': False
+     }
+}
