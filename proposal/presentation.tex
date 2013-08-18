@@ -363,7 +363,7 @@
                         node[on chain] (complement-withperson-tag) {[\ ]}
                         ;
                 \end{scope}
-                \path<2>
+                \uncover<2>{\path
                     node[fit=(complement-root)
                              (complement-palindrome)
                              (complement-palindrome-tag)
@@ -371,6 +371,7 @@
                     (complement) node[anchor=center,scale=3] (complement-check)
                         {\Large\color{alertgreen}\checkmark}
                     ;
+                }
         \end{tikzpicture}
     \end{center}
 \end{frame}
