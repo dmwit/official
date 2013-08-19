@@ -899,8 +899,6 @@
                 node[replica, below right of=times] (tax)   {tax}
                 node[lens,below right of=base]      (plus)  {$+$}
                 node[replica,right of=plus]         (price) {price}
-                (rate) -- (times) -- (base) -- (plus) -- (price)
-                                     (times) -- (tax)  -- (plus)
                 ;
             \temporal<2>{\draw}{\draw[->,important]}{\draw[->]}
                 (const) -- (rate);
