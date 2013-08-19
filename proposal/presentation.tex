@@ -797,9 +797,9 @@
                 ;
             \draw[->] (i1) -- (k) ;
             \draw[->] (k)  -- (o1);
-            \draw[->] (k)  -- (i2);
+            \draw[->,important] (k)  -- (i2);
             \draw[->] (i1) -- (l) ;
-            \draw[->] (i2) -- (l) ;
+            \draw[->,important] (i2) -- (l) ;
             \draw[->] (l)  -- (o2);
         \end{tikzpicture}
         \vfill
@@ -814,9 +814,9 @@
                 ;
             \draw[->] (i1) -- (l) ;
             \draw[->] (l)  -- (o2);
-            \draw[->] (l)  -- (i2);
+            \draw[->,important] (l)  -- (i2);
             \draw[->] (i1) -- (k) ;
-            \draw[->] (i2) -- (k) ;
+            \draw[->,important] (i2) -- (k) ;
             \draw[->] (k)  -- (o1);
         \end{tikzpicture}
     \end{center}
