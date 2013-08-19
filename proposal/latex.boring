@@ -59,7 +59,7 @@ ABD: EveryShipout initializing macros
 ^ween \\$(\OML/cmm/m/it/10.95 X \OMS/cmsy/m/n/10.95 \^\^B \OML/cmm/m/it/10\.95 Y\\OT1/
 ^cmr/m/n/10\.95 )\[\]\$ and \$(\\OML/cmm/m/it/10.95 X \\OMS/cmsy/m/n/10.95 \^\^B \\OML/cmm
 ^/m/it/10\.95 Z\\OT1/cmr/m/n/10.95 )\[\]\$ compositionally---
-^fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+fonts/type1/public/amsfonts/symbols/[a-z0-9]*.pfb>
 ^This is BibTeX, Version 0\.99d (TeX Live 2013)
 ^Underfull \\hbox (badness 10000) has occurred while \\output is active
 ^ )$

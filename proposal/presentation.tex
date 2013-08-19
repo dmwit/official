@@ -921,5 +921,60 @@
     \pause[4]
 \end{frame}
 
-% TODO: extra slide on current best idea about how to make progress
+% TODO: extra slide explaining what we know about linear equations
+
+\begin{frame}
+    \frametitle{How to progress}
+    \begin{center}
+        \begin{tikzpicture}[font=\tiny]
+            \draw
+                node[lens]                     (l) {$\ell$}
+                node[replica,left of=l]        (A) {$A$}
+                node[replica,above right of=l] (B) {$B$}
+                node[replica,below right of=l] (C) {$C$}
+                (l) -- (A)
+                (l) -- (B)
+                (l) -- (C)
+
+                node[fit=(A) (B) (C)] (constraint) {}
+                (constraint.south)
+                node[anchor=north] {\normalsize constraint\strut}
+                ;
+        \end{tikzpicture}
+        \hfil
+        \begin{tikzpicture}[font=\tiny]
+            \draw
+                node[lens]                          (l-1) {$\ell$}
+                node[replica,left of=l-1]           (A-1) {$A$}
+                node[replica,above right of=l-1]    (B-1) {$B$}
+                node[replica,below right of=l-1]    (C-1) {$C$}
+
+                node[lens,right of=l-1,node distance=5em]
+                                                    (l-2) {$\ell$}
+                node[replica,left of=l-2]           (A-2) {$A$}
+                node[replica,above right of=l-2]    (B-2) {$B$}
+                node[replica,below right of=l-2]    (C-2) {$C$}
+
+                node[fit=(A-1) (B-2) (C-2)] (methods) {}
+                (methods.south)
+                node[anchor=north] {\normalsize sample methods\strut}
+                ;
+            \draw[->] (A-1) -- (l-1);
+            \draw[->] (l-1) -- (B-1);
+            \draw[->] (l-1) -- (C-1);
+
+            \draw[->] (A-2) -- (l-2);
+            \draw[->] (B-2) -- (l-2);
+            \draw[->] (l-2) -- (C-2);
+        \end{tikzpicture}
+    \end{center}
+    \begin{itemize}
+        \item When any plan will do: greedy algorithm
+        \item Assign a cost to each method
+        \item Specification: min-cost set of methods
+        \item Implementation: search (efficient when combining costs is
+            monotonic)
+    \end{itemize}
+\end{frame}
+
 \end{document}
