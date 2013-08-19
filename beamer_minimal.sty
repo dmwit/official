@@ -6,12 +6,17 @@
 \colorlet{navfg}{fg!80!white}
 \colorlet{navbg}{fg!40!white}
 \newcommand{\navradius}{0.25ex}
+\newcommand{\thelastframe}{\inserttotalframenumber}
+\newcommand{\lastframe}{\renewcommand{\thelastframe}}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}{
+    \pgfmathparse{\insertframenumber<\thelastframe+1}
+    \ifnum\pgfmathresult=1
     \tikz\draw[text height=2*\navradius,inner sep=0ex,rounded corners=\navradius]
         node[fill=navbg,minimum width=\textwidth-\navradius](back){} (back.west)
-        node[fill=navfg,minimum width={(\insertframenumber-1)/max(1,\inserttotalframenumber-1)*(\textwidth-\navradius)},right]{}
+        node[fill=navfg,minimum width={(\insertframenumber-1)/max(1,\thelastframe-1)*(\textwidth-\navradius)},right]{}
         (back.south) node[below]{}
         ;
+    \fi
     \ifdraft\insertframenumber/\inserttotalframenumber\fi
 }

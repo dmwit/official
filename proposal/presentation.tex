@@ -2,7 +2,7 @@
 \author{Daniel Wagner}
 \usepackage{tikz}
 \usepackage{beamer_minimal}
-\usepackage{presentation}
+\usepackage{presentation}\lastframe{40}
 \usepackage{amssymb}
 \usepackage{semantic}
 % TODO: update related work slides on symmetry/edits -- ESPECIALLY edits
@@ -881,5 +881,45 @@
         \item Worst case: biased composition
     \end{itemize}
 \end{frame}
-% TODO: bonus slides on linear stuff?
+
+\begin{frame}
+    \frametitle{Why black boxes?}
+    \begin{align*}
+        price &= base+tax \\
+        tax   &= 0.08*base
+    \end{align*}
+    \vfill
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[node distance=3em]
+                node[lens]                          (const) {const}
+                node[replica,right of=const,node distance=4em] (rate) {rate}
+                node[lens,right of=rate]            (times) {$*$}
+                node[replica,above right of=times]  (base)  {base}
+                node[replica, below right of=times] (tax)   {tax}
+                node[lens,below right of=base]      (plus)  {$+$}
+                node[replica,right of=plus]         (price) {price}
+                (rate) -- (times) -- (base) -- (plus) -- (price)
+                                     (times) -- (tax)  -- (plus)
+                ;
+            \temporal<2>{\draw}{\draw[->,important]}{\draw[->]}
+                (const) -- (rate);
+            \temporal<2>{\draw}{\draw[->,important]}{\draw[->]}
+                (rate) -- (times);
+            \temporal<2>{\draw}{\draw[->,important]}{\draw[->]}
+                (price) -- (plus);
+            \alt<1-2>{\draw}{\draw[->,important]}
+                (plus) -- (base);
+            \temporal<3>{\draw}{\draw[->,important]}{\draw[->]}
+                (base) -- (times);
+            \temporal<3>{\draw}{\draw[->,important]}{\draw[<-]}
+                (times) -- (tax);
+            \temporal<3>{\draw}{\draw[->]}{\draw[<-,important]}
+                (tax) -- (plus);
+        \end{tikzpicture}
+    \end{center}
+    \pause[4]
+\end{frame}
+
+% TODO: extra slide on current best idea about how to make progress
 \end{document}

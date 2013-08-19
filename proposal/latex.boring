@@ -48,7 +48,7 @@ ABD: EveryShipout initializing macros
 ^)$
 ^\*geometry\* driver: auto-detecting
 ^\*geometry\* detected driver: pdftex
--dictionary/translator-[a-z]*-dictionary-English.dict
+/translator-[a-z]*-dictionary-English.dict
 ^Package hyperref Message: Stopped early.
 ^Package hyperref Message: Driver (autodetected): hpdftex.
 ^LaTeX Font Warning: Font shape `[a-zA-Z1-9/]*' in size <[1-9.]*> not available
@@ -80,3 +80,4 @@ ABD: EveryShipout initializing macros
 <[.a-z/_]*.\(jpg\|png\|pdf\)
 ^er_full.jpg>
 ^(\./presentation.vrb) \[[0-9]*\] (\./presentation.vrb)
+(rcs-revision 24853e6b98cf)
