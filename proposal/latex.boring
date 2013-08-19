@@ -76,3 +76,7 @@ ABD: EveryShipout initializing macros
 ^)  short hands,$
 ^) (\./presentation\.aux)$
 ^ (\./presentation.toc)$
+^<timeline\.pdf
+<[.a-z/_]*.\(jpg\|png\|pdf\)
+^er_full.jpg>
+^(\./presentation.vrb) \[[0-9]*\] (\./presentation.vrb)

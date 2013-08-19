@@ -1,4 +1,4 @@
-\usetikzlibrary{chains,fit,calc}
+\usetikzlibrary{chains,fit,calc,shapes.misc}
 \colorlet{alertgreen}{green!55!black}
 \setbeamercolor{alerted text}{fg=alertgreen}
 
@@ -85,13 +85,23 @@
     level 3/.style={sibling distance=0.05cm}
 ]
 \tikzstyle{replica}=[draw,rounded corners]
-% TODO: make it lens-shaped instead?
-\tikzstyle{lens}=[draw,circle]
+\tikzstyle{lens}=[
+    draw,
+    rounded rectangle,
+    rounded rectangle arc length=90
+]
 
+\newcommand{\thecollaborators}{}
+\newif\ifhascollaborators\hascollaboratorsfalse
+\newcommand{\collaborators}[1]{\hascollaboratorstrue\renewcommand{\thecollaborators}{#1}}
+\newcommand{\nocollaborators}{\hascollaboratorsfalse}
 \AtBeginSection{
     \begin{frame}
         \begin{center}
             \huge\tableofcontents[sectionstyle=show/hide]
+            \ifhascollaborators
+            \small(in collaboration with \thecollaborators)
+            \fi
         \end{center}
     \end{frame}
 }
