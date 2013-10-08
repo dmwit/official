@@ -1,0 +1,54 @@
+% Here is a sample format for dissertation in math.  You need to check
+% University of Pennsylvania Doctoral Dissertation Manual to adjust
+% any changes they made at the webpage:
+
+% http://www.upenn.edu/grad/DissManual.html.
+
+% This style file was used in connection with printing from printer 3one.
+% (Different printers could give you different margins.)
+
+% This sample can also be used for masters thesis, but you need to make
+% some slight changes.
+
+\documentclass[12pt]{report}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amscd}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{fancyvrb}
+\usepackage{bcprules}
+\usepackage{paper}
+
+\setlength{\headheight}{0in}
+\setlength{\textheight}{8.5in}
+\setlength{\oddsidemargin}{0.55in}
+\setlength{\textwidth}{5.87in}
+\setlength{\headsep}{-.19in}
+
+\pagestyle{plain}
+\newcommand{\doublespaced}{\renewcommand{\baselinestretch}{2}\normalfont}
+\newcommand{\singlespaced}{\renewcommand{\baselinestretch}{1}\normalfont}
+%\newcommand{\draftspaced}{\singlespaced} %for draft only
+\newcommand{\draftspaced}{\doublespaced} %for final version
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\numberwithin{equation}{section}
+
+\doublespaced
+\def\thetitle{Lenses LOL}
+\def\theauthor{Daniel Wagner}
+\def\theadvisor{Benjamin C. Pierce, Advisor}
+\def\THEAUTHOR{Daniel Wagner}
+\def\THEADVISOR{Benjamin C. Pierce}
+\def\theyear{2014}

@@ -1,0 +1,18 @@
+\newif \ifdraft        \draftfalse
+\newif \iflater        \laterfalse
+\newif \iffull
+\newif \ifdissertation
+\newif \ifcomplement
+\newif \ifdelta
+\newif \iftree
+\newcommand{\choosedissertation}{\dissertationtrue \complementfalse\deltafalse\treefalse}
+\newcommand{\choosecomplement}  {\dissertationfalse\complementtrue \deltafalse\treefalse}
+\newcommand{\choosedelta}       {\dissertationfalse\complementfalse\deltatrue \treefalse}
+\newcommand{\choosetree}        {\dissertationfalse\complementfalse\deltafalse\treetrue }
+\newcommand{\inputcond}[1]{
+    \ifdissertation\input{#1_dissertation}\fi
+    \ifcomplement\input{#1_complement}\fi
+    \ifdelta\input{#1_delta}\fi
+    \iftree\input{#1_tree}\fi
+}
+\choosedissertation

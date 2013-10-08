@@ -1,0 +1,329 @@
+% TODO: all conditional definitions
+% conditional definitions {{{
+\renewenvironment{abstract}{%
+  \OLDsection*{Abstract}%
+  \normalsize}{%
+  }
+%\iffull\else
+%\renewenvironment{abstract}{%
+%  \OLDsection*{Abstract}%
+%  \normalsize}{%
+%  }
+%\fi
+\newcommand{\aconst}{\mathit{aconst}}
+%\newcommand{\aconst}{\mathit{const}}
+\newcommand{\bcp}[1]{\finish{BCP: #1}}
+%\newcommand{\bcp}[1]{\ifdraft{\color{lightblue}{[BCP: #1]}} \fi}
+\newcommand{\colspan}[1]{\multicolumn{3}{@{}l}{#1}}
+%\newcommand{\colspan}[1]{\multicolumn{3}{l}{#1}}
+\newcommand{\dmwit}[1]{\finish{dmwit: #1}}
+%\newcommand{\dmwit}[1]{\ifdraft{\color{darkgreen}{[dmwit: #1]}} \fi}
+\newcommand{\dputl}{\mathit{dputl}}
+%\newcommand{\dputl}{\mathord{\Lleftarrow}}
+\newcommand{\dputr}{\mathit{dputr}}
+%\newcommand{\dputr}{\mathord{\Rrightarrow}}
+\newcommand{\foldlist}{\mathit{f}}
+%\newcommand{\foldlist}{\mathit{fold}}
+\newcommand{\Lens}{\leftrightarrow}
+%\newcommand{\Lens}{\Longleftrightarrow}
+\newcommand{\missing}{\mathit{init}}
+%\newcommand{\missing}{\mathit{missing}}
+\newcommand{\mlinl}[1]{\ml{inl}(#1)}
+%\newcommand{\mlinl}{\ml{inl}\ }
+\newcommand{\mlinr}[1]{\ml{inr}(#1)}
+%\newcommand{\mlinr}{\ml{inr}\ }
+\newcommand{\mxh}[1]{\finish{MXH: #1}}
+%\newcommand{\mxh}[1]{\ifdraft{\color{pink}{[MXH: #1]}} \fi}
+\newcommand{\relR}{\mathrel{R}}
+%\newcommand{\relR}{\relRx{}}
+\newcommand{\SET}{\mbox{\sc set}}
+%\newcommand{\SET}{{\sc set}}
+% }}}
+\definecolor{bluegray}{rgb}{0.3,0.3,.6}
+\definecolor{blue}{rgb}{0,0,1}
+\definecolor{brown}{rgb}{.3,.3,.5}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{gray}{rgb}{.5,.5,.5}
+\definecolor{lightblue}{rgb}{.5,.5,1}
+\definecolor{pink}{rgb}{1,.5,.5}
+\definecolor{red}{rgb}{1,0,0}
+\DefineVerbatimEnvironment{code}{Verbatim}{gobble=2}
+\def\totalpagefraction{0.8}
+\newcommand{\acopy}{\mathit{copy}}
+\newcommand{\acreate}{\mathit{create}}
+\newcommand{\adget}{\mathit{dget}}
+\newcommand{\adlens}{\underset{a}{\dlens}}
+\newcommand{\adput}{\mathit{dput}}
+\newcommand{\aget}{\mathit{get}}
+\newcommand{\aIT}{\mathit{fold}}
+\newcommand{\alens}{\overset{a}{\lens}}
+\newcommand{\ALENS}{{\sc alens}}
+\newcommand{\apply}{\mathit{apply}}
+\newcommand{\aput}{\mathit{put}}
+\newcommand{\arrow}{\rightarrow} 
+\newcommand{\assoc}{\mathit{assoc}}
+\newcommand{\asym}{^\mathit{asym}}
+\newcommand{\At}{\mathit{at}}
+\newcommand{\bij}{\ifdelta\mathit{iso}\else\mathit{bij}\!\fi}
+\newcommand{\bistable}[2][]{\pgfkeys{bistable,pre,post,#1}\mathrel{{}_{\bistablepre}{\overset{#2}{\rightleftharpoons}}_{\bistablepost}}}
+\newcommand{\bistablex}[3]{\bistable[pre=#1,post=#2]{#3}}
+\newcommand{\Bits}{\mathbb B}
+\newcommand{\Bool}{\mathit{Bool}}
+\newcommand{\breakifnearbottom}{\breakifoverfraction{\totalpagefraction}}
+\newcommand{\C}[1]{\ensuremath{#1.C}}
+\newcommand{\caselens}{\mathit{case}}
+\newcommand{\catC}{\ensuremath{\mathcal C}\xspace}
+\newcommand{\catD}{\ensuremath{\mathcal D}\xspace}
+\newcommand{\Cat}{\mathbf{Cat}}
+\newcommand{\CC}{\mathbf{C}}
+\newcommand{\Close}{|\hspace{-2pt}\}}
+\newcommand{\codiag}{\mathit{codiag}}
+\newcommand{\comp}{\mathit{comp}}
+\newcommand{\CONCRETELIST}[1]{\left<#1\right>}
+\newcommand{\cond}[1]{\left\{\begin{array}{ll}#1\end{array}\right.}
+\newcommand{\CONS}{\mathord{:}}
+\newcommand{\const}{\mathit{term}}
+\newcommand{\countlens}{\mathit{count}}
+\newcommand{\CREATE}{\ensuremath{\acreate}}
+\newcommand{\createl}{\mathit{createl}}
+\newcommand{\creater}{\mathit{creater}}
+\newcommand{\DD}{\mathbf{D}}
+\newcommand{\Deep}{\mathit{deep}}
+\newcommand{\Defined}{\downarrow}
+\newcommand{\defined}{\mbox{ defined}}
+\newcommand{\Delete}{\mathit{delete}}
+\newcommand{\del}{\mathit{del}}
+\newcommand{\diag}{\mathit{diag}}
+\newcommand{\di}{\d i}
+\newcommand{\dif}{\mathit{dif}}
+\newcommand{\Directory}{\mathit{dir}}
+\newcommand{\disconnect}{\mathit{disconnect}}
+\newcommand{\discuss}[1]{\ifdraft{\color{red}{[#1]}} \fi}
+\newcommand{\displayifspace}[1]{\iffull\[\else$\fi#1\iffull\]\else$\fi}
+\newcommand{\dlens}{\overset{\Delta}{\lens}}
+\newcommand{\dLens}{\overset{\Delta}{\Lens}}
+\newcommand{\Domain}{\mathit{dom}}
+\newcommand{\D}{\partial}
+\newcommand{\Dputl}{\mathord{\Lleftarrow}}
+\newcommand{\DPUT}{\mathit{dput}}
+\newcommand{\Dputr}{\mathord{\Rrightarrow}}
+\newcommand{\drun}{\mathit{drun}}
+\newcommand{\dtrrel}{\mathrel{\dot\tr}}
+\newcommand{\dv}{\d v}
+\newcommand{\dw}{\d w}
+\newcommand{\dx}{\d x}
+\newcommand{\dy}{\d y}
+\newcommand{\dz}{\d z}
+\newcommand{\edit}{edit}
+\newcommand{\Edit}{Edit}
+\newcommand{\Edited}{\mathsf{edited}}
+\newcommand{\Empty}{\Open\Close}
+\newcommand{\EQCLASS}[1]{[#1]}
+\newcommand{\eq}{\mathit{eq}}
+\newcommand{\eqR}{\relR}
+\newcommand{\equivl}{\equiv}
+\newcommand{\Except}{\setminus}
+\newcommand{\fail}{\ml{fail}}
+\newcommand{\false}{\ml{false}}
+\newcommand{\File}{\mathit{file}}
+\newcommand{\filter}{\mathit{filter}}
+\newcommand{\finish}[1]{\ifdraft{\color{bluegray}{[#1]}} \fi}
+\newcommand{\finishlater}[1]{\iflater\finish{#1}\fi}
+\newcommand{\finishnow}[1]{\finish{\bf #1}}
+\newcommand{\finishtext}[1]{\ifdraft\iftext{\color{gray}{[#1]}} \fi\fi}
+\newcommand{\F}{\mathtt F}
+\newcommand{\formartin}[1]{\ifdraft\noindent {\bf\color{red}{For Martin:}}{\color{gray}{#1}} \fi}
+\newcommand{\Free}{\mathit{fv}}
+\newcommand{\GET}{\ensuremath{\aget}}
+\newcommand{\Hoist}{\mathit{hoist}}
+\newcommand{\HYLO}{\mathit{Hy}}  % Iter ??
+\newcommand{\id}{\mathit{id}}
+\newcommand{\IllTyped}{\mathsf{illtyped}}
+\newcommand{\infruleplain}[2]{\genfrac{}{}{}{0}{\begin{array}{c}#1\end{array}}{#2}}
+\newcommand{\INFTY}{^\omega}
+\newcommand{\init}{\mathit{init}}
+\newcommand{\inl}{\mathit{inl}}
+\newcommand{\Inl}{\mathit{inl}}
+\newcommand{\inr}{\mathit{inr}}
+\newcommand{\Inr}{\mathit{inr}}
+\newcommand{\Insert}{\mathit{insert}}
+\newcommand{\ins}{\mathit{ins}}
+\newcommand{\IT}{\mathit{It}}  % Iter ??
+\newcommand{\Label}[1]{\mathtt{#1}}
+\newcommand{\Leaf}{\mathit{leaf}}
+\newcommand{\length}{\mathit{length}}
+\newcommand{\lens}{\leftrightarrow}
+\newcommand{\LENS}{{\sc lens}}
+\newcommand{\liftedtolists}{_*}
+\newcommand{\LIST}{^\star}
+\newcommand{\live}{\ml{live}}
+\newcommand{\map}{\mathit{map}}
+\newcommand{\mh}[1]{\finish{MH: #1}}
+\newcommand{\ml}[1]{\mathsf{#1}}
+\newcommand{\mlcount}{\ml{count}}
+\newcommand{\mldel}[1]{\ml{del}(#1)}
+\newcommand{\mldelete}{\ml{del}}
+\newcommand{\mldoubleletarray}[1]{\begin{array}[t]{@{}r@{\;}c@{\;}l@{\quad}r@{\;}c@{\;}l@{}}#1\end{array}}
+\newcommand{\mlelse}{\ml{else}\ }
+\newcommand{\mlfailed}{\ml{failed}}
+\newcommand{\mlfalse}{\false}
+\newcommand{\mlfind}{\ml{find}}
+\newcommand{\mlfst}{\ml{fst}}
+\newcommand{\mlhead}[1]{\ml{head}(#1)}
+\newcommand{\mlif}{\ml{if}\ }
+\newcommand{\mlinb}{\ml{in}\ }
+\newcommand{\mline}{\ \ml{in}}
+\newcommand{\mlinlx}{\ml{inl}}
+\newcommand{\mlinm}{\ \ml{in}\ }
+\newcommand{\mlinrx}{\ml{inr}}
+\newcommand{\mlins}[1]{\ml{ins}(#1)}
+\newcommand{\mlinsert}{\ml{ins}}
+\newcommand{\mliso}{\ml{iso}}
+\newcommand{\mlleft}[1]{\ml{left}(#1)}
+\newcommand{\mlletarray}[1]{\begin{array}{l@{\;\;}c@{\;\;}l@{}l}#1\end{array}}
+\newcommand{\mllet}{\ml{let}\ }
+\newcommand{\mlmapmod}{\ml{mapmod}}
+\newcommand{\mlmatch}{\ml{match}\ }
+\newcommand{\mlmod}[2]{\ml{mod}(#1,#2)}
+\newcommand{\mlmodify}[1]{\ml{mod}(#1)}
+\newcommand{\mlonl}[1]{\ml{left}(#1)}
+\newcommand{\mlonr}[1]{\ml{right}(#1)}
+\newcommand{\mlrearrange}{\ml{rearr}}
+\newcommand{\mlreorder}[1]{\ml{reorder}(#1)}
+\newcommand{\mlreset}{\ml{reset}}
+\newcommand{\mlresize}{\ml{resize}}
+\newcommand{\mlreverse}{\ml{reverse}}
+\newcommand{\mlright}[1]{\ml{right}(#1)}
+\newcommand{\mlshuffle}{\ml{shuffle}}
+\newcommand{\mlsnd}{\ml{snd}}
+\newcommand{\mlsplit}{\ml{split}}
+\newcommand{\mlstayl}[1]{\mlstay_L(#1)}
+\newcommand{\mlstay}{\ml{stay}}
+\newcommand{\mlstayr}[1]{\mlstay_R(#1)}
+\newcommand{\mlswap}{\ml{swap}}
+\newcommand{\mlswitchll}[1]{\mlswitch_{LL}(#1)}
+\newcommand{\mlswitchl}{\mlswitch_L}
+\newcommand{\mlswitchlr}[1]{\mlswitch_{LR}(#1)}
+\newcommand{\mlswitch}{\ml{switch}}
+\newcommand{\mlswitchrl}[1]{\mlswitch_{RL}(#1)}
+\newcommand{\mlswitchr}{\mlswitch_R}
+\newcommand{\mlswitchrr}[1]{\mlswitch_{RR}(#1)}
+\newcommand{\mltag}{\ml{tag}}
+\newcommand{\mltail}[1]{\ml{tail}(#1)}
+\newcommand{\mlthen}{\ml{then}\ }
+\newcommand{\mltoggle}{\ml{toggle}}
+\newcommand{\mltrue}{\true}
+\newcommand{\mluntag}{\ml{out}}
+\newcommand{\mlwith}{\ \ml{with}\ }
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\Mod}{\mathbf{Mod}}
+\newcommand{\NAT}{\mathbb{N}}
+\newcommand{\nextcase}[1]{\item[] {\bf Case} #1:}
+\newcommand{\NIL}{\left<\right>}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\Node}{\mathit{node}}
+\newcommand{\ONE}{\mbox{\bf{1}}}
+\newcommand{\Open}{\{\hspace{-2pt}|}
+\newcommand{\op}{^\mathit{op}}
+\newcommand{\partialto}{\rightharpoonup}
+\newcommand{\partitionarray}[3]{#1,\ \mbox{where}\; \mldoubleletarray{#2} \markeqn{#3}}
+\newcommand{\partition}{\mathit{partition}}
+\newcommand{\pdf}[1]{\node[scale=.27]{\pgfimage{pdf/#1}}}
+\newcommand{\PENDING}[1]{\ifdraft\noindent {\bf\color{blue}{Pending:}}{\color{gray}{#1}} \fi}
+\newcommand{\plusplus}{\mathrel{\mbox{++}}}
+\newcommand{\PUT}{\ensuremath{\mathit{put}}}
+\newcommand{\PUTL}{\ensuremath{\putl}}
+\newcommand{\putl}{\mathit{putl}}
+\newcommand{\PUTR}{\ensuremath{\putr}}
+\newcommand{\putr}{\mathit{putr}}
+\newcommand{\relRk}{\relRx k}
+\newcommand{\relRl}{\relRx \ell}
+\newcommand{\relRx}[1]{\mathrel{R_{#1}}}
+\newcommand{\Rename}{\mathit{rename}}
+\newcommand{\replicate}[2]{\underbrace{#2 \cdots #2}_{#1\ \mbox{\tiny times}}}
+\newcommand{\reviewcomment}[1]{\finish{\bf Reviewer: #1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Rm}{\mathsf{rm}}
+\newcommand{\run}{\mathit{run}}
+\newcommand{\Sed}{\mathsf{sed}}
+\newcommand{\SMALLSECTIONHEADER}{\paragraph*}
+\newcommand{\smissing}{\mathit{missing}}
+\newcommand{\soon}[1]{\ifdraft{\color{bluegray}{\bf [Soon: #1]}} \fi}
+\newcommand{\splits}{\cdot^{!}}
+\newcommand{\stable}[2][{}]{\overset{#2}{\rightharpoonup}_{#1}}
+\newcommand{\starsplit}{^{!}}
+\newcommand{\swap}{\mathit{swap}}
+\newcommand{\switch}{\mathit{switch}}
+\newcommand{\swizzle}{\times}
+\newcommand{\sym}{^\mathit{sym}}
+\newcommand{\Tag}{\ml{Tag}}
+\newcommand{\TagM}{\ml{TagM}}
+\newcommand{\TagP}{\ml{Tag?}}
+\newcommand{\To}{\mapsto}
+\newcommand{\Touch}{\mathsf{touch}}
+\newcommand{\Tree}{\mathit{Tree}}
+\newcommand{\Trit}{\mathit{Trit}}
+\newcommand{\tr}{\triangleright}
+\newcommand{\true}{\ml{true}}
+\newcommand{\Undefined}{\uparrow}
+\newcommand{\Unedited}{\mathsf{unedited}}
+\newcommand{\union}{\mathit{union}}
+\newcommand{\unit}{{()}}
+\newcommand{\Unit}{\mathit{Unit}}
+\newenvironment{functoriality}{\begin{pflike}{Proof of functoriality}}{\end{pflike}}
+\newenvironment{goodlens}{\begin{pflike}{Proof of well-formedness}}{\end{pflike}}
+\newenvironment{lenseqv}{\begin{pflike}{Proof of preservation of equivalence}}{\end{pflike}}
+\pgfkeys{/bistable/.is family}
+\pgfkeysdef{/bistable/post}{\def\bistablepost{#1}}
+\pgfkeysdef{/bistable/pre}{\def\bistablepre{#1}}
+\renewcommand{\D}{\mathtt D}
+\renewcommand{\d}{\textrm{d}}
+\renewcommand{\P}{\mathcal{P}}
+\setlength{\afterruleskip}{\medskipamount}
+
+% Breaking if the page is too full when we're about to emit a header
+\newcommand{\breakifoverfraction}[1]{
+  \ifdim\pagetotal > #1\pagegoal
+    \@tempdima\pagetotal \advance\@tempdima\pagedepth
+    \ifdim\@tempdima < \pagegoal 
+      \newpage\typeout{Forcing optional page break}
+    \else \advance\@tempdima-\pageshrink
+      \ifdim\@tempdima > \pagegoal \par
+      \else\penalty-5000\fi
+  \fi\fi
+  }
+
+\iffull\else
+\newenvironment{longenum}{\begin{enumerate}}{\end{enumerate}}
+\newenvironment{longitem}{\begin{itemize}}{\end{itemize}}
+\fi
+
+% stolen from Nate
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+\tikzstyle{ybox}=[
+       rounded corners=2pt,
+       inner sep=1ex,
+       fill=white,
+       draw=black!70]
+\newcommand{\lensdef}[3]{%
+  \begin{center}
+  \begin{tikzpicture}
+    \draw node (TYP) {$
+      \begin{array}{@{}c@{}}
+      \ \\[-3.3ex]
+      #2 
+      \end{array}$};
+    \draw node[below=0.75ex of TYP] (DEF) {%
+       $\begin{array}{@{}l@{\;\;}l@{\;\;}l@{}}
+       \ \\[-1.8ex]
+       #3
+       \end{array}$};
+    \begin{pgfonlayer}{background}
+      \node [fit=(TYP) (DEF)] (BCK) {};
+      \filldraw [ybox] (BCK.north west) rectangle (BCK.east |- TYP.south);
+      \filldraw [ybox] (BCK.west |- DEF.north) rectangle (BCK.south east);
+    \end{pgfonlayer}
+  \end{tikzpicture}
+  \end{center}
+}
