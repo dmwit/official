@@ -1,4 +1,4 @@
-% TODO: all conditional definitions
+% TODO: most conditional definitions
 % conditional definitions {{{
 \renewenvironment{abstract}{%
   \OLDsection*{Abstract}%
@@ -10,34 +10,22 @@
 %  \normalsize}{%
 %  }
 %\fi
-\newcommand{\aconst}{\mathit{aconst}}
-%\newcommand{\aconst}{\mathit{const}}
-\newcommand{\bcp}[1]{\finish{BCP: #1}}
-%\newcommand{\bcp}[1]{\ifdraft{\color{lightblue}{[BCP: #1]}} \fi}
-\newcommand{\colspan}[1]{\multicolumn{3}{@{}l}{#1}}
-%\newcommand{\colspan}[1]{\multicolumn{3}{l}{#1}}
-\newcommand{\dmwit}[1]{\finish{dmwit: #1}}
-%\newcommand{\dmwit}[1]{\ifdraft{\color{darkgreen}{[dmwit: #1]}} \fi}
-\newcommand{\dputl}{\mathit{dputl}}
-%\newcommand{\dputl}{\mathord{\Lleftarrow}}
-\newcommand{\dputr}{\mathit{dputr}}
-%\newcommand{\dputr}{\mathord{\Rrightarrow}}
-\newcommand{\foldlist}{\mathit{f}}
-%\newcommand{\foldlist}{\mathit{fold}}
-\newcommand{\Lens}{\leftrightarrow}
-%\newcommand{\Lens}{\Longleftrightarrow}
+\ifcomplement
+    \newcommand{\aconst}{\mathit{const}}
+    \newcommand{\colspan}[1]{\multicolumn{3}{l}{#1}}
+\else
+    \newcommand{\aconst}{\mathit{aconst}}
+    \newcommand{\colspan}[1]{\multicolumn{3}{@{}l}{#1}}
+\fi
+\iftree\newcommand{\Lens}{\leftrightarrow}
+\else  \newcommand{\Lens}{\Longleftrightarrow}
+\fi
 \newcommand{\missing}{\mathit{init}}
 %\newcommand{\missing}{\mathit{missing}}
 \newcommand{\mlinl}[1]{\ml{inl}(#1)}
 %\newcommand{\mlinl}{\ml{inl}\ }
 \newcommand{\mlinr}[1]{\ml{inr}(#1)}
 %\newcommand{\mlinr}{\ml{inr}\ }
-\newcommand{\mxh}[1]{\finish{MXH: #1}}
-%\newcommand{\mxh}[1]{\ifdraft{\color{pink}{[MXH: #1]}} \fi}
-\newcommand{\relR}{\mathrel{R}}
-%\newcommand{\relR}{\relRx{}}
-\newcommand{\SET}{\mbox{\sc set}}
-%\newcommand{\SET}{{\sc set}}
 % }}}
 \definecolor{bluegray}{rgb}{0.3,0.3,.6}
 \definecolor{blue}{rgb}{0,0,1}
@@ -64,6 +52,7 @@
 \newcommand{\assoc}{\mathit{assoc}}
 \newcommand{\asym}{^\mathit{asym}}
 \newcommand{\At}{\mathit{at}}
+\newcommand{\bcp}[1]{\finish{BCP: #1}}
 \newcommand{\bij}{\ifdelta\mathit{iso}\else\mathit{bij}\!\fi}
 \newcommand{\bistable}[2][]{\pgfkeys{bistable,pre,post,#1}\mathrel{{}_{\bistablepre}{\overset{#2}{\rightleftharpoons}}_{\bistablepost}}}
 \newcommand{\bistablex}[3]{\bistable[pre=#1,post=#2]{#3}}
@@ -102,10 +91,13 @@
 \newcommand{\displayifspace}[1]{\iffull\[\else$\fi#1\iffull\]\else$\fi}
 \newcommand{\dlens}{\overset{\Delta}{\lens}}
 \newcommand{\dLens}{\overset{\Delta}{\Lens}}
+\newcommand{\dmwit}[1]{\finish{dmwit: #1}}
 \newcommand{\Domain}{\mathit{dom}}
 \newcommand{\D}{\partial}
+\newcommand{\dputl}{\mathord{\Lleftarrow}}
 \newcommand{\Dputl}{\mathord{\Lleftarrow}}
 \newcommand{\DPUT}{\mathit{dput}}
+\newcommand{\dputr}{\mathord{\Rrightarrow}}
 \newcommand{\Dputr}{\mathord{\Rrightarrow}}
 \newcommand{\drun}{\mathit{drun}}
 \newcommand{\dtrrel}{\mathrel{\dot\tr}}
@@ -132,6 +124,7 @@
 \newcommand{\finishnow}[1]{\finish{\bf #1}}
 \newcommand{\finishtext}[1]{\ifdraft\iftext{\color{gray}{[#1]}} \fi\fi}
 \newcommand{\F}{\mathtt F}
+\newcommand{\foldlist}{\mathit{fold}}
 \newcommand{\formartin}[1]{\ifdraft\noindent {\bf\color{red}{For Martin:}}{\color{gray}{#1}} \fi}
 \newcommand{\Free}{\mathit{fv}}
 \newcommand{\GET}{\ensuremath{\aget}}
@@ -217,6 +210,7 @@
 \newcommand{\mlwith}{\ \ml{with}\ }
 \newcommand{\M}{\mathcal{M}}
 \newcommand{\Mod}{\mathbf{Mod}}
+\newcommand{\mxh}[1]{\finish{MXH: #1}}
 \newcommand{\NAT}{\mathbb{N}}
 \newcommand{\nextcase}[1]{\item[] {\bf Case} #1:}
 \newcommand{\NIL}{\left<\right>}
@@ -238,6 +232,7 @@
 \newcommand{\putr}{\mathit{putr}}
 \newcommand{\relRk}{\relRx k}
 \newcommand{\relRl}{\relRx \ell}
+\newcommand{\relR}{\relRx{}}
 \newcommand{\relRx}[1]{\mathrel{R_{#1}}}
 \newcommand{\Rename}{\mathit{rename}}
 \newcommand{\replicate}[2]{\underbrace{#2 \cdots #2}_{#1\ \mbox{\tiny times}}}
@@ -246,6 +241,7 @@
 \newcommand{\Rm}{\mathsf{rm}}
 \newcommand{\run}{\mathit{run}}
 \newcommand{\Sed}{\mathsf{sed}}
+\newcommand{\SET}{{\sc set}}
 \newcommand{\SMALLSECTIONHEADER}{\paragraph*}
 \newcommand{\smissing}{\mathit{missing}}
 \newcommand{\soon}[1]{\ifdraft{\color{bluegray}{\bf [Soon: #1]}} \fi}
