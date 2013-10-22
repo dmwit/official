@@ -15,10 +15,3 @@
     \ifdelta\input{#1_delta}\fi
     \iftree\input{#1_tree}\fi
 }
-\newcommand{\temporarily}[2]{
-    \ifdissertation#1#2\choosedissertation\fi
-    \ifcomplement#1#2\choosecomplement\fi
-    \ifdelta#1#2\choosedelta\fi
-    \iftree#1#2\choosetree\fi
-}
-\choosedissertation
