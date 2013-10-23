@@ -20,8 +20,11 @@
 \iftree\newcommand{\Lens}{\leftrightarrow}
 \else  \newcommand{\Lens}{\Longleftrightarrow}
 \fi
-\newcommand{\missing}{\mathit{init}}
-%\newcommand{\missing}{\mathit{missing}}
+\ifdelta
+    \newcommand{\missing}{\mathit{init}}
+\else
+    \newcommand{\missing}{\mathit{missing}}
+\fi
 \newcommand{\mlinl}[1]{\ml{inl}(#1)}
 %\newcommand{\mlinl}{\ml{inl}\ }
 \newcommand{\mlinr}[1]{\ml{inr}(#1)}
