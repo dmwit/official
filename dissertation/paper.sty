@@ -1,5 +1,5 @@
-% TODO: most conditional definitions
 % conditional definitions {{{
+% TODO: ``abstract'' environment
 \renewenvironment{abstract}{%
   \OLDsection*{Abstract}%
   \normalsize}{%
@@ -25,10 +25,17 @@
 \else
     \newcommand{\missing}{\mathit{missing}}
 \fi
-\newcommand{\mlinl}[1]{\ml{inl}(#1)}
-%\newcommand{\mlinl}{\ml{inl}\ }
-\newcommand{\mlinr}[1]{\ml{inr}(#1)}
-%\newcommand{\mlinr}{\ml{inr}\ }
+\newcommand{\mlinjargs}{
+    \renewcommand{\mlinl}[1]{\ml{inl}(##1)}
+    \renewcommand{\mlinr}[1]{\ml{inr}(##1)}
+}
+\newcommand{\mlinjnoargs}{
+    \renewcommand{\mlinl}{\ml{inl}\ }
+    \renewcommand{\mlinr}{\ml{inr}\ }
+}
+\newcommand{\mlinl}{}
+\newcommand{\mlinr}{}
+\mlinjnoargs
 % }}}
 \definecolor{bluegray}{rgb}{0.3,0.3,.6}
 \definecolor{blue}{rgb}{0,0,1}
