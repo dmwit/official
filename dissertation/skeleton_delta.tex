@@ -1,0 +1,682 @@
+\newif \ifanon  \anonfalse
+
+\documentclass{sigplanconf}
+\usepackage{paper}
+
+\begin{document}
+\conferenceinfo{POPL'12,} {January 25--27, 2012, Philadelphia, PA, USA.}
+\CopyrightYear{2012}
+\copyrightdata{978-1-4503-1083-3/12/01}
+
+\title{Edit Lenses}
+% \subtitle{Operation-Based Bidirectional Programming}
+\ifanon
+\authorinfo
+    {}
+    {}
+    {}
+\else
+\authorinfo
+    {Martin Hofmann}
+    {Ludwig-Maximilians-Universit\"at}
+    {}
+\authorinfo
+    {Benjamin Pierce}
+    {University of Pennsylvania}
+    {}
+\authorinfo
+    {Daniel Wagner}
+    {University of Pennsylvania}
+    {}
+\fi
+
+\maketitle
+\begin{abstract}
+A {\em lens} is a bidirectional transformation between a pair of connected
+data structures, capable of translating an edit on one structure into an
+appropriate edit on the other.
+%
+Many varieties of lenses have been studied, but none, to date, has offered a
+satisfactory treatment of how edits are {\em represented}.  Many
+foundational accounts~\cite{Focal2005,HofmannPierceWagner10} only consider
+edits of the form ``overwrite the whole structure,'' leading to poor
+behavior in many situations by failing to track the
+associations between corresponding parts of the structures when elements are
+inserted and deleted in ordered lists, for example.  Other theories of
+lenses do maintain these associations, either by annotating the structures
+themselves with change information~\cite{HuModels07,
+  Hidaka10}\iflater\discuss{I think some of Hu's earlier papers use the same
+  idea; double-check}\fi{} or using auxiliary data
+structures~\cite{Matching10, Diskin-Delta11}, but every extant theory assumes
+that the entire original source structure is part of the information passed
+to the lens.
+
+We offer a general theory of {\em edit lenses}, which work with
+descriptions of changes to structures, rather than with the structures
+themselves.  We identify a simple notion of ``editable structure''---a set
+of states plus a monoid of edits with a partial monoid action on the states---and
+construct a semantic space of lenses between such structures, with natural
+laws governing their behavior.  We show how a range of constructions from
+earlier papers on ``state-based'' lenses can be carried out in this space,
+including composition, products, sums, list operations, etc.  Further, we show
+how to construct edit lenses for arbitrary {\em containers} in the sense of
+Abbott, Altenkirch, and Ghani~\cite{1195941}. Finally, we show that edit
+lenses refine a well-known formulation of state-based
+lenses~\cite{HofmannPierceWagner10}, in the sense that every state-based
+lens gives rise to an edit lens over structures with a simple overwrite-only
+edit language, and conversely every edit lens on such structures gives rise
+to a state-based lens.
+\end{abstract}
+
+\category{D.3.2}
+    {Programming Languages}
+    {Language Classifications}
+    [Specialized application languages]
+\terms Design, Languages, Theory
+\keywords algebra, bidirectional programming, edit, lens, symmetric
+
+\input{delta}
+
+\ifanon \else \paragraph*{Acknowledgments}
+We are grateful to
+Nate Foster and Perdita Stevens for productive discussions of many points,
+to the members of the Penn PL Club for comments on an early draft, to
+the organizers and participants in the January 2011 Dagstuhl seminar on
+Bidirectional Transformations for creating a stimulating environment for work
+in this area, and to the POPL reviewers for their thoughtful suggestions.  Our work has been supported by the National Science 
+Foundation under grants 0534592, \emph{Linguistic Foundations for XML View
+  Update}, and 1017212, \emph{Algebraic Foundations for Collaborative Data
+  Sharing}.  \fi
+
+\let\section\OLDsection
+
+\iffull\else\vfill\eject\fi
+\bibliographystyle{plainnat}
+\bibliography{bcp,harmony,delta}
+
+\end{document}
+
+\iffull
+\clearpage\ \clearpage
+\section{Old material from here on -- needs reintegrated or deleted}
+
+\discuss{Which bits of this are we keeping?  I guess none of them...}
+
+\begin{defn}
+    Given functions
+    \begin{align*}
+        f &\in X \times C \to Y \times C \\
+        g &\in Y \times C \to X \times C
+    \end{align*}
+    and values $(x,c,y) \in X \times C \times Y$, we will say $(x,c,y)$ is:
+    \begin{itemize}
+        \item \emph{stable} in $f$, written $x \stable[f]c y$, when
+            $f(x,c)=(y,c)$, and
+        \item \emph{consistent} with $f$ and $g$, written $x \bistablex gfc
+            y$, when $x \stable[f]c y$ and $y \stable[g]c x$.
+    \end{itemize}
+\end{defn}
+Whenever either $f$ or $g$ are clear from context, we will omit them.
+
+\begin{defn}
+    Given monoids $M$ and $N$, a \emph{stateful monoid homomorphism} over
+    state set $C$ is a function $h \in M \times C \to N \times C$ that
+    satisfies two laws:
+    \infax{\ONE \stable[h]{c} 0}
+    \infrule{h(m,c) = (n,c') \\ h(m',c') = (n',c'')}
+            {h(m \cdot_M m',c) = (n \cdot_N n',c'')}
+\end{defn}
+
+Stateful monoid homomorphisms model the functions that translate edits to
+one kind of structure into edits to another kind of structure. The second
+law is the more complicated of the two; it says that if an edit can be
+broken down into smaller component edits, then translating those smaller
+components in turn gives the same result as translating the whole big edit
+all at once.
+
+\dmwit{fold this into the definition of edit lenses + give a discussion
+motivating these laws; for example, how do these laws specialize when the
+monoid is the boring one that has only eliminators?}
+
+\mxh{For any set $C$ and monoid $M$ we can define a new monoid structure on 
+                 $C\rightarrow C \times M$ where $f.g(c) = 
+\text{let}\  c_1,m_1=g(c)\text{ in let }c2,m2=f(c1)\text{ in } 
+                             (c2,m2.m1)$. 
+
+       In that sense a stateful morphism is subsumed under ordinary morphism.}
+
+\begin{defn}
+    Given modules $M$ for $X$ and $N$ for $Y$, a \emph{stateful module
+    transformer}\footnote{The definition of a stateful module transformer is
+    almost, but not quite, what you might expect to see in the definition of
+    a stateful module homomorphism. We will see why in
+    \S \finish{??}.} is a pair
+    $(h,f)$ of a stateful monoid 
+    homomorphism $h$ and a function $f \in X \times C \to Y \times C$ for
+    which:
+    \infrule{x \stable[f]{c} y \\ h(m,c) = (n,c')}
+            {m \odot_X x \stable[f]{c'} n \odot_Y y}
+\end{defn}
+
+
+
+\begin{defn}
+\bcp{What is this a definition of??}
+ a stateful module transformer
+    $(\dputr,\putr)$ from $M$ to $N$, and a stateful module transformer
+    $(\dputl,\putl)$ from $N$ to $M$, satisfying the round-trip laws
+    \infrule{\putr(x,c) = (y,c')}{x \bistable{c'} y}
+    \infrule{\putl(y,c) = (x,c')}{y \bistable{c'} x}
+\end{defn}
+
+We will write $\ell \in M \lens N$ when $\ell$ is a symmetric edit lens
+between $M$ and $N$, and use record projection notation like $\ell.\missing$
+and $\ell.\dputr$ to refer to its components.  Taking some ideas from
+bisimulation arguments, we can model lens equivalence by comparing
+observations.
+
+\begin{defn}
+    Functions $f \in X \times C_f \to Y \times C_f$ and $g \in X \times C_g
+    \to Y \times C_g$ are said to be \emph{$R$-similar}, written $f \sim_R
+    g$, when
+    \infrule{c_f \relR c_g \\ f(x,c_f) = (y_f,c_f') \\ g(x,c_g) = (y_g,c_g')}
+            {y_f = y_g \land c_f' \relR c_g'}
+\end{defn}
+
+\begin{defn}
+    We will write $k \equiv \ell$ when there is a relation $R \in k.C \times
+    \ell.C$ that connects each of the five components of $k$ and $\ell$:
+    \begin{enumerate}
+        \item $k.\missing \relR \ell.\missing$
+        \item $k.\putr \sim_R \ell.\putr$
+        \item $k.\putl \sim_R \ell.\putl$
+        \item $k.\dputr \sim_R \ell.\dputr$
+        \item $k.\dputl \sim_R \ell.\dputl$
+    \end{enumerate}
+\end{defn}
+
+\begin{defn}
+    An \emph{edit-only} lens $\ell$ between modules $M$ and $N$ for $X$ and
+    $Y$, written $\ell \in M \dlens N$, is a tuple
+    $\left<C,\creater,\createl,\dputr,\dputl\right>$, where $\creater \in X
+    \to Y \times C$, $\createl \in Y \to X \times C$, and $\dputr$ and
+    $\dputl$ are stateful monoid homomorphisms from $M$ to $N$ and $N$ to
+    $M$, respectively.
+\end{defn}
+
+\begin{defn}
+    An edit-only lens $\ell \in X \dlens Y$ is \emph{well formed} when there
+    is a full edit lens $\ell' \in X \lens Y$ and a relation $R \in \ell.C
+    \times \ell'.C$ such that
+    \infrule{\ell.\creater(x) = (y, c) \\ \ell'.\putr(x,\ell'.\missing) =
+    (y', c')}{y = y' \land c \relR c'}
+    \infrule{c_i \relR c_i' \\ \ell.\dputr(m,c_i) = (n,c_o) \\
+    \ell'.\dputr(m,c_i') = (n',c_o')}{n = n' \land c_o \relR c_o'}
+    and similarly for $\ell.\createl$ and $\ell.\dputl$.
+\end{defn}
+
+The advantage of edit-only lenses is that they may store much less
+information in their complements; indeed, many practical lenses have a
+corresponding edit-only lens with a $\Unit$ complement. However, the
+$\createl$ and $\creater$ have much weaker behavioral guarantees than
+$\putr$ and $\putl$. If the lens is expected to be able to occasionally do a
+``best-effort reboot'' with a new state (and not an edit), a full edit lens
+may do much better than an edit-only lens.
+
+\section{Another old section --- Edit Lenses}
+
+Shortcomings of ordinary (state-based) symmetric lenses:
+\begin{itemize}
+\item inefficient
+\item no alignment
+\end{itemize}
+
+Write something about ``generic edits'' vs. ``specific edits.''  We are
+considering specific edits.
+
+Discuss monoids of edits vs. sets of edits.  Mostly you want just the free
+monoid, so then sets of fundamental edits is enough.  But there are some
+important cases where the monoid structure is revealing:
+\begin{itemize}
+\item having a neutral element simplifies the definitions (e.g., the
+product: you can just say a product edit is a pair of an edit on the left
+instead and an edit on the right, rather than ``an edit on the left OR an
+edit on the right OR both...'')
+\item the product, for example, does have interesting laws: edits on the
+left and on the right don't affect each other
+\end{itemize}
+
+Discuss the law making dput compatible with composition.  There is no loss
+of power in doing so: we can always ``disable'' the law in particular cases
+if desired by taking the free monoid over some other monoid.  
+
+Note that there is a fundamental tension between rich lens languages vs.
+rich edit languages.  Here we're exploring the former and keeping the latter
+rather basic---just ``rigid edits'' for most of the type constructors plus
+insert/delete edits for lists.  Much richer edit languages can be imagined
+(even for lists: we might well want to be able to swap the first and second
+elements of a list while maintaining their connection to the hidden
+information in the other view), but we're not there yet.  Moreover, we don't
+know how to generalize the construction of iterators so as to obtain
+something more interesting than the completely rigid edit language (without
+insert/delete) for lists.
+
+Also discuss monoids of edits vs edits=certain functions. An edit
+induces a functions vs an edit is a function. Issue: a delete followed
+by an insert edit *is* the identity function, but may be translated to
+a non-identity edit in a richer view. Edits as monoid elements allows
+for such intensional information to be kept.
+\paragraph*{Notation}
+We write $G^*$ for the set of sequences of elements of $G$; that is, if
+$g_1,\ldots,g_n \in G$, then $\left<g_1,\ldots,g_n\right> \in G^*$. When
+convenient, we will omit the braces and commas, writing simply $g_1 \cdots
+g_n$.  For equivalence relation $\equiv$, we write $S/\equiv$ for the set of
+equivalence classes of $S$, and for each $s \in S$, we write $[s]_\equiv \in
+S/\equiv$ for the equivalence class of $s$. When context makes the
+equivalence relation clear, we simply write $[s]$.
+
+\paragraph*{Definitions}
+
+A \emph{monoid} is a triple $\left<S,1,\cdot\right>$ consisting of a set
+$S$, a distinguished element $1 \in S$, and an associative binary operation
+$\cdot \in S \times S \to S$ for which $1$ is an identity. When no confusion
+can arise, we will abbreviate $s \cdot t$ as simply $st$.
+
+One way of specifying a monoid is to give its \emph{monoid presentation},
+which consists of a set of generators $G$ and a binary relation $R \subset
+G^* \times G^*$ that can be understood as giving equalities over words
+composed from alphabet $G$. Formally, we close $R$ over reflexivity,
+symmetry, transitivity, and congruence, defining a new equivalence
+relation $\equiv_R$:
+\infrule{s \relR t}{s \equiv_R t}
+\infax{s \equiv_R s}
+\infrule{s \equiv_R t}{t \equiv_R s}
+\infrule{s \equiv_R t \andalso t \equiv_R u}{s \equiv_R u}
+\infrule{s \equiv_R t}{usv \equiv_R utv}
+The induced monoid then has the quotient $G^*/\equiv_R$ as its set, the
+equivalence class of the empty sequence $[\left<\right>]$ as its unit $1$,
+and sequence concatenation $[s]\cdot[t] = [st]$ as its associative binary
+operation. (It is easy to show that this last operation is well defined
+because $\equiv_R$ is congruence-closed.)
+
+A \emph{monoid action} is a function $\cdot \in M \times X \to
+X$, where $M$ is a monoid and $X$ is a set, that satisfies two laws:
+\begin{eqnarray*}
+            1 \cdot x &=& x \\
+            (mn)\cdot x &=& m\cdot(n\cdot x)
+\end{eqnarray*}
+%
+A \emph{module} is a triple $\left<M,X,\cdot\right>$ where $M$ is a monoid,
+$X$ is a set, and $\cdot$ is a monoid action; when there is no ambiguity, we
+will use $M$ to refer to both the module and the monoid in that module, and
+we will use juxtaposition to indicate both the monoid multiplication and the
+monoid action.
+%        
+A \emph{module homomorphism} between $\left<M,X,\cdot\right>$ and
+$\left<N,Y,\tr\right>$ is a pair $(h,f)$ of a monoid homomorphism $h \in M
+\to N$ and a function $f \in X \to Y$ that preserves the edits, that is, for 
+which 
+\[f(mx) = h(m)f(x).\]
+
+When $M$ is a monoid presented via $G$ and $R$, we may also define a module
+presentation. Abusing notation slightly, we may lift a function $f \in G
+\times X \to X$ to a function $f^* \in G^* \times X \to X$ in the natural
+way:
+\begin{align*}
+    f^*(\left<\right>,x) &= x \\
+    f^*(g_1 \cdots g_n,x) &= f(g_1,f^*(g_2 \cdots g_n,x))
+\end{align*}
+If it also turns out that $f^*$ is consistent with respect to $R$:
+\[g \relR g' \implies f^*(g,x) = f^*(g',x),\]
+then $f^*$ may be lifted a second time to a monoid action
+$f^R([g],x)=f^*(g,x)$. We can show that $f^R$ is well defined
+because of the consistency of $f^*$, and that it is a monoid action by
+definition.
+
+\begin{defn}[Edit asymmetric lenses]
+A $\Delta$-asymmetric-lens $\ell$ mapping from module
+$\left<M,X,\cdot\right>$ to module $\left<N,Y,\tr\right>$, written $\ell \in
+\left<M,X,\cdot\right> \alens \left<N,Y,\tr\right>$, comprises five
+functions:
+\begin{align*}
+    \aget    &\in X \to Y \\
+    \aput    &\in Y \times X \to X \\
+    \acreate &\in Y \to X \\
+    \adget   &\in M \times X \to N \\
+    \adput   &\in N \times Y \to M
+\end{align*}
+
+These functions must obey several laws. The round-trip laws must hold:
+\infax[CreateGet]{\aget(\acreate(y))=y}
+\infax[PutGet]{\aget(\aput(y,x))=y}
+\infax[GetPut]{\aput(\aget(x),x)=x}
+We also require that $\adget$ be a monoid homomorphism, and that $\adput$
+have a similar property:
+\infax[DPut1]{\adput(1,x)=1}
+\infrule[DPut$\cdot$]
+    {\adput(n,x)=m \\ \adput(n',mx)=m'}
+    {\adput(nn',x)=mm'}
+\dmwit{Do we require that $\adget(\adput(n,x))=n$? If so, \rn{PutDPut}
+below is redundant.}
+Finally, we require that the non-delta and delta versions of the functions
+behave consistently:
+\infrule[GetDGet]{\aget(x)=y \\ \adget(m)=n}{\aget(mx)=ny}
+\infrule[PutDPut]{\aget(x)=y \\ \adput(n,x)=m}{\aget(mx)=ny}
+\end{defn}
+
+\begin{defn}[Edit symmetric lenses]
+A $\Delta$-symmetric-lens $\ell$ (or simply $\Delta$-lens) mapping from
+module $\left<M,X,\cdot\right>$ to module $\left<N,Y,\tr\right>$, written
+$\ell \in \left<M,X,\cdot\right> \lens \left<N,Y,\tr\right>$ comprises
+complement set $C$, an element $\missing \in C$, and four functions
+\begin{eqnarray*}
+    \putr  &\in& X \times C \to Y \times C \\
+    \putl  &\in& Y \times C \to X \times C \\
+    \dputr &\in& M \times C \to N \times C \\
+    \dputl &\in& N \times C \to M \times C
+\end{eqnarray*}
+obeying several laws.
+%
+First, we have the same round-trip laws as before for the plain $\PUT$s:
+%
+\infrule[PutRL]{\putr(x,c) = (y,c')}{\putl(y,c') = (x,c')}
+\infrule[PutLR]{\putl(y,c) = (x,c')}{\putr(x,c') = (y,c')}
+%
+Second, $\dputr$ and $\dputl$ must be compatible with the monoid structure:
+%
+\infax[dputr1]{\dputr(1,c) = (1,c)}
+\infax[dputl1]{\dputl(1,c) = (1,c)}
+\infrule[dputr$\cdot$]
+    {\dputr(m,c) = (n,c') \\ \dputr(m',c') = (n',c'')}
+    {\dputr(mm',c) = (nn',c'')}
+\infrule[dputl$\cdot$]
+    {\dputl(n,c) = (m,c') \\ \dputl(n',c') = (m',c'')}
+    {\dputl(nn',c) = (mm',c'')}
+%
+And third, $\PUT$s and $\DPUT$s must behave consistently:
+        \infrule[putr-dputr]{
+            \putr(x,c) = (y, c) \\
+            \dputr(m,c) = (n,c')
+        }
+        {\putr(mx,c') = (ny,c')}
+        \infrule[putl-dputl]{
+            \putl(y,c) = (x, c) \\
+            \dputl(n,c) = (m,c')
+        }
+        {\putl(ny,c') = (mx,c')}
+    \finish{we should add a note about coercing arbitrary edit languages to
+    be monoids via the free monoids, and the compatibility of these laws
+    with that construction}
+\end{defn}
+
+\paragraph*{Presented lenses}
+When the monoid included in a module is defined via a presentation, it is
+often convenient to define the $\dputr$ or $\dputl$ function by giving its
+behavior on the generators of the monoid. Formally, suppose we have a monoid
+presentation given by generators $G$ and equalities $R$, another monoid
+$\left<M,1,\cdot\right>$, and function $f \in G \times C \to M \times C$.
+Giving yet another meaning to $(-)^*$ and $(-)^R$, we define:
+\begin{align*}
+    f^* \in{}& G^* \times C \to M \times C \\
+    f^*(\left<\right>,c) ={}& (1,c) \\
+    f^*(g_1 \cdots g_n,c) ={}& \mllet (m,c') = f(g_n,c) \mline \\
+    & \mllet (m',c'') = f^*(g_1 \cdots g_{n-1},c') \mline \\
+    & (m \cdot m',c'') \\
+    f^R \in{}& G^*/\equiv_R \times C \to M \times C \\
+    f^R([g]) ={}& f^*(g)
+\end{align*}
+Suppose we can show the following thing:
+\[g \relR g' \implies f^*(g,c) = f^*(g',c)\]
+Then the following things are true:
+\begin{enumerate}
+    \item $f^R$ is well defined -- that is, $f^*$ respects equivalence
+        classes of $\equiv_R$
+    \item $f^R$ respects the monoid structure -- e.g. would satisfy both
+        \rn{dputr1} and \rn{dputr$\cdot$} or both \rn{duptl1} and
+        \rn{dputl$\cdot$}
+\end{enumerate}
+Similarly, suppose we can show that $f$ respects $\ell.\putr$:
+\infrule{\ell.\putr(x,c) = (y,c) \andalso f(g,c) = (m,c')}{\ell.\putr([\left<g\right>]x,c') = (my,c')}
+Then $f^R$ would satisfy the \rn{putr-dputr} law (and a similar condition
+can establish the \rn{putl-dputl} law).
+\PENDING{are these three things really true?}
+
+Some discussion here:
+\begin{itemize}
+    \item gives a nice compact condition to check to verify the dput laws
+    \item gives a nice compact way to specify the dputr and dputl functions
+        in the first place
+    \item edit monoids and lens design must go in lockstep!
+        \begin{itemize}
+            \item one choice: use only free monoids (e.g. presented monoids
+                with empty equation relations $R$)
+            \item positive: need not prove anything at all -- any generated
+                lens will satisfy all the laws
+            \item downside: doesn't accommodate ``optimization'' such as you
+                might do when actually implementing this
+            \item example: when doing several edits deep in a list, you want
+                to transmit the depth once, then all the edits
+            \item but, as you add equations to one monoid, the lenses you
+                have made that muck with that monoid induce equations on the
+                monoid on their other side! (e.g. if $\ell \in M \to N$,
+                adding equations to $M$ means you must add the analogous
+                equations in $N$, where ``analogous'' means exactly the
+                $\ell$-translation of those equations)
+            \item in particular, if monoids $M$ and $N$ are generated by $G$
+                but have different equations, you can't write an identity
+                lens between them that does nothing to the generators!
+            \item other choices: have as many equations as possible, have
+                only ``congruence'' equations (e.g. head $m$; head $m'$ =
+                head $m;m'$)
+            \item should explore both options in this paper in some way (Martin: what exactly are the two options here?)
+        \end{itemize}
+    \item some kind of equation-polymorphism possible?
+\end{itemize}
+
+\paragraph*{Equivalence} The definition of equivalence is a straightforward
+generalization of the one for plain symmetric lenses.
+
+\begin{defn}
+We say $k \equiv \ell$ if there is a relation $R$ such that
+        \begin{enumerate}
+            \item $(k.\missing,\ell.\missing) \in R$
+            \item $k.\putr \sim_R \ell.\putr$
+            \item $k.\putl \sim_R \ell.\putr$
+            \item $k.\dputr \sim_R \ell.\dputr$
+            \item $k.\dputl \sim_R \ell.\dputl$
+        \end{enumerate}
+\end{defn}
+
+\PENDING{is it an equivalence relation? seems pretty likely}
+\finish{we can skip observational equivalence, I think (BCP)}
+
+We use $\ell \in X \Lens Y$ for equivalence classes.
+
+\paragraph*{Definitions}
+
+\iflater
+\section{Recursive Edit Lenses}
+
+\formartin{Zippers?  Paths?  (relevant paper by McBride --- The Derivative of
+  a Regular Type is its Type of One-Hole Contexts)}
+
+%% A_X = {e} union P_X . A_X
+%% A_A = P_A union P_x . A_A
+
+%% P_X and P_A are parameters
+%% A_X and A_A are defined by these
+\fi
+
+
+
+\iflater
+\section{Edit String Lenses}
+
+\finish{We're probably also suppressing this material.}
+
+
+\begin{itemize}
+    \item as before, use $\mathit{copy}_R = \id_R$ and $\mathit{clobber}_{Rx} =
+        \const_{Rx}$ from normal $\Delta$-lenses (and composition, too)
+    \item for concat, we continue to use the $k.\ell = \bij_f;(k \otimes
+        \ell); \bij_g\op$ definition for $\dputr$ and $\dputl$
+    \item also still use $\ell^* = \bij_f;\ell\LIST;\bij_g\op$
+
+    \PENDING{haven't defined the delta-lens $\ell\LIST$}
+    \item Given modules $\M=\left<M,X,\cdot\right>$ and
+        $\N=\left<N,Y,\tr\right>$, define the set
+        $E_{\M\N}$ as follows
+        \infrule{m \in M}{\mlstay_l m \in E_{\M\N}}
+        \infrule{n \in N}{\mlstay_r n \in E_{\M\N}}
+        \infrule{x \in X \qquad x \notin Y}{\mlswitch_l x \in E_{\M\N}}
+        \infrule{y \notin X \qquad y \in Y}{\mlswitch_r x \in E_{\M\N}}
+        Define the $\dot\tr \in E_{\M\N} \to X \cup Y \to X \cup Y$
+        operation by
+        \[\begin{array}{rclr}
+            \mlstay_l m \dtrrel x &=& mx & x \in X \\
+            \mlstay_l m \dtrrel y &=& y  & y \notin X \\
+            \mlstay_r n \dtrrel x &=& x  & x \notin Y \\
+            \mlstay_r n \dtrrel y &=& ny & y \in Y \\
+            \mlswitch_l x \dtrrel x &=& x \\
+            \mlswitch_r y \dtrrel x &=& y
+        \end{array}\]
+        Finally, define $M|N$ to be the free monoid generated by
+        $E_{\M\N}$, lift $\dot\tr$ to be a monoid action
+        $\dot\tr\LIST$ in the obvious way, and define the module
+        $\M|\N = \left<M|N,X \cup Y,\dot\tr\LIST\right>$.
+
+        \PENDING{go on\dots}
+\end{itemize}
+\fi
+
+\paragraph*{Lists}
+
+construct edit monoid using ideas from above -- but not quite using
+generators and equalities in exactly the same way because we want the
+generators to be defined ``inductively''
+
+so we build the monoid $L_M$ of edits to lists of elements from the module
+$M$ by hand:
+
+\infax[Empty]{\left<\right> \in L_M}
+\infax[Swap]{\left<\mlswap\right> \in L_M}
+\infax[Del]{\left<\mldelete\right> \in L_M}
+\infrule[Ins]{x \in X}{\left<\mlinsert x\right> \in L_M}
+\infrule[Head]{m \in M}{\left<\mlhead m\right> \in L_M}
+\infrule[Tail]{m \in L_M}{\left<\mltail m\right> \in L_M}
+\infrule[Append]{\left<m_1,\ldots,m_n\right> \in L_M \andalso
+\left<m_{n+1},\ldots,m_{n'}\right> \in L_M}{\left<m_1,\ldots,m_{n'}\right>
+\in L_M}
+
+the only thing that makes this different from a monoid presentation is that
+the $\mltail -$ generators take sequences of other generators, not elements
+from the underlying monoid $M$
+
+as with monoid presentations, we can quotient by some equalities, build up
+module presentations and lens presentations, etc.
+
+good choices for equalities include (where here ``good choices'' means only
+that the application function respects them, and not that any particular
+lenses respect them -- we leave that discussion for each lens, since it
+varies):
+
+(without swap for now)
+
+\infrule{m=m'}{\mltail m=\mltail{m'}}
+\begin{align*}
+    \mlhead1 &= \left<\right> \\
+    \mltail{\left<\right>} &= \left<\right> \\
+    \mlinsert v\ \mldelete &= \left<\right> \\
+    \mlhead m\ \mldelete &= \left<\right> \\
+    \mltail m\ \mldelete &= \mldelete\ m \\
+    \mlinsert v\ \mlhead m &= \mlinsert{mv} \\
+    \mlinsert v\ \mltail m &= m\ \mlinsert v \\
+    \mlhead m\ \mlhead{m'} &= \mlhead{mm'} \\
+    \mlhead m\ \mltail{m'} &= \mltail{m'}\ \mlhead m \\
+    \mltail m\ \mltail{m'} &= \mltail{mm'}
+\end{align*}
+
+(now rules that include swap)
+
+\begin{align*}
+    \mlswap\ \mldelete &= \mltail\mldelete \\
+    \mlinsert v\ \mlswap &= \mltail{\mlinsert v} \\
+    \mlhead m\ \mlswap &= \mlswap\ \mltail{\mlhead m} \\
+    \mlswap\ \mlhead m &= \mltail{\mlhead m}\ \mlswap \\
+    \mlswap\ \mlswap &= \left<\right> \\
+    \mlswap\ \mltail\mldelete &= \mldelete \\
+    \mlswap\ \mltail{\mlinsert v} &= \mlinsert v\ \mltail\mlswap\ \mlswap \\
+    \mlswap\ \mltail\mlswap &= \mltail\mlswap\ \mlswap\ \mltail\mlswap\ \mlswap \\
+    \mlswap\ \mltail{\mltail m} &= \mltail{\mltail m}\mlswap \\
+    \mlinsert v\ \mlswap &= \mltail{\mlinsert v} \\
+    \mltail{\mlinsert v}\ \mlswap &= \mlinsert v \\
+    \mltail\mlswap\ \mlswap &= \mlswap\ \mltail\mlswap\ \mlswap\ \mltail\mlswap
+\end{align*}
+
+Not all of these rules are independent.
+
+for map:
+
+\begin{align*}
+    f(\mlswap,c_1c_2\bar c) &= (\mlswap,c_2c_1\bar c) \\
+    f(\mldelete,c_1\bar c) &= (\mldelete,\bar c) \\
+    f(\mlinsert x,\bar c) &= \mathrm{munge}(\ell.\putr(x,\ell.\missing),\bar c) \\
+    f(\mlhead m,c_1\bar c) &= \mathrm{munge}(\ell.\dputr(m,c_1),\bar c) \\
+    f(\mltail m,c_1\bar c) &= \mathrm{munge}(f^*(m,\bar c),c_1) \\
+\end{align*}
+
+any equations (that respect the application function) are fine, so long as
+the same equations are available on both sides
+
+for partition's $\dputr$:
+
+\begin{align*}
+    f(\mlswap,\true\ \false\ \bar c) &= (\left<\right>,\false\ \true\ \bar c) \\
+    f(\mlswap,\false\ \true\ \bar c) &= (\left<\right>,\true\ \false\ \bar c) \\
+    f(\mlswap,\false\ \false\ \bar c) &= (\mlonl\mlswap,\false\ \false\ \bar c) \\
+    f(\mlswap,\true\ \true\ \bar c) &= (\mlonr\mlswap,\true\ \true\ \bar c) \\
+    f(\mldelete,\false\ \bar c) &= (\mlonl\mldelete,\bar c) \\
+    f(\mldelete,\true\ \bar c) &= (\mlonr\mldelete,\bar c) \\
+    f(\mlinsert{\mlinl x},\bar c) &= (\mlonl{\mlinsert x},\false\ \bar c) \\
+    f(\mlinsert{\mlinr y},\bar c) &= (\mlonr{\mlinsert y},\true\ \bar c) \\
+    f(\mlhead{\mlstayl m},\false\ \bar c) &= (\mlonl{\mlhead m},\false\ \bar c) \\
+    f(\mlhead{\mlstayr n},\false\ \bar c) &= (\left<\right>,\false\ \bar c) \\
+    f(\mlhead{\mlswitchl x},\false\ \bar c)
+        &= (\mlonl{\mlinsert x}\mlonl\mldelete,\false\ \bar c) \\
+    f(\mlhead{\mlswitchr y},\false\ \bar c)
+        &= (\mlonr{\mlinsert y}\mlonl\mldelete,\true\ \bar c) \\
+    f(\mlhead{\mlstayl m},\true\ \bar c) &= (\left<\right>,\true\ \bar c) \\
+    f(\mlhead{\mlstayr n},\true\ \bar c) &= (\mlonr{\mlhead n},\true\ \bar c) \\
+    f(\mlhead{\mlswitchl x},\true\ \bar c)
+        &= (\mlonl{\mlinsert x}\mlonr\mldelete,\false\ \bar c) \\
+    f(\mlhead{\mlswitchr y},\true\ \bar c)
+        &= (\mlonr{\mlinsert y}\mlonr\mldelete,\true\ \bar c) \\
+        f(\mltail m,c_1\bar c) &= \mathrm{munge}(f^*(m,\bar c),c_1)
+\end{align*}
+
+for partition's $\dputl$:
+
+\begin{align*}
+    f(\mlonl m,\true\ \bar c) &= \mathrm{munge}(f^*(m,\bar c),\true) \\
+    f(\mlonr m,\false\ \bar c) &= \mathrm{munge}(f^*(m,\bar c),\false) \\
+    % TODO
+\end{align*}
+
+\PENDING{Show the definition of list mapping and filtering with the rich
+  edit language with inserts and deletes.  Work out a real example showing
+  how an edit would look for a document with nested sections and
+  subsections.} 
+
+\paragraph*{Other edits}
+
+\finish{What about swaps and such?  Other kinds of edits?  (To be considered
+later, if time allows.)}
+
+\finish{Martin: 
+\begin{itemize}\item discuss fibrations, 
+\item implementation issues (efficiency)
+\item containers. 
+\end{itemize}
+}
+\fi  %\iffull
+
