@@ -1,0 +1,240 @@
+\iffull
+\documentclass[prodmode,acmjacm]{acmsmall}
+\else
+\documentclass{sigplanconf}
+\fi
+
+\usepackage{paper}
+
+% \title{Delta Lenses: Operation-based Bidirectional Programming}
+% \title{Two Algebras of Lenses}
+%% The Category of Change
+%% Quick-Change Artists
+% \title{Polishing Lenses From Raw Materials}
+% \title{Elements of Lenses}
+% \title{Elements of Symmetric Lenses}
+\iffull
+\acmVolume{V}
+\acmNumber{N}
+\acmArticle{A}
+\acmYear{YYYY}
+\acmMonth{0}
+\markboth{Martin Hofmann et al}{Symmetric Lenses}
+\title{Symmetric Lenses}
+\author{MARTIN HOFMANN \affil{Ludwig-Maximilians-Universit\"at} BENJAMIN
+PIERCE and DANIEL WAGNER \affil{University of Pennsylvania}}
+\else
+\begin{document}
+\title{Symmetric Lenses}
+\authorinfo
+    {Martin Hofmann}
+    {Ludwig-Maximilians-Universit\"at \\ M\"unchen, Germany}
+    {}
+\authorinfo
+    {Benjamin Pierce}
+    {University of Pennsylvania \\ Pennsylvania, USA}
+    {}
+\authorinfo
+    {Daniel Wagner}
+    {University of Pennsylvania \\ Pennsylvania, USA}
+    {}
+\conferenceinfo{POPL'11,} {January 26--28, 2011, Austin, Texas, USA.}
+\CopyrightYear{2011}
+\copyrightdata{978-1-4503-0490-0/11/01}
+\maketitle
+\fi
+
+\iftext
+\begin{abstract}
+{\em Lenses}---bidirectional transformations between pairs of connected
+structures---have been extensively studied and are beginning to find their
+way into industrial practice. However, some aspects of their foundations
+remain poorly understood.
+%
+In particular, most previous work has focused on the special case of {\em
+  asymmetric lenses}, where one of the structures is taken as primary and
+the other is thought of as a projection, or view.  A few studies have
+considered symmetric variants, where each structure contains
+information not present in the other, but these all 
+lack the basic operation of {\em composition}.  Moreover,
+while many domain-specific languages based on lenses have been designed,
+lenses have not been thoroughly explored from an algebraic
+perspective.
+
+We offer two contributions to the theory of lenses.  
+%
+First, we present a new symmetric formulation, based on {\em complements},
+an old idea from the database literature.  This formulation generalizes the
+familiar structure of asymmetric lenses, and it admits a good notion of
+composition.
+%% The cost of
+%% this generality is that we often need to reason about these lenses modulo a
+%% behavioral equivalence.  
+Second, we explore the algebraic structure of the space of
+symmetric lenses.  We present generalizations of a number of known
+constructions on asymmetric lenses and settle some longstanding questions
+about their properties---in particular, we prove the existence of (symmetric
+monoidal) tensor products and sums and the {\em non-}existence of full
+categorical products and sums in the category of symmetric lenses.  We then
+show how the methods of universal 
+algebra can be applied to build {\em iterator lenses} for structured data
+such as lists and trees, yielding lenses for operations like
+mapping, filtering, and concatenation from first principles.  Finally, we
+investigate an even more general technique for constructing mapping
+combinators, based on the theory of {\em containers}.
+\end{abstract}
+\fi
+
+% Included below for the syntax, but not filled in (yet)
+\category{D.3.2}{Programming Languages}{Language
+Classifications}[Specialized application languages]
+\terms{Design, Languages, Theory}
+\keywords{algebra, category theory, lens, view-update}
+
+\iffull
+\acmformat{Martin Hofmann et al 2011. Symmetric Lenses.}
+\begin{document}
+\begin{bottomstuff}
+Supported by the National Science Foundation under grants IIS-0534592,
+\emph{Linguistic Foundations for XML View Update}, and CCF-1017212, {\em Algebraic Foundations for Collaborative Data Sharing}.
+\end{bottomstuff}
+\maketitle
+\fi
+\input{complement}
+\iftext
+\iffull
+\begin{acks}
+We are grateful to Nate Foster for productive discussions of many points,
+especially about the category of lenses, and to both Nate and Alexandre
+Pilkiewicz for comments on drafts of the paper.  The anonymous POPL
+reviewers and JACM reviewers also made numerous helpful suggestions.  \finish{Anybody else we
+  should cite?}
+\end{acks}
+\else
+\SMALLSECTIONHEADER{Acknowledgments} We are grateful to Nate Foster for
+productive discussions of many points, especially about the category of
+lenses, and to both Nate and Alexandre Pilkiewicz for helpful comments on
+drafts of the paper.  Our work is supported by the National Science
+Foundation under grant IIS-0534592 \emph{Linguistic Foundations for XML View
+  Update}.
+\fi % full
+\fi % text
+
+
+\let\section\OLDsection
+
+\iffull
+\bibliographystyle{acmsmall}
+\else
+\bibliographystyle{plainnat}
+\fi
+\bibliography{bcp,harmony,symmetric}
+
+\end{document}
+
+
+typeset this proof and corollaries.
+
+reverse concatenate
+
+typesetting trees
+
+related work
+
+rosebrugh paper
+
+
+write intro to iterators section, say that we only look at retentive variant
+
+finish conclusions
+
+
+
+
+
+Comments that shouldn't necessarily result in a change to the paper:
+
+It would be better to emphasize the importance of design of "suitable" 
+complements. This is because one can design a trivial complement to 
+make any non-injective function to be injective and such a bijective 
+function can be executed in two directions.
+
+Rationale: Surely being able to bidirectionalize any function would be a
+huge win.
+
+Existing work requires "complement" to be constant, but this paper 
+allows the change on complements. What is the relationship between 
+them?
+
+Rationale: It is not clear that the most closely related work involves
+constant complement. e.g. the existence of the fiat lens in the asymmetric
+world seems to say to me that they don't do constant complement.
+
+Is lens equivalence decidable?
+
+Rationale: Maybe not, but a decision procedure doesn't seem necessary.
+
+6.1: While it says (in the paragraph before the definition) that the 
+tensor sum lens can switch between the two lenses as needed, the 
+definition does not show this. I think it is the union lens (defined 
+later) that plays the role of this switching. 
+
+Rationale: Well, it does switch between the two lenses as needed to
+accomodate the input -- it uses k when given an \mlinl and uses \ell when
+given an \mlinr.
+
+Would it be clear to specialize it under the context of lists and trees?
+
+Rationale: This is another possible design decision.
+
+What kind of updates is allowed for fold, hylo, ...?
+
+Rationale: There's no concept of updates, but any new value on either side
+can be transported -- we have no partiality. Although perhaps it is worth
+stressing this fact even more in the paper somehow...?
+
+I found myself thinking a lot about alignment. I'm not sure I like 
+it. My instinct is that it would be much better to work with delta 
+lenses.
+
+Rationale: We totally agree! Stay tuned.
+
+I think it's worthwhile to include the alternative formulation of
+"observational" equivalence here, and the proof it conicices with def 3.2.
+This is, in my view, more important than listing all the small propositions
+later.
+
+Rationale: space
+
+
+
+
+
+Comments that haven't been handled, either by a change to the paper, a
+\finish mark, or mark that they don't require changes:
+
+- I am not so sure about the powerful/advantage of using symmetric 
+  lenses in practice. Although symmetric lenses can deal with the 
+  example in Figure 1 while asymmetric lenses cannot do, the work by 
+  Yingfei et. al. (ICMT 2009) shows that asymmetric lenses, if being 
+  combined with some effective "diff" and "merge" operators, can deal 
+  synchronization of two data each contains information that is not in 
+  the other.
+
+While theoretically interesting, the updatability of the designed 
+symmetric lenses are not very clear. For instance, although iteration 
+can be used to define various functions on data structures, it does 
+not seems to allow flexible change on shapes of the data.
+
+dmwit says: I'm not sure I understand this comment. Is this attacking the
+maintenance of a lens-based program, in which the representation of the data
+on the two sides of the lens is changing as the program evolves to meet new
+needs, or is it attacking the way our presentation of lenses transports a
+new piece of data with the same type but a different shape?
+
+The composition of two symmetric lenses is not "local"; it uses a 
+"global" complement (to gather the two components).
+
+The discussion of the tensor made me wonder whether it is possible to define
+some order structure on the homsets so that the failing equations are
+expressible as inclusions?

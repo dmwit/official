@@ -1,5 +1,7 @@
 \newif \ifdraft        \draftfalse
 \newif \iflater        \laterfalse
+\newif \iftext         \texttrue
+
 \newif \iffull
 \newif \ifdissertation
 \newif \ifcomplement

@@ -1,15 +1,35 @@
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amscd}
+\usepackage{bcprules}
+\usepackage{bcptheorem}
+\usepackage{latexsym}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage{ifpdf}
+\usepackage{multirow}
+\usepackage{stmaryrd}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{xcolor}
+\usepackage{xspace}
+\usetikzlibrary{fit,shadows,positioning}
+
 % conditional definitions {{{
-% TODO: ``abstract'' environment
+\ifdelta
 \renewenvironment{abstract}{%
   \OLDsection*{Abstract}%
   \normalsize}{%
   }
-%\iffull\else
-%\renewenvironment{abstract}{%
-%  \OLDsection*{Abstract}%
-%  \normalsize}{%
-%  }
-%\fi
+\else\ifcomplement
+\iffull\else
+\renewenvironment{abstract}{%
+  \OLDsection*{Abstract}%
+  \normalsize}{%
+  }
+\fi%full
+\fi%complement
+\fi%delta
 \ifcomplement
     \newcommand{\aconst}{\mathit{const}}
     \newcommand{\colspan}[1]{\multicolumn{3}{l}{#1}}
@@ -299,7 +319,9 @@
   \fi\fi
   }
 
-\iffull\else
+\newif\iftmp\tmptrue
+\ifcomplement\iffull\tmpfalse\fi\fi
+\iftmp
 \newenvironment{longenum}{\begin{enumerate}}{\end{enumerate}}
 \newenvironment{longitem}{\begin{itemize}}{\end{itemize}}
 \fi
