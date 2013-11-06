@@ -1,0 +1,26 @@
+\documentclass{eceasst}
+\usepackage{paper}
+\begin{document}
+\title{Edit languages for information trees}
+\author{Martin Hofmann and Benjamin C. Pierce and Daniel Wagner}
+\include{frontmatter_tree}
+\institute{Ludwig-Maximilians-Universit\"at and University of Pennsylvania}
+\keywords{Bidirectional programming, lens, edit, information tree}
+
+\abstract{We consider a simple set of edit operations for unordered,
+  edge-labeled trees, called {\em information trees} by Dal Zilio {\em et
+  al}~\cite{DalzilioS:POPL04}.  We define {\em tree languages} using the
+  {\em sheaves automata} from \cite{Foster:FTL} which in turn are based on
+  \cite{DalzilioS:POPL04} and provide an algorithm for deciding whether a
+  complex edit preserves membership in a tree language. This allows us to
+  view sheaves automata and subsets of tree edits as {\em edit languages} in
+  the sense of~\cite{HofmannPierceWagner12}. They can then be used to
+  instantiate the framework of {\em edit lenses} between such languages and
+  model concrete examples such as synchronisation between different file
+  systems or address directories.}
+\maketitle
+\input{tree}
+\bibliographystyle{eceasst}
+\bibliography{tree,bcp,harmony}
+
+\end{document}

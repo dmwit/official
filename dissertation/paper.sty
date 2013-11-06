@@ -3,12 +3,15 @@
 \usepackage{amscd}
 \usepackage{bcprules}
 \usepackage{bcptheorem}
+\usepackage{caption}
 \usepackage{latexsym}
 \usepackage{fancyvrb}
 \usepackage{framed}
 \usepackage{ifpdf}
+\usepackage{mathtools}
 \usepackage{multirow}
 \usepackage{stmaryrd}
+\usepackage{subcaption}
 \usepackage{tikz}
 \usepackage{verbatim}
 \usepackage{wrapfig}
@@ -109,7 +112,7 @@
 \newcommand{\creater}{\mathit{creater}}
 \newcommand{\DD}{\mathbf{D}}
 \newcommand{\Deep}{\mathit{deep}}
-\newcommand{\Defined}{\downarrow}
+\newcommand{\Defined}{{\downarrow}} % double braces to affect spacing, see http://tex.stackexchange.com/a/38984/16779
 \newcommand{\defined}{\mbox{ defined}}
 \newcommand{\Delete}{\mathit{delete}}
 \newcommand{\del}{\mathit{del}}
@@ -124,7 +127,6 @@
 \newcommand{\dLens}{\overset{\Delta}{\Lens}}
 \newcommand{\dmwit}[1]{\finish{dmwit: #1}}
 \newcommand{\Domain}{\mathit{dom}}
-\newcommand{\D}{\partial}
 \newcommand{\dputl}{\mathord{\Lleftarrow}}
 \newcommand{\Dputl}{\mathord{\Lleftarrow}}
 \newcommand{\DPUT}{\mathit{dput}}
@@ -154,7 +156,6 @@
 \newcommand{\finishlater}[1]{\iflater\finish{#1}\fi}
 \newcommand{\finishnow}[1]{\finish{\bf #1}}
 \newcommand{\finishtext}[1]{\ifdraft\iftext{\color{gray}{[#1]}} \fi\fi}
-\newcommand{\F}{\mathtt F}
 \newcommand{\foldlist}{\mathit{fold}}
 \newcommand{\formartin}[1]{\ifdraft\noindent {\bf\color{red}{For Martin:}}{\color{gray}{#1}} \fi}
 \newcommand{\Free}{\mathit{fv}}
@@ -173,7 +174,7 @@
 \newcommand{\Insert}{\mathit{insert}}
 \newcommand{\ins}{\mathit{ins}}
 \newcommand{\IT}{\mathit{It}}  % Iter ??
-\newcommand{\Label}[1]{\mathtt{#1}}
+\newcommand{\Label}[1]{\ensuremath{\mathtt{#1}}}
 \newcommand{\Leaf}{\mathit{leaf}}
 \newcommand{\length}{\mathit{length}}
 \newcommand{\lens}{\leftrightarrow}
@@ -255,6 +256,7 @@
 \newcommand{\partition}{\mathit{partition}}
 \newcommand{\pdf}[1]{\node[scale=.27]{\pgfimage{pdf/#1}}}
 \newcommand{\PENDING}[1]{\ifdraft\noindent {\bf\color{blue}{Pending:}}{\color{gray}{#1}} \fi}
+\newcommand{\Plunge}{\mathit{plunge}}
 \newcommand{\plusplus}{\mathrel{\mbox{++}}}
 \newcommand{\PUT}{\ensuremath{\mathit{put}}}
 \newcommand{\PUTL}{\ensuremath{\putl}}
@@ -292,7 +294,7 @@
 \newcommand{\Trit}{\mathit{Trit}}
 \newcommand{\tr}{\triangleright}
 \newcommand{\true}{\ml{true}}
-\newcommand{\Undefined}{\uparrow}
+\newcommand{\Undefined}{{\uparrow}} % double braces to affect spacing, see http://tex.stackexchange.com/a/38984/16779
 \newcommand{\Unedited}{\mathsf{unedited}}
 \newcommand{\union}{\mathit{union}}
 \newcommand{\unit}{{()}}
@@ -303,7 +305,6 @@
 \pgfkeys{/bistable/.is family}
 \pgfkeysdef{/bistable/post}{\def\bistablepost{#1}}
 \pgfkeysdef{/bistable/pre}{\def\bistablepre{#1}}
-\renewcommand{\D}{\mathtt D}
 \renewcommand{\d}{\textrm{d}}
 \renewcommand{\P}{\mathcal{P}}
 \setlength{\afterruleskip}{\medskipamount}
