@@ -45,7 +45,6 @@ ABD: EveryShipout initializing macros
 ^This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013)
 ^Babel <3.9f> and hyphenation patterns for 2 languages loaded.
 ^cs-revision e81e0c94bcc6)
-^)$
 ^\*geometry\* driver: auto-detecting
 ^\*geometry\* detected driver: pdftex
 /translator-[a-z]*-dictionary-English.dict
@@ -62,9 +61,8 @@ ABD: EveryShipout initializing macros
 fonts/type1/public/amsfonts/symbols/[a-z0-9]*.pfb>
 ^This is BibTeX, Version 0\.99d (TeX Live 2013)
 ^Underfull \\hbox (badness 10000) has occurred while \\output is active
-^ )$
 ^pe1/public/amsfonts/cm/cmss8.pfb>$
-^[][ ]*$
+^\([][ ()]\|[[:digit:]]\)*$
 <\(use \)\?cats/[a-z]*_full.jpg
 ^Overfull 
 ^Underfull 
@@ -81,3 +79,25 @@ fonts/type1/public/amsfonts/symbols/[a-z0-9]*.pfb>
 ^er_full.jpg>
 ^(\./presentation.vrb) \[[0-9]*\] (\./presentation.vrb)
 (rcs-revision 24853e6b98cf)
+^Here is how much of TeX's memory you used:
+^ [[:digit:]]* strings out of
+^ [[:digit:]]* string characters out of
+^ [[:digit:]]* words of memory out of
+^ [[:digit:]]* multiletter control sequences out of
+^ [[:digit:]]* words of font info for [[:digit:]]* fonts, out of
+^ [[:digit:]]* hyphenation exceptions out of
+^ [^ ]* stack positions out of
+^PDF statistics:
+^ [[:digit:]]* PDF objects out of [[:digit:]]* (max. [[:digit:]]*)
+^ [[:digit:]]* compressed objects within [[:digit:]]* object streams
+^ [[:digit:]]* named destinations out of [[:digit:]]* (max. [[:digit:]]*)
+^ [[:digit:]]* words of extra memory for PDF output out of [[:digit:]]* (max. [[:digit:]]*)
+type1/public/amsfonts
+^\*\*paper$
+^\\[^ =]*=\\\(count\|dimen\|toks\|mathgroup\|skip\|box\|muskip\|write\|read\)[[:digit:]]*$
+^) (./paper.sty
+^\(Package\|File\): [^ ]* [[:digit:]]\{4\}/[[:digit:]]\{2\}/[[:digit:]]\{2\}
+^LaTeX Font Info:
+^LaTeX Info:
+^) (./bcprules.sty$
+^Package [^ ]* Info:
