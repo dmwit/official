@@ -107,7 +107,7 @@ struggled with?
 \fi
 
 \sect{Overview}
-\label{sec:examples}
+\label{sec:delta-examples}
 
 \begin{figure}
     \begin{center}
@@ -449,7 +449,7 @@ different parts of a structure do not interfere with each other and can thus
 be applied in any order.  We will see an example of (b) in 
 \S \ref{sec:monoid-laws}. For a simple example of 
 (a), recall from
-\S \ref{sec:examples} that, for every set $X$, we can form an {\em
+\S \ref{sec:delta-examples} that, for every set $X$, we can form an {\em
   overwrite} monoid where the edits are just the elements of $X$ together
 with a fresh unit element---i.e., edits can be represented as elements of
 the disjoint union $\Unit + X$. Combining two edits in this monoid
@@ -572,7 +572,7 @@ juxtaposition.
 We will use modules to represent the structures connected by lenses.  Before
 coming to the definition of lenses, however, we need one last ingredient:
 the notion of a {\em stateful homomorphism} between monoids.  As we saw in
-\S \ref{sec:examples}, there are situations where the information in an
+\S \ref{sec:delta-examples}, there are situations where the information in an
 edit may be insufficient to determine how it should be translated---we may
 need to know something more about how the two structures correspond. The
 exact nature of the extra information needed varies according to the lens.
@@ -1254,7 +1254,7 @@ $\const_X \equiv \disconnect_{X\Unit}$.
 \fi
 
 \noindent
-The $\disconnect$ lens that we saw in \S \ref{sec:examples} can be
+The $\disconnect$ lens that we saw in \S \ref{sec:delta-examples} can be
 built from $\const$. The $\const$ lens is also unique (up to
 equivalence): the 
 implementation of $\dputr$ is forced by the size of its range monoid
@@ -2280,7 +2280,7 @@ include in-place modifications, insertions, deletions, and reorderings:
 \]
 For compatibility with the generalization to arbitrary containers in \S
 \ref{sec:containers}, we slightly change the behavior of these operations 
-from what we saw in \S \ref{sec:examples}.  
+from what we saw in \S \ref{sec:delta-examples}.
 Insertions and deletions are now always performed 
 at the end of the list; to insert in the middle of the list, you first
 insert at the end, then reorder the list.  The argument $i$ to
@@ -2648,7 +2648,7 @@ $
 Figures~\ref{fig:definition-partition}
 and~\ref{fig:definition-partition-supplementary} give the definition of a
 list partitioning lens that (as we saw in
-\S \ref{sec:examples}) separates a list of tagged elements into
+\S \ref{sec:delta-examples}) separates a list of tagged elements into
 those tagged $\ml{inl}$ and those tagged $\ml{inr}$. 
 %
 We write $\fail$ to stand for $\mlleft\fail\mlright\fail$ when defining
