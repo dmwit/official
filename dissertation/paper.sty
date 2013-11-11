@@ -337,6 +337,7 @@
        fill=white,
        draw=black!70]
 \newcommand{\lensdef}[3]{%
+  \ifdissertation\singlespaced\fi
   \begin{center}
   \begin{tikzpicture}
     \draw node (TYP) {$
@@ -356,4 +357,5 @@
     \end{pgfonlayer}
   \end{tikzpicture}
   \end{center}
+  \ifdissertation\draftspaced\fi
 }

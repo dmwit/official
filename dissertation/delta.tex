@@ -1490,7 +1490,6 @@ general we would need the equation $\mlleft \dx \cdot \mlleft{\dx'}=
 Section~\ref{sec:monoid-laws} for more detail on this alteration.  \fi
 
 \begin{figure}
-\ifdissertation\singlespaced\fi
 \lensdef{tensor_sum}
 {\infruleplain{k \in X \lens Y \andalso \ell \in Z \lens W}
               {k \oplus \ell \in X \oplus Z \lens Y \oplus W}}
@@ -1537,7 +1536,6 @@ Section~\ref{sec:monoid-laws} for more detail on this alteration.  \fi
 \end{center}
 \vspace*{-3ex}
 % \caption{The sum lens}
-\ifdissertation\draftspaced\fi
 \end{figure} 
 
 As in~\cite{HofmannPierceWagner10}, the tensor construction is not quite a full
@@ -2460,7 +2458,6 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \newcommand{\WHERE}{\mbox{ where }}
 
 \begin{figure*}[t!]
-\ifdissertation\singlespaced\fi
 \lensdef{partition}
 {\partition \in (X \oplus Y)^* \lens X^* \otimes Y^*}
 {
@@ -2577,6 +2574,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \\[1ex]
     \dputl_g(\mlonr\dy,c) &&\mbox{similar}
 }
+\ifdissertation\singlespaced\fi
 \begin{center}
 \makeatletter\refstepcounter{\@captype}\makeatother
 \label{fig:definition-partition}
@@ -3785,7 +3783,6 @@ well-defined on equivalence classes of lenses.
 
 \begin{figure}
 % \vspace*{-2.5ex}
-\ifdissertation\singlespaced\fi
 \lensdef{w_restructuring}
 {\infruleplain{T = \left<I,P,\live\right>\mbox{ a container type} \\
                T' = \left<I',P',\live'\right>\mbox{ a container type} \\
@@ -3819,7 +3816,6 @@ well-defined on equivalence classes of lenses.
 \end{center}
 \vspace*{-3ex}
 %  \caption{A lens for restructuring containers.}
-\ifdissertation\draftspaced\fi
 \end{figure}
 
 Given these data, we define the restructuring lens in
