@@ -12,9 +12,11 @@
 \newcommand{\choosedelta}       {\dissertationfalse\complementfalse\deltatrue \treefalse}
 \newcommand{\choosetree}        {\dissertationfalse\complementfalse\deltafalse\treetrue }
 \newcommand{\inputcond}[1]{
-    \ifdissertation\input{#1_dissertation}\fi
-    \ifcomplement\input{#1_complement}\fi
-    \ifdelta\input{#1_delta}\fi
-    \iftree\input{#1_tree}\fi
+    \def\inputcondtmp{\typeout{Bugger! I was expecting one of dissertation, complement, delta, or tree to be true, but none were.}\stop}
+    \ifdissertation\def\inputcondtmp{\input{#1_dissertation}}\fi
+    \ifcomplement\def\inputcondtmp{\input{#1_complement}}\fi
+    \ifdelta\def\inputcondtmp{\input{#1_delta}}\fi
+    \iftree\def\inputcondtmp{\input{#1_tree}}\fi
+    \inputcondtmp
 }
 \choosedissertation

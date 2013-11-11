@@ -110,6 +110,7 @@ struggled with?
 \label{sec:delta-examples}
 
 \begin{figure}
+    \ifdissertation\singlespaced\fi
     \begin{center}
         \vspace*{-2ex}
         \includegraphics[width=75mm]{images/ex1-init.pdf} \\
@@ -129,6 +130,7 @@ struggled with?
 \discuss{Change the font everywhere to sf}
 \fi
     \caption{A simple (complement-less) {\edit} lens in action.}
+    \ifdissertation\draftspaced\fi
     \label{fig:example-simple}
 \end{figure}
 
@@ -2584,6 +2586,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \end{figure*}
 
 \begin{figure*}[!tp]
+\ifdissertation\singlespaced\fi
 \begin{framed}
 \vspace{-2.5ex}
 \begin{minipage}[t]{.47\linewidth}
@@ -2646,6 +2649,7 @@ $
 \begin{center}
 {\bf Figure \ref{fig:definition-partition-supplementary}:} Supplementary functions for $\partition$
 \end{center}
+\ifdissertation\draftspaced\fi
 \end{figure*}
 
 \paragraph*{Partition lens}
@@ -3781,6 +3785,7 @@ well-defined on equivalence classes of lenses.
 
 \begin{figure}
 % \vspace*{-2.5ex}
+\ifdissertation\singlespaced\fi
 \lensdef{w_restructuring}
 {\infruleplain{T = \left<I,P,\live\right>\mbox{ a container type} \\
                T' = \left<I',P',\live'\right>\mbox{ a container type} \\
@@ -3814,6 +3819,7 @@ well-defined on equivalence classes of lenses.
 \end{center}
 \vspace*{-3ex}
 %  \caption{A lens for restructuring containers.}
+\ifdissertation\draftspaced\fi
 \end{figure}
 
 Given these data, we define the restructuring lens in
@@ -3909,8 +3915,10 @@ and decrement operations; the monoid $\partial I'$ has operations for
 adding and removing nodes in leaf positions and also for rotating tree
 shapes. 
 
-\begin{wrapfigure}[7]{r}{1.3in}
-\hspace*{-3em}\includegraphics[scale=.32]{images/restruct1.pdf} 
+\ifdissertation\begin{wrapfigure}{r}{1.6in}
+\else          \begin{wrapfigure}[7]{r}{1.3in}\hspace*{-3em}
+\fi
+\includegraphics[scale=.32]{images/restruct1.pdf}
 \end{wrapfigure}
 The lens $\ell\in I\lens I'$ does not know anything about the intended
 application; it has a trivial complement $\Unit$ and
@@ -3919,11 +3927,18 @@ have the same number of positions. It has some freedom how it
 translates list edits; e.g., it might add and remove tree nodes at the
 left.
 
-The family of bijections $f_{i,c,i'}$ models the in-order 
-\begin{wrapfigure}[9]{r}{1.3in}
-\hspace*{-4.3em}\includegraphics[scale=.32]{images/restruct2.pdf} 
-\end{wrapfigure}
-correspondence;
+\ifdissertation
+    \begin{wrapfigure}{r}{2in}
+    \includegraphics[scale=.32]{images/restruct2.pdf}
+    \end{wrapfigure}
+    The family of bijections $f_{i,c,i'}$ models the in-order correspondence;
+\else
+    The family of bijections $f_{i,c,i'}$ models the in-order
+    \begin{wrapfigure}[9]{r}{1.3in}
+    \hspace*{-4.3em}\includegraphics[scale=.32]{images/restruct2.pdf}
+    \end{wrapfigure}
+    correspondence;
+\fi
 thus, for example if $i=4$ and $i'=\{\varepsilon,0,1,11\}$ the bijection
 would be as shown above. (For illustration we also indicate possible
 $X$-contents of the positions.)
@@ -3948,8 +3963,10 @@ as-yet-inconsistent situation depicted above.
 %% Include the f-links, this time they go wild, eg 0 ----- 00 
 %% \end{verbatim}
 
-\begin{wrapfigure}[9]{r}{1.3in}
-\hspace*{-4.3em}\includegraphics[scale=.32]{images/restruct3.pdf} 
+\ifdissertation\begin{wrapfigure}{r}{2in}
+\else          \begin{wrapfigure}[9]{r}{1.3in}\hspace*{-4.3em}
+\fi
+\includegraphics[scale=.32]{images/restruct3.pdf}
 \end{wrapfigure}
 To restore consistency we also  apply $\mlrearrange(1,f_r)$ where 
 $f_r(i')=\{(00,0)$, $(0,\varepsilon)$, $(01,1)$, $(\varepsilon,11)$,
