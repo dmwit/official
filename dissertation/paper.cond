@@ -11,6 +11,10 @@
 \newcommand{\choosecomplement}  {\dissertationfalse\complementtrue \deltafalse\treefalse}
 \newcommand{\choosedelta}       {\dissertationfalse\complementfalse\deltatrue \treefalse}
 \newcommand{\choosetree}        {\dissertationfalse\complementfalse\deltafalse\treetrue }
+% instead of directly calling \input in each branch below, we have to delay
+% until after all the conditions are tested; this is because the \input may
+% bring in an \end{document}, which will give a funny error if conditionals
+% haven't reached their \fi yet
 \newcommand{\inputcond}[1]{
     \def\inputcondtmp{\typeout{Bugger! I was expecting one of dissertation, complement, delta, or tree to be true, but none were.}\stop}
     \ifdissertation\def\inputcondtmp{\input{#1_dissertation}}\fi
