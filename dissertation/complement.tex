@@ -912,9 +912,10 @@ Thus, $k\approx \ell$ follows by specialization to $c=k.\missing$ and
 $d=\ell.\missing$. 
 
 $(\Longrightarrow)$ Now suppose $k\approx \ell$. To show $k\equiv \ell$, define $R
-\subseteq k.C \times \ell.C$ by $R = \{(c,d) \;|\; \apply(k,c,P)=\apply(\ell,d,P)
-\mbox{ for all $P$}\}$. By assumption, we have $(k.\missing, \ell.\missing) \in
-R$.
+\subseteq k.C \times \ell.C$ by
+\dissdis
+R = \{(c,d) \;|\; \apply(k,c,P)=\apply(\ell,d,P) \mbox{ for all $P$}\}.
+\dissdis By assumption, we have $(k.\missing, \ell.\missing) \in R$.
 
 Now suppose that $(c,d) \in R$ and that $k.\putr(x,c)=(y,c')$ and
 $\ell.\putr(x,d)=(y',d')$.  Applying the assumption $(c,d) \in R$ to the
@@ -1222,7 +1223,10 @@ The round-trip law \rn{PutRL} guarantees that $g(f(x))=x$, and the
 round-trip law \rn{PutLR} guarantees that $f(g(y))=y$.
 
 To show the latter, we argue that $h$ witnesses the equivalence. Clearly
-$h(\bij_f.\missing) = \ell.\missing$ because all elements of $\ell.C$ are
+\dissdis
+h(\bij_f.\missing) = \ell.\missing
+\dissdis
+because all elements of $\ell.C$ are
 equal (and hence $(\bij_f.\missing,\ell.\missing) \in h$). The definition of
 $f$ makes it clear that $\bij_f.\putr \sim_h \ell.\putr$; similarly, the
 definition of $f$'s inverse $g$ makes it clear that $\bij_f.\putl \sim_h
@@ -1536,10 +1540,11 @@ We use the simulation relation
 R = \{(c,y)\mid \mlfst(k.\putl(\unit,c))=y\}
 \]
 It's clear that $k.\missing \relR x$, since we have chosen $x$ specifically
-so that $\mlfst(k.\putl(\unit,k.\missing))=x$.
+so that \dissdis\mlfst(k.\putl(\unit,k.\missing))=x.\dissdis
 
-Let us show next that $k.\putl \sim_R \const_x.\putl$. Choose $c$ and $y$
-such that $\mlfst(k.\putl(\unit,c))=y$ and arbitrary $v\in\Unit$. Clearly,
+Let us show next that $k.\putl \sim_R \const_x.\putl$. Choose arbitrary
+$v\in\Unit$ and choose $c$ and $y$ such that $\mlfst(k.\putl(\unit,c))=y$.
+Clearly,
 $v=\unit$, so we can compute:
 \begin{align*}
     k.\putl(v,c) = k.\putl(\unit,c) &= (y,c') \\
@@ -1807,8 +1812,9 @@ $\ell \equiv \ell'$, then $R = R_k \swizzle R_\ell$ witnesses $k \otimes
 \ell \equiv k' \otimes \ell'$.
 
 Since $k.\missing \relRk k'.\missing$ and $\ell.\missing
-\relRl \ell'.\missing$, we know that $(k.\missing,\ell.\missing)
-\relR (k'.\missing,\ell'.\missing)$, that is:
+\relRl \ell'.\missing$, we know that
+\dissdis(k.\missing,\ell.\missing) \relR (k'.\missing,\ell'.\missing),\dissdis
+that is:
 \[(k \otimes \ell).\missing \relR (k' \otimes \ell').\missing\]
 
 Choose arbitrary $(x,y) \in X \times Y$ and related complements
@@ -3451,7 +3457,9 @@ can conclude $(c'{\CONS}cs,d_1) \in S$, as required.
         
 \smallskip \noindent
 \underline{Case for $\putr$ of nonempty list}:  This time, the definition
-gives us $\IT(\ell).\putr(x{\CONS}xs, c{\CONS}cs) = (z',c'{\CONS}cs')$, where 
+gives us
+\dissdis\IT(\ell).\putr(x{\CONS}xs, c{\CONS}cs) = (z',c'{\CONS}cs'),\dissdis
+where
 \[
 \begin{array}{lcl}
 (z,cs') &=& \IT(\ell).\putr(xs,cs) \\

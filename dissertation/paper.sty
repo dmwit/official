@@ -41,13 +41,14 @@
     \newcommand{\aconst}{\mathit{aconst}}
     \newcommand{\colspan}[1]{\multicolumn{3}{@{}l}{#1}}
 \fi
+\ifdissertation\newcommand\dissdis\dissstartdis
+\else\newcommand\dissdis$
+\fi
 \iftree\newcommand{\Lens}{\leftrightarrow}
 \else  \newcommand{\Lens}{\Longleftrightarrow}
 \fi
-\ifdelta
-    \newcommand{\missing}{\mathit{init}}
-\else
-    \newcommand{\missing}{\mathit{missing}}
+\ifdelta\newcommand{\missing}{\mathit{init}}
+\else\newcommand{\missing}{\mathit{missing}}
 \fi
 \newcommand{\mlinjargs}{
     \renewcommand{\mlinl}[1]{\ml{inl}(##1)}
@@ -123,6 +124,8 @@
 \newcommand{\disconnect}{\mathit{disconnect}}
 \newcommand{\discuss}[1]{\ifdraft{\color{red}{[#1]}} \fi}
 \newcommand{\displayifspace}[1]{\iffull\[\else$\fi#1\iffull\]\else$\fi}
+\newcommand{\dissenddis}{\]\renewcommand\dissdis\dissstartdis}
+\newcommand{\dissstartdis}{\renewcommand\dissdis\dissenddis\[}
 \newcommand{\dlens}{\overset{\Delta}{\lens}}
 \newcommand{\dLens}{\overset{\Delta}{\Lens}}
 \newcommand{\dmwit}[1]{\finish{dmwit: #1}}
