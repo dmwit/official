@@ -1244,14 +1244,14 @@ to the trivial $\Unit$ module by throwing away all edits.
     Immediate, by observing $\const_X=\disconnect_{X\Unit}$.
 \end{proof}
 \begin{lemma} The $\disconnect$ and $\const$ lenses are closely related:
-$\disconnect_{XY} \equiv \const_X;\const_Y\op$ and 
-$\const_X \equiv \disconnect_{X\Unit}$.
+$\const_X \equiv \disconnect_{X\Unit}$ and
+$\disconnect_{XY} \equiv \const_X;\const_Y\op$.
 \end{lemma}
 \begin{proof}
+    The former equivalence is actually an equality: $\const_X =
+    \disconnect_{X\Unit}$ can be verified by inspecting the two definitions.
     The complete relation $\{(\unit,\unit)\}$ is a witness to the
-    equivalence $\disconnect_{XY} \equiv \const_X;\const_Y\op$. The latter
-    equivalence is actually an equality: $\const_X = \disconnect_{X\Unit}$
-    can be verified by inspecting the two definitions.
+    equivalence $\disconnect_{XY} \equiv \const_X;\const_Y\op$.
 \end{proof}
 \fi
 
@@ -1470,7 +1470,7 @@ functions are defined via stateful monoid homomorphism specifications.
                  \mathrel{\wedge} (y,d,y')\in \ell.K\wedge (y',d',y'')\in \ell'.K \}
 .
 %
-\hbox to 0pt{\hspace{1.5em} \endofpfmarker}
+\hbox to 0pt{\hspace{\ifdissertation6.2em\else1.2em\fi} \endofpfmarker}
 \end{array}
 \]
 \noendofpf
@@ -2400,7 +2400,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
                 {(x_1\cdots x_n,c_1\cdots c_n,d_1\cdots d_n,y_1\cdots y_n)\in S}
             Then $S'$ is a witness that $k^*\equiv\ell^*$. The initial
             quadruple
-            $(\init_{X^*},k^*.\init,\ell^*.\init,\init_{Y^*})=(\varepsilon,\varepsilon,\varepsilon,\varepsilon)$
+            \dissdis(\init_{X^*},k^*.\init,\ell^*.\init,\init_{Y^*})=(\varepsilon,\varepsilon,\varepsilon,\varepsilon)\dissdis
             is in $S'$ because the head of the inference rule is degenerate.
             The verification that defined edits preserve the $S'$ relation
             is long, but straightforward. In the $\ml{mod}$ case, we rely on
@@ -2627,9 +2627,11 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \ifdissertation\singlespaced\fi
 \begin{framed}
 \vspace{-2.5ex}
+\ifdissertation\else
 \begin{minipage}[t]{.47\linewidth}
+\fi
     \begin{center}
-        \begin{minipage}[t]{0.25\linewidth}
+        \begin{minipage}[t]{\ifdissertation0.5\else0.25\fi\linewidth}
             \begin{align*}
                 \ml{tagof}(\mlinl x) &= L \\
                 \ml{tagof}(\mlinr y) &= R \\[1ex]
@@ -2642,7 +2644,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             \end{align*}%
         \end{minipage}%
         \hfill
-        \begin{minipage}[t]{0.1\linewidth}
+        \begin{minipage}[t]{\ifdissertation0.5\else0.1\fi\linewidth}
             \begin{align*}
                 \ml{map}_f(\varepsilon) &= \varepsilon \\
                 \ml{map}_f(cw) &= f(c)\,\ml{map}_f(w) \\[1ex]
@@ -2655,9 +2657,15 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             \end{align*}
         \end{minipage}
     \end{center}
+\ifdissertation\else
 \end{minipage}
 \hfill
 \begin{minipage}[t]{.45\linewidth}
+\fi
+% TODO: In the dissertation, could split the first six (visual) lines here
+% into three lines each in the preceding two columns, which might look
+% better. Postponing this since if anything it's a minor visual improvement,
+% and there are more important issues at the moment.
     \begin{align*}
         \ml{cycle}_p(n)(m) &= \cond{
             p & p < m = n \\
@@ -2673,12 +2681,19 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             & \hspace{10em}
             \cond{\mlinl{n_L} & c_p = L \\ \mlinr{n_R} & c_p = R} \\
     \end{align*}
+\ifdissertation\else
 \end{minipage}\\[-2ex]
-$
-            \mlcount(p,c_1 \cdots c_n)
-            = \mllet (n_L,n_R) = \mlcount(p\mathord{-}1,c_2 \cdots c_n) \mline
-            \ \cond{(n_L+1,n_R) & c_1 = L \\ (n_L,n_R+1) & c_1 = R}
-$
+\fi
+\begin{align*}
+    \mlcount(p,c_1 \cdots c_n)
+    ={}& \mllet (n_L,n_R) = \mlcount(p\mathord{-}1,c_2 \cdots c_n)
+    \ifdissertation
+        \\&\mlinb
+    \else
+        \mline\ 
+    \fi
+    \cond{(n_L+1,n_R) & c_1 = L \\ (n_L,n_R+1) & c_1 = R}
+\end{align*}
 \vspace{-1ex}
 \end{framed}
 \vspace*{-2ex}
@@ -3248,7 +3263,7 @@ $n_L=|x|$, and $n_R=|y|$ in the following.
             &= y
     \end{align*}
     These latter two computations amount to showing that
-    $\dz'(x,y)=(\ml{lefts}(\dz\;z),\ml{right}(\dz\;z))$ which, together with
+    \dissdis\dz'(x,y)=(\ml{lefts}(\dz\;z),\ml{right}(\dz\;z))\dissdis which, together with
     the observation above that $\ml{map}_\ml{tagof}(\dz\;z)=c'$, shows that
     $\dputr_g$ preserves consistency in this case.
 
@@ -3765,10 +3780,10 @@ explicitly that it is indeed a lens.
   Let $T(k);T(\ell)$ be the composition of two mapping lenses. The
   complement of this lens is $T(k.C)\times T(\ell.C)$.  On the other
   hand, the complement of $T(k;\ell)$ is $T(k.C\times \ell.C)$. An
-  appropriate simulation relation is defined by $
+  appropriate simulation relation is defined by \dissdis
   \{(((i_k,g_k),(i_\ell,g_\ell)), (i_{k;\ell},g_{k;\ell}))\mid
   i_k=i_\ell=i_{k;\ell}\wedge \forall
-  p. g_{k;\ell}(p)=(g_k(p),g_\ell(p))\} $.  We omit the
+  p. g_{k;\ell}(p)=(g_k(p),g_\ell(p))\} \dissdis.  We omit the
   straightforward verification.
 %
   \iffull 
@@ -3934,7 +3949,8 @@ $p = f_{\di\ i,c',\di'\ i'}^{-1}(f_{i,c,i'}(q))$ by injectivity and so
 $f_{\di\ i,c',\di'\ i'}(p) = f_{i,c,i'}(q)\in\live(i)$.
 
 If, as we have seen, $f_i(\di'\ i')(p)\not\in \live'(i')$ then
-$f_1'(p)=\init_X$, but then $f_1(f_{\di\ i,c',\di'\ i'}(p))=\init_X$,
+$f_1'(p)=\init_X$, but then \dissdis f_1(f_{\di\ i,c',\di'\
+i'}(p))=\init_X,\dissdis
 too, by the characterization of $f_1$.
 
 We omit the other cases. 
@@ -4637,7 +4653,7 @@ a symmetric lens $|\ell|$ between $|X|$ and $|Y|$ by
 \iffull \item \else (1) \fi $|\ell|.C = |X|\times \ell.C\times |Y|$;
 \iffull \item \else (2) \fi $|\ell|.\missing = (\init_X,\ell.\missing,\init_Y)$;
 \iffull \item \else (3) \fi $|\ell|.\putr(x,(x_0,c,y_0))= (\dy\ y_0,\, (x,
-c',\dy\ y_0))$ where $\dx=\dif(x_0,x)$ and $(\dy,c')=\ell.\dputr(\dx,c)$;
+c',\dy\ y_0))$ where $(\dy,c')=\ell.\dputr(\dx,c)$ and $\dx=\dif(x_0,x)$;
 and 
 \iffull \item \else (4) \fi an analogous definition of $|\ell|.\putl$
 \iffull \end{itemize} \fi
