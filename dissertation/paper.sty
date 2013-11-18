@@ -43,7 +43,7 @@
     \newcommand{\colspan}[1]{\multicolumn{3}{@{}l}{#1}}
 \fi
 \ifdissertation\newcommand\dissdis\dissstartdis
-\else\newcommand\dissdis$
+\else\newcommand\dissdis\nondissstartdis
 \fi
 \iftree\newcommand{\Lens}{\leftrightarrow}
 \else  \newcommand{\Lens}{\Longleftrightarrow}
@@ -252,6 +252,8 @@
 \newcommand{\NIL}{\left<\right>}
 \newcommand{\N}{\mathcal{N}}
 \newcommand{\Node}{\mathit{node}}
+\newcommand{\nondissenddis}{$\renewcommand\dissdis\nondissstartdis\xspace}
+\newcommand{\nondissstartdis}{\renewcommand\dissdis\nondissenddis$}
 \newcommand{\ONE}{\mbox{\bf{1}}}
 \newcommand{\Open}{\{\hspace{-2pt}|}
 \newcommand{\op}{^\mathit{op}}
