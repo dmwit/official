@@ -1177,8 +1177,8 @@ category of lenses is self-dual.
     \end{align*}
     The output edits are equal, as required. Since both compositions
     preserve their respective consistency relations, we also know that
-    $\dx\;x$ is defined and $(\dz\;z,(c_k',c_\ell'),\dx;x) \in
-    (k\op;\ell\op).K$. So we have reached another consistent quadruple.
+    $\dx\;x$ is defined and \dissdis(\dz\;z,(c_k',c_\ell'),\dx;x) \in
+    (k\op;\ell\op).K.\dissdis So we have reached another consistent quadruple.
 \end{proof}
 \fi
 
@@ -2456,17 +2456,14 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \newcommand{\WHEN}{\mbox{ when }}
 \newcommand{\AND}{\mbox{ and }}
 \newcommand{\WHERE}{\mbox{ where }}
-
-\begin{figure*}[t!]
-\lensdef{partition}
-{\partition \in (X \oplus Y)^* \lens X^* \otimes Y^*}
-{
+\newcommand{\partitionauxdef}{
     C &=& \{L,R\}^* \\
     \missing &=& \varepsilon \\
     K &=& 
        \{(z, \ml{map}_\ml{tagof}(z), (\ml{lefts}(z),\ml{rights}(z)))
     \mid z \in (|X|+|Y|)^*\}
- \\[1.5ex]
+}
+\newcommand{\partitiondputrgdef}{
     \dputr_g(\mlmod p\dv,c) &=& (\fail,c)\mbox{ when }p > |c|
     \markeqn{rmodbigp}%
  \\
@@ -2474,19 +2471,19 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
     \markeqn{rmodempty}%
  \\
     \dputr_g(\mlmod p{\dv\dv s},c)
-        &=& (d'\,d,c'') \WHERE
-      \begin{array}[t]{@{}lll}
+        &=& \partitionarray{(d'\,d,c'')}{
+            &&
             1 < n
             &
-            (d,c') =
+            (d,c') &=&
             \dputr_g(\mlmod p{\dv s},c)
             \\
+            &&
             1 \le p \le |c|
             &
-            (d',c'') =
+            (d',c'') &=&
             \dputr_g(\mlmod p\dv,c')
-        \end{array}
-      \markeqn{rmodcons}%
+        }{rmodcons}
  \\
     \dputr_g(\mlmod p{\mlswitch_{jk}(\dv)},c)
         &=& \partitionarray{(d_2d_1d_0,c[p \mapsto k])}{
@@ -2532,7 +2529,8 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
         {rreorder}\\
     \dputr_g(\fail,c) &=& (\fail,c)
       \markeqn{rfail}
-\\[5ex]
+}
+\newcommand{\partitiondputlgdef}{
     \dputl_g(\mlonl{\mlmod p\dx},c)
         &=& \partitionarray{(\mlstayl{\mlmod{p'}\dx},c)}{
             p' &=& \mliso(c)^{-1}(\mlinl p)
@@ -2574,14 +2572,56 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \\[1ex]
     \dputl_g(\mlonr\dy,c) &&\mbox{similar}
 }
-\ifdissertation\singlespaced\fi
+
+\ifdissertation
+\begin{figure*}[t!]
+\lensdef{partition}
+{\partition \in (X \oplus Y)^* \lens X^* \otimes Y^*}
+{
+    \partitionauxdef
+\\[1.5ex]
+    \partitiondputlgdef
+}
+\singlespaced
+\begin{center}
+\makeatletter\refstepcounter{\@captype}\makeatother
+\label{fig:definition-partition}
+{\bf Figure \ref{fig:definition-partition}:} Part of the $\partition$ lens
+(see also Figure~\ref{fig:definition-partition-part-2})
+\end{center}
+\draftspaced
+\end{figure*}
+\begin{figure*}[t!]
+\lensdef{partition}
+{\partition \in (X \oplus Y)^* \lens X^* \otimes Y^*}
+{\partitiondputrgdef}
+\singlespaced
+\begin{center}
+\makeatletter\refstepcounter{\@captype}\makeatother
+\label{fig:definition-partition-part-2}
+{\bf Figure \ref{fig:definition-partition-part-2}:} Part of the $\partition$ lens
+(see also Figure~\ref{fig:definition-partition})
+\end{center}
+\draftspaced
+\end{figure*}
+\else
+\begin{figure*}[t!]
+\lensdef{partition}
+{\partition \in (X \oplus Y)^* \lens X^* \otimes Y^*}
+{
+    \partitionauxdef
+\\[1.5ex]
+    \partitiondputrgdef
+\\[5ex]
+    \partitiondputlgdef
+}
 \begin{center}
 \makeatletter\refstepcounter{\@captype}\makeatother
 \label{fig:definition-partition}
 {\bf Figure \ref{fig:definition-partition}:} The $\partition$ lens
 \end{center}
-\ifdissertation\draftspaced\fi
 \end{figure*}
+\fi
 
 \begin{figure*}[!tp]
 \ifdissertation\singlespaced\fi

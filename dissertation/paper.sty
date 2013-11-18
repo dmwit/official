@@ -10,6 +10,7 @@
 \usepackage{ifpdf}
 \usepackage{mathtools}
 \usepackage{multirow}
+\usepackage{multicol}
 \usepackage{stmaryrd}
 \usepackage{subcaption}
 \usepackage{tikz}
@@ -255,7 +256,14 @@
 \newcommand{\Open}{\{\hspace{-2pt}|}
 \newcommand{\op}{^\mathit{op}}
 \newcommand{\partialto}{\rightharpoonup}
-\newcommand{\partitionarray}[3]{#1,\ \mbox{where}\; \mldoubleletarray{#2} \markeqn{#3}}
+\newcommand{\partitionarray}[3]{%
+    #1,\ \mbox{where}
+    \ifdissertation
+        \markeqn{#3}\\\multicolumn{3}{l}{\hspace{5em}\mldoubleletarray{#2}}
+    \else
+        \;\mldoubleletarray{#2}\markeqn{#3}
+    \fi
+}
 \newcommand{\partition}{\mathit{partition}}
 \newcommand{\pdf}[1]{\node[scale=.27]{\pgfimage{images/#1}}}
 \newcommand{\PENDING}[1]{\ifdraft\noindent {\bf\color{blue}{Pending:}}{\color{gray}{#1}} \fi}

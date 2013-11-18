@@ -3490,14 +3490,15 @@ Suppose we have
         asserts that $(d_1,(c',d')) \in R$ and $xs=\NIL$. Now, since
         $(cs,d')\in S$, we can conclude $(c'\CONS{}cs,d_1) \in S$, as
         required.
-        
+
 \smallskip \noindent
 \underline{Case where $\IT.\putl$ on $z$ returns a non-empty list}: 
 Suppose we have
-%
-        $\IT(\ell).\putl(z, c\CONS{}cs) = (x\CONS{}xs,c'\CONS{}cs')$, where 
-        $(\mlinr(x,z'),c') = \ell.\putl(z,c)$ and 
-        $(xs,cs') = \IT(\ell).\putl(z',cs)$.
+\begin{align*}
+    \IT(\ell).\putl(z, c\CONS{}cs) &= (x\CONS{}xs,c'\CONS{}cs')\\
+    (\mlinr(x,z'),c') &= \ell.\putl(z,c)\\
+    (xs,cs') &= \IT(\ell).\putl(z',cs).
+\end{align*}
 %
         Since $\ell.\putl(z,c)$ returns an $\mlinr$ we are in the
         situation of the fourth rule above and we have
@@ -4075,7 +4076,7 @@ It now remains to verify the lens laws. We will check \rn{PutRL}; the
 We must check that $f_{rl}=f$ and $t_{rl}=t_r$.
 
 Let us check that $f_{rl}=f$. Choose arbitrary $b \in B(i)$. Then
-$f_{rl}(b) = \mlfst(\ell.\putl(f_r(b),t_r(i)(b)))$. Inspecting the
+\dissdis f_{rl}(b) = \mlfst(\ell.\putl(f_r(b),t_r(i)(b))).\dissdis Inspecting the
 definition of $t_r$, we find that
 $t_r(i)(b)=\mlsnd(\ell.\putr(f(b),t(i)(b)))$, and from the definition of
 $f_r$, we find that $f_r(b)=\mlfst(\ell.\putr(f(b),t(i)(b)))$. Together,
@@ -4410,9 +4411,12 @@ related:
     f_k'(f_\ell'(z')) &=& f_k'(\ell.\aput(z,f_\ell(z))) \\
     &=& k.\aput(\ell.\aput(z,f_\ell(z)),f_k(f_\ell(z)))
 \end{eqnarray*}
-Observing that $k.\aget(f_k(f_\ell(z)))=f_\ell(z)$ because $f_k \in k\sym.C$
-and that $f_k(f_\ell(z)) = f_{k\ell}(z)$ because $f_{k\ell} \relR
-(f_k,f_\ell)$, that last line becomes
+Observing that
+\begin{align*}
+    k.\aget(f_k(f_\ell(z))) &= f_\ell(z) && \mbox{because }f_k \in k\sym.C \\
+    f_k(f_\ell(z)) &= f_{k\ell}(z) && \mbox{because }f_{k\ell} \relR(f_k,f_\ell),
+\end{align*}
+that last line becomes
 \begin{eqnarray*}
     f_k'(f_\ell'(z'))
     &=& k.\aput(\ell.\aput(z,k.\aget(f_{k\ell}(z))),f_{k\ell}(z)) \\
@@ -4694,7 +4698,8 @@ and hence that $(\ell_r;\ell_l).\missing \relR \ell.\missing$.
 
 We also need to show that $(\ell_r;\ell_l).\putr$ and $\ell.\putr$ are
 well-behaved with respect to $R$. Suppose $\ell.\putr(x,c)=(y,c')$; then we
-need to show that $(\ell_r;\ell_l).\putr(x,(f_c,g_c))=(y,(f_{c'},g_{c'}))$.
+need to show that
+\dissdis(\ell_r;\ell_l).\putr(x,(f_c,g_c))=(y,(f_{c'},g_{c'})).\dissdis
 First we compute $\ell_r.\putr(x,f_c)$:
 \begin{eqnarray*}
     \ell_r.\putr(x,f_c)
