@@ -1,6 +1,6 @@
-\usepackage{amssymb}
-\usepackage{amsmath}
 \usepackage{amscd}
+\usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{bcprules}
 \usepackage{bcptheorem}
 \usepackage{caption}
@@ -84,6 +84,8 @@
 \newcommand{\ALENS}{{\sc alens}}
 \newcommand{\apply}{\mathit{apply}}
 \newcommand{\aput}{\mathit{put}}
+\newcommand{\argmin}[1]{\underset{#1}{\operatorname{argmin}}}
+\newcommand{\arrow}{\rightarrow}
 \newcommand{\arrow}{\rightarrow} 
 \newcommand{\assoc}{\mathit{assoc}}
 \newcommand{\asym}{^\mathit{asym}}
@@ -96,6 +98,7 @@
 \newcommand{\Bool}{\mathit{Bool}}
 \newcommand{\breakifnearbottom}{\breakifoverfraction{\totalpagefraction}}
 \newcommand{\C}[1]{\ensuremath{#1.C}}
+\newcommand{\capdot}{\mathbin{\mathaccent\cdot\cap}}
 \newcommand{\caselens}{\mathit{case}}
 \newcommand{\catC}{\ensuremath{\mathcal C}\xspace}
 \newcommand{\catD}{\ensuremath{\mathcal D}\xspace}
@@ -103,19 +106,22 @@
 \newcommand{\CC}{\mathbf{C}}
 \newcommand{\Close}{|\hspace{-2pt}\}}
 \newcommand{\codiag}{\mathit{codiag}}
+\newcommand\codomain{\mathit{codomain}}
 \newcommand{\comp}{\mathit{comp}}
 \newcommand{\CONCRETELIST}[1]{\left<#1\right>}
 \newcommand{\cond}[1]{\left\{\begin{array}{ll}#1\end{array}\right.}
 \newcommand{\CONS}{\mathord{:}}
+\newcommand{\const}{\mathit{const}}
 \newcommand{\const}{\mathit{term}}
 \newcommand{\countlens}{\mathit{count}}
 \newcommand{\CREATE}{\ensuremath{\acreate}}
 \newcommand{\createl}{\mathit{createl}}
 \newcommand{\creater}{\mathit{creater}}
+\newcommand{\cupdot}{\mathbin{\mathaccent\cdot\cup}}
+\newcommand{\danger}{\mathcal D}
 \newcommand{\DD}{\mathbf{D}}
 \newcommand{\Deep}{\mathit{deep}}
 \newcommand{\Defined}{{\downarrow}} % double braces to affect spacing, see http://tex.stackexchange.com/a/38984/16779
-\newcommand{\defined}{\mbox{ defined}}
 \newcommand{\Delete}{\mathit{delete}}
 \newcommand{\del}{\mathit{del}}
 \newcommand{\diag}{\mathit{diag}}
@@ -123,6 +129,7 @@
 \newcommand{\dif}{\mathit{dif}}
 \newcommand{\Directory}{\mathit{dir}}
 \newcommand{\disconnect}{\mathit{disconnect}}
+\newcommand{\discuss}[1]{}
 \newcommand{\discuss}[1]{\ifdraft{\color{red}{[#1]}} \fi}
 \newcommand{\displayifspace}[1]{\iffull\[\else$\fi#1\iffull\]\else$\fi}
 \newcommand{\dissenddis}{\]\renewcommand\dissdis\dissstartdis}
@@ -131,6 +138,7 @@
 \newcommand{\dLens}{\overset{\Delta}{\Lens}}
 \newcommand{\dmwit}[1]{\finish{dmwit: #1}}
 \newcommand{\Domain}{\mathit{dom}}
+\newcommand\domain{\mathit{domain}}
 \newcommand{\dputl}{\mathord{\Lleftarrow}}
 \newcommand{\Dputl}{\mathord{\Lleftarrow}}
 \newcommand{\DPUT}{\mathit{dput}}
@@ -160,6 +168,7 @@
 \newcommand{\finishlater}[1]{\iflater\finish{#1}\fi}
 \newcommand{\finishnow}[1]{\finish{\bf #1}}
 \newcommand{\finishtext}[1]{\ifdraft\iftext{\color{gray}{[#1]}} \fi\fi}
+\newcommand{\focus}{\mathit{focus}}
 \newcommand{\foldlist}{\mathit{fold}}
 \newcommand{\formartin}[1]{\ifdraft\noindent {\bf\color{red}{For Martin:}}{\color{gray}{#1}} \fi}
 \newcommand{\Free}{\mathit{fv}}
@@ -187,13 +196,16 @@
 \newcommand{\LIST}{^\star}
 \newcommand{\live}{\ml{live}}
 \newcommand{\map}{\mathit{map}}
+\newcommand{\mdomain}[1]{\mathit{dom}(#1)}
 \newcommand{\mh}[1]{\finish{MH: #1}}
+\newcommand{\missing}{\mathit{missing}}
 \newcommand{\ml}[1]{\mathsf{#1}}
 \newcommand{\mlcount}{\ml{count}}
 \newcommand{\mldel}[1]{\ml{del}(#1)}
 \newcommand{\mldelete}{\ml{del}}
 \newcommand{\mldoubleletarray}[1]{\begin{array}[t]{@{}r@{\;}c@{\;}l@{\quad}r@{\;}c@{\;}l@{}}#1\end{array}}
 \newcommand{\mlelse}{\ml{else}\ }
+\newcommand{\mlens}[1]{\mathcal M(#1)}
 \newcommand{\mlfailed}{\ml{failed}}
 \newcommand{\mlfalse}{\false}
 \newcommand{\mlfind}{\ml{find}}
@@ -202,8 +214,10 @@
 \newcommand{\mlif}{\ml{if}\ }
 \newcommand{\mlinb}{\ml{in}\ }
 \newcommand{\mline}{\ \ml{in}}
+\newcommand{\mlinl}{\ml{inl}\ }
 \newcommand{\mlinlx}{\ml{inl}}
 \newcommand{\mlinm}{\ \ml{in}\ }
+\newcommand{\mlinr}{\ml{inr}\ }
 \newcommand{\mlinrx}{\ml{inr}}
 \newcommand{\mlins}[1]{\ml{ins}(#1)}
 \newcommand{\mlinsert}{\ml{ins}}
@@ -246,7 +260,9 @@
 \newcommand{\mlwith}{\ \ml{with}\ }
 \newcommand{\M}{\mathcal{M}}
 \newcommand{\Mod}{\mathbf{Mod}}
+\newcommand{\mput}{\mathit{put}}
 \newcommand{\mxh}[1]{\finish{MXH: #1}}
+\newcommand{\Names}{\mathcal N}
 \newcommand{\NAT}{\mathbb{N}}
 \newcommand{\nextcase}[1]{\item[] {\bf Case} #1:}
 \newcommand{\NIL}{\left<\right>}
@@ -268,9 +284,11 @@
 }
 \newcommand{\partition}{\mathit{partition}}
 \newcommand{\pdf}[1]{\node[scale=.27]{\pgfimage{images/#1}}}
+\newcommand{\pdf}[1]{\node[scale=.27]{\pgfimage{pdf/#1}}}
 \newcommand{\PENDING}[1]{\ifdraft\noindent {\bf\color{blue}{Pending:}}{\color{gray}{#1}} \fi}
 \newcommand{\Plunge}{\mathit{plunge}}
 \newcommand{\plusplus}{\mathrel{\mbox{++}}}
+\newcommand{\PUT}{\ensuremath{\aput}}
 \newcommand{\PUT}{\ensuremath{\mathit{put}}}
 \newcommand{\PUTL}{\ensuremath{\putl}}
 \newcommand{\putl}{\mathit{putl}}
@@ -283,6 +301,7 @@
 \newcommand{\Rename}{\mathit{rename}}
 \newcommand{\replicate}[2]{\underbrace{#2 \cdots #2}_{#1\ \mbox{\tiny times}}}
 \newcommand{\reviewcomment}[1]{\finish{\bf Reviewer: #1}}
+\newcommand{\R}{\mathbb R}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Rm}{\mathsf{rm}}
 \newcommand{\run}{\mathit{run}}
@@ -294,6 +313,7 @@
 \newcommand{\splits}{\cdot^{!}}
 \newcommand{\stable}[2][{}]{\overset{#2}{\rightharpoonup}_{#1}}
 \newcommand{\starsplit}{^{!}}
+\newcommand{\sto}{\mapsto}
 \newcommand{\swap}{\mathit{swap}}
 \newcommand{\switch}{\mathit{switch}}
 \newcommand{\swizzle}{\times}
@@ -303,6 +323,7 @@
 \newcommand{\TagP}{\ml{Tag?}}
 \newcommand{\To}{\mapsto}
 \newcommand{\Touch}{\mathsf{touch}}
+\newcommand{\transpose}{^\top}
 \newcommand{\Tree}{\mathit{Tree}}
 \newcommand{\Trit}{\mathit{Trit}}
 \newcommand{\tr}{\triangleright}
@@ -312,9 +333,14 @@
 \newcommand{\union}{\mathit{union}}
 \newcommand{\unit}{{()}}
 \newcommand{\Unit}{\mathit{Unit}}
+\newcommand{\upclose}[2]{\llbracket #1 \rrbracket_{#2}}
+\newcommand{\x}{\mathbf x}
+\newcommand{\y}{\mathbf y}
+\renewcommand{\d}{\textrm{d}}
 \newenvironment{functoriality}{\begin{pflike}{Proof of functoriality}}{\end{pflike}}
 \newenvironment{goodlens}{\begin{pflike}{Proof of well-formedness}}{\end{pflike}}
 \newenvironment{lenseqv}{\begin{pflike}{Proof of preservation of equivalence}}{\end{pflike}}
+\newtheorem{desiderata}{Desiderata}
 \pgfkeys{/bistable/.is family}
 \pgfkeysdef{/bistable/post}{\def\bistablepost{#1}}
 \pgfkeysdef{/bistable/pre}{\def\bistablepre{#1}}
