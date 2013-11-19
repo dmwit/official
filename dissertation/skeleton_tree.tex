@@ -19,7 +19,121 @@
   model concrete examples such as synchronisation between different file
   systems or address directories.}
 \maketitle
+
+\section{Introduction}
+
+\iflater
+\reviewcomment{The paper would be more appealing if strengthened by
+  examples. Early on. Specifically, the example application mentioned in the
+  last paragraph of Section 4 could be concretized, elaborated, and
+  presented first as motivation, then in its actual realisation, up front
+  and then as running example along with the formal concepts and
+  constructions.}
+
+\reviewcomment{Also concerning applicability, I have a general question
+  (also of theoretical interest, I think) about the chosen setup: What about
+  more powerful edits? Currently, no recursion or iteration is
+  supported. Probably it is not even desirable in full generality, but what
+  about iteration at least during navigation? The at(n,e)-edit is only
+  one-step navigation. It would not allow to capture something like the
+  transitive axes of XPath. Can you capture those, by extending the edit
+  language (but maintaining the decidable type-checking)?  }
+\fi
+
+Semantic models of bidirectional transformations are generally presented as
+transformations between the {\em states} of replicas.  For example, the
+familiar framework of asymmetric lenses defines a lens between replicas of
+types $A$ and $B$ as a pair of a {\em get} function from $A$ to $B$ and a
+{\em put} function from $A \times B$ to $A$.
+%
+An implementation directly based on this semantics would pass to the {\em
+  put} function the entire states of the original $A$ and updated $B$
+replicas.
+
+Though pleasingly simple, this treatment falls short of telling a full story
+in at least two important ways.
+First, it does not explain how the lens should {\em align} the parts of the
+old $A$ and the new $B$ so that the parts of $A$ that are ``hidden'' in the
+$B$ view retain their positions in the result.  For example, if $A$ and $B$
+are both lists of people where each element of $A$ includes a name, address,
+and email while the corresponding elements of $B$ give only a name and
+address, the user will reasonably expect that inserting a new element at the
+head of the $B$ replica will lead to an updated $A$ replica where each
+existing name keeps its associated email.  And second, the simple
+``classical'' form of asymmetric lenses fails to capture the reasonable
+expectation that a small change to the $B$ replica can be transformed into a
+change to the $A$ replica using time and space proportional to the size of
+the change, not to the sizes of the replicas.  \finishlater{This second point
+  sounds a bit bogus, since the system we have in mind is going to have to
+  walk over the whole replicas to compute the edit from the original and
+  modified structures in the first place. Martin: but then once the edit has been computed one only needs to send a small bit of info}
+
+One way to address at least the first concern is to enrich the basic
+structure of a state-based lens with a new input to the {\em put} function,
+a data structure that explicitly represents the {\em alignment} between the
+original and updated $B$ replicas; this idea forms the basis for {\em
+  dictionary lenses}~\cite{Boomerang07}, {\em matching
+  lenses}~\cite{Matching10}, and {\em symmetric}~\cite{Diskin-Delta11} and
+{\em asymmetric delta lenses}~\cite{diskin2011asymmetric} (based on
+\cite{Stevens07}).\finishlater{Need to cite Perdita's relevant papers
+  too!}  Another approach is to annotate the $B$ structures themselves with
+change information~\cite{HuModels07, Hidaka10}.  However, all these
+approaches still involve whole replica states, either as explicit inputs and
+outputs of the {\em put} function or implicitly as part of the type to which
+a delta belongs.  Thus, it is not clear whether these models can be
+implemented in such a way that small changes to a replica are propagated in
+time and space proportional to the size of the change.
+
+\finishlater{Maybe we also need
+  to cite some of these?  \cite{Meertens98, HuEditor08, MuAlgebraic2004,
+    xiong09}}
+
+In earlier work~\cite{HofmannPierceWagner12}, we proposed going a step further and defining
+lenses that work exclusively with edits.  We defined a semantic model called
+{\em edit lenses} in which the sets of source and target replicas $A$ and
+$B$ are enriched with monoids of {\em edits} and a lens's {\em get} and {\em
+  put} functions map edits to edits.  This work was carried out in an
+abstract algebraic setting where the actual data structures being
+transformed and the exact shapes of edits to them were left unspecified; in
+this setting, we showed how a number of familiar constructions on
+lenses---products, sums, etc.---could be carried out.
+
+The present paper takes a first step
+toward instantiating this abstract semantic
+model with concrete data structures and a concrete notion of edits.  The
+data model we choose is a very common and expressive one: unordered,
+edge-labeled trees---called {\em information trees} by Dal Zilio {\em et
+  al}~\cite{DalzilioS:POPL04}. These can encode a variety of data formats,
+including XML-style trees, their original application.
+Such trees can also be used to represent graphs
+\cite{UnQL96,Hidaka10} by unrolling up to bisimulation. This paper thus
+makes a first step towards general edit languages for trees.  Our edit
+operations include, in particular, insertion and deletion of subtrees and
+renaming of edges; we show how these give rise to edit languages on tree
+languages and can thus be used to instantiate the framework of {edit
+  lenses} so as to yield bidirectional synchronization between information
+trees.
+
+Our main technical result is that weakest preconditions of our edits
+can be effectively computed for sets of information trees specified by
+sheaves automata. This allows for effective ``type checking'' of edits
+and thus permits automatic checks that an edit language for trees
+presented as sequences of atomic edits does indeed preserve acceptance by a
+given sheaves automaton.
+
+The present work is thus a first step; we hope that the introduction
+of tree automata into the world of editing and synchronization will
+also lead to high-level support for constructing edit lenses
+themselves and for checking their soundness, but this remains future
+work.
+
 \input{tree}
+
+\section{Conclusion}
+We have defined a simple set of edits for information trees comprising insertions, deletions, relocations, and renamings of subtrees. Our main technical result states that tree languages defined by sheaves automata \cite{DalzilioS:POPL04} are effectively closed under weakest preconditions for these edits and that therefore, typechecking of edits against tree types defined by sheaves automata \cite{Foster:FTL} is algorithmically tractable.
+
+We see this result as a first step towards an automata-based high-level formalism for tree synchronisation; in particular we would like to investigate to what extent complements and consistency relations can be defined by automata and how the tree types from \cite{Foster:FTL} and the associated term formers can be lifted to edit lenses. More speculative goals include the automatic discovery of tree edits (``tree diffing'') and the extension to graphs.
+
 \bibliographystyle{eceasst}
 \bibliography{tree,bcp,harmony}
 

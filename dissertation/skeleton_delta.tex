@@ -75,7 +75,251 @@ to a state-based lens.
 \terms Design, Languages, Theory
 \keywords algebra, bidirectional programming, edit, lens, symmetric
 
+\sect{Introduction}
+
+Recent years have seen growing interest in {\em bidirectional
+  programming languages}---domain-specific languages where a
+program describes how to maintain a connection between data structures
+of two different shapes, translating updates to one structure into
+appropriate updates to the other.  The core concepts of bidirectional
+programming have roots in early work on the database view update
+problem (see~\cite{Focal2005} for a survey); more recently, they have
+been explored in diverse areas including model-driven software
+development~\cite{Stevens07}, data synchronization~\cite{Focal2005},
+user interfaces~\cite{Meertens98}, and Unix system configuration
+management~\cite{Augeas}.\iflater\finish{could also mention
+  parsing/unparsing, ...}\fi
+  
+The meaning of a bidirectional program connecting a set $X$ to a set
+$Y$---often called a {\em lens} from $X$ to $Y$---is intuitively a
+pair of transformations, one mapping $X$ updates to $Y$ updates and
+the other mapping $Y$ updates to $X$ updates, subject to some
+behavioral laws specifying how the two transformations fit together.
+Technically, this intuition can be realized in numerous ways.  A naive
+definition is to say that a lens from $X$ to $Y$ is just
+a pair of functions, $f \in X \to Y$ (telling how to map an updated
+$X$ state to an appropriate $Y$ state) and $g \in Y \to X$.  But this
+is too simple: if the lens laws impose the reasonable requirement that
+$f$ and $g$ should ``round trip,'' then our bidirectional programs
+will only denote bijections---an important but limited special case.
+%
+To allow for situations where each structure can contain a mixture of
+information that is shared with the other and information that is not,
+something more than just the updated structure must be given as input
+to the transformations.
+
+Different variants of lenses differ as to what this ``something more''
+should be.  We might, for example, give the transformation from $X$ to
+$Y$ both a new $X$ and an old $Y$---i.e., $f \in X \times Y \to
+Y$---with the intention that $f$ should weave together the ``shared''
+information from the new $X$ with the ``local'' information from the
+old $Y$ to produce a new $Y$.  Or instead of a whole
+$Y$, we might pass $f$ some smaller structure (a {\em complement})
+representing just 
+the information that is needed to build an updated $Y$ out of an
+updated $X$.  Or perhaps one of these plus some additional information
+about the {\em alignment} of the updated information (e.g., ``a new
+element was inserted at the beginning of this list, so the second
+element in the new $X$ corresponds to the first element in the old
+$Y$''), either in the form of an auxiliary data structure or
+perhaps somehow embedded as annotations in the updated $X$ itself.
+ 
+What all these variants have in common is that the inputs to a lens
+always include the {\em whole} updated state.  This leaves an
+unfortunate gap between the theory and practical realizations, which
+generally represent updates in some simpler, more compact form that
+only describes what has changed in a possibly large structure.
+
+In this paper, we offer the first foundational treatment
+of {\em edit lenses}---lenses that operate directly on edits, rather
+than on whole structures.
+%
+Our theory of edit lenses is built from simple and familiar algebraic
+structures (\S \ref{sec:semantics}).
+%
+It supports a wide range of fundamental syntactic
+constructions---composition, products, sums, list operations,
+etc.---allowing us to construct lenses for complex data structures
+together with appropriate representations for edits in a
+compositional fashion (\S \ref{sec:combinators}).
+%
+Indeed, the theory includes a general account of how to construct
+``mapping'' lenses for a wide class of {\em container} data
+structures~\cite{1195941} such as lists and trees (\S
+\ref{sec:containers}).  This rich set of syntax constructors should
+form a suitable basis for the design of new bidirectional languages,
+for example in the style of Boomerang~\cite{Matching10}.
+%
+Our theory can support a wide variety of {\em edit languages}.  We mostly
+concentrate on the simplest form, where compound edits are freely
+generated from some set of atomic edits; \S \ref{sec:monoid-laws}
+considers the extension to richer languages with additional algebraic laws.
+%
+Finally, our theory generalizes and refines the
+state-based {\em symmetric lenses} of Hofmann, Pierce, and
+Wagner~\cite{HofmannPierceWagner10} in a precise sense (\S
+\ref{stateb}).  \iffull
+
+\fi
+The paper ends with \iffull a brief exploration of the relation between our
+semantic space of edit lenses and previous formulations of lenses in which
+edits are viewed in the more structured setting of arrows in a category
+rather than simply elements of a monoid (\S \ref{cats}), \fi a discussion of
+related work (\S \ref{sec:related})\iffull,\fi{} and some remarks on future
+directions (\S \ref{sec:concl}).
+
+\iflater \finish{Our development relies on some standard constructions
+  from abstract algebra, which we review these as we come to them, for
+  the sake of self-containedness.  Familiarity with previous work on
+  lenses is not assumed.}  \fi
+
+\iflater
+\finish{Make sure we hit these points:
+\item Why was this hard?  What aspects of {\edit}-lenses were challenging to
+figure out?
+\item Why is our solution canonical?  Does it settle issues that others have
+struggled with?
+}
+\fi
+
 \input{delta}
+
+\sect{Related Work}\label{sec:related}
+
+The most closely related attempt at developing a theory of update
+propagation is \cite{Diskin-Delta11} by Diskin et al. Their starting
+point is the observation (also discussed in \cite{Matching10}) that discovery of
+edits should be decoupled from their propagation. They thus propose a
+formalism, \emph{sd-lenses}, for the propagation of edits across
+synchronized data structures, bearing some similarities with our
+edit lenses. The replicas, which we model as modules, are there modeled
+as categories (presented as reflexive graphs)\iffull, as we discussed in 
+\S \ref{cats}\fi. Thus, for any two states $x,x'$ there is a set of
+edits $X(x,x')$. An sd-lens then comprises two reflexive graphs $X,Y$
+and for any $x\in X$ and $y\in Y$ a set $C(x,y)$ of
+``correspondences'' which roughly correspond to our
+complements. Forward and backward operations similar to our $\dputl$ and
+$\dputr$ then complete the picture. No concrete
+examples are given of sd-lenses, no composition, no notion of equivalence, and
+no combinators for constructing sd-lenses; the focus of the paper is
+rather on the discovery of suitable axioms, such as invertibility and
+undoability of edits, and a 
+generalization of {\em hippocraticness} in the sense of
+Stevens~\cite{Stevens07}. They also develop a comparison 
+with the state-based framework (cf.\ \S \ref{stateb} above). In
+our opinion, the separation of edits and correspondences according to
+the states that they apply to or relate has two important
+disadvantages.  First, in our examples, it is often the case that one
+and the same edit applies to more than one state and can be
+meaningfully propagated (and more compactly represented) as such. For example, while many of the
+container edits tend to only work for a particular shape, they are
+completely polymorphic in the contents of the container. Second, the
+fact that state sets are already categories suggests 
+that a category of sd-lenses would be
+2-categorical in flavor, entailing extra technical difficulties such as
+coherence conditions. 
+
+%% \finish{Here's a quick start from a brief scan of their most recent
+%%   paper~\cite{Diskin-Delta11} by BCP...
+%%   \begin{itemize}
+%%   \item Their motivations and goals are exactly the same.
+%%   \item The technicalities of their approach are pretty dense.  I haven't
+%%   internalized them yet.  In particular, I don't have a good intuition for
+%%   their ``sameness'' relations---what they say makes sense for ``flat''
+%%   structures like lists or simple graphs, but not for more structured data
+%%   (where you'd want to know about correspondences at various levels of
+%%   structure). 
+%%   \item They don't say anything about the size of their deltas, and at
+%%   least a naive representation would be big.  We're much more careful about
+%%   this. 
+%%   \item They propose two new laws (weak invertability and undoability).  I'm
+%%   not sure what to say about these, but I guess it's an important point of
+%%   comparison, since it's one of the main points of their paper.
+%%   \item They don't handle $\missing$ (a small point)
+%%   \item They don't define any combinators, just the semantic space itself (a
+%%   larger point, and related) 
+%%   \item Their Definition 19 and Theorem 5 relate their delta-lenses to our
+%%   symmetric lenses.  I'm not completely sure how to interpret it (does our
+%%   ``trivial module'' correspond to their ``simple graph''?), but in any case
+%%   our result is stronger because it goes both directions.  (Their
+%%   characterization of our symmetric lenses is a little bit wrong---it puts
+%%   $C$ in the wrong place---but I'm not sure this matters.)
+%%   \end{itemize}
+%% }
+
+Meertens's seminal paper on {\em constraint maintainers}~\cite{Meertens98}
+discusses a form of containers for lists equipped with a notion of edits
+similar to our edit language for lists, but does not develop a general
+theory of edit-transforming constraint maintainers.
+
+A long series of papers from the group at the University of Tokyo
+\cite[etc.]{Hu04, Mu2004, MuAlgebraic2004, HuModels07,
+  Hidaka10}\iffull\discuss{double-check these, and add more, and add to abstract
+  too}\fi{} deal with the alignment issue using an approach that might be
+characterized as a hybrid of state-based and edit-based.  Lenses work with
+whole states, but these states are internally annotated with tags showing
+where edits have been applied---e.g., marking inserted or deleted elements
+of lists.
+%
+Barbosa et al.'s {\em matching lenses}~\cite{Matching10} offer another 
+approach to dealing with issues of alignment in the framework of pure
+state-based lenses.  
+
+
+%% \noindent
+%% Other things we definitely need to compare to:
+%% \begin{itemize}
+%% \item Diskin's ``tile algebras'' \cite{DBLP:conf/gttse/Diskin09}
+%% \item The other delta-lens papers that Diskin refers to in the intro
+%% of~\cite{Diskin-Delta11} 
+%% \item Other papers addressing the alignment problem in different ways (e.g.,
+%% our Matching Lenses~\cite{Matching10}, Tokyo group papers such
+%% as~\cite{Mu2004} and maybe the ICFP10 paper on bidirectional graph
+%% transformations)
+%% \item Maybe some papers on edits in the context of version management (see
+%% last year's grant proposal for some citations)
+%% \item other lens-like things that have used some kind of deltas~\cite{HuModels07} 
+%% \begin{itemize}
+%% \item \finish{Meertens \cite{Meertens98} introduces edit operations in section 5.3
+%% (p. 68ff) to talk about edits to lists.  I have not grokked yet exactly how
+%% all this works, or how it fits into his general framework of constraint
+%% maintainers.  Some possible text:}
+
+%% \item 
+%% \end{itemize}
+%% \end{itemize}
+
+%% \iflater
+%% \finish{
+%% Other things to think about:
+%% \begin{itemize}
+%%     \item other research on edit lenses
+%%     \item practical tools that use notions of an edit
+%%     \item Is there any correspondence with other tools like SVN, Unison,
+%%     ...? 
+%% \item operation transform papers?
+%% \end{itemize}
+%% }
+%% \fi
+
+\sect{Conclusion}\label{sec:concl}
+
+A prototype Haskell implementation of edit lenses is underway, as well as a
+demo showing how to construct GUIs connected by lenses. 
+The main required extension to the theory presented here are extending the
+above constructions from algebraic data structures to strings, following
+Boomerang~\cite{Boomerang07}, and identifying good heuristics for
+converting unstructured string edits into structured edits of the form
+expected by the lenses above---a form of parsing and unparsing.
+
+Containers offer a convenient abstraction on which to build generic lens
+combinators, as discussed in \S \ref{sec:containers}. To use these
+combinators in practice, we need to show how to instantiate the module of
+\emph{shapes} for the kind of container we are interested in, as we did for
+lists. In the future, we would like to explore several other sorts of
+shapes; in particular, edit languages for graphs may be useful in
+model-driven development, while edits for relations are relevant to database
+applications.
 
 \ifanon \else \paragraph*{Acknowledgments}
 We are grateful to
