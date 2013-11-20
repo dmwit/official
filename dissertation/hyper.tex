@@ -189,7 +189,7 @@ nodes is quite limiting: it essentially means that the system is
 unidirectional.
 
 \subsection{Tree topology}
-The lens frameworks discussed in \ref{chap:finished_work} amount to having a
+The lens frameworks discussed in Chapter~\ref{chap:background} amount to having a
 constraint system graph with exactly two variables and exactly one
 constraint connecting them. You may only edit one of the variables at a
 time. Then, to propagate the change, you spread the change from the changed
@@ -734,44 +734,3 @@ whatever units make sense to you and get the same program out.
 % TODO: Benjamin says: ``Some discussion is needed about (a) what's been
 % done and learned so far, and (b) what, concretely, you plan to do, and
 % what you expect the result to be.''
-\section{Timeline}
-\label{sec:timeline}
-Currently, the most promising approach is to use local constraint
-propagation-style update planning, but add some features to give programmer
-control of constraint resolution order in situations where the order is
-ambiguous. One major unfinished piece of work is inventing and evaluating
-such schemes for providing programmer control. I expect there to be a
-tradeoff involved between flexibility (how much control the programmer has)
-and simplicity (how expert the programmer must be to achieve his goals).
-
-Having simple, high-level control is a major goal of the project;
-nevertheless, I propose to begin with a serious investigation of very
-flexible, low-level control schemes, with the hopes that (1) a solid
-understanding of the behavior of low-level controls will guide the design of
-high-level schemes, and (2) that low-level schemes may serve as a
-``compilation target'' for high-level schemes---and an escape hatch when the
-less flexible schemes produce undesirable update plans.
-
-The other major unfinished work involves investigating how to incorporate
-high quality, special-purpose constraint solvers. For example, the linear
-constraint solver proposed in \ref{sec:linear_constraints} has many
-desirable properties, and would be a convenient component in a larger
-system; as would dynamic solvers for statically unsolvable cycles.
-
-I propose the following timings:
-\begin{itemize}
-    \item Low-level control schemes: 2 months
-    \item High-level control schemes: 1 month
-    \item Incorporating black boxes for linear and cyclic solvers: 1 month
-    \item Extending the linear solver to nonlinear functions: 2 months
-    \item Defense writing: 3 months
-\end{itemize}
-This proposed timeline is also shown in Figure~\ref{fig:timeline}, which
-includes some possible publication targets as well as one month of slack
-time for preparing publications.
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.6]{timeline.pdf}
-    \caption{Proposed research timeline}
-    \label{fig:timeline}
-\end{figure}
