@@ -2,6 +2,7 @@
     \item Bidirectional programming is advantageous because it is concise
         (one iteration only) and has proven synchronization laws
 \end{itemize}
+% TODO: introduce jargon like ``repository'' and friends in here
 
 \section{Asymmetric Lenses}
 \label{sec:asymmetric-lenses}
@@ -34,6 +35,49 @@
                 functional computations or to transmit
         \end{itemize}
 \end{itemize}
+
+One well-studied approach to bidirectional programming, summarized in
+Figure~\ref{fig:asymmetric-lens-def}, is the framework of \emph{asymmetric},
+\emph{state-based} lenses. In this model, one of the two repositories is a
+% TODO: definitely, definitely need some citations
+\emph{view} of or \emph{query} on the other: that is, it can be completely
+reconstructed from the other without additional outside information in case
+it is lost. Calling the types of the two repositories $S$ (for ``source'')
+and $V$ (for ``view''), we reflect this fact by requiring one of the
+components of such a lens to be a function
+\[\aget \in S \to V.\]
+In most cases, a query will keep only some of the information available in
+the source; as a result, the opposite reconstruction property---that the
+source can be completely reconstructed from the view---usually does not
+hold. Asymmetric, state-based lenses handle this situation by allowing their
+other major function component to have access to both a modified value from
+the view repository \emph{and} an original value from the source repository
+to merge the new data into:
+\[\aput \in V \times S \to S\]
+As a technical detail, it is convenient to demand (and not difficult to
+satisfy this demand in practice) a way to generate a value in the source
+repository with some sane defaults. The most common presentation of this is
+to have a third and final lens component:
+\[\acreate \in V \to S\]
+\begin{figure}
+    \begin{minipage}{0.5\linewidth}
+        \begin{align*}
+            \aget &\in S \to V \\
+            \aput &\in V \times S \to S \\
+            \acreate &\in V \to S
+        \end{align*}
+    \end{minipage}
+    \begin{minipage}{0.5\linewidth}
+        \begin{align*}
+            \aput(\aget(s),s) &= s \\
+            \aget(\aput(v,s)) &= v \\
+            \aget(\acreate(v)) &= v
+        \end{align*}
+    \end{minipage}
+    \caption{The required components and behavioral guarantees of a lens in
+    $S \alens V$}
+    \label{fig:asymmetric-lens-def}
+\end{figure}
 
 \section{Contributions}
 \label{sec:contributions}
