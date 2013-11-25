@@ -1,0 +1,57 @@
+\begin{itemize}
+    \item Bidirectional programming is advantageous because it is concise
+        (one iteration only) and has proven synchronization laws
+\end{itemize}
+
+\section{Asymmetric Lenses}
+\label{sec:asymmetric-lenses}
+\begin{itemize}
+    \item Asymmetric Lenses
+        \begin{itemize}
+            \item Define what an asymmetric lens is and how its used
+            \item This was the initial approach to lenses
+            \item Asymmetric lenses needed to mature to add functionality
+        \end{itemize}
+    \item The extra functionality should address practical issues arising
+        from the synchronization of the repositories
+        \begin{itemize}
+            \item alignment: there may be many ways to produce a
+                synchronized pair, and we must give tools for disambiguating
+                \begin{itemize}
+                    \item to do a good job, a lens needs information about
+                        what happened that's hard to recover locally
+                    \item structural matching clearly does a bad job -- and
+                        the naive asymmetric model can only make local
+                        decisions, none of which are going to be good enough
+                    \item producing descriptions of the global information
+                        itself is messy, and you want that factored out --
+                        you want a theory of how global information is
+                        processed without worrying about it's produced
+                \end{itemize}
+            \item symmetry: there may be no canonical repository that
+                contains all the data
+            \item size: sometimes repositories are too large to facilitate
+                functional computations or to transmit
+        \end{itemize}
+\end{itemize}
+
+\section{Contributions}
+\label{sec:contributions}
+\begin{itemize}
+    \item We have made some valuable progress on each of these issues
+        \begin{itemize}
+            \item alignment: showed specific examples of lenses that
+                disambiguate some especially confusing repository
+                modifications
+            \item give a natural way of factoring out the descriptions of
+                extra global information -- treat it completely generically
+                and see where that takes us
+            \item symmetry: showed how to design a lens framework that
+                supports composition and symmetry
+            \item size: designed a series of lenses where the computations
+                operate on small edits, rather than the large repository
+        \end{itemize}
+    \item We implemented xxx, which demonstrates yyy
+    \item Hint at the fact that there is more to be done if you want to
+        operate on multiple repositories simultaneously
+\end{itemize}
