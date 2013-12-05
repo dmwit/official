@@ -1,3 +1,0 @@
-while true
-do watch -n60 './shake | tee shake.out | sed -f ../latex.boring'
-done

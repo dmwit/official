@@ -1,0 +1,10 @@
+#!/bin/sh
+git checkout $1
+rm *.{aux,bbl,blg,toc} paper.log
+pdflatex -interaction nonstopmode paper
+cp paper.log $1-1.log
+bibtex paper
+pdflatex -interaction nonstopmode paper
+cp paper.log $1-2.log
+pdflatex -interaction nonstopmode paper
+cp paper.log $1-3.log
