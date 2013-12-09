@@ -42,8 +42,8 @@
     \newcommand{\aconst}{\mathit{aconst}}
     \newcommand{\colspan}[1]{\multicolumn{3}{@{}l}{#1}}
 \fi
-\ifdissertation\newcommand\dissdis\dissstartdis
-\else\newcommand\dissdis\nondissstartdis
+\ifdissertation\newcommand{\dissdis}{\dissstartdis}
+\else\newcommand{\dissdis}{\nondissstartdis}
 \fi
 \iftree\newcommand{\Lens}{\leftrightarrow}
 \else  \newcommand{\Lens}{\Longleftrightarrow}
@@ -105,7 +105,7 @@
 \newcommand{\CC}{\mathbf{C}}
 \newcommand{\Close}{|\hspace{-2pt}\}}
 \newcommand{\codiag}{\mathit{codiag}}
-\newcommand\codomain{\mathit{codomain}}
+\newcommand{\codomain}{\mathit{codomain}}
 \newcommand{\comp}{\mathit{comp}}
 \newcommand{\CONCRETELIST}[1]{\left<#1\right>}
 \newcommand{\cond}[1]{\left\{\begin{array}{ll}#1\end{array}\right.}
@@ -130,8 +130,8 @@
 \newcommand{\disconnect}{\mathit{disconnect}}
 \newcommand{\discuss}[1]{\ifdraft{\color{red}{[#1]}} \fi}
 \newcommand{\displayifspace}[1]{\iffull\[\else$\fi#1\iffull\]\else$\fi}
-\newcommand{\dissenddis}{\]\renewcommand\dissdis\dissstartdis}
-\newcommand{\dissstartdis}{\renewcommand\dissdis\dissenddis\[}
+\newcommand{\dissenddis}{\]\renewcommand{\dissdis}{\dissstartdis}}
+\newcommand{\dissstartdis}{\renewcommand{\dissdis}{\dissenddis}\[}
 \newcommand{\dlens}{\overset{\Delta}{\lens}}
 \newcommand{\dLens}{\overset{\Delta}{\Lens}}
 \newcommand{\dmwit}[1]{\finish{dmwit: #1}}
@@ -264,8 +264,8 @@
 \newcommand{\NIL}{\left<\right>}
 \newcommand{\N}{\mathcal{N}}
 \newcommand{\Node}{\mathit{node}}
-\newcommand{\nondissenddis}{$\renewcommand\dissdis\nondissstartdis\xspace}
-\newcommand{\nondissstartdis}{\renewcommand\dissdis\nondissenddis$}
+\newcommand{\nondissenddis}{$\renewcommand{\dissdis}{\nondissstartdis}\xspace}
+\newcommand{\nondissstartdis}{\renewcommand{\dissdis}{\nondissenddis}$}
 \newcommand{\ONE}{\mbox{\bf{1}}}
 \newcommand{\Open}{\{\hspace{-2pt}|}
 \newcommand{\op}{^\mathit{op}}
