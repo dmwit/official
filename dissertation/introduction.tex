@@ -98,15 +98,148 @@ Figure~\ref{fig:asymmetric-lens-def}.
     \item Hint at the fact that there is more to be done if you want to
         operate on multiple repositories simultaneously
 \end{itemize}
-\section{Some Rambling About Alignment}
-Below, I'm trying to develop a sort of ``garden path'' that starts with
-people having no idea what alignment is about and ends with them believing
-that it is an important problem to solve and that it is fundamental and
-tricky. But I don't have a good idea about how this will go yet, so for now
-it's just some notes to myself about things that might be good to talk
-about.
+\section{Alignment}
+One very common operation when doing functional (unidirectional) programming
+is the \map operation\footnote{As of April 3, 2012, there were 3878 packages
+% TODO: add a citation for Hackage (!)
+on Hackage, the central code repository for Haskell projects, which made a
+total of 90,040 calls to \map---an average of more than twenty calls per
+project. In fact, the program used to calculate these numbers itself makes
+two calls to \map:
 
-Subsections in no particular order yet.
+\noindent\texttt{ack -cl '\textbackslash bmap\textbackslash b' | cut -d: -f2 |}
+
+\noindent\texttt{ghc -e 'interact \$ unlines . map show . scanl (+) 0 . map read . lines'}
+}, which runs a computation on each element of a list. Most serious attempts
+at designing a bidirectional language therefore provide some variant of a
+mapping operation. Since it is such a popular operation, it is important to
+do a really good job of designing the bidirectional \map, and that job turns
+out to be surprisingly difficult! The most obvious way of implementing the
+\map operation is developed below as a way to ground the discussion of what
+makes this so difficult.
+
+Like the unidirectional \map, which is parameterized by a unidirectional
+function to apply to list elements, our bidirectional \map will be
+parameterized by a bidirectional operation. That is, when $\ell \in X \alens
+Y$, we will have $\map(\ell) \in X^* \alens Y^*$ where $X^*$ is the type of
+lists whose elements are drawn from $X$. In the following, we will use the
+notation $\NIL$ for the empty list; $x \CONS t$ for the list whose first
+element is $x$ and whose remaining elements are $t$; and
+$\left<x_1,\ldots,x_n\right>$ for the list whose elements are exactly $x_1$
+through $x_n$ in order.
+
+\begin{figure}
+    \begin{align*}
+        \mapU(f,t) &= \cond{
+            \NIL & t = \NIL \\
+            f(x) \CONS \mapU(f,t') & t = x \CONS t'
+        } \\
+        \zip(f,g,h,t,u) &= \cond{
+            f(x,y) \CONS \zip(f,g,h,t',u') & t = x:t' \land u = y:u' \\
+            g(t) & t = x:t' \land u = \NIL \\
+            h(u) & t = \NIL \land u = y:u' \\
+            \NIL & t = u = \NIL
+        } \\
+        \constU(x) &= \lambda y.\;x
+    \end{align*}
+    \caption{Auxiliary unidirectional functions used in the definition of \map}
+    \label{fig:uni-map-zip-const}
+\end{figure}
+\begin{figure}
+    \begin{align*}
+        \map(\ell).\aget(t) &= \mapU(\ell.\aget,t) \\
+        \map(\ell).\acreate(u) &= \mapU(\ell.\acreate,u) \\
+        \map(\ell).\aput(t,u) &=
+            \zip(\ell.\aput,\mapU(\ell.\acreate),\constU(\NIL),t,u)
+    \end{align*}
+    \caption{A naive implementation of the bidirectional \map operation}
+    \label{fig:naive-asymmetric-map}
+\end{figure}
+Figures~\ref{fig:uni-map-zip-const} and~\ref{fig:naive-asymmetric-map}
+define the \map lens. In these figures, and in the remainder of the text, we
+distinguish the unidirectional mapping operation \mapU from the
+bidirectional one \map.  The \GET and \CREATE operations are fairly
+straightforward -- direct analogues of the unidirectional version -- but the
+\PUT operation is more delicate. Recall that \PUT takes one value from each
+repository, so again in the case where $\ell \in X \alens Y$, we will have
+$\map(\ell).\aput$ taking two lists, one each of types $X^*$ and $Y^*$.
+When these lists are the same length we can just ``zip'' them together with
+$\ell.\aput$. When they are different lengths, we can zip together as much
+as we can (up to the shorter of the two lengths), then either treat the
+remainder as deletions (if the $X^*$ list is longer) and so do nothing, or
+treat the remainder as insertions (if the $Y^*$ list is longer) and so use
+$\ell$'s \CREATE method.
+
+\begin{figure}
+    \begin{align*}
+        \tolower.\aget(c) &= \mbox{the lower case version of $c$} \\
+        \tolower.\aput(c',c) &= \cond{
+            \mbox{the upper case version of $c'$} & \mathtt{A} < c < \mathtt{Z} \\
+            c' & \mbox{otherwise}
+        } \\
+        \tolower.\acreate(c) &= c
+    \end{align*}
+    \caption{The \tolower lens to convert a possibly-upper-case letter into
+    a definitely-lower-case one}
+    \label{fig:tolower-lens}
+\end{figure}
+For example, if we define a lens \tolower that converts a character to lower
+case as in Figure~\ref{fig:tolower-lens}, then we can execute the
+$\map(\tolower)$ lens a few times to see how it behaves:
+\begin{align*}
+    \map(\tolower).\aget(\mathtt{camelCasedQord})
+        &= \mathtt{camelcasedqord} \\
+    \map(\tolower).\aput(\mathtt{camelcasedword},\mathtt{camelCasedQord})
+        &= \mathtt{camelCasedWord} \\
+    \map(\tolower).\aput(\mathtt{camelcased},\mathtt{camelCasedWord})
+        &= \mathtt{camelCased} \\
+    \map(\tolower).\aput(\mathtt{camelcasedsentence},\mathtt{camelCasedWord})
+        &= \mathtt{camelCasedSentence}
+\end{align*}
+All of these examples behave essentially optimally. However, not all is
+well; a simple example of the so-called \emph{alignment problem} is
+something like this, where we have an insertion in the middle of the word to
+correct the spelling of ``camel'':
+\[\map(\tolower).\aput(\mathtt{camelcasedword},\mathtt{camlCasedWord})
+    = \mathtt{cameLcaseDword}\]
+Because our \map's \PUT operation only looks at a lower-cased element's
+position when deciding which mixed-case character to match it up with, we
+have incorrectly \emph{aligned} the new view with the old source this way:
+
+\begin{tikzpicture}[
+    start chain=source,
+    start chain=view,
+    node distance=0,
+    text depth=0.25ex, text height=1.5ex,
+    every node/.style={font=\ttfamily}]
+    \foreach \c in {c,a,m,l,C,a,s,e,d,W,o,r,d}
+        {\node[on chain=source]{\c};}
+    \node[on chain=view,below=5ex of source-1] {c};
+    \foreach \c in {a,m,e,l,c,a,s,e,d,w,o,r,d}
+        {\node[on chain=view]{\c};}
+    \foreach \n in {1,...,13}
+        {\draw (source-\n) -- (view-\n);}
+\end{tikzpicture}
+
+\noindent A better alignment would look like this:
+
+\begin{tikzpicture}[
+    start chain=source,
+    start chain=view,
+    node distance=0,
+    text depth=0.25ex, text height=1.5ex,
+    every node/.style={font=\ttfamily}]
+    \foreach \c in {c,a,m,l,C,a,s,e,d,W,o,r,d}
+        {\node[on chain=source]{\c};}
+    \node[on chain=view,below=5ex of source-1] {c};
+    \foreach \c in {a,m,e,l,c,a,s,e,d,w,o,r,d}
+        {\node[on chain=view]{\c};}
+    \foreach \s/\v in {1/1,2/2,3/3,4/4,5/6,6/7,7/8,8/9,9/10,10/11,11/12,12/13,13/14}
+        {\draw (source-\s) -- (view-\v);}
+\end{tikzpicture}
+
+\noindent The alignment problem is about how to discover, propagate, and use
+alignments that reflect the user's intention well.
 
 \subsection{Getting a Good Alignment is Important}
 Here's a subsection you might want to write: perhaps it is worth writing an

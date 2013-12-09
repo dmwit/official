@@ -18,7 +18,7 @@
 \usepackage{wrapfig}
 \usepackage{xcolor}
 \usepackage{xspace}
-\usetikzlibrary{fit,shadows,positioning}
+\usetikzlibrary{chains,fit,shadows,scopes,positioning}
 
 % conditional definitions {{{
 \ifdelta
@@ -111,6 +111,7 @@
 \newcommand{\cond}[1]{\left\{\begin{array}{ll}#1\end{array}\right.}
 \newcommand{\CONS}{\mathord{:}}
 \newcommand{\const}{\mathit{term}}
+\newcommand{\constU}{\mathit{const}}
 \newcommand{\countlens}{\mathit{count}}
 \newcommand{\CREATE}{\ensuremath{\acreate}\xspace}
 \newcommand{\createl}{\mathit{createl}}
@@ -192,7 +193,8 @@
 \newcommand{\liftedtolists}{_*}
 \newcommand{\LIST}{^\star}
 \newcommand{\live}{\ml{live}}
-\newcommand{\map}{\mathit{map}}
+\newcommand{\map}{\ensuremath{\mathit{map}}\xspace}
+\newcommand{\mapU}{\ensuremath{\mathit{map}_U}\xspace}
 \newcommand{\mdomain}[1]{\mathit{dom}(#1)}
 \newcommand{\mh}[1]{\finish{MH: #1}}
 \newcommand{\ml}[1]{\mathsf{#1}}
@@ -313,6 +315,7 @@
 \newcommand{\TagM}{\ml{TagM}}
 \newcommand{\TagP}{\ml{Tag?}}
 \newcommand{\To}{\mapsto}
+\newcommand{\tolower}{\ensuremath{\mathit{lower}}\xspace}
 \newcommand{\Touch}{\mathsf{touch}}
 \newcommand{\transpose}{^\top}
 \newcommand{\Tree}{\mathit{Tree}}
@@ -327,6 +330,7 @@
 \newcommand{\upclose}[2]{\llbracket #1 \rrbracket_{#2}}
 \newcommand{\x}{\mathbf x}
 \newcommand{\y}{\mathbf y}
+\newcommand{\zip}{\ensuremath{\mathit{zip}}\xspace}
 \renewcommand{\d}{\textrm{d}}
 \newenvironment{functoriality}{\begin{pflike}{Proof of functoriality}}{\end{pflike}}
 \newenvironment{goodlens}{\begin{pflike}{Proof of well-formedness}}{\end{pflike}}
