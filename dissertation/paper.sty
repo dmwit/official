@@ -362,6 +362,13 @@
 \newenvironment{longitem}{\begin{itemize}}{\end{itemize}}
 \fi
 
+\tikzstyle{alignment diagram}=[
+    start chain=source,
+    start chain=view,
+    node distance=0,
+    text depth=0.25ex, text height=1.5ex,
+    every node/.style={font=\ttfamily}]
+
 % stolen from Nate
 \pgfdeclarelayer{background}
 \pgfsetlayers{background,main}

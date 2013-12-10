@@ -206,12 +206,8 @@ Because our \map's \PUT operation only looks at a lower-cased element's
 position when deciding which mixed-case character to match it up with, we
 have incorrectly \emph{aligned} the new view with the old source this way:
 
-\begin{tikzpicture}[
-    start chain=source,
-    start chain=view,
-    node distance=0,
-    text depth=0.25ex, text height=1.5ex,
-    every node/.style={font=\ttfamily}]
+\begin{center}
+\begin{tikzpicture}[alignment diagram]
     \foreach \c in {c,a,m,l,C,a,s,e,d,W,o,r,d}
         {\node[on chain=source]{\c};}
     \node[on chain=view,below=5ex of source-1] {c};
@@ -220,28 +216,33 @@ have incorrectly \emph{aligned} the new view with the old source this way:
     \foreach \n in {1,...,13}
         {\draw (source-\n) -- (view-\n);}
 \end{tikzpicture}
+\end{center}
 
 \noindent A better alignment would look like this:
 
-\begin{tikzpicture}[
-    start chain=source,
-    start chain=view,
-    node distance=0,
-    text depth=0.25ex, text height=1.5ex,
-    every node/.style={font=\ttfamily}]
+\begin{center}
+\begin{tikzpicture}[alignment diagram]
     \foreach \c in {c,a,m,l,C,a,s,e,d,W,o,r,d}
         {\node[on chain=source]{\c};}
     \node[on chain=view,below=5ex of source-1] {c};
     \foreach \c in {a,m,e,l,c,a,s,e,d,w,o,r,d}
         {\node[on chain=view]{\c};}
-    \foreach \s/\v in {1/1,2/2,3/3,4/4,5/6,6/7,7/8,8/9,9/10,10/11,11/12,12/13,13/14}
+    \foreach \s/\v in {1/1,2/2,3/3,4/5,5/6,6/7,7/8,8/9,9/10,10/11,11/12,12/13,13/14}
         {\draw (source-\s) -- (view-\v);}
 \end{tikzpicture}
+\end{center}
 
 \noindent The alignment problem is about how to discover, propagate, and use
-alignments that reflect the user's intention well.
+alignments that reflect the user's intention well. In the following, we will
+argue three things:
+\begin{enumerate}
+    \item Getting the right alignment is important.
+    \item Getting the right alignment is hard.
+    \item Current lens foundations do not treat alignment with the care it
+        deserves.
+\end{enumerate}
 
-\subsection{Getting a Good Alignment is Important}
+\subsection{The Consequences of Misalignment}
 Here's a subsection you might want to write: perhaps it is worth writing an
 argument that concludes in a generic way that if we get the alignment wrong,
 then we can definitely write a lens that behaves in an obviously bad way.
