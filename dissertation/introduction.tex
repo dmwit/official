@@ -101,11 +101,10 @@ Figure~\ref{fig:asymmetric-lens-def}.
 \section{Alignment}
 One very common operation when doing functional (unidirectional) programming
 is the \map operation\footnote{As of April 3, 2012, there were 3878 packages
-% TODO: add a citation for Hackage (!)
-on Hackage, the central code repository for Haskell projects, which made a
-total of 90,040 calls to \map---an average of more than twenty calls per
-project. In fact, the program used to calculate these numbers itself makes
-two calls to \map:
+on Hackage~\cite{Hackage2012}, the central code repository for Haskell
+projects, which made a total of 90,040 calls to \map---an average of more
+than twenty calls per project. In fact, the program used to calculate these
+numbers itself makes two calls to \map:
 
 \noindent\texttt{ack -cl '\textbackslash bmap\textbackslash b' | cut -d: -f2 |}
 
@@ -118,6 +117,8 @@ out to be surprisingly difficult! The most obvious way of implementing the
 \map operation is developed below as a way to ground the discussion of what
 makes this so difficult.
 
+% TODO: add a subsection discussing all the notation in the whole
+% dissertation? (including the whole ``record syntax'' thing)
 Like the unidirectional \map, which is parameterized by a unidirectional
 function to apply to list elements, our bidirectional \map will be
 parameterized by a bidirectional operation. That is, when $\ell \in X \alens
@@ -206,8 +207,7 @@ Because our \map's \PUT operation only looks at a lower-cased element's
 position when deciding which mixed-case character to match it up with, we
 have incorrectly \emph{aligned} the new view with the old source this way:
 
-\begin{center}
-\begin{tikzpicture}[alignment diagram]
+\begin{diagram}[alignment diagram]
     \foreach \c in {c,a,m,l,C,a,s,e,d,W,o,r,d}
         {\node[on chain=source]{\c};}
     \node[on chain=view,below=5ex of source-1] {c};
@@ -215,24 +215,197 @@ have incorrectly \emph{aligned} the new view with the old source this way:
         {\node[on chain=view]{\c};}
     \foreach \n in {1,...,13}
         {\draw (source-\n) -- (view-\n);}
-\end{tikzpicture}
-\end{center}
+\end{diagram}
 
 \noindent A better alignment would look like this:
 
-\begin{center}
-\begin{tikzpicture}[alignment diagram]
+\begin{diagram}[alignment diagram]
     \foreach \c in {c,a,m,l,C,a,s,e,d,W,o,r,d}
         {\node[on chain=source]{\c};}
     \node[on chain=view,below=5ex of source-1] {c};
     \foreach \c in {a,m,e,l,c,a,s,e,d,w,o,r,d}
         {\node[on chain=view]{\c};}
-    \foreach \s/\v in {1/1,2/2,3/3,4/5,5/6,6/7,7/8,8/9,9/10,10/11,11/12,12/13,13/14}
-        {\draw (source-\s) -- (view-\v);}
-\end{tikzpicture}
-\end{center}
+    \foreach \n in {1,...,3}
+        {\draw (source-\n) -- (view-\n);}
+    \foreach \s in {4,...,13}
+        {\pgfmathtruncatemacro\v{\s+1}\draw (source-\s) -- (view-\v);}
+\end{diagram}
 
-\noindent The alignment problem is about how to discover, propagate, and use
+One natural reaction to this infelicity is to think of the \texttt{diff}
+algorithm~\cite{hunt1976algorithm} or something similar. This idea has been
+developed quite far~\cite{MatchingLenses09}; let us see how. At first blush,
+it seems difficult to use the \texttt{diff} algorithm directly. Elements of
+the source and view have different types, so it is not clear how to compare
+them\footnote{In this case, the types are close enough that we could
+probably fudge it, but in general there may be very different kinds of
+objects in the source and view.}. However, the alignment diagram above may
+be broken into two stages:
+
+\begin{diagram}[alignment diagram]
+    \foreach \c in {c,a,m,l,C,a,s,e,d,W,o,r,d}
+        {\node[on chain=source]{\c};}
+    \node[on chain=intermediate,below=5ex of source-1] {c};
+    \foreach \c in {a,m,l,c,a,s,e,d,w,o,r,d}
+        {\node[on chain=intermediate]{\c};}
+    \node[on chain=view,below=5ex of intermediate-1] {c};
+    \foreach \c in {a,m,e,l,c,a,s,e,d,w,o,r,d}
+        {\node[on chain=view]{\c};}
+    \foreach \n in {1,...,13}
+        {\draw (source-\n) -- (intermediate-\n);}
+    \foreach \n in {1,...,3}
+        {\draw (intermediate-\n) -- (view-\n);}
+    \foreach \s in {4,...,13}
+        {\pgfmathtruncatemacro\v{\s+1}\draw (intermediate-\s) -- (view-\v);}
+    \path
+        node[right=3em of view-end,font=\rmfamily]           (view-type)
+            {new view (of type $V^*$)}
+        (intermediate-end -| view-type) node[font=\rmfamily] (intermediate-type)
+            {old view (of type $V^*$)}
+        (source-end   -| view-type) node[font=\rmfamily]     (source-type)
+            {old source (of type $S^*$)}
+        ;
+\end{diagram}
+
+In this restructured alignment diagram, the upper alignment (which connects
+elements of different types) will always be completely flat, and hence
+requires no sophisticated tools to generate. In contrast, the lower
+alignment contains all the interesting information, and is the one we hope
+to compute with \texttt{diff}. Moreover, the connections in the lower
+alignment are now between elements of the same type, making the use of
+% TODO: expand these wrinkles into paragraphs/pages?
+\texttt{diff} much more plausible. One wrinkle is that the data in this
+example is unrealistically simple, and more complicated data often needs
+more complicated tools for specifying the cost function that \texttt{diff}
+uses. Another wrinkle is that in real-world situations, one often wants to
+discover alignments with crossings like
+\begin{diagram}[alignment diagram]
+    \foreach \c in {D,i,r,G,r,a,p,h,R,e,s}
+        {\node[on chain=source]{\c};}
+    \node[on chain=intermediate,below=5ex of source-1] {d};
+    \foreach \c in {i,r,g,r,a,p,h,r,e,s}
+        {\node[on chain=intermediate]{\c};}
+    \node[on chain=view,below=5ex of intermediate-1] {r};
+    \foreach \c in {e,s,d,i,r,g,r,a,p,h}
+        {\node[on chain=view]{\c};}
+    \foreach \n in {1,...,11}
+        {\draw (source-\n) -- (intermediate-\n);}
+    \foreach \s in {1,...,8}
+        {\pgfmathtruncatemacro\v{\s+3}
+         \draw (intermediate-\s) -- (view-\v);}
+    \foreach \s in {9,...,11}
+        {\pgfmathtruncatemacro\v{\s-8}
+         \draw (intermediate-\s.south) -- (view-\v.north);}
+\end{diagram}
+which require more sophisticated algorithms than the traditional
+\texttt{diff}.
+% TODO: change all examples from camelCasedWord to CapitalizedWord to avoid
+% questions about swapping the first word with later ones
+% TODO: expand the explanation of what's hard about guessing alignments? not
+% sure; it would be pretty easy to fill a lot of space with text about that,
+% but it seems sort of orthogonal to the point we're trying to make here.
+% how should this whole section be structured?
+
+Indeed, it is not even clear that it is always possible to correctly guess
+the alignment given just an old and a new copy of the data.
+% TODO: can we make these references a little less unnatural looking in the
+% rendered document?
+Figures~\ref{fig:school-salaries-hr} and~\ref{fig:school-salaries-sec-pre}
+show the human resources database for a small school, which tracks the
+salaries of their teachers, along with a document maintained by a secretary
+who should not be privy to salary information. The document and the database
+are connected by a \map lens. Now, suppose one of two scenarios happens:
+\begin{itemize}
+    \item Mary Jones gets married and changes her name to Mary Smith.
+    \item Mary Jones retires, and the school hires a replacement who, by
+        coincidence, shares her first name: Mary Smith.
+\end{itemize}
+In both cases, when the secretary updates her document, it will look as it
+does in Figure~\ref{fig:school-salaries-sec-post}. As shown in
+Figure~\ref{fig:school-salaries-align}, there are really two feasible
+alignments. In the former scenario, we should align Mary with her former
+self, and reflect the change as an update to her name (but keep her old
+salary). In contrast, in the new scenario, we should not align the new Mary
+with any of the teachers that used to teach at the school. Since only the
+old and new copies of the secretary's document are available to a lens, the
+lens cannot choose correctly: it has no way to distinguish between these two
+scenarios.
+
+\begin{figure}
+    \begin{minipage}{0.33333333\linewidth}
+        \centering
+        \begin{tabular}{lr}
+            Teacher name & Salary \\
+            \hline
+            Sam Rickard & 57,000 \\
+            Jon Jacobs & 50,000 \\
+            Mary Jones & 65,000 \\
+        \end{tabular}
+        \subcaption{HR's view}
+        \label{fig:school-salaries-hr}
+    \end{minipage}%
+    \begin{minipage}{0.33333333\linewidth}
+        \centering
+        \begin{tabular}{l}
+            Teacher name \\
+            \hline
+            Sam Rickard \\
+            Jon Jacobs \\
+            Mary Jones \\
+        \end{tabular}
+        \subcaption{A secretary's view}
+        \label{fig:school-salaries-sec-pre}
+    \end{minipage}%
+    \begin{minipage}{0.33333333\linewidth}
+        \centering
+        \begin{tabular}{l}
+            Teacher name \\
+            \hline
+            Sam Rickard \\
+            Jon Jacobs \\
+            Mary Smith \\
+        \end{tabular}
+        \subcaption{After an update}
+        \label{fig:school-salaries-sec-post}
+    \end{minipage}\\[3ex]
+
+    \begin{minipage}{\linewidth}
+        \begin{diagram}[alignment diagram, inner xsep=1em, start chain=salary]
+            \path
+                node[on chain=source]       {Sam Rickard}
+                node[on chain=source]       {Jon Jacobs}
+                node[on chain=source]       {Mary Jones}
+                node[on chain=salary,below=of source-1]
+                                            {57,000}
+                node[on chain=salary,below=of source-2]
+                                            {50,000}
+                node[on chain=salary,below=of source-3]
+                                            {65,000}
+                node[on chain=intermediate, below=10ex of salary-1]
+                                            {Sam Rickard}
+                node[on chain=intermediate] {Jon Jacobs}
+                node[on chain=intermediate] {Mary Jones}
+                node[on chain=view, below=10ex of intermediate-1]
+                                            {Sam Rickard}
+                node[on chain=view]         {Jon Jacobs}
+                node[on chain=view]         {Mary Smith}
+                ;
+            \foreach \n in {1,2,3} \draw (salary-\n) -- (intermediate-\n);
+            \foreach \n in {1,2}   \draw (intermediate-\n) -- (view-\n);
+            \draw[dashed] (intermediate-3) to node[right,font=\sffamily]{?} (view-3);
+        \end{diagram}
+        \subcaption{Whether the marked edge should be included or not
+            depends on invisible context}
+        \label{fig:school-salaries-align}
+    \end{minipage}
+    \caption{A school's staff list, as seen by HR and by the principal's secretary}
+    \label{fig:school-salaries}
+\end{figure}
+
+TODO: Clearly, our lens framework needs to be generalized to accommodate
+alignment information.
+
+% TODO: perhaps everything here down is ``dead text'' now
+The alignment problem is about how to discover, propagate, and use
 alignments that reflect the user's intention well. In the following, we will
 argue three things:
 \begin{enumerate}

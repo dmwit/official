@@ -332,6 +332,7 @@
 \newcommand{\y}{\mathbf y}
 \newcommand{\zip}{\ensuremath{\mathit{zip}}\xspace}
 \renewcommand{\d}{\textrm{d}}
+\newenvironment{diagram}[1][]{\begin{center}\begin{tikzpicture}[#1]}{\end{tikzpicture}\end{center}}
 \newenvironment{functoriality}{\begin{pflike}{Proof of functoriality}}{\end{pflike}}
 \newenvironment{goodlens}{\begin{pflike}{Proof of well-formedness}}{\end{pflike}}
 \newenvironment{lenseqv}{\begin{pflike}{Proof of preservation of equivalence}}{\end{pflike}}
@@ -364,6 +365,7 @@
 
 \tikzstyle{alignment diagram}=[
     start chain=source,
+    start chain=intermediate,
     start chain=view,
     node distance=0,
     text depth=0.25ex, text height=1.5ex,
