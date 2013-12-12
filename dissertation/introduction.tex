@@ -113,9 +113,8 @@ numbers itself makes two calls to \map:
 at designing a bidirectional language therefore provide some variant of a
 mapping operation. Since it is such a popular operation, it is important to
 do a really good job of designing the bidirectional \map, and that job turns
-out to be surprisingly difficult! The most obvious way of implementing the
-\map operation is developed below as a way to ground the discussion of what
-makes this so difficult.
+out to be surprisingly difficult! To see why, let us implement \map in the
+most obvious way; then we can discuss the deficiencies of this approach.
 
 % TODO: add a subsection discussing all the notation in the whole
 % dissertation? (including the whole ``record syntax'' thing)
@@ -159,8 +158,8 @@ through $x_n$ in order.
 Figures~\ref{fig:uni-map-zip-const} and~\ref{fig:naive-asymmetric-map}
 define the \map lens. In these figures, and in the remainder of the text, we
 distinguish the unidirectional mapping operation \mapU from the
-bidirectional one \map.  The \GET and \CREATE operations are fairly
-straightforward -- direct analogues of the unidirectional version -- but the
+bidirectional \map.  The \GET and \CREATE operations are fairly
+straightforward---direct analogues of the unidirectional version---but the
 \PUT operation is more delicate. Recall that \PUT takes one value from each
 repository, so again in the case where $\ell \in X \alens Y$, we will have
 $\map(\ell).\aput$ taking two lists, one each of types $X^*$ and $Y^*$.
@@ -184,9 +183,8 @@ $\ell$'s \CREATE method.
     a definitely-lower-case one}
     \label{fig:tolower-lens}
 \end{figure}
-For example, if we define a lens \tolower that converts a character to lower
-case as in Figure~\ref{fig:tolower-lens}, then we can execute the
-$\map(\tolower)$ lens a few times to see how it behaves:
+Figure~\ref{fig:tolower-lens} defines a lens \tolower that converts a
+character to lower case so that we can demonstrate the behavior of \map.
 \begin{align*}
     \map(\tolower).\aget(\mathtt{camelCasedQord})
         &= \mathtt{camelcasedqord} \\
@@ -203,7 +201,7 @@ something like this, where we have an insertion in the middle of the word to
 correct the spelling of ``camel'':
 \[\map(\tolower).\aput(\mathtt{camelcasedword},\mathtt{camlCasedWord})
     = \mathtt{cameLcaseDword}\]
-Because our \map's \PUT operation only looks at a lower-cased element's
+Because $\map(\tolower).\aput$ only looks at a lower-cased element's
 position when deciding which mixed-case character to match it up with, we
 have incorrectly \emph{aligned} the new view with the old source this way:
 
@@ -261,7 +259,7 @@ be broken into two stages:
             {new view (of type $V^*$)}
         (intermediate-end -| view-type) node[font=\rmfamily] (intermediate-type)
             {old view (of type $V^*$)}
-        (source-end   -| view-type) node[font=\rmfamily]     (source-type)
+        (source-end       -| view-type) node[font=\rmfamily] (source-type)
             {old source (of type $S^*$)}
         ;
 \end{diagram}
@@ -401,98 +399,16 @@ scenarios.
     \label{fig:school-salaries}
 \end{figure}
 
-TODO: Clearly, our lens framework needs to be generalized to accommodate
-alignment information.
+Clearly, discovering alignment information is a tricky business.
+Additionally, most current lens frameworks treat such alignment information
+as a second-class citizen: it is not passed, stored, or returned by the
+lens. Because of this, it is not possible for an outside tool to provide
+hints about the alignment; the implementation of alignment discovery is
+intermingled with the implementation of alignment usage and propagation
+inside each lens' definition; and alignment information cannot be internally
+communicated between lens components. The conclusion we must draw is that
+doing a really good job of implementing \map involves rethinking some or all
+of the theoretical foundations of lenses!
 
-% TODO: perhaps everything here down is ``dead text'' now
-The alignment problem is about how to discover, propagate, and use
-alignments that reflect the user's intention well. In the following, we will
-argue three things:
-\begin{enumerate}
-    \item Getting the right alignment is important.
-    \item Getting the right alignment is hard.
-    \item Current lens foundations do not treat alignment with the care it
-        deserves.
-\end{enumerate}
-
-\subsection{The Consequences of Misalignment}
-Here's a subsection you might want to write: perhaps it is worth writing an
-argument that concludes in a generic way that if we get the alignment wrong,
-then we can definitely write a lens that behaves in an obviously bad way.
-The advantage of such a section would be that it would mean that later
-discussions could assume that showing a bad alignment is enough -- they
-wouldn't have to go on to show how that bad alignment could manifest itself
-as a bad update. (In fact, this sounds like such a convenient assumption
-that I'm going to make it now even if I haven't figured out how to argue it
-yet. Later, if I find out it's very very difficult to argue, then I will try
-to go through and show how particular bad alignments can manifest a problem
-instead.)
-
-\subsection{``Just Use a Hashmap''}
-One of the hard lenses to write is map.
-The second-most-obvious way to write map involves letting some part of each
-element be a key, and some part be a value.
-Maybe something like the following would be a good example showing how to
-confuse that implementation strategy.
-
-(The explanation here is very telegraphic, intentionally. It needs to be
-expanded considerably for anyone but me to understand it, I'm sure.)
-
-\begin{verbatim}
-data RoomAssignment =
-    { room :: Int
-    , teacher :: Person
-    , students :: [Person]
-    }
-\end{verbatim}
-
-The administrator may find he needs to swap two rooms (e.g. because one room
-is bigger and would better accommodate some teacher's particularly large
-class), swap two teachers (can't think of a good reason off the top of my
-head other than ``correcting an administrative error made in the past''),
-move a student from one class to another (e.g. because she decided to switch
-from Spanish to French), etc.
-
-What should we use as the key? Some obvious choices don't work well:
-\begin{enumerate}
-    \item room and teacher: seems like a natural choice, but then moving a
-        class from one room to another or having a different teacher teach
-        results in the student lists not being aligned
-    \item just room: then if you swap rooms, the wrong student lists get aligned
-        with each other
-    \item just teacher: then if you swap teachers, the wrong student lists get
-        aligned with each other
-    \item students: student lists just don't even get aligned any more; e.g.
-        after moving a student from one class to another we find neither
-        class is correctly aligned
-\end{enumerate}
-
-Also, ``just use a hashmap'' assumes that keys are unique and never change.
-Changing keys can be accommodated sometimes (e.g. the matching lenses
-paper), but there's plenty of situations where the uniqueness assumption
-hurts. With people, ``name'' as a key is a natural first guess but doomed to
-failure.
-
-\subsection{Ambiguity}
-Maybe somebody still believes it's possible to design a clever enough
-algorithm -- e.g. as a follow-on to having solved hard AI! Then it would be
-good to have a really convincing example of the claim we always make to help
-motivate edit lenses: that sometimes there are simply \emph{multiple}
-reasonable intentions that all have the same effect on the state and that
-result in different alignments.
-
-Perhaps something so simple as this: continuing the previous example, in one
-school district, ``Mary Jones'' gets married and changes her name to ``Mary
-Smith''. In another, ``Mary Jones'' retires and a replacement named ``Mary
-Smith'' is hired. Can we really expect an automated tool to be able to
-distinguish these situations just by looking at what has changed alone?
-
-Possible reasons this argument is unconvincing: this is probably very rare,
-and covering the common case is more important than covering every case;
-this same problem occurs even with edit lenses, but has been punted off to
-some other sucker's plate; perhaps even in a tool that handles this problem
-it is hard to communicate these subtleties to the user in a way that works
-(i.e. is concise enough to expect them to inspect it on each synch but
-verbose enough to show problems when they arise).
-
-Not sure how to address these three complaints, to be honest.
+% TODO: it almost seems like this last paragraph appears out of nowhere. I
+% wonder if it is worth trying to explode even that into a page or two.
