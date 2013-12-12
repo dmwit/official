@@ -374,6 +374,16 @@ of the theoretical foundations of lenses!
 \label{sec:intro-symmetry}
 TODO: there may be no canonical repository that contains all the data
 
+some other ways to do symmetry, with their drawbacks:
+\begin{itemize}
+    \item two asymmetric lenses with a common source (writing two lenses
+        leads to all the code maintenance problems of writing two functions)
+    \item constraint maintainers (no composition)
+    \item isomorphisms (transformations can't lose information)
+    \item partial isomorphisms (same drawbacks as isomorphisms, plus
+        partiality)
+\end{itemize}
+
 \section{Size}
 \label{sec:intro-size}
 TODO: sometimes repositories are too large to facilitate functional
