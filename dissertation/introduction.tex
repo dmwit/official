@@ -1,7 +1,5 @@
-\begin{itemize}
-    \item Bidirectional programming is advantageous because it is concise
-        (one iteration only) and has proven synchronization laws
-\end{itemize}
+TODO: bidirectional programming is advantageous because it is concise (one
+iteration only) and has proven synchronization laws
 % TODO: introduce jargon like ``repository'' and friends in here
 
 \section{Asymmetric Lenses}
@@ -12,27 +10,6 @@
             \item Define what an asymmetric lens is and how its used
             \item This was the initial approach to lenses
             \item Asymmetric lenses needed to mature to add functionality
-        \end{itemize}
-    \item The extra functionality should address practical issues arising
-        from the synchronization of the repositories
-        \begin{itemize}
-            \item alignment: there may be many ways to produce a
-                synchronized pair, and we must give tools for disambiguating
-                \begin{itemize}
-                    \item to do a good job, a lens needs information about
-                        what happened that's hard to recover locally
-                    \item structural matching clearly does a bad job -- and
-                        the naive asymmetric model can only make local
-                        decisions, none of which are going to be good enough
-                    \item producing descriptions of the global information
-                        itself is messy, and you want that factored out --
-                        you want a theory of how global information is
-                        processed without worrying about it's produced
-                \end{itemize}
-            \item symmetry: there may be no canonical repository that
-                contains all the data
-            \item size: sometimes repositories are too large to facilitate
-                functional computations or to transmit
         \end{itemize}
 \end{itemize}
 
@@ -53,10 +30,10 @@ source can be completely reconstructed from the view---usually does not
 hold. Asymmetric, state-based lenses handle this situation by allowing their
 other major function component to have access to both a modified value from
 the view repository \emph{and} an original value from the source repository
-to merge the new data into, as reflected in the type of \PUT.
-As a technical detail, it is convenient to demand a way to generate a value
-in the source repository with some sane defaults (and not difficult to
-satisfy this demand in practice). This is the \CREATE component of
+to merge the new data into, as reflected in the type of \PUT. As a technical
+detail, it is sometimes convenient to demand (and rarely difficult to
+supply) a way to generate a value in the source repository with some sane
+defaults.  This is the \CREATE component of
 Figure~\ref{fig:asymmetric-lens-def}.
 \begin{figure}
     \begin{minipage}{0.3333333\linewidth}
@@ -78,26 +55,6 @@ Figure~\ref{fig:asymmetric-lens-def}.
     \label{fig:asymmetric-lens-def}
 \end{figure}
 
-\section{Contributions}
-\label{sec:contributions}
-\begin{itemize}
-    \item We have made some valuable progress on each of these issues
-        \begin{itemize}
-            \item alignment: showed specific examples of lenses that
-                disambiguate some especially confusing repository
-                modifications
-            \item give a natural way of factoring out the descriptions of
-                extra global information -- treat it completely generically
-                and see where that takes us
-            \item symmetry: showed how to design a lens framework that
-                supports composition and symmetry
-            \item size: designed a series of lenses where the computations
-                operate on small edits, rather than the large repository
-        \end{itemize}
-    \item We implemented xxx, which demonstrates yyy
-    \item Hint at the fact that there is more to be done if you want to
-        operate on multiple repositories simultaneously
-\end{itemize}
 \section{Alignment}
 One very common operation when doing functional (unidirectional) programming
 is the \map operation\footnote{As of April 3, 2012, there were 3878 packages
@@ -412,3 +369,33 @@ of the theoretical foundations of lenses!
 
 % TODO: it almost seems like this last paragraph appears out of nowhere. I
 % wonder if it is worth trying to explode even that into a page or two.
+
+\section{Symmetry}
+\label{sec:intro-symmetry}
+TODO: there may be no canonical repository that contains all the data
+
+\section{Size}
+\label{sec:intro-size}
+TODO: sometimes repositories are too large to facilitate functional
+computations or to transmit
+
+\section{Contributions}
+\label{sec:intro-contributions}
+\begin{itemize}
+    \item We have made some valuable progress on each of these issues
+        \begin{itemize}
+            \item alignment: showed specific examples of lenses that
+                disambiguate some especially confusing repository
+                modifications
+            \item give a natural way of factoring out the descriptions of
+                extra global information -- treat it completely generically
+                and see where that takes us
+            \item symmetry: showed how to design a lens framework that
+                supports composition and symmetry
+            \item size: designed a series of lenses where the computations
+                operate on small edits, rather than the large repository
+        \end{itemize}
+    \item We implemented xxx, which demonstrates yyy
+    \item Hint at the fact that there is more to be done if you want to
+        operate on multiple repositories simultaneously
+\end{itemize}
