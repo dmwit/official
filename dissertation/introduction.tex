@@ -143,30 +143,30 @@ $\ell$'s \CREATE method.
 Figure~\ref{fig:tolower-lens} defines a lens \tolower that converts a
 character to lower case so that we can demonstrate the behavior of \map.
 \begin{align*}
-    \map(\tolower).\aget(\mathtt{camelCasedQord})
-        &= \mathtt{camelcasedqord} \\
-    \map(\tolower).\aput(\mathtt{camelcasedword},\mathtt{camelCasedQord})
-        &= \mathtt{camelCasedWord} \\
-    \map(\tolower).\aput(\mathtt{camelcased},\mathtt{camelCasedWord})
-        &= \mathtt{camelCased} \\
-    \map(\tolower).\aput(\mathtt{camelcasedsentence},\mathtt{camelCasedWord})
-        &= \mathtt{camelCasedSentence}
+    \map(\tolower).\aget(\mathtt{UpperCasedQord})
+        &= \mathtt{uppercasedqord} \\
+    \map(\tolower).\aput(\mathtt{uppercasedword},\mathtt{UpperCasedQord})
+        &= \mathtt{UpperCasedWord} \\
+    \map(\tolower).\aput(\mathtt{uppercased},\mathtt{UpperCasedWord})
+        &= \mathtt{UpperCased} \\
+    \map(\tolower).\aput(\mathtt{uppercasedsentence},\mathtt{UpperCasedWord})
+        &= \mathtt{UpperCasedSentence}
 \end{align*}
 All of these examples behave essentially optimally. However, not all is
 well; a simple example of the so-called \emph{alignment problem} is
 something like this, where we have an insertion in the middle of the word to
-correct the spelling of ``camel'':
-\[\map(\tolower).\aput(\mathtt{camelcasedword},\mathtt{camlCasedWord})
-    = \mathtt{cameLcaseDword}\]
+correct the spelling of ``upper'':
+\[\map(\tolower).\aput(\mathtt{uppercasedword},\mathtt{UperCasedWord})
+    = \mathtt{uppeRcaseDword}\]
 Because $\map(\tolower).\aput$ only looks at a lower-cased element's
 position when deciding which mixed-case character to match it up with, we
 have incorrectly \emph{aligned} the new view with the old source this way:
 
 \begin{diagram}[alignment diagram]
-    \foreach \c in {c,a,m,l,C,a,s,e,d,W,o,r,d}
+    \foreach \c in {U,p,e,r,C,a,s,e,d,W,o,r,d}
         {\node[on chain=source]{\c};}
-    \node[on chain=view,below=5ex of source-1] {c};
-    \foreach \c in {a,m,e,l,c,a,s,e,d,w,o,r,d}
+    \node[on chain=view,below=5ex of source-1] {u};
+    \foreach \c in {p,p,e,r,c,a,s,e,d,w,o,r,d}
         {\node[on chain=view]{\c};}
     \foreach \n in {1,...,13}
         {\draw (source-\n) -- (view-\n);}
@@ -175,14 +175,14 @@ have incorrectly \emph{aligned} the new view with the old source this way:
 \noindent A better alignment would look like this:
 
 \begin{diagram}[alignment diagram]
-    \foreach \c in {c,a,m,l,C,a,s,e,d,W,o,r,d}
+    \foreach \c in {U,p,e,r,C,a,s,e,d,W,o,r,d}
         {\node[on chain=source]{\c};}
-    \node[on chain=view,below=5ex of source-1] {c};
-    \foreach \c in {a,m,e,l,c,a,s,e,d,w,o,r,d}
+    \node[on chain=view,below=5ex of source-1] {u};
+    \foreach \c in {p,p,e,r,c,a,s,e,d,w,o,r,d}
         {\node[on chain=view]{\c};}
-    \foreach \n in {1,...,3}
+    \foreach \n in {1,2}
         {\draw (source-\n) -- (view-\n);}
-    \foreach \s in {4,...,13}
+    \foreach \s in {3,...,13}
         {\pgfmathtruncatemacro\v{\s+1}\draw (source-\s) -- (view-\v);}
 \end{diagram}
 
@@ -197,19 +197,19 @@ objects in the source and view.}. However, the alignment diagram above may
 be broken into two stages:
 
 \begin{diagram}[alignment diagram]
-    \foreach \c in {c,a,m,l,C,a,s,e,d,W,o,r,d}
+    \foreach \c in {U,p,e,r,C,a,s,e,d,W,o,r,d}
         {\node[on chain=source]{\c};}
-    \node[on chain=intermediate,below=5ex of source-1] {c};
-    \foreach \c in {a,m,l,c,a,s,e,d,w,o,r,d}
+    \node[on chain=intermediate,below=5ex of source-1] {u};
+    \foreach \c in {p,e,r,c,a,s,e,d,w,o,r,d}
         {\node[on chain=intermediate]{\c};}
-    \node[on chain=view,below=5ex of intermediate-1] {c};
-    \foreach \c in {a,m,e,l,c,a,s,e,d,w,o,r,d}
+    \node[on chain=view,below=5ex of intermediate-1] {u};
+    \foreach \c in {p,p,e,r,c,a,s,e,d,w,o,r,d}
         {\node[on chain=view]{\c};}
     \foreach \n in {1,...,13}
         {\draw (source-\n) -- (intermediate-\n);}
-    \foreach \n in {1,...,3}
+    \foreach \n in {1,2}
         {\draw (intermediate-\n) -- (view-\n);}
-    \foreach \s in {4,...,13}
+    \foreach \s in {3,...,13}
         {\pgfmathtruncatemacro\v{\s+1}\draw (intermediate-\s) -- (view-\v);}
     \path
         node[right=3em of view-end,font=\rmfamily]           (view-type)
@@ -247,14 +247,13 @@ discover alignments with crossings like
     \foreach \s in {1,...,8}
         {\pgfmathtruncatemacro\v{\s+3}
          \draw (intermediate-\s) -- (view-\v);}
-    \foreach \s in {9,...,11}
+    \foreach \s/\h in {9,...,11}
         {\pgfmathtruncatemacro\v{\s-8}
-         \draw (intermediate-\s.south) -- (view-\v.north);}
+         \pgfmathparse{7.5-\s}
+         \draw (intermediate-\s.south) to[|-|=\pgfmathresult ex] (view-\v.north);}
 \end{diagram}
 which require more sophisticated algorithms than the traditional
 \texttt{diff}.
-% TODO: change all examples from camelCasedWord to CapitalizedWord to avoid
-% questions about swapping the first word with later ones
 % TODO: expand the explanation of what's hard about guessing alignments? not
 % sure; it would be pretty easy to fill a lot of space with text about that,
 % but it seems sort of orthogonal to the point we're trying to make here.

@@ -370,6 +370,9 @@
     node distance=0,
     text depth=0.25ex, text height=1.5ex,
     every node/.style={font=\ttfamily}]
+\tikzstyle{|-|}=[
+    rounded corners,
+    to path={-- ++(0,#1) -| (\tikztotarget)}]
 
 % stolen from Nate
 \pgfdeclarelayer{background}
