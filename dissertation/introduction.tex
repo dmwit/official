@@ -56,6 +56,7 @@ Figure~\ref{fig:asymmetric-lens-def}.
 \end{figure}
 
 \section{Alignment}
+\label{sec:intro-alignment}
 One very common operation when doing functional (unidirectional) programming
 is the \map operation\footnote{As of April 3, 2012, there were 3878 packages
 on Hackage~\cite{Hackage2012}, the central code repository for Haskell
@@ -371,7 +372,36 @@ of the theoretical foundations of lenses!
 
 \section{Symmetry}
 \label{sec:intro-symmetry}
-TODO: there may be no canonical repository that contains all the data
+Continuing the example from \ref{sec:intro-alignment}, suppose our school
+secretary decided to begin tracking which room each teacher taught in.
+Figure~\ref{fig:school-rooms} shows how the two repositories might look
+after this schema change. As before, the salary information should be hidden
+from the secretary for privacy reasons; on the other hand, in our scenario
+the human resources department is not interested in room assignments.
+
+\begin{figure}
+    \centering
+    \begin{tabular}{ll}
+        Teacher name & Salary \\
+        \hline
+        Sam Rickard & 57,000 \\
+        Jon Jacobs  & 50,000 \\
+        Mary Jones  & 65,000
+    \end{tabular}
+    \hfil
+    \begin{tabular}{ll}
+        Teacher name & Room \\
+        \hline
+        Sam Rickard & 314 \\
+        Jon Jacobs  & 108b \\
+        Mary Jones  & 109
+    \end{tabular}
+    \caption{A slightly more complicated synchronization scenario}
+    \label{fig:school-rooms}
+\end{figure}
+
+Sadly, this small modification pushes the two repositories out of the realm
+of problems that our asymmetric, state-based lens tools can help with.
 
 some other ways to do symmetry, with their drawbacks:
 \begin{itemize}
