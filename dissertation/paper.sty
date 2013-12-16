@@ -18,7 +18,7 @@
 \usepackage{wrapfig}
 \usepackage{xcolor}
 \usepackage{xspace}
-\usetikzlibrary{chains,fit,shadows,scopes,positioning}
+\usetikzlibrary{calc,chains,fit,shadows,scopes,positioning}
 
 % conditional definitions {{{
 \ifdelta
@@ -193,6 +193,8 @@
 \newcommand{\liftedtolists}{_*}
 \newcommand{\LIST}{^\star}
 \newcommand{\live}{\ml{live}}
+\newcommand{\lolcat}[1]{\includegraphics[width=1cm]{images/#1_full.jpg}}
+\newcommand{\lolcattagsdef}[1]{\lolcattags{(root.north -| #1.east) +(4,0)}}
 \newcommand{\map}{\ensuremath{\mathit{map}}\xspace}
 \newcommand{\mapU}{\ensuremath{\mathit{map}_U}\xspace}
 \newcommand{\mdomain}[1]{\mathit{dom}(#1)}
@@ -370,6 +372,14 @@
     node distance=0,
     text depth=0.25ex, text height=1.5ex,
     every node/.style={font=\ttfamily}]
+
+\tikzstyle{short picture tree}=[
+    level distance=1cm,
+    level 1/.style={sibling distance=2.6cm},
+    level 2/.style={sibling distance=1.95cm},
+    level 3/.style={sibling distance=1.61cm}
+    ]
+
 \tikzstyle{|-|}=[
     rounded corners,
     to path={-- ++(0,#1) -| (\tikztotarget)}]
@@ -404,4 +414,50 @@
   \end{tikzpicture}
   \end{center}
   \ifdissertation\draftspaced\fi
+}
+
+\newcommand{\lolcatchildren}[1]{
+    child foreach \name in {#1} {
+        node        (\name-fs-name) {\tiny \name.jpg}
+        node[below] (\name-fs-pic)  {\lolcat{\name}}
+    }
+}
+\newcommand{\lolcattags}[2]{
+    \begin{scope}[start chain=going below,node distance=0]
+        \foreach \name/\tags in {#2} {
+            \draw
+                #1
+                node[on chain,anchor=north]  (\name-web-pic) {\lolcat{\name}}
+                node[right=of \name-web-pic] (\name-web-tag) {\tiny [\tags]}
+                ;
+        }
+    \end{scope}
+}
+
+\newcommand{\prettylensarchitectureoverview}{
+\draw[inner sep=1.5em]
+    node               (A)  {} (A)  node {$s$}
+    node[right=3 of A] (B)  {} (B)  node {$t$}
+    node[below=3 of A] (A') {} (A') node {$s'$}
+    node[below=3 of B] (B') {} (B') node {$t'$}
+    ($(A'.east)!0.1!(B'.west)$) node (near A') {}
+    ($ (A.east)!0.9! (B.west)$) node (near B)  {}
+    (A.center)  circle (0.5)
+    (A'.center) +(40:0.5)
+        arc (40:380:0.5)
+        arc (300:480:0.08682408883346514)
+        -- cycle
+    (B.center) +(-0.5,-0.5) rectangle +(0.5,0.5)
+    (B'.center) ++(-0.5,-0.5)
+        -- +(1,0)
+        -- +(1,0.6)
+        -- +(1.1,0.6)
+        -- +(1.1,0.7)
+        -- +(1,0.7)
+        -- +(1,1)
+        -- +(0,1)
+        -- cycle
+    ;
+\draw[->] (A)  to node[above] {\GET} (B);
+\draw[->] (B') to node[below] {\PUT} (A');
 }

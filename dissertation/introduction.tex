@@ -261,22 +261,21 @@ which require more sophisticated algorithms than the traditional
 % how should this whole section be structured?
 
 Indeed, it is not even clear that it is always possible to correctly guess
-the alignment given just an old and a new copy of the data.
-% TODO: can we make these references a little less unnatural looking in the
-% rendered document?
-Figures~\ref{fig:school-salaries-hr} and~\ref{fig:school-salaries-sec-pre}
-show the human resources database for a small school, which tracks the
-salaries of their teachers, along with a document maintained by a secretary
-who should not be privy to salary information. The document and the database
-are connected by a \map lens. Now, suppose one of two scenarios happens:
+the alignment given just an old and a new copy of the data, as shown in
+Figure~\ref{fig:school-salaries}. Parts~\subref{fig:school-salaries-hr}
+and~\subref{fig:school-salaries-sec-pre} show the human resources database
+for a small school, which tracks the salaries of their teachers, along with
+a document maintained by a secretary who should not be privy to salary
+information. The document and the database are connected by a \map lens.
+Now, suppose one of two scenarios happens:
 \begin{itemize}
     \item Mary Jones gets married and changes her name to Mary Smith.
     \item Mary Jones retires, and the school hires a replacement who, by
         coincidence, shares her first name: Mary Smith.
 \end{itemize}
 In both cases, when the secretary updates her document, it will look as it
-does in Figure~\ref{fig:school-salaries-sec-post}. As shown in
-Figure~\ref{fig:school-salaries-align}, there are really two feasible
+does in part~\subref{fig:school-salaries-sec-post}. As shown in
+part~\subref{fig:school-salaries-align}, there are really two feasible
 alignments. In the former scenario, we should align Mary with her former
 self, and reflect the change as an update to her name (but keep her old
 salary). In contrast, in the new scenario, we should not align the new Mary
@@ -377,7 +376,10 @@ secretary decided to begin tracking which room each teacher taught in.
 Figure~\ref{fig:school-rooms} shows how the two repositories might look
 after this schema change. As before, the salary information should be hidden
 from the secretary for privacy reasons; on the other hand, in our scenario
-the human resources department is not interested in room assignments.
+the human resources department is not interested in room assignments. A more
+whimsical situation is shown in Figure~\ref{fig:cat-server}, in which a web
+server must keep a file system storing pictures of cats synchronized with a
+user-modifiable % TODO
 
 \begin{figure}
     \centering
@@ -400,8 +402,174 @@ the human resources department is not interested in room assignments.
     \label{fig:school-rooms}
 \end{figure}
 
+% TODO: write a paragraph explaining this figure
+\begin{figure}
+    \begin{diagram}
+        \draw[short picture tree]
+            node (root) {} child {
+                node (Jan) {Jan}
+                    \lolcatchildren{palindrome,gamer}
+            } child {
+                node (May) {May}
+                    \lolcatchildren{froghead}
+            }
+            ;
+        \lolcattagsdef{froghead-fs-pic}
+            {palindrome/{costume,food},gamer/{anthro},froghead/{costume}}
+    \end{diagram}
+    \caption{A whimsical symmetric synchronization scenario}
+    \label{fig:cat-server}
+\end{figure}
+
 Sadly, this small modification pushes the two repositories out of the realm
-of problems that our asymmetric, state-based lens tools can help with.
+of problems that our asymmetric, state-based lens tools can help with:
+neither repository can be completely reconstructed just from the information
+available in the other.
+
+Since the problem is that neither repository contains all the information,
+one thing that can be done is to design a third repository that \emph{does}
+contain all the information. One would then design two lenses with that
+third repository as a common source; Figure~\ref{fig:span-lenses} shows how
+this architecture might look. The new repository sits at the top, and
+contains teacher names, salaries, and room assignments all in one location.
+The two repositories we are really interested in sit below, and are derived
+via two lenses. (We introduce the notation $\pi_{i_1,\ldots,i_n}$ for the
+lens which projects out distinct fields $i_1,\ldots,i_n$ of a tuple. To be
+really precise, each omitted field would need an additional annotation
+giving a value to return from the \CREATE operation, but we elide these
+annotations to avoid clutter.)
+
+Suppose the secretary updates the room assignments document. The process to
+find a corresponding update for the salary document involves two lens
+operations: first, we use $\map(\pi_{1,2}).\aput$ to update the common
+source, then $\map(\pi_{1,3}).\aget$ to regenerate the salary document from
+the common source.
+
+\begin{figure}
+    \begin{diagram}
+        \node (common source) {
+            \begin{tabular}{lll}
+                Teacher name & Salary & Room \\
+                \hline
+                Sam Rickard & 57,000 & 314 \\
+                Jon Jacobs  & 50,000 & 108b \\
+                Mary Jones  & 65,000 & 109
+            \end{tabular}
+        };
+        \node[below left=15ex] (salary) {
+            \begin{tabular}{ll}
+                Teacher name & Salary \\
+                \hline
+                Sam Rickard & 57,000 \\
+                Jon Jacobs  & 50,000 \\
+                Mary Jones  & 65,000
+            \end{tabular}
+        };
+        \node[below right=15ex] (room) {
+            \begin{tabular}{ll}
+                Teacher name & Room \\
+                \hline
+                Sam Rickard & 314 \\
+                Jon Jacobs  & 108b \\
+                Mary Jones  & 109
+            \end{tabular}
+        };
+        \draw[<->] (common source) -- node[left=1em]  {$\map(\pi_{1,2})$} (salary);
+        \draw[<->] (common source) -- node[right=1em] {$\map(\pi_{1,3})$} (room);
+    \end{diagram}
+    \caption{If a lens doesn't work, use two!}
+    \label{fig:span-lenses}
+\end{figure}
+
+This approach is workable, and is fairly comprehensive. However, it is a
+little bit awkward in a few ways, the most notable of which is that we are
+now constructing two lenses. Even in this simple example, we can see that
+the structure of the lenses are very similar. Since one of the arguments for
+using lenses in the first place was that we did not want to develop and
+maintain two separate programs, this seems a bit hypocritical. It would be
+better to develop some theory which models the two operations together, so
+that we can write a single program and derive the two synchronization
+operations of interest. One could continue by designing a
+``bi-bidirectional'' language---where each term could be interpreted as two
+lenses which are intended to be run back-to-back as in this example---but we
+choose instead to start over from scratch and design a framework of
+symmetric bidirectional transformations that natively handles scenarios like
+the above one.
+
+\begin{figure}
+    \centering
+    \subcaptionbox{Asymmetric, state-based lenses\label{fig:asymmetric-architecture}}
+        {
+        \begin{tikzpicture}
+            \prettylensarchitectureoverview
+            \draw
+                (A.east) +(0,-0.1)
+                    .. controls (B.west) and (B'.west) ..
+                (near A'.center);
+            \draw[->,dashed] (B)  to node[right] {user modification} (B');
+            \draw[->,dashed] (A') to node[left]  {user modification} (A);
+        \end{tikzpicture}
+        }
+
+    \vspace{6ex}
+
+    \subcaptionbox{(Partial) isomorphisms\label{fig:isomorphism-architecture}}
+        {
+        \begin{tikzpicture}
+            \prettylensarchitectureoverview
+            \draw[->,dashed] (B)  to (B');
+            \draw[->,dashed] (A') to (A);
+        \end{tikzpicture}
+        }
+    \hfill
+    \subcaptionbox{Constraint maintainers\label{fig:constraint-maintainer-architecture}}
+        {
+        \begin{tikzpicture}
+            \prettylensarchitectureoverview
+            \draw
+                (A.east) +(0,-0.1)
+                    .. controls (B.west) and (B'.west) ..
+                (near A'.center);
+            \draw
+                (B'.west) +(0,0.1)
+                    .. controls (A'.east) and (A.east) ..
+                (near B.center);
+            \draw[->,dashed] (B)  to (B');
+            \draw[->,dashed] (A') to (A);
+        \end{tikzpicture}
+        }
+    \caption{Asymmetric lens life cycle, and some proposed symmetric
+    variants}
+    \label{fig:asymmetry-vs-symmetry}
+\end{figure}
+
+Let us address ourselves to what makes asymmetric lenses asymmetric in the
+first place. Figure~\ref{fig:asymmetric-architecture} shows the typical
+life-cycle of an asymmetric lens $\ell \in S \alens T$. Drawing the types of
+the \GET and \PUT operations this way highlights their asymmetry, and
+quickly suggests two ways of symmetrizing the theory. Parts
+\subref{fig:isomorphism-architecture} and
+\subref{fig:constraint-maintainer-architecture} illustrate these two ways,
+namely, removing the extra arc in the type of \PUT, or adding an extra arc
+to the type of \GET. Together with some appropriate roundtrip laws, the
+% TODO: Perhaps ask Benjamin for the Braun citation mentioned in the
+% delta/presentation.tex, and ask for other likely citations to put here
+former are known as isomorphisms, and several languages whose terms
+represent invertible functions in this way have been
+designed~\cite{xsugar,rendel2010invertible}. They are especially useful as a
+formalism when the extra information available in the repositories is
+unimportant; for example, when parsing text, the exact whitespace used may
+not be available in the abstract syntax tree, but can often be replaced with
+different whitespace without causing too much pain. In the example given
+above, however, the extra information \emph{is} important, and cannot be
+replaced with default data without pain: resetting room assignments and
+salaries on each roundtrip would be very undesirable behavior.
+
+The latter (again with some appropriate roundtrip laws) are known as
+constraint maintainers~\cite{Meertens98}, and do handle extra information
+quite explicitly.
+% TODO: we need to motivate why composition is so critical, so we should
+% switch to an example that is complicated enough to need it
 
 some other ways to do symmetry, with their drawbacks:
 \begin{itemize}
