@@ -595,10 +595,16 @@ where $A \cmaint B$ is the type of a constraint maintainer connecting sets
 of type $A$ and $B$. Unfortunately, implementing this combinator is not
 possible: we must design $(k;\ell).\aget \in A \times C \to C$ using the
 components $k.\aget$, $k.\aput$, $\ell.\aget$, and $\ell.\aput$, all of
-which require a $B$ as input. One can keep the system working by keeping a
-copy of the ``intermediate'' repository around somewhere and running the
-constraint maintainers in sequence on each update, but this steps outside
-the framework of constraint maintainers.
+which require a $B$ as input. It is certainly possible to build a constraint
+maintainer which has the desired behavior wholesale, but this involves
+writing both constraint maintenance functions and proving that they are
+consistent with each other -- the exact task we set out to avoid by
+designing a language. Alternately, one can step a little bit outside the
+constraint maintainer framework by keeping a copy of the ``intermediate''
+repository around somewhere and running the constraint maintainers in
+sequence on each update. Making this choice, however, leads one to
+immediately ask how to model such maintainer chains and what behavioral
+guarantees one can expect!
 
 \begin{figure}
     \begin{diagram}
@@ -644,9 +650,9 @@ the framework of constraint maintainers.
     \label{fig:cats-composition}
 \end{figure}
 
-Ideally, one would like a model that captures the behavior of these
-``sequenced'' chains, retains a symmetric presentation, and allows each
-repository to retain information not available in the other.
+So an ideal a model would capture the behavior of ``sequencing'', retain a
+symmetric presentation, and allow each repository to retain information not
+available in the other.
 
 \section{Size}
 \label{sec:intro-size}
