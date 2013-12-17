@@ -595,7 +595,7 @@ where $A \cmaint B$ is the type of a constraint maintainer connecting sets
 of type $A$ and $B$. Unfortunately, implementing this combinator is not
 possible: we must design $(k;\ell).\aget \in A \times C \to C$ using the
 components $k.\aget$, $k.\aput$, $\ell.\aget$, and $\ell.\aput$, all of
-which require a $B$ is input. One can keep the system working by keeping a
+which require a $B$ as input. One can keep the system working by keeping a
 copy of the ``intermediate'' repository around somewhere and running the
 constraint maintainers in sequence on each update, but this steps outside
 the framework of constraint maintainers.
