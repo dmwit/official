@@ -585,7 +585,7 @@ scenario described above. One modular approach to implementing the
 transformation needed in that scenario is pictured in
 Figure~\ref{fig:cats-composition}. First, we separately implement two
 constraint maintainers: a $\mathit{flatten}$ maintainer that flattens trees
-to lists by extracting the leaves, and a $\mathit{retag}$ maintainer that
+to lists by extracting the leaves, and a $\mathit{relabel}$ maintainer that
 describes the connection between a single leaf in our original tree and a
 single list entry in our final list. We would then like to run these
 maintainers back-to-back; that is, we would like a sequential composition
@@ -643,7 +643,7 @@ guarantees one can expect!
             to[bend right] node[below] {$\mathit{flatten}$}
             ($(inter.south)+(-0.5,-0.1)$);
         \draw[<->] ($(inter.south)+(0.5,-0.1)$)
-            to[bend right] node[below] {$\map(\mathit{retag})$}
+            to[bend right] node[below] {$\map(\mathit{relabel})$}
             ($(web.south)+(0,-0.1)$);
     \end{diagram}
     \caption{Adding an intermediate structure can improve modularity}
