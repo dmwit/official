@@ -380,9 +380,8 @@ the human resources department is not interested in room assignments. A more
 whimsical situation is shown in Figure~\ref{fig:cat-server}, in which a web
 server must keep a file system storing pictures of cats synchronized with a
 user-modifiable web page (modeled here as a list of cat pictures with
-descriptive tags).
-% TODO: oh, suddenly this is going to be a publication, so we need to be
-% careful about copyright
+descriptive tags)\footnote{Pictures used with
+    permission~\cite{pumpkin-cat,skateboard-cat,pineapple-cat}.}.
 
 % TODO: possible idea: merge these two examples. e.g. perhaps the school
 % example could have an org chart on the HR side; this lets you keep the
@@ -417,13 +416,12 @@ descriptive tags).
                     \lolcatchildren{pumpkin,skateboard}
             } child {
                 node (May) {May}
-                    \lolcatchildren{mechanic}
+                    \lolcatchildren{pineapple}
             }
             ;
-        \lolcattagsdef{mechanic-fs-pic}
-            {pumpkin/{costume},skateboard/{anthro,vehicle},mechanic/{vehicle}}
+        \lolcattagsdef{pineapple-fs-pic}
+            {pumpkin/{costume,food},skateboard/{anthro},pineapple/{food}}
     \end{diagram}
-    % TODO: citations for cat pictures somehow; see the images/provenance file
     \caption{A whimsical symmetric synchronization scenario}
     \label{fig:cat-server}
 \end{figure}
@@ -615,33 +613,33 @@ guarantees one can expect!
                     \lolcatchildren{pumpkin,skateboard}
             } child {
                 node (May) {May}
-                    \lolcatchildren{mechanic}
+                    \lolcatchildren{pineapple}
             }
             ;
         \begin{scope}[start chain=going below,node distance=0]
-            \foreach \name in {pumpkin,skateboard,mechanic} { \draw
-                (root.north -| mechanic-fs-pic) +(3,0)
+            \foreach \name in {pumpkin,skateboard,pineapple} { \draw
+                (root.north -| pineapple-fs-pic) +(3,0)
                 node[on chain,anchor=north]    (\name-inter-pic)  {\lolcat{\name}}
                 node[right=of \name-inter-pic] (\name-inter-name) {\tiny \name.jpg}
                 ;
             }
         \end{scope}
         \lolcattags{(pumpkin-inter-pic.north -| pumpkin-inter-name.east) +(2,0)}
-            {pumpkin/{costume},skateboard/{anthro,vehicle},mechanic/{vehicle}}
+            {pumpkin/{costume,food},skateboard/{anthro},pineapple/{food}}
         \node[draw,rounded corners,fit=(root)
                 (pumpkin-fs-name)    (pumpkin-fs-pic)
              (skateboard-fs-name) (skateboard-fs-pic)
-               (mechanic-fs-name)   (mechanic-fs-pic)
+              (pineapple-fs-name)  (pineapple-fs-pic)
              ] (fs) {};
         \node[draw,rounded corners,fit=
                 (pumpkin-inter-pic)    (pumpkin-inter-name)
              (skateboard-inter-pic) (skateboard-inter-name)
-               (mechanic-inter-pic)   (mechanic-inter-name)
+              (pineapple-inter-pic)  (pineapple-inter-name)
              ] (inter) {};
         \node[draw,rounded corners,fit=
                 (pumpkin-web-pic)    (pumpkin-web-tag)
              (skateboard-web-pic) (skateboard-web-tag)
-               (mechanic-web-pic)   (mechanic-web-tag)
+              (pineapple-web-pic)  (pineapple-web-tag)
              ] (web) {};
         \draw[<->] ($(fs.south)+(0,-0.1)$)
             to[bend right] node[below] {$\mathit{flatten}$}
