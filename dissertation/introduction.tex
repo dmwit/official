@@ -656,8 +656,22 @@ available in the other.
 
 \section{Size}
 \label{sec:intro-size}
-TODO: sometimes repositories are too large to facilitate functional
-computations or to transmit
+
+There is a third consideration that real-world synchronization tools
+inevitably address, and that is in communication costs. When the
+repositories in question reside on separate computers, transferring even a
+small copy of a repository across the network to the other computer can
+take quite a noticeable amount of time. Mitigating this effect typically
+involves using a compression scheme; empirically, one of the most effective
+ones involves noting ``what has changed'' since previous incarnations of the
+synchronization tool. For example, file system synchronizers like rsync,
+DropBox, and Unison and revision control systems like CVS, SVN, darcs,
+mercurial, and git all have some such notion internally. It seems likely
+% TODO: citations for each of these tools
+that a practical tool based on whatever theory we develop will need to use
+similar tricks; so, for the theory to faithfully model such a tool, it
+must model not just repository states but also repository edits and how they
+affect the states.
 
 \section{Contributions}
 \label{sec:intro-contributions}
