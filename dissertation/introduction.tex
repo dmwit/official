@@ -2,6 +2,34 @@ TODO: bidirectional programming is advantageous because it is concise (one
 iteration only) and has proven synchronization laws
 % TODO: introduce jargon like ``repository'' and friends in here
 
+TODO: perhaps we'd like a little discussion about the roles of semantics and
+syntax, and how they relate
+
+\section{Notation and Conventions}
+% TODO: enforce these conventions (in particular, the list notation
+% convention is probably egregiously violated in the edit lens stuff, which
+% I think used \varepsilon and a...b instead of \left<\right> and
+% \left<a,...,b\right>; and the whole \lens vs. \dlens thing)
+\begin{itemize}
+    \item $S$ and $V$ for the source and view of asymmetric lenses
+    \item $V$, $W$, $X$, $Y$, $Z$ for symmetric lens repositories
+    \item $C$ for complement sets
+    \item lower case letters for members of upper case letters
+    \item $\DX$, $\DY$, $\DZ$, etc. for sets of edits to $X$, $Y$, $Z$, etc.
+    \item $\dx$, etc. for members of $\DX$, etc.
+    \item $\ml{sans}$ for code; \texttt{typewriter} for data;
+        \textsc{SmallCaps} for law names
+    \item $X\LIST$ for the set of lists with elements drawn from $X$;
+        $X\INFTY$ for the set of infinite lists with elements drawn from $X$
+    \item $\NIL$ for empty lists, $x \CONS t$ for the list that starts with
+        $x$ and ends with $t$, $\left<x_1,\ldots,x_n\right>$ for the
+        length-$n$ list with value $x_i$ in the $i$th element
+    \item $\unit$ for the single element of the singleton set $\Unit$
+    \item record syntax for lens definitions/uses
+    \item $A \to B$ vs. $A \lens B$ vs. $A \alens B$ vs. $A \cmaint B$ vs. $A \dlens B$
+    \item \emph{repository}: a collection of data
+\end{itemize}
+
 \section{Asymmetric Lenses}
 \label{sec:asymmetric-lenses}
 \begin{itemize}
@@ -15,15 +43,12 @@ iteration only) and has proven synchronization laws
 
 One well-studied approach to bidirectional programming, summarized in
 Figure~\ref{fig:asymmetric-lens-def}, is the framework of \emph{asymmetric},
-\emph{state-based} lenses. In this model, one of the two repositories is a
-% TODO: definitely, definitely need some citations
+\emph{state-based} lenses. (A thorough review of this work is available
+elsewhere~\cite{FosterThesis}.) In this model, one of the two repositories is a
 \emph{view} of or \emph{query} on the other: that is, it can be completely
 reconstructed from the other without additional outside information in case
 it is lost. The \GET component of a lens (together with the \rn{PutGet} law
-which we discuss below) reflects this assumption. In the figure, we use the
-convention that $S$ is the set of values that can be in the source
-repository, and $V$ is the set of values that can be in the view repository;
-likewise $s$ is a particular source and $v$ a particular view.
+which we discuss below) reflects this assumption.
 In most cases, a query will keep only some of the information available in
 the source; as a result, the opposite reconstruction property---that the
 source can be completely reconstructed from the view---usually does not
@@ -79,7 +104,7 @@ most obvious way; then we can discuss the deficiencies of this approach.
 Like the unidirectional \map, which is parameterized by a unidirectional
 function to apply to list elements, our bidirectional \map will be
 parameterized by a bidirectional operation. That is, when $\ell \in X \alens
-Y$, we will have $\map(\ell) \in X^* \alens Y^*$ where $X^*$ is the type of
+Y$, we will have $\map(\ell) \in X\LIST \alens Y\LIST$ where $X\LIST$ is the type of
 lists whose elements are drawn from $X$. In the following, we will use the
 notation $\NIL$ for the empty list; $x \CONS t$ for the list whose first
 element is $x$ and whose remaining elements are $t$; and
@@ -119,13 +144,13 @@ distinguish the unidirectional mapping operation \mapU from the
 bidirectional \map.  The \GET and \CREATE operations are fairly
 straightforward---direct analogues of the unidirectional version---but the
 \PUT operation is more delicate. Recall that \PUT takes one value from each
-repository, so again in the case where $\ell \in X \alens Y$, we will have
-$\map(\ell).\aput$ taking two lists, one each of types $X^*$ and $Y^*$.
+repository, so again in the case where $\ell \in S \alens V$, we will have
+$\map(\ell).\aput$ taking two lists, one each of types $S\LIST$ and $V\LIST$.
 When these lists are the same length we can just ``zip'' them together with
 $\ell.\aput$. When they are different lengths, we can zip together as much
 as we can (up to the shorter of the two lengths), then either treat the
-remainder as deletions (if the $X^*$ list is longer) and so do nothing, or
-treat the remainder as insertions (if the $Y^*$ list is longer) and so use
+remainder as deletions (if the $S\LIST$ list is longer) and so do nothing, or
+treat the remainder as insertions (if the $V\LIST$ list is longer) and so use
 $\ell$'s \CREATE method.
 
 \begin{figure}
@@ -214,11 +239,11 @@ be broken into two stages:
         {\pgfmathtruncatemacro\v{\s+1}\draw (intermediate-\s) -- (view-\v);}
     \path
         node[right=3em of view-end,font=\rmfamily]           (view-type)
-            {new view (of type $V^*$)}
+            {new view (of type $V\LIST$)}
         (intermediate-end -| view-type) node[font=\rmfamily] (intermediate-type)
-            {old view (of type $V^*$)}
+            {old view (of type $V\LIST$)}
         (source-end       -| view-type) node[font=\rmfamily] (source-type)
-            {old source (of type $S^*$)}
+            {old source (of type $S\LIST$)}
         ;
 \end{diagram}
 

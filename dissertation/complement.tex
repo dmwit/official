@@ -588,8 +588,8 @@ either we can generalize the mechanisms of {\em matching
   lenses}~\cite{Matching10} to the setting of symmetric lenses, or we can
 refine the whole framework of symmetric lenses with a notion of {\em delta
 propagation}; see
-\ifdissertation Chapter~\ref{chap:delta}
-\else Section~\ref{future}
+\ifdissertation Chapter~\ref{chap:delta}%
+\else Section~\ref{future}%
 \fi.
 
 \section{Equivalence}\label{equiv}
@@ -1200,7 +1200,7 @@ here, as the others are very similar:
     {(k;\ell).\putr(x,c)=(x',c') \andalso c \in R}
     {c' \in R_2}
 
-Recalling that $c \in R$ means there are $c_k,c_\ell$ such that
+Now $c \in R$ means $c=(c_k,c_\ell)$ where
 $c_k\relRx 1c_\ell$ and $c_k\relRx 2c_\ell$. We can define
 \begin{eqnarray*}
     (y,c_k') &=& k.\putr(x,c_k) \\
