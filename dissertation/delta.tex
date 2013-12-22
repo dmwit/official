@@ -100,10 +100,10 @@ generated, can be translated between replicas of different shapes.
   $X,Y,Z$ to something more mnemonic.}\fi
 
 Abstractly, the lens we are discussing maps between structures of the form
-$(X \times Y)^*$ and ones of the form $(X \times Z)^*$, where $X$ is the set
+$(X \times Y)\LIST$ and ones of the form $(X \times Z)\LIST$, where $X$ is the set
 of composer names, $Y$ the set of date strings, and $Z$ the set of
 countries.  We want to build it compositionally---that is, the whole lens
-should have the form $\ell^*$, where $*$ is a ``list mapping'' lens
+should have the form $\ell\LIST$, where $-\LIST$ is a ``list mapping'' lens
 combinator and $\ell$ is a lens for translating edits to a
 single record---i.e., $\ell$ is a lens from $X \times Y$ to $X \times Z$.
 Moreover, $\ell$ itself should be built as the product $\ell_1 \times
@@ -113,8 +113,8 @@ either side to a trivial identity edit on the other side.
 
 In analogous fashion, the edit languages for the top-level structures will
 be constructed compositionally.  The set of edits for structures of the form
-$(X \times Y)^*$, written $\partial ((X \times Y)^*)$, will be defined
-together with the list constructor $*$.  Its elements will have the form
+$(X \times Y)\LIST$, written $\partial ((X \times Y)\LIST)$, will be defined
+together with the list constructor $-\LIST$.  Its elements will have the form
 $\mlins{i}$ where $i$ is a position, $\mldel{i}$,
 $\mlreorder{i_1,\ldots,i_n}$ where $i_1,\ldots,i_n$ is a permutation on
 positions (compactly represented, e.g. as a branching program),
@@ -145,16 +145,16 @@ $\ONE = \mlinl\unit$) and similarly for $Y$ and $Z$.
 %% emphasize that a particular edit affects only one part of a tuple, and
 %% similarly for $\mlonr\dy$.
 
-Our lens $\ell^*$ will consist of two components---one for transporting edits
-from the left side to the right, written $(\ell^*).\dputr \in \partial(X
-\times Y)^* \to \partial(X \times Z)^*$,\footnote{The symbol $\dputr$ is
+Our lens $\ell\LIST$ will consist of two components---one for transporting edits
+from the left side to the right, written $(\ell\LIST).\dputr \in \partial(X
+\times Y)\LIST \to \partial(X \times Z)\LIST$,\footnote{The symbol $\dputr$ is
   pronounced ``put an edit through the lens from left to right,'' or just
   ``put right.''  It is the {\edit}-analog of the $\putr$ function of the
   state-based symmetric lenses in~\cite{HofmannPierceWagner10} and the
   $\PUT$ function of the state-based asymmetric lenses
   in~\cite{Focal2005,Boomerang07}.} and another for transporting
-edits from right to left, written $(\ell^*).\dputl \in \partial(X \times
-Z)^* \to \partial(X \times Y)^*$.
+edits from right to left, written $(\ell\LIST).\dputl \in \partial(X \times
+Z)\LIST \to \partial(X \times Y)\LIST$.
 %
 
 %% The next step is to lift this translation to lists.  There are two kinds of
@@ -220,7 +220,7 @@ Z)^* \to \partial(X \times Y)^*$.
 We sometimes need lenses to have a little more structure than this simple
 example suggests. 
 To see why, consider defining a {\em partitioning} lens $p$ between
-the sets $\partial((X+Y)^*)$ and $\partial(X^* \times Y^*)$.
+the sets $\partial((X+Y)\LIST)$ and $\partial(X\LIST \times Y\LIST)$.
 Figure~\ref{fig:example-partition} demonstrates the behavior of this lens.
 %
 In part (a), we show the original replicas: on the left, a single list that
@@ -246,12 +246,12 @@ translation.  We then enrich the types of the edit translation functions to
 accept a complement and return a new complement, so that
 %
 \iffull \[ \else $ \fi
-p.\dputr \in \partial((X+Y)^*) \times C \to \partial(X^* \times Y^*)
+p.\dputr \in \partial((X+Y)\LIST) \times C \to \partial(X\LIST \times Y\LIST)
 \times C
 \iffull \] \else $ \fi
 and
 \iffull \[ \else $ \fi
-p.\dputl \in \partial(X^* \times Y^*) \times C \to \partial((X+Y)^*)
+p.\dputl \in \partial(X\LIST \times Y\LIST) \times C \to \partial((X+Y)\LIST)
 \times C
 \iffull .\] \else $. \fi
 Part (c)
@@ -590,26 +590,27 @@ The intuition about $K$'s role in guaranteeing totality can be formalized as
 follows.
 
 \begin{defn}
-Let $\ell \in X\lens Y$ be a lens. A \emph{dialogue} is a sequence of edits---a word in $(\partial X+\partial Y)^*$. The {partial}
+Let $\ell \in X\lens Y$ be a lens. A \emph{dialogue} is a sequence of
+edits---a word in $(\partial X+\partial Y)\LIST$. The {partial}
 function
 \iffull\[\else $ \fi
-\ell.\run \in (\partial X+\partial Y)^*\partialto   X\times   \ell.C\times Y
+\ell.\run \in (\partial X+\partial Y)\LIST\partialto   X\times   \ell.C\times Y
 \iffull\]\else $ \fi
 is defined by:
-\infrule{}{\ell.\run(\varepsilon) = (\init_X,\ell.\missing,\init_Y)}
+\infrule{}{\ell.\run(\NIL) = (\init_X,\ell.\missing,\init_Y)}
 \infrule{
     \ell.\run(w)=(x_0,c,y_0)
     \andalso  
     \ell.\dputr(\dx_1,c)=(\dy_1,c_1)
   }{
-    \ell.\run(\mlinl{\dx_1}w) = (\dx_1\,x_0,c_1,\dy_1\,y_0)
+    \ell.\run(\mlinl{\dx_1} \CONS w) = (\dx_1\,x_0,c_1,\dy_1\,y_0)
   }
 \infrule{
     \ell.\run(w)=(x_0,c,y_0)
     \andalso  
     \ell.\dputl(\dy_1,c)=(\dx_1,c_1)
   }{
-    \ell.\run(\mlinr{\dy_1}w) = (\dx_1\,x_0,c_1,\dy_1\,y_0)
+    \ell.\run(\mlinr{\dy_1} \CONS w) = (\dx_1\,x_0,c_1,\dy_1\,y_0)
   }
 \end{defn}
 
@@ -1254,24 +1255,24 @@ constructors whose associated edit monoids are freely generated.  \S
 forms of containers, and \S \ref{sec:monoid-laws} discusses edit languages
 with nontrivial laws.
 
-Given a set $G$, we write $G^*$ for the set of finite sequences of
-elements of $G$. We write $\varepsilon$ for the empty
+Given a set $G$, we write $G\LIST$ for the set of finite sequences of
+elements of $G$. We write $\NIL$ for the empty
 sequence and $g$ to denote both a generator element 
 and the single-element sequence containing such an element. 
 Sequence concatenation is denoted by juxtaposition; when discussing a sequence
 $g_1 \cdots g_n$, we also use $g$ to refer to the entire sequence. The
 notation $|g|$ means the length of a sequence: $|g_1 \cdots g_n|=n$. It
-is easy to show that $G^*$ together with sequence concatenation and
-$\varepsilon$ forms a monoid.
+is easy to show that $G\LIST$ together with sequence concatenation and
+$\NIL$ forms a monoid.
 
 It is often convenient to specify the behavior of a monoid
 homomorphism by giving its output on each generator. Given a function $f_g \in
-G \to M$ on generators, the monoid homomorphism $f \in G^* \to M$ is
+G \to M$ on generators, the monoid homomorphism $f \in G\LIST \to M$ is
 defined by
-$f(\varepsilon)=\ONE$ and $f(g_1 \cdots g_n)=f_g(g_1)f(g_2 \cdots g_n)$. Similarly, given a
+$f(\NIL)=\ONE$ and $f(g_1 \cdots g_n)=f_g(g_1)f(g_2 \cdots g_n)$. Similarly, given a
 stateful function $f_g \in G \times C \to M \times C$, we can define a
-stateful monoid homomorphism $f \in G^* \times C \to M \times C$ by setting
-$f(\varepsilon,c) = (\ONE,c)$ and
+stateful monoid homomorphism $f \in G\LIST \times C \to M \times C$ by setting
+$f(\NIL,c) = (\ONE,c)$ and
 \begin{align*}
     f(g_1 \cdots g_n,c) ={}& \mllet (m',c') = f(g_2 \cdots g_n,c) \mline \\
     & \mllet (m'',c'') = f_g(g_1,c') \mline \\
@@ -1286,14 +1287,14 @@ is either an edit to the $X$ part or an edit to the $Y$ part.
 \[G^\otimes_{X,Y} = \{\mlleft\dx \mid \dx \in \partial X\} \cup
                     \{\mlright\dy \mid \dy \in \partial Y\}\]
 We can turn these generators into a module by specifying a monoid
-action for the free monoid $(G^\otimes_{X,Y})^*$:
+action for the free monoid $(G^\otimes_{X,Y})\LIST$:
 \begin{align*}
     \mlleft\dx \odot_g (x,y) &= (\dx\;x,y) \\
     \mlright\dy \odot_g (x,y) &= (x,\dy\;y)
 \end{align*}
 The full module is then given by
 \[X \otimes Y =
-\left<|X|\times|Y|,(\init_X,\init_Y),(G^\otimes_{X,Y})^*,\odot\right>.\]
+\left<|X|\times|Y|,(\init_X,\init_Y),(G^\otimes_{X,Y})\LIST,\odot\right>.\]
 
 \noindent Now we can build a lens that ``runs two sub-lenses in
 parallel'' on the components of a product module. The $\dputr$ and $\dputl$
@@ -1498,7 +1499,7 @@ These intuitions are formalized in the application function:
 \end{eqnarray*}
 We then define the sum of modules $X$ and $Y$ as
 \[X \oplus Y =
-\left<|X|+|Y|,\mlinl{\init_X},(G^\oplus_{X,Y})^*,\odot\right>.\]
+\left<|X|+|Y|,\mlinl{\init_X},(G^\oplus_{X,Y})\LIST,\odot\right>.\]
 
 We now wish to give a lens combinator $k\oplus\ell$ that runs lens $k$ on
 the parts of edits that apply to $\ml{inl}$ values and $\ell$ on
@@ -1745,14 +1746,14 @@ are to be identified.
 
 \begin{defn}[Free Monoid]
 Given a generator set $G$, we can construct the \emph{free monoid}
-$\left<G^*,\varepsilon,\plusplus\right>$ of sequences of elements from $G$
+$\left<G\LIST,\NIL,\plusplus\right>$ of sequences of elements from $G$
 with sequence-append as the binary operation and with the empty sequence as
 the identity.
 \end{defn}
 
 \begin{defn}[Congruence Closure]
-The \emph{congruence closure} $\simeq_R$ of a relation $R \in G^* \times
-G^*$ is the least congruence relation containing $R$: 
+The \emph{congruence closure} $\simeq_R$ of a relation $R \in G\LIST \times
+G\LIST$ is the least congruence relation containing $R$: 
 
 \begin{trivlist}
 \item []
@@ -1790,21 +1791,21 @@ G^*$ is the least congruence relation containing $R$:
 \end{defn}
 
 \begin{defn}[Monoid Presentation]
-Given a generator set $G$ and a relation $R \in G^* \times G^*$, we can
-construct the monoid $G^*_R=\left<G^*\!\mathord{/}\!\simeq_R, \,
-[\varepsilon]_{\simeq_R}, 
+Given a generator set $G$ and a relation $R \subset G\LIST \times G\LIST$, we can
+construct the monoid $G\LIST_R=\left<G\LIST\!\mathord{/}\!\simeq_R, \,
+[\NIL]_{\simeq_R}, 
 \, [\plusplus]_{\simeq_R}\right>$ of $\simeq_R$-equivalence classes of
-$G^*$ under concatenation (of representatives). It is
+$G\LIST$ under concatenation (of representatives). It is
 easy to show that $\plusplus$ respects $\simeq_R$ (and hence that the
 operation $[\plusplus]_{\simeq_R}$ is well defined) because $\simeq_R$ is a
 congruence relation.  
 \end{defn}
 
-We can now \emph{specify} a monoid homomorphism $h \in G^*_R \to M$ by giving a
-function $h_g \in G \to M$. We extend $h_g$ to $h\liftedtolists \in G^* \to M$
+We can now \emph{specify} a monoid homomorphism $h \in G\LIST_R \to M$ by giving a
+function $h_g \in G \to M$. We extend $h_g$ to $h\liftedtolists \in G\LIST \to M$
 in the obvious way: 
 \begin{align*}
-    h\liftedtolists(\varepsilon) &= \ONE \\
+    h\liftedtolists(\NIL) &= \ONE \\
     h\liftedtolists(gw) &= h_g(g)\,h\liftedtolists(w)
 \end{align*}
 
@@ -1864,13 +1865,13 @@ c.\; (\ONE,c)$ and binary operation $\cdot$ with
 \mlinm \\ \mllet (\dy', c'') = f(c') \mlinm \\ (\dy'\,\dy,c'').
 \end{array}
 \]
-Hence, we can specify a function $h$ of type $G^*_R \times C \to \partial Y
+Hence, we can specify a function $h$ of type $G\LIST_R \times C \to \partial Y
 \times C$ by giving a function $h_g \in G \to (C \to \partial Y \times C)$,
 extending it to $h_* \in G_* \to (C \to \partial Y \times C)$, checking that
 this respects $R$, using Corollary~\ref{cor:lifted} to obtain a function $h
-\in G^*_R \to (C \to \partial Y \times C)$, and then using the above
+\in G\LIST_R \to (C \to \partial Y \times C)$, and then using the above
 isomorphism to view $h$ as belonging to 
-$G^*_R \times C \to \partial Y \times C$.
+$G\LIST_R \times C \to \partial Y \times C$.
 When giving $h_g$, we will abuse notation slightly, writing
 \[h_g(g,c) = (\dy,c')\]
 instead of
@@ -1886,12 +1887,12 @@ $\partial X \times X \partialto X$ is isomorphic to $\partial X \to (X
 \partialto X)$ and that $X \partialto X$ is itself a monoid.  So we
 can specify a monoid action $\odot$ on $\partial X$ and $X$ by giving a
 function $\odot_g \in \partial X \to (X \partialto X)$, showing that
-$\odot_*$ respects $R$, lifting it to $\odot \in G^*_R \to (X \partialto X)$
+$\odot_*$ respects $R$, lifting it to $\odot \in G\LIST_R \to (X \partialto X)$
 using Corollary~\ref{cor:lifted}, and using the above
 isomorphism\iflater\bcp{ignoring the monoid operator!}\fi to 
-view $\odot$ as a function $\odot \in h \in G^*_R \times X \partialto X$.
+view $\odot$ as a function $\odot \in h \in G\LIST_R \times X \partialto X$.
 Moreover, the laws for monoid homomorphisms (specialized to the monoids
-$G^*_R$ and $X \partialto X$) correspond exactly to the monoid action laws.
+$G\LIST_R$ and $X \partialto X$) correspond exactly to the monoid action laws.
 For readability, we will write $\odot_g$ in uncurried form---i.e., we will
 write
 \[g \odot_g x = x'\]
@@ -1908,12 +1909,12 @@ $\otimes$ symbol for all of them).
 %
 On sets, $X \otimes Y = X \times Y$.
 %
-On monoids, $\partial X \otimes \partial Y = G^*_R$, where \[G = \left\{\mlonl{\dx}
+On monoids, $\partial X \otimes \partial Y = G\LIST_R$, where \[G = \left\{\mlonl{\dx}
         \mid \dx \in \partial X\right\} \cup \left\{\mlonr{\dy} \mid \dy \in
         \partial Y\right\}\] and $R$ is defined as follows:
         \begin{align*}
-            \mlonl{\ONE} &\eqR  \varepsilon \\
-            \mlonr{\ONE} &\eqR  \varepsilon \\
+            \mlonl{\ONE} &\eqR  \NIL \\
+            \mlonr{\ONE} &\eqR  \NIL \\
             \mlonl{\dx}\,\mlonl{\dx'} &\eqR  \mlonl{\dx\,\dx'} \\
             \mlonr{\dy}\,\mlonr{\dy'} &\eqR  \mlonr{\dy\,\dy'} \\
             \mlonl{\dx}\,\mlonr{\dy} &\eqR  \mlonr{\dy}\,\mlonl{\dx}
@@ -1998,7 +1999,7 @@ operation on sets, monoids, monoid homomorphisms, modules, and lenses
 %
 On sets, $X \oplus Y = X + Y$ is the disjoint sum.
 %
-On monoids, $M \oplus N = G^*_R$, where
+On monoids, $M \oplus N = G\LIST_R$, where
 \[G\ \  = \begin{array}[t]{l@{\ \ }l}
               & \{\mlswitchl,\mlswitchr,\mltoggle\} \\
               \cup& \{\mlstayl m \mid m \in M\} \\
@@ -2013,8 +2014,8 @@ and $R$ is given by:
             \mltoggle\,\mlstayl m &\eqR  \mltoggle \\
             \mltoggle\,\mlstayr n &\eqR  \mltoggle \\
             \mltoggle\,\mltoggle\,\mltoggle &\eqR  \mltoggle \\
-            \mlstayl \ONE &\eqR \varepsilon \\
-            \mlstayr \ONE &\eqR \varepsilon \\
+            \mlstayl \ONE &\eqR \NIL \\
+            \mlstayr \ONE &\eqR \NIL \\
             \mlstayl m\,\mlstayl{m'} &\eqR  \mlstayl{m\,m'} \\
             \mlstayr n\,\mlstayr{n'} &\eqR  \mlstayr{n\,n'} \\
             \mlstayl m\,\mlstayr n &\eqR  \mlstayr n\,\mlstayl m
@@ -2135,10 +2136,10 @@ which will be applied).
 \begin{figure}
 \lensdef{map}
 {\infruleplain{\ell \in X \lens Y}
-              {\ell^* \in X^* \lens Y^*}}
+              {\ell\LIST \in X\LIST \lens Y\LIST}}
 {
-    C &=& \ell.C^* \\
-    \missing &=& \varepsilon \\
+    C &=& \ell.C\LIST \\
+    \missing &=& \NIL \\
     K &=& \{(x,c,y) \mid |x| = |c| = |y| \ \land \\
     &&\qquad \forall 1 \mathord{\le} p \mathord{\le} |x|. \;(x_p,c_p,y_p) \in \ell.K\} \\[.8ex]
     \dputr_g(\mlmod p\dx,c)
@@ -2196,13 +2197,13 @@ delete.
 \end{align*}
 We take $\mlmod p\dx \odot_g x$ to be undefined when $p > |x|$,
 and similarly take $\mldel i \odot_g x$ to be undefined when $i >
-|x|$. The list module is then $X^* =
-\left<|X|^*,\varepsilon,(G^{\mathrm{list}}_X)^*,\odot\right>$.
+|x|$. The list module is then $X\LIST =
+\left<|X|\LIST,\NIL,(G^{\mathrm{list}}_X)\LIST,\odot\right>$.
 
 \iflater\discuss{Should we also mention filtering?} \fi
 
 \paragraph*{Mapping lens}
-The list mapping lens $\ell^*$ uses $\ell$ to translate
+The list mapping lens $\ell\LIST$ uses $\ell$ to translate
 $\ml{mod}$ edits from $X$ to $Y$ and vice versa \iffull\else{}
 (Figure~\ref{fig:definition-map})\fi.  Other kinds of edits ($\ml{ins}$,
 $\ml{del}$, and $\ml{reorder}$) are carried across unchanged.  The notation
@@ -2211,7 +2212,7 @@ just like $c$ except that the element in position $p$ is replaced by $c_p'$.''
 When translating non-modification edits, we update the complement in a way
 almost identical to the way the two replicas are updated; to reflect this
 similarity, we use edit application from the $\Unit_{\ell.\missing \in
-\ell.C}^*$ module to define the new complement.
+\ell.C}\LIST$ module to define the new complement.
 
 \iffull
 \begin{defn}[Map]
@@ -2221,10 +2222,10 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \begin{lemma}
     The mapping lens is well-behaved:
     \begin{itemize}
-        \item If $\ell$ is a lens, then $\ell^*$ is a lens.
-        \item If $k\equiv\ell$ then $k^*\equiv\ell^*$.
-        \item $\id^*\equiv\id$
-        \item $k^*;\ell^*\equiv(k;\ell)^*$
+        \item If $\ell$ is a lens, then $\ell\LIST$ is a lens.
+        \item If $k\equiv\ell$ then $k\LIST\equiv\ell\LIST$.
+        \item $\id\LIST\equiv\id$
+        \item $k\LIST;\ell\LIST\equiv(k;\ell)\LIST$
     \end{itemize}
     \label{lemma:map-functor}
 \end{lemma}
@@ -2236,7 +2237,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             laws. However, we must still verify that the initial
             repositories are consistent and that consistent triples are
             mapped to consistent triples. Since $\init_X =
-            \map(\ell).\missing = \init_Y = \varepsilon$, it is clear that
+            \map(\ell).\missing = \init_Y = \NIL$, it is clear that
             the consistency condition is satisfied: these lists all have the
             same length, and the pointwise-consistent constraint is
             degenerate. To prove that consistent triples are mapped to
@@ -2291,9 +2292,9 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             \infrule
                 {\forall i. (x_i,c_i,d_i,y_i) \in S}
                 {(x_1\cdots x_n,c_1\cdots c_n,d_1\cdots d_n,y_1\cdots y_n)\in S}
-            Then $S'$ is a witness that $k^*\equiv\ell^*$. The initial
+            Then $S'$ is a witness that $k\LIST\equiv\ell\LIST$. The initial
             quadruple
-            \dissdis(\init_{X^*},k^*.\init,\ell^*.\init,\init_{Y^*})=(\varepsilon,\varepsilon,\varepsilon,\varepsilon)\dissdis
+            \dissdis(\init_{X\LIST},k\LIST.\init,\ell\LIST.\init,\init_{Y\LIST})=(\NIL,\NIL,\NIL,\NIL)\dissdis
             is in $S'$ because the head of the inference rule is degenerate.
             The verification that defined edits preserve the $S'$ relation
             is long, but straightforward. In the $\ml{mod}$ case, we rely on
@@ -2306,18 +2307,18 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             of equal length, all of whose elements are $\unit$. Then the
             relation
             \[R = \{(x,f(x),\unit,x) \mid x \in X\}\]
-            witnesses the equivalence $\id_X^* \equiv \id_X$.
+            witnesses the equivalence $\id_X\LIST \equiv \id_X$.
         \item Define the function $\ml{unzip}$ as follows:
             \[\begin{array}{l}
             \ml{unzip}((x_1,y_1)\;(x_2,y_2) \cdots (x_n,y_n)) \\
             \qquad = (x_1\;x_2\cdots x_n,y_1\;y_2\cdots y_n)
             \end{array}\]
             Then the requisite simulation relation is:
-            \[R = \{(x,\ml{unzip}(d),d,y) \mid (x,d,y) \in (k;\ell)^*.K\}\]
+            \[R = \{(x,\ml{unzip}(d),d,y) \mid (x,d,y) \in (k;\ell)\LIST.K\}\]
 
             The interesting property to verify is that if $(x,c,d,y) \in R$
-            and $\dx x$ is defined, then $(k^*;\ell^*).\dputr$ and
-            $(k;\ell)^*.\dputr$ produce the same edit $\dy$ in related
+            and $\dx x$ is defined, then $(k\LIST;\ell\LIST).\dputr$ and
+            $(k;\ell)\LIST.\dputr$ produce the same edit $\dy$ in related
             states. As in the other proofs here, we can show this property
             for the restricted set of edits which contain only one atomic
             edit by case analysis; the stateful homomorphism property of
@@ -2332,7 +2333,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             outputs as required.
 
             Otherwise, $\dx$ is an insertion, deletion, or rearrangement,
-            and both $k^*;\ell^*$ and $(k;\ell)^*$ will merely apply the
+            and both $k\LIST;\ell\LIST$ and $(k;\ell)\LIST$ will merely apply the
             appropriate insertion, deletion, or rearrangement to the tuple
             of lists and list of tuples, respectively.
     \end{itemize}
@@ -2350,17 +2351,17 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \newcommand{\AND}{\mbox{ and }}
 \newcommand{\WHERE}{\mbox{ where }}
 \newcommand{\partitionauxdef}{
-    C &=& \{L,R\}^* \\
-    \missing &=& \varepsilon \\
+    C &=& \{L,R\}\LIST \\
+    \missing &=& \NIL \\
     K &=& 
        \{(z, \ml{map}_\ml{tagof}(z), (\ml{lefts}(z),\ml{rights}(z)))
-    \mid z \in (|X|+|Y|)^*\}
+    \mid z \in (|X|+|Y|)\LIST\}
 }
 \newcommand{\partitiondputrgdef}{
     \dputr_g(\mlmod p\dv,c) &=& (\fail,c)\mbox{ when }p > |c|
     \markeqn{rmodbigp}%
  \\
-    \dputr_g(\mlmod p\varepsilon,c) &=& (\varepsilon,c)\mbox{ when }1 \le p \le |c|
+    \dputr_g(\mlmod p\NIL,c) &=& (\NIL,c)\mbox{ when }1 \le p \le |c|
     \markeqn{rmodempty}%
  \\
     \dputr_g(\mlmod p{\dv\dv s},c)
@@ -2442,7 +2443,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
     \dputl_g(\mlonl{\mlins i},c) &=& (\mlins i,\mlins i\;c)
       \markeqn{lins}
 \\
-    \dputl_g(\mlonl{\mldel 0},c) &=& (\varepsilon,c)
+    \dputl_g(\mlonl{\mldel 0},c) &=& (\NIL,c)
       \markeqn{ldel0}
 \\
     \dputl_g(\mlonl{\mldel i},c)
@@ -2469,7 +2470,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \ifdissertation
 \begin{figure*}[t!]
 \lensdef{partition}
-{\partition \in (X \oplus Y)^* \lens X^* \otimes Y^*}
+{\partition \in (X \oplus Y)\LIST \lens X\LIST \otimes Y\LIST}
 {
     \partitionauxdef
 \\[1.5ex]
@@ -2486,7 +2487,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \end{figure*}
 \begin{figure*}[t!]
 \lensdef{partition}
-{\partition \in (X \oplus Y)^* \lens X^* \otimes Y^*}
+{\partition \in (X \oplus Y)\LIST \lens X\LIST \otimes Y\LIST}
 {\partitiondputrgdef}
 \singlespaced
 \begin{center}
@@ -2500,7 +2501,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \else
 \begin{figure*}[t!]
 \lensdef{partition}
-{\partition \in (X \oplus Y)^* \lens X^* \otimes Y^*}
+{\partition \in (X \oplus Y)\LIST \lens X\LIST \otimes Y\LIST}
 {
     \partitionauxdef
 \\[1.5ex]
@@ -2528,20 +2529,20 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             \begin{align*}
                 \ml{tagof}(\mlinl x) &= L \\
                 \ml{tagof}(\mlinr y) &= R \\[1ex]
-                \ml{lefts}(\varepsilon) &= \varepsilon \\
+                \ml{lefts}(\NIL) &= \NIL \\
                 \ml{lefts}(\mlinl xw) &= x\,\ml{lefts}(w) \\
                 \ml{lefts}(\mlinr yw) &= \ml{lefts}(w) \\[1ex]
                 \mltag(L,\dx) &= \mlonl\dx \\
                 \mltag(R,\dy) &= \mlonr\dy \\[1ex]
-                \mlcount(p,\varepsilon) &= (1,1)
+                \mlcount(p,\NIL) &= (1,1)
             \end{align*}%
         \end{minipage}%
         \hfill
         \begin{minipage}[t]{\ifdissertation0.5\else0.1\fi\linewidth}
             \begin{align*}
-                \ml{map}_f(\varepsilon) &= \varepsilon \\
+                \ml{map}_f(\NIL) &= \NIL \\
                 \ml{map}_f(cw) &= f(c)\,\ml{map}_f(w) \\[1ex]
-                \ml{rights}(\varepsilon) &= \varepsilon \\
+                \ml{rights}(\NIL) &= \NIL \\
                 \ml{rights}(\mlinl xw) &= \ml{rights}(w) \\
                 \ml{rights}(\mlinr yw) &= y\,\ml{rights}(w) \\[1ex]
                 \mluntag(\mlinl x) &= x \\
@@ -2577,16 +2578,19 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \ifdissertation\else
 \end{minipage}\\[-2ex]
 \fi
+\ifdissertation
 \begin{align*}
     \mlcount(p,c_1 \cdots c_n)
-    ={}& \mllet (n_L,n_R) = \mlcount(p\mathord{-}1,c_2 \cdots c_n)
-    \ifdissertation
-        \\&\mlinb
-    \else
-        \mline\ 
-    \fi
+    ={}& \mllet (n_L,n_R) = \mlcount(p\mathord{-}1,c_2 \cdots c_n) \\
+    &\mlinb \cond{(n_L+1,n_R) & c_1 = L \\ (n_L,n_R+1) & c_1 = R}
+\end{align*}
+\else
+\begin{align*}
+    \mlcount(p,c_1 \cdots c_n)
+    ={}& \mllet (n_L,n_R) = \mlcount(p\mathord{-}1,c_2 \cdots c_n) \mline\ 
     \cond{(n_L+1,n_R) & c_1 = L \\ (n_L,n_R+1) & c_1 = R}
 \end{align*}
+\fi
 \vspace{-1ex}
 \end{framed}
 \vspace*{-2ex}
@@ -2609,7 +2613,7 @@ We write $\fail$ to stand for $\mlleft\fail\mlright\fail$ when defining
 $\dputr_g$.
 %
 Additionally, as with the mapping lens, we consider the complement to belong
-to a module; this time, to the module $\Unit_{L\in\{L,R\}}^*$.
+to a module; this time, to the module $\Unit_{L\in\{L,R\}}\LIST$.
 
 These figures may be a bit intimidating at first, but there is 
 nothing very deep going on---just some everyday functional programming over
@@ -2879,12 +2883,12 @@ and similarly for $\ml{rights}$.
 
 \begin{proof}
 We will show the proof for $\ml{lefts}$. We argue by induction on $v$. In
-the base case, $v=\varepsilon$, and:
+the base case, $v=\NIL$, and:
 \begin{align*}
     \ml{lefts}(vw)
         &= \ml{lefts}(w) \\
-        &= \varepsilon\ml{lefts}(w) \\
-        &= \ml{lefts}(\varepsilon)\ml{lefts}(w) \\
+        &= \NIL\ml{lefts}(w) \\
+        &= \ml{lefts}(\NIL)\ml{lefts}(w) \\
         &= \ml{lefts}(v)\ml{lefts}(w)
 \end{align*}
 Otherwise, $v=v_1v'$, we know from the induction hypothesis that
@@ -2944,7 +2948,7 @@ $\partition.\dputr$ and $\partition.\dputl$ must be stateful monoid
 homomorphisms; since the edit monoid for the list module is freely
 generated and the two functions in question are defined by specification,
 this is immediate.  Second, the initial state \[(\init_{(X \oplus
-  Y)^*}, \varepsilon, \init_{X^* \otimes Y^*})\] must be an element of $K$;
+  Y)\LIST}, \NIL, \init_{X\LIST \otimes Y\LIST})\] must be an element of $K$;
 this is easily verified from the definitions of the initial elements of the
 list and product modules.  And third, the $\dputr$ and $\dputl$ operations
 must preserve consistent states; this is where some work is required.  We
@@ -2973,12 +2977,12 @@ $n_L=|x|$, and $n_R=|y|$ in the following.
     contradiction.
 
 \item {\bf Case \markref{rmodempty}:}
-    $\dz=\mlmod p\varepsilon$ and $1 \le p \le |c|$.
+    $\dz=\mlmod p\NIL$ and $1 \le p \le |c|$.
 
     \noindent
     We calculate:
     \begin{align*}
-        \dz' &= \varepsilon \\
+        \dz' &= \NIL \\
         c' &= c \\
         \dz\;z &= z \\
         \dz'(x,y) &= (x,y)
@@ -3383,7 +3387,7 @@ positions $P(i)$. A container with entries in $X$ and  belonging to such a
 container type comprises a shape $i$ and a function $f:P(i)\rightarrow
 X$. For example, lists are containers whose shapes are the natural numbers and
 for which $P(i)=\{0,\dots,i\mathord{-}1\}$, whereas binary trees are containers
-whose shapes are prefix-closed subsets of $\{0,1\}^*$ (access paths)
+whose shapes are prefix-closed subsets of $\{0,1\}\LIST$ (access paths)
 and where $P(i)=i$ itself. Even labeled graphs can be modeled using
 unlabeled graphs as shapes.  One can further generalize the framework
 to allow the types of entries to depend on their position, but for the
@@ -3559,7 +3563,7 @@ completes the definition of the module $T(X)$.
 \else
 
 \begin{example}
-  For any module $X$ we can construe the list module $X^*$ as a
+  For any module $X$ we can construe the list module $X\LIST$ as a
   particular container type $\langle I,P,\live\rangle$ where
   $I=\mathbb{N}$ with $\partial I$ generated by $i\in\mathbb{Z}$ with
   $i\odot n=\max(i+n,0)$. Furthermore, $P=\mathbb{N}$ and $\live(n)=\{0,\dots,n-1\}$. 
@@ -3854,8 +3858,8 @@ We omit the other cases.
 We illustrate the propagation of an $\mlinsert(\di)$ edit in the
 particular case where we are synchronizing a tree with the list formed by its
 in-order traversal. Thus, $I=\mathbb{N}$; $P=\mathbb{N}$; $\live(i)=\{p\mid
-p<i\}$ and $I'$ comprises prefix closed subsets of $\{0,1\}^*$;
-$P'=\{0,1\}^*$; $\live'(i')=i'$. The monoid $\partial I$ has increment
+p<i\}$ and $I'$ comprises prefix closed subsets of $\{0,1\}\LIST$;
+$P'=\{0,1\}\LIST$; $\live'(i')=i'$. The monoid $\partial I$ has increment
 and decrement operations; the monoid $\partial I'$ has operations for
 adding and removing nodes in leaf positions and also for rotating tree
 shapes. 
@@ -3884,17 +3888,17 @@ left.
     \end{wrapfigure}
     correspondence;
 \fi
-thus, for example if $i=4$ and $i'=\{\varepsilon,0,1,11\}$ the bijection
+thus, for example if $i=4$ and $i'=\{\NIL,0,1,11\}$ the bijection
 would be as shown above. (For illustration we also indicate possible
 $X$-contents of the positions.)
 %
-Formally, we have $f_{i,c,i'} = \{(0,0), (1,\varepsilon), (2,1), (3,11)\}$. 
+Formally, we have $f_{i,c,i'} = \{(0,0), (1,\NIL), (2,1), (3,11)\}$. 
 
 Now suppose that $\di\, i = i+2$ and that $\di'$ (the result of $\di$ propagated
 through $\ell$) installs two children at the leftmost node. 
 %
 In our in-order application we then have $f_{\di\, i, c', \di'\, i'} =
-\{(0,00)$, $(1,0)$, $(2,01)$, $(3,\varepsilon)$, $(4,1)$, $(5,11)\}$ and
+\{(0,00)$, $(1,0)$, $(2,01)$, $(3,\NIL)$, $(4,1)$, $(5,11)\}$ and
 after applying both $\mlinsert(\di)$ and $\mlinsert(\di')$ we are in the
 as-yet-inconsistent situation depicted above.
 %% \begin{verbatim}
@@ -3914,7 +3918,7 @@ as-yet-inconsistent situation depicted above.
 \includegraphics[scale=.32]{images/restruct3.pdf}
 \end{wrapfigure}
 To restore consistency we also  apply $\mlrearrange(1,f_r)$ where 
-$f_r(i')=\{(00,0)$, $(0,\varepsilon)$, $(01,1)$, $(\varepsilon,11)$,
+$f_r(i')=\{(00,0)$, $(0,\NIL)$, $(01,1)$, $(\NIL,11)$,
 $(1,00)$, $(11,01)\}$. 
 We could also have chosen $f_r(i')= \{\dots, (1,01)$, $(11,01)\}$; this is
 precisely the 
@@ -4022,9 +4026,9 @@ quotient by the resulting equivalence relation.} The equations below demand
 that $\ml{left}$ and $\ml{right}$ be monoid homomorphisms, and that they
 commute:
 \begin{align*}
-    \mlleft\ONE &= \varepsilon \\
+    \mlleft\ONE &= \NIL \\
     \mlleft\dx\mlleft{\dx'} &= \mlleft{\dx\dx'} \\
-    \mlright\ONE &= \varepsilon \\
+    \mlright\ONE &= \NIL \\
     \mlright\dy\mlright{\dy'} &= \mlright{\dy\dy'} \\
     \mlleft\dx\mlright\dy &= \mlright\dy\mlleft\dx
 \end{align*}
@@ -4070,21 +4074,21 @@ lets $\ml{left}$ and $\ml{right}$ commute; the proofs that $\dputr$ treats
 $\ml{right}$ as a monoid homomorphism and that $\dputl_g$ respects all these
 laws are similar.
 
-To show that $\dputr$ respects the law $\mlleft\ONE=\varepsilon$:
+To show that $\dputr$ respects the law $\mlleft\ONE=\NIL$:
 \begin{align}
     \dputr(\mlleft\ONE,(c_k,c_\ell))
         ={}& \mllet (\dz,c_k')=k.\dputr(\ONE,c_k)\mline \nonumber\\
            & (\mlleft\dz,(c_k',c_\ell)) \nonumber\\
         ={}& (\mlleft\ONE,(c_k,c_\ell)) \label{eq:klens} \\
-        ={}& (\varepsilon,(c_k,c_\ell)) \label{eq:law} \\
+        ={}& (\NIL,(c_k,c_\ell)) \label{eq:law} \\
         ={}& (\ONE,(c_k,c_\ell)) \label{eq:one1} \\
         ={}& \dputr(\ONE,(c_k,c_\ell)) \nonumber\\
-        ={}& \dputr(\varepsilon,(c_k,c_\ell)) \label{eq:one2}
+        ={}& \dputr(\NIL,(c_k,c_\ell)) \label{eq:one2}
 \end{align}
 Equation~\ref{eq:klens} follows because $k$ is a lens and hence $k.\dputr$
 is a stateful monoid homomorphism. Equation~\ref{eq:law} follows by
 assumption, and equations~\ref{eq:one1} and~\ref{eq:one2} follow because
-$\ONE=\varepsilon$ in both modules.
+$\ONE=\NIL$ in both modules.
 
 Next we will show that $\dputr$ respects the law
 $\mlleft\dx\mlleft{\dx'}=\mlleft{\dx\dx'}$. It will be convenient to name a
@@ -4453,8 +4457,8 @@ product, sum, lists, trees, and container types.
 
 Now, for any set $X$ we have the monoid $\partial X$ whose elements (edits)
 are lists of elements of $X$ modulo the equality $xx=x$. An action of
-$\partial X$ on $X$ is defined by $\varepsilon x=x$ and $(xw)y=x$
-where $x\in X, w\in X^*$. Note that this is well defined as
+$\partial X$ on $X$ is defined by $\NIL x=x$ and $(xw)y=x$
+where $x\in X, w\in X\LIST$. Note that this is well defined as
 $x(xy)=x=xy$. If, in addition, we have a distinguished element $x\in
 X$, we thus obtain a module denoted $X_x$ where $|X_x|=X$ and
 $\init_X=x$ and $\partial X_x = \partial X$.
@@ -4470,7 +4474,7 @@ as follows:
 \iffull \item \else (1) \fi $(\partial_{xy}\ell).C = \ell.C$;
 \iffull \item \else (2) \fi $(\partial_{xy}\ell).\missing = \ell.\smissing$;
 \iffull \item \else (3) \fi $(\partial_{xy}
-\ell).\dputr(\varepsilon,c)=(\varepsilon,c)$; 
+\ell).\dputr(\NIL,c)=(\NIL,c)$; 
 \iffull \item \else (4) \fi $(\partial_{xy} \ell).\dputr(xw,c)=(yv,c'')$ where
   $(\partial_{xy}\ell).\dputr(w,c)=(v,c')$ and $\ell.\putr(x,c')=(y,c'')$;
 \iffull \item \else (5) \fi analogous definitions for $\dputl$; and
@@ -4511,7 +4515,7 @@ $\dputr$. We have $x_0 \in X,y_0 \in Y,(c_k,c_\ell) \in S,\dx \in X_x$. We
 must show that computing $\dputr$ with these values produces values that
 form a tuple in $\partial_{xy}S$. We proceed by induction on $\dx$.
 
-In case $\dx=\varepsilon$, we are done: after computing $\dputr$, we still
+In case $\dx=\NIL$, we are done: after computing $\dputr$, we still
 have $x_0$, $y_0$, $c_k$, and $c_\ell$. Otherwise, $\dx = x_1\dx'$ and the
 induction hypothesis tells us that if
 $(\partial_{xy}k).\dputr(\dx',c_k)=(\dy_k,c_k')$ and
