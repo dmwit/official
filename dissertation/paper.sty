@@ -62,6 +62,19 @@
 \newcommand{\mlinl}{}
 \newcommand{\mlinr}{}
 \mlinjnoargs
+\ifdelta
+    \newcommand{\CONS}{}
+    \newcommand{\LIST}{^*}
+    \newcommand{\NIL}{\varepsilon}
+    \newcommand{\blist}{}
+    \newcommand{\elist}{}
+\else
+    \newcommand{\CONS}{\mathord{:}}
+    \newcommand{\LIST}{^\star}
+    \newcommand{\NIL}{\left<\right>}
+    \newcommand{\blist}{\left<}
+    \newcommand{\elist}{\right>}
+\fi
 % }}}
 \definecolor{bluegray}{rgb}{0.3,0.3,.6}
 \definecolor{blue}{rgb}{0,0,1}
@@ -110,9 +123,6 @@
 \newcommand{\comp}{\mathit{comp}}
 \newcommand{\CONCRETELIST}[1]{\left<#1\right>}
 \newcommand{\cond}[1]{\left\{\begin{array}{ll}#1\end{array}\right.}
-\ifdelta\newcommand{\CONS}{}
-\else   \newcommand{\CONS}{\mathord{:}}
-\fi
 \newcommand{\const}{\mathit{term}}
 \newcommand{\constU}{\mathit{const}}
 \newcommand{\countlens}{\mathit{count}}
@@ -200,9 +210,6 @@
 \newcommand{\lens}{\leftrightarrow}
 \newcommand{\LENS}{{\sc lens}}
 \newcommand{\liftedtolists}{_*}
-\ifdelta\newcommand{\LIST}{^*}
-\else   \newcommand{\LIST}{^\star}
-\fi
 \newcommand{\live}{\ml{live}}
 \newcommand{\lolcat}[1]{\includegraphics[width=1cm]{images/#1.jpg}}
 \newcommand{\lolcattagsdef}[1]{\lolcattags{(root.north -| #1.east) +(4,0)}}
@@ -274,9 +281,6 @@
 \newcommand{\Names}{\mathcal N}
 \newcommand{\NAT}{\mathbb{N}}
 \newcommand{\nextcase}[1]{\item[] {\bf Case} #1:}
-\ifdelta\newcommand{\NIL}{\varepsilon}
-\else   \newcommand{\NIL}{\left<\right>}
-\fi
 \newcommand{\N}{\mathcal{N}}
 \newcommand{\Node}{\mathit{node}}
 \newcommand{\nondissenddis}{$\renewcommand{\dissdis}{\nondissstartdis}\xspace}

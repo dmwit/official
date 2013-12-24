@@ -11,7 +11,7 @@ syntax, and how they relate
 % I think used \varepsilon and a...b instead of \left<\right> and
 % \left<a,...,b\right>; and the whole \lens vs. \dlens thing)
 % (note to self: corrected the list notation stuff in the edit lens section
-% up through the ``monoid presentation'' discussion)
+% up to lemma 3.3.22 (``the mapping lens is well-behaved''))
 \begin{itemize}
     \item $S$ and $V$ for the source and view of asymmetric lenses
     \item $V$, $W$, $X$, $Y$, $Z$ for symmetric lens repositories
@@ -25,7 +25,11 @@ syntax, and how they relate
         $X\INFTY$ for the set of infinite lists with elements drawn from $X$
     \item $\NIL$ for empty lists, $x \CONS t$ for the list that starts with
         $x$ and ends with $t$, $\left<x_1,\ldots,x_n\right>$ for the
-        length-$n$ list with value $x_i$ in the $i$th element
+        length-$n$ list with value $x_i$ in the $i$th element; will often
+        use the variable with no subscript to denote the whole list
+    \item $|x|$ is the length of the list $x$
+    \item $x[i\mapsto v]$ is
+        $\left<x_1,\ldots,x_{i-1},v,x_{i+1},\ldots,x_n\right>$
     \item $\unit$ for the single element of the singleton set $\Unit$
     \item record syntax for lens definitions/uses
     \item $A \to B$ vs. $A \lens B$ vs. $A \alens B$ vs. $A \cmaint B$ vs. $A \dlens B$

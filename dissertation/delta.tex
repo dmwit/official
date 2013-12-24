@@ -1255,6 +1255,13 @@ constructors whose associated edit monoids are freely generated.  \S
 forms of containers, and \S \ref{sec:monoid-laws} discusses edit languages
 with nontrivial laws.
 
+\ifdissertation
+Given a set $G$ of generators, one commonly-used monoid is the \emph{free
+monoid}: the set of lists $G\LIST$ together with sequence concatenation as
+the binary operation and $\NIL$ as the identity.  Defining homomorphisms
+from this monoid to another is often most conveniently done by specifying
+the homomorphism's behavior on each generator.
+\else
 Given a set $G$, we write $G\LIST$ for the set of finite sequences of
 elements of $G$. We write $\NIL$ for the empty
 sequence and $g$ to denote both a generator element 
@@ -1265,20 +1272,38 @@ notation $|g|$ means the length of a sequence: $|g_1 \cdots g_n|=n$. It
 is easy to show that $G\LIST$ together with sequence concatenation and
 $\NIL$ forms a monoid.
 
+% TODO: this f_g notation is awful and really, really needs to be fixed
+% TODO: clean up the presentation of all this by observing that stateful
+% monoid morphisms are monoid morphisms into the state monoid and monoid
+% actions are monoid morphisms into the partial function monoid
 It is often convenient to specify the behavior of a monoid
-homomorphism by giving its output on each generator. Given a function $f_g \in
-G \to M$ on generators, the monoid homomorphism $f \in G\LIST \to M$ is
-defined by
-$f(\NIL)=\ONE$ and $f(g_1 \cdots g_n)=f_g(g_1)f(g_2 \cdots g_n)$. Similarly, given a
+homomorphism by giving its output on each generator.
+\fi
+Given a function $f_g \in G \to M$ on generators, the monoid homomorphism $f
+\in G\LIST \to M$ is defined by $f(\NIL)=\ONE$ and
+\ifdissertation
+$f(g \CONS gs)=f_g(g)f(gs)$%
+\else
+$f(g_1 \cdots g_n)=f_g(g_1)f(g_2 \cdots g_n)$%
+\fi. Similarly, given a
 stateful function $f_g \in G \times C \to M \times C$, we can define a
 stateful monoid homomorphism $f \in G\LIST \times C \to M \times C$ by setting
 $f(\NIL,c) = (\ONE,c)$ and
+\ifdissertation
+\begin{align*}
+    f(g \CONS gs,c) ={}& \mllet (m',c') = f(gs,c) \mline \\
+    & \mllet (m'',c'') = f_g(g,c') \mline \\
+    & (m''m',c'')
+.
+\end{align*}
+\else
 \begin{align*}
     f(g_1 \cdots g_n,c) ={}& \mllet (m',c') = f(g_2 \cdots g_n,c) \mline \\
     & \mllet (m'',c'') = f_g(g_1,c') \mline \\
     & (m''m',c'')
 .
 \end{align*}
+\fi
 
 \paragraph*{Tensor Product}
 
@@ -1313,10 +1338,10 @@ functions are defined via stateful monoid homomorphism specifications.
                (z,c_\ell,w) \in \ell.K \; \} \\
     \dputr_g(\mlleft\dx,(c_k,c_\ell))
         &=& \mllet (\dz,c_k') = k.\dputr(\dx,c_k) \mline \\
-        & & (\mlleft\dz,(c_k',c_\ell)) \\
+        & & (\blist\mlleft\dz\elist,(c_k',c_\ell)) \\
     \dputr_g(\mlright\dy,(c_k,c_\ell))
         &=& \mllet (\dw,c_\ell') = \ell.\dputr(\dy,c_\ell) \mline \\
-        & & (\mlright\dw,(c_k,c_\ell')) \\
+        & & (\blist\mlright\dw\elist,(c_k,c_\ell')) \\
     \dputl_g \mbox{ similarly}
 }
 \iffull \end{defn} \fi
@@ -1371,19 +1396,59 @@ functions are defined via stateful monoid homomorphism specifications.
 \end{pf}
 
 \iffull
-This theorem asserts that $\otimes$ is an symmetric, associative
+This theorem asserts that $\otimes$ is a symmetric, associative
 bifunctor. Thus, the category of edit lenses with tensor product is
 almost a symmetric monoidal closed category; the only missing
 ingredient being an isomorphism between $X$ and $X\otimes \Unit$. With
 the present definition of tensor product such an isomorphism is available
 if $\partial X$ is a free monoid, in which case we can map a free
-generator $\dx$ to $\mlleft \dx$ and extend homomorphically.  In
-order that $\dx\mapsto \mlleft\dx$ be a homomorphism of modules in
-general we would need the equation $\mlleft \dx \cdot \mlleft{\dx'}=
-\mlleft {\dx \, \dx'}$ and similarly for $\ml{right}$. See
-Section~\ref{sec:monoid-laws} for more detail on this alteration.  \fi
+generator $\dx$ to $\mlleft \dx$ and extend homomorphically.
+In order for $\dx\mapsto\blist\mlleft\dx\elist$ to be a homomorphism of
+modules in general, we would need equations $\blist\mlleft\dx\elist
+\cdot \blist\mlleft{\dx'}\elist = \blist\mlleft{\dx\,\dx'}\elist$ and
+$\blist\mlleft\ONE\elist = \NIL$. See Section~\ref{sec:monoid-laws} for
+more detail on this alteration.
+\fi
 
 \begin{figure}
+\ifdissertation
+\lensdef{tensor_sum}
+{\infruleplain{k \in X \lens Y \andalso \ell \in Z \lens W}
+              {k \oplus \ell \in X \oplus Z \lens Y \oplus W}}
+{
+    C &=& \iffailed \{\mlfailed\} + \fi k.C + \ell.C \\[.8ex]
+    \missing &=& \mlinl{k.\missing} \\[1ex]
+    K &=&  \{(\mlinl x,\mlinl c,\mlinl y) \mid (x,c,y) \in k.K\} \\
+    &\cup& \{(\mlinr z,\mlinr c,\mlinr w) \mid (z,c,w) \in \ell.K\} \\[1ex]
+    c_k &=& k.\missing \\
+    c_\ell &=& \ell.\missing \\
+    \dputr_g(\mlswitchll\dx, \mlinl c)
+        &=& \mllet (\dy,c') = k.\dputr(\dx,c_k)
+          \ \ml{in}\ (\blist\mlswitchll\dy\elist, \mlinl{c'}) \\
+    \dputr_g(\mlswitchrl\dx, \mlinr c)
+        &=& \mllet (\dy,c') = k.\dputr(\dx,c_k)
+          \ \ml{in}\ (\blist\mlswitchrl\dy\elist, \mlinl{c'}) \\
+    \dputr_g(\mlswitchlr\dz, \mlinl c)
+        &=& \mllet (\dw,c') = \ell.\dputr(\dz,c_\ell)
+          \ \ml{in}\ (\blist\mlswitchlr\dw\elist, \mlinr{c'}) \\
+    \dputr_g(\mlswitchrr\dz, \mlinr c)
+        &=& \mllet (\dw,c') = \ell.\dputr(\dz,c_\ell)
+          \ \ml{in}\ (\blist\mlswitchrr\dw\elist, \mlinr{c'}) \\
+    \dputr_g(\mlstayl\dx,\mlinl c)
+        &=& \mllet (\dy,c') = k.\dputr(\dx,c)
+          \ \ml{in}\ (\blist\mlstayl\dy\elist, \mlinl{c'}) \\
+    \dputr_g(\mlstayr\dz,\mlinr c)
+        &=& \mllet (\dw,c') = \ell.\dputr(\dz,c)
+          \ \ml{in}\ (\blist\mlstayr\dw\elist, \mlinr{c'}) \\
+    \iffailed
+    \dputr_g(e,\mlfailed )
+        &=& \mllet (e',c) = \dputr(e,\missing) \\
+        & & \ml{in}\ (e',\mlfailed) \\
+    \fi
+    \dputr_g(e,c) &=& (\blist\fail\elist,\iffailed \mlfailed \else c \fi)\mbox{ in all other cases} \\[1.2ex]
+    \dputl_g&& \mbox{is analogous}
+}
+\else
 \lensdef{tensor_sum}
 {\infruleplain{k \in X \lens Y \andalso \ell \in Z \lens W}
               {k \oplus \ell \in X \oplus Z \lens Y \oplus W}}
@@ -1398,30 +1463,31 @@ Section~\ref{sec:monoid-laws} for more detail on this alteration.  \fi
     c_\ell &=& \ell.\missing \\
     \dputr_g(\mlswitchll\dx, \mlinl c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c_k) \\
-        & & \ml{in}\ (\mlswitchll\dy, \mlinl{c'}) \\
+        & & \ml{in}\ (\blist\mlswitchll\dy\elist, \mlinl{c'}) \\
     \dputr_g(\mlswitchrl\dx, \mlinr c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c_k) \\
-        & & \ml{in}\ (\mlswitchrl\dy, \mlinl{c'}) \\
+        & & \ml{in}\ (\blist\mlswitchrl\dy\elist, \mlinl{c'}) \\
     \dputr_g(\mlswitchlr\dz, \mlinl c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c_\ell) \\
-        & & \ml{in}\ (\mlswitchlr\dw, \mlinr{c'}) \\
+        & & \ml{in}\ (\blist\mlswitchlr\dw\elist, \mlinr{c'}) \\
     \dputr_g(\mlswitchrr\dz, \mlinr c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c_\ell) \\
-        & & \ml{in}\ (\mlswitchrr\dw, \mlinr{c'}) \\
+        & & \ml{in}\ (\blist\mlswitchrr\dw\elist, \mlinr{c'}) \\
     \dputr_g(\mlstayl\dx,\mlinl c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c) \\
-        & & \ml{in}\ (\mlstayl\dy, \mlinl{c'}) \\
+        & & \ml{in}\ (\blist\mlstayl\dy\elist, \mlinl{c'}) \\
     \dputr_g(\mlstayr\dz,\mlinr c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c) \\
-        & & \ml{in}\ (\mlstayr\dw, \mlinr{c'}) \\
+        & & \ml{in}\ (\blist\mlstayr\dw\elist, \mlinr{c'}) \\
     \iffailed
     \dputr_g(e,\mlfailed )
         &=& \mllet (e',c) = \dputr(e,\missing) \\
         & & \ml{in}\ (e',\mlfailed) \\
     \fi
-    \dputr_g(e,c) &=& (\fail,\iffailed \mlfailed \else c \fi)\mbox{ in all other cases} \\[1.2ex]
+    \dputr_g(e,c) &=& (\blist\fail\elist,\iffailed \mlfailed \else c \fi)\mbox{ in all other cases} \\[1.2ex]
     \dputl_g&& \mbox{is analogous}
 }
+\fi
 \makeatletter\refstepcounter{\@captype}\makeatother
 \label{fig:definition-sum}
 \vspace*{-3ex}
@@ -1436,7 +1502,7 @@ As in~\cite{HofmannPierceWagner10}, the tensor construction is not quite a full
 categorical product, because duplicating information does not give rise to a
 well-behaved lens---there is no lens with type $X \lens X \otimes X$ that
 satisfies all the equivalences a lens programmer would want.
-
+%
 However, tensor product does yield various symmetric monoidal categories
 of edit lenses; for lack of space we omit the details. 
 
@@ -1484,10 +1550,7 @@ definitions, we include these edits here in the basic generators as well.
 Finally, we introduce an always-failing edit to represent sequences of edits
 that are internally inconsistent---e.g., a switch to the left side followed
 by an attempt to apply an edit which stays on the right
-side.\discuss{Restored the previous sentence, which referred to ``fail'' not
-  ``failing''!}
-%
-These intuitions are formalized in the application function:
+side. These intuitions are formalized in the application function:
 \begin{eqnarray*}
     \mlswitchll\dx\odot_g\mlinl x &=& \mlinl{\dx\,\init_X} \\
     \mlswitchlr\dy\odot_g\mlinl x &=& \mlinr{\dy\,\init_Y} \\
@@ -1505,7 +1568,11 @@ We now wish to give a lens combinator $k\oplus\ell$ that runs lens $k$ on
 the parts of edits that apply to $\ml{inl}$ values and $\ell$ on
 the parts of edits that apply to $\ml{inr}$ values.%
 \footnote{\label{footnoteseven}%
+\ifdissertation
+In Chapter~\ref{chap:complement}, there is some discussion regarding
+\else
 In \cite{HofmannPierceWagner10}, there is some discussion regarding
+\fi
 ``forgetful'' and ``retentive'' sum lenses, with the distinction revolving
 around what to do with the complement when an edit switches between sides of
 the sum. For state-based lenses, lenses on recursive structures like lists
@@ -1728,6 +1795,7 @@ and $(k\oplus\ell);(k'\oplus\ell')\equiv(k;k')\oplus(\ell;\ell')$.\fi
 
 \iffull
 
+% TODO: deleeeeeeeeeete
 \begin{comment}
 % This stuff is no longer relevant, as we are including it in other
 % sections.
@@ -2144,13 +2212,13 @@ which will be applied).
     &&\qquad \forall 1 \mathord{\le} p \mathord{\le} |x|. \;(x_p,c_p,y_p) \in \ell.K\} \\[.8ex]
     \dputr_g(\mlmod p\dx,c)
         &=& \mllet (\dy,c_p') = \ell.\dputr(\dx,c_p) \mline \\
-        & & (\mlmod p\dy,c[p \mapsto c_p'])) \\
+        & & (\blist\mlmod p\dy\elist,c[p \mapsto c_p'])) \\
         & & \mbox{ when } p \le n \\
     \dputr_g(\mlmod p\dx,c)
-        &=& (\fail,c) \mbox{ when } p > n \\
-    \dputr_g(\fail,c) &=& (\fail,c) \\
+        &=& (\blist\fail\elist,c) \mbox{ when } p > n \\
+    \dputr_g(\fail,c) &=& (\blist\fail\elist,c) \\
     \dputr_g(\dx,c)
-    &=& (\dx,\dx\,c) \mbox{ in all other cases} \\
+    &=& (\blist\dx\elist,\dx\,c) \mbox{ in all other cases} \\
     \dputl&& \mbox{similar}
 }
 \makeatletter\refstepcounter{\@captype}\makeatother
@@ -2183,6 +2251,20 @@ insert at the end, then reorder the list.  The argument $i$ to
 $\mlins{i}$ and $\mldel{i}$ now specifies how {\em many} elements to insert or
 delete. 
 \iflater\discuss{How about enclosing lists in some kind of brackets?}\fi
+\ifdissertation
+\begin{align*}
+    \mlmod p\dx \odot_g x
+    &= x[p\mapsto\dx\,x_p] \\
+    \mlins i \odot_g x
+    &= x \cdot \underbrace{\blist\init_{X}, \ldots, \init_{X}\elist}_{i\ \mbox{\tiny times}}\\
+    \mldel i \odot_g x_1 \cdots x_n
+    &= x_1 \cdots x_{n-i} \\
+    \mlreorder f \odot_g x_1 \cdots x_n
+    &= x_{f(n)(1)} \cdots x_{f(n)(n)} \\
+    \fail \odot_g x_1 \cdots x_n
+    &{\color{white}{}={}} \mbox{undefined}
+\end{align*}
+\else
 \begin{align*}
     \mlmod p\dx \odot_g x_1 \cdots x_n
     &= x_1 \cdots x_{p-1}\; (\dx\,x_p) \; x_{p+1} \cdots x_n \\
@@ -2195,6 +2277,7 @@ delete.
     \fail \odot_g x_1 \cdots x_n
     &{\color{white}{}={}} \mbox{undefined}
 \end{align*}
+\fi%dissertation
 We take $\mlmod p\dx \odot_g x$ to be undefined when $p > |x|$,
 and similarly take $\mldel i \odot_g x$ to be undefined when $i >
 |x|$. The list module is then $X\LIST =
@@ -2204,11 +2287,15 @@ and similarly take $\mldel i \odot_g x$ to be undefined when $i >
 
 \paragraph*{Mapping lens}
 The list mapping lens $\ell\LIST$ uses $\ell$ to translate
-$\ml{mod}$ edits from $X$ to $Y$ and vice versa \iffull\else{}
+$\ml{mod}$ edits from $X$ to $Y$ and vice versa\iffull\else\ 
 (Figure~\ref{fig:definition-map})\fi.  Other kinds of edits ($\ml{ins}$,
-$\ml{del}$, and $\ml{reorder}$) are carried across unchanged.  The notation
+$\ml{del}$, and $\ml{reorder}$) are carried across unchanged.
+\ifdissertation
+\else
+The notation
 $c[p \mapsto c_p']$ in the rule for $\ml{mod}$ edits means ``the list that is
 just like $c$ except that the element in position $p$ is replaced by $c_p'$.''
+\fi
 When translating non-modification edits, we update the complement in a way
 almost identical to the way the two replicas are updated; to reflect this
 similarity, we use edit application from the $\Unit_{\ell.\missing \in
@@ -2291,7 +2378,10 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             the rule:
             \infrule
                 {\forall i. (x_i,c_i,d_i,y_i) \in S}
-                {(x_1\cdots x_n,c_1\cdots c_n,d_1\cdots d_n,y_1\cdots y_n)\in S}
+                {(\blist x_1\cdots x_n\elist,
+                  \blist c_1\cdots c_n\elist,
+                  \blist d_1\cdots d_n\elist,
+                  \blist y_1\cdots y_n\elist)\in S'}
             Then $S'$ is a witness that $k\LIST\equiv\ell\LIST$. The initial
             quadruple
             \dissdis(\init_{X\LIST},k\LIST.\init,\ell\LIST.\init,\init_{Y\LIST})=(\NIL,\NIL,\NIL,\NIL)\dissdis
@@ -2310,14 +2400,14 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             witnesses the equivalence $\id_X\LIST \equiv \id_X$.
         \item Define the function $\ml{unzip}$ as follows:
             \[\begin{array}{l}
-            \ml{unzip}((x_1,y_1)\;(x_2,y_2) \cdots (x_n,y_n)) \\
-            \qquad = (x_1\;x_2\cdots x_n,y_1\;y_2\cdots y_n)
+            \ml{unzip}(\blist(x_1,y_1)\;(x_2,y_2) \cdots (x_n,y_n)\elist) \\
+            \qquad = (\blist x_1\;x_2\cdots x_n\elist,\blist y_1\;y_2\cdots y_n\elist)
             \end{array}\]
             Then the requisite simulation relation is:
             \[R = \{(x,\ml{unzip}(d),d,y) \mid (x,d,y) \in (k;\ell)\LIST.K\}\]
 
             The interesting property to verify is that if $(x,c,d,y) \in R$
-            and $\dx x$ is defined, then $(k\LIST;\ell\LIST).\dputr$ and
+            and $\dx\,x$ is defined, then $(k\LIST;\ell\LIST).\dputr$ and
             $(k;\ell)\LIST.\dputr$ produce the same edit $\dy$ in related
             states. As in the other proofs here, we can show this property
             for the restricted set of edits which contain only one atomic
