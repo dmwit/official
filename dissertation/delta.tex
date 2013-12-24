@@ -1338,10 +1338,10 @@ functions are defined via stateful monoid homomorphism specifications.
                (z,c_\ell,w) \in \ell.K \; \} \\
     \dputr_g(\mlleft\dx,(c_k,c_\ell))
         &=& \mllet (\dz,c_k') = k.\dputr(\dx,c_k) \mline \\
-        & & (\blist\mlleft\dz\elist,(c_k',c_\ell)) \\
+        & & (\mlleft\dz,(c_k',c_\ell)) \\
     \dputr_g(\mlright\dy,(c_k,c_\ell))
         &=& \mllet (\dw,c_\ell') = \ell.\dputr(\dy,c_\ell) \mline \\
-        & & (\blist\mlright\dw\elist,(c_k,c_\ell')) \\
+        & & (\mlright\dw,(c_k,c_\ell')) \\
     \dputl_g \mbox{ similarly}
 }
 \iffull \end{defn} \fi
@@ -1424,28 +1424,28 @@ more detail on this alteration.
     c_\ell &=& \ell.\missing \\
     \dputr_g(\mlswitchll\dx, \mlinl c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c_k)
-          \ \ml{in}\ (\blist\mlswitchll\dy\elist, \mlinl{c'}) \\
+          \ \ml{in}\ (\mlswitchll\dy, \mlinl{c'}) \\
     \dputr_g(\mlswitchrl\dx, \mlinr c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c_k)
-          \ \ml{in}\ (\blist\mlswitchrl\dy\elist, \mlinl{c'}) \\
+          \ \ml{in}\ (\mlswitchrl\dy, \mlinl{c'}) \\
     \dputr_g(\mlswitchlr\dz, \mlinl c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c_\ell)
-          \ \ml{in}\ (\blist\mlswitchlr\dw\elist, \mlinr{c'}) \\
+          \ \ml{in}\ (\mlswitchlr\dw, \mlinr{c'}) \\
     \dputr_g(\mlswitchrr\dz, \mlinr c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c_\ell)
-          \ \ml{in}\ (\blist\mlswitchrr\dw\elist, \mlinr{c'}) \\
+          \ \ml{in}\ (\mlswitchrr\dw, \mlinr{c'}) \\
     \dputr_g(\mlstayl\dx,\mlinl c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c)
-          \ \ml{in}\ (\blist\mlstayl\dy\elist, \mlinl{c'}) \\
+          \ \ml{in}\ (\mlstayl\dy, \mlinl{c'}) \\
     \dputr_g(\mlstayr\dz,\mlinr c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c)
-          \ \ml{in}\ (\blist\mlstayr\dw\elist, \mlinr{c'}) \\
+          \ \ml{in}\ (\mlstayr\dw, \mlinr{c'}) \\
     \iffailed
     \dputr_g(e,\mlfailed )
         &=& \mllet (e',c) = \dputr(e,\missing) \\
         & & \ml{in}\ (e',\mlfailed) \\
     \fi
-    \dputr_g(e,c) &=& (\blist\fail\elist,\iffailed \mlfailed \else c \fi)\mbox{ in all other cases} \\[1.2ex]
+    \dputr_g(e,c) &=& (\fail,\iffailed \mlfailed \else c \fi)\mbox{ in all other cases} \\[1.2ex]
     \dputl_g&& \mbox{is analogous}
 }
 \else
@@ -1463,28 +1463,28 @@ more detail on this alteration.
     c_\ell &=& \ell.\missing \\
     \dputr_g(\mlswitchll\dx, \mlinl c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c_k) \\
-        & & \ml{in}\ (\blist\mlswitchll\dy\elist, \mlinl{c'}) \\
+        & & \ml{in}\ (\mlswitchll\dy, \mlinl{c'}) \\
     \dputr_g(\mlswitchrl\dx, \mlinr c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c_k) \\
-        & & \ml{in}\ (\blist\mlswitchrl\dy\elist, \mlinl{c'}) \\
+        & & \ml{in}\ (\mlswitchrl\dy, \mlinl{c'}) \\
     \dputr_g(\mlswitchlr\dz, \mlinl c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c_\ell) \\
-        & & \ml{in}\ (\blist\mlswitchlr\dw\elist, \mlinr{c'}) \\
+        & & \ml{in}\ (\mlswitchlr\dw, \mlinr{c'}) \\
     \dputr_g(\mlswitchrr\dz, \mlinr c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c_\ell) \\
-        & & \ml{in}\ (\blist\mlswitchrr\dw\elist, \mlinr{c'}) \\
+        & & \ml{in}\ (\mlswitchrr\dw, \mlinr{c'}) \\
     \dputr_g(\mlstayl\dx,\mlinl c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c) \\
-        & & \ml{in}\ (\blist\mlstayl\dy\elist, \mlinl{c'}) \\
+        & & \ml{in}\ (\mlstayl\dy, \mlinl{c'}) \\
     \dputr_g(\mlstayr\dz,\mlinr c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c) \\
-        & & \ml{in}\ (\blist\mlstayr\dw\elist, \mlinr{c'}) \\
+        & & \ml{in}\ (\mlstayr\dw, \mlinr{c'}) \\
     \iffailed
     \dputr_g(e,\mlfailed )
         &=& \mllet (e',c) = \dputr(e,\missing) \\
         & & \ml{in}\ (e',\mlfailed) \\
     \fi
-    \dputr_g(e,c) &=& (\blist\fail\elist,\iffailed \mlfailed \else c \fi)\mbox{ in all other cases} \\[1.2ex]
+    \dputr_g(e,c) &=& (\fail,\iffailed \mlfailed \else c \fi)\mbox{ in all other cases} \\[1.2ex]
     \dputl_g&& \mbox{is analogous}
 }
 \fi
@@ -1806,13 +1806,13 @@ and $(k\oplus\ell);(k'\oplus\ell')\equiv(k;k')\oplus(\ell;\ell')$.\fi
     &&\qquad \forall 1 \mathord{\le} p \mathord{\le} |x|. \;(x_p,c_p,y_p) \in \ell.K\} \\[.8ex]
     \dputr_g(\mlmod p\dx,c)
         &=& \mllet (\dy,c_p') = \ell.\dputr(\dx,c_p) \mline \\
-        & & (\blist\mlmod p\dy\elist,c[p \mapsto c_p'])) \\
+        & & (\mlmod p\dy,c[p \mapsto c_p'])) \\
         & & \mbox{ when } p \le n \\
     \dputr_g(\mlmod p\dx,c)
-        &=& (\blist\fail\elist,c) \mbox{ when } p > n \\
-    \dputr_g(\fail,c) &=& (\blist\fail\elist,c) \\
+        &=& (\fail,c) \mbox{ when } p > n \\
+    \dputr_g(\fail,c) &=& (\fail,c) \\
     \dputr_g(\dx,c)
-    &=& (\blist\dx\elist,\dx\,c) \mbox{ in all other cases} \\
+    &=& (\dx,\dx\,c) \mbox{ in all other cases} \\
     \dputl&& \mbox{similar}
 }
 \makeatletter\refstepcounter{\@captype}\makeatother
@@ -1851,12 +1851,12 @@ delete.
     &= x[p\mapsto\dx\,x_p] \\
     \mlins i \odot_g x
     &= x \cdot \underbrace{\blist\init_{X}, \ldots, \init_{X}\elist}_{i\ \mbox{\tiny times}}\\
-    \mldel i \odot_g x_1 \cdots x_n
-    &= x_1 \cdots x_{n-i} \\
-    \mlreorder f \odot_g x_1 \cdots x_n
-    &= x_{f(n)(1)} \cdots x_{f(n)(n)} \\
-    \fail \odot_g x_1 \cdots x_n
-    &{\color{white}{}={}} \mbox{undefined}
+    \mldel i \odot_g x
+    &= \blist x_1, \ldots, x_{n-i} \elist \\
+    \mlreorder f \odot_g x
+    &= \blist x_{f(n)(1)}, \ldots, x_{f(n)(n)} \elist \\
+    \fail \odot_g x
+    &{\phantom{{}={}}} \mbox{undefined}
 \end{align*}
 \else
 \begin{align*}
@@ -1869,7 +1869,7 @@ delete.
     \mlreorder f \odot_g x_1 \cdots x_n
     &= x_{f(n)(1)} \cdots x_{f(n)(n)} \\
     \fail \odot_g x_1 \cdots x_n
-    &{\color{white}{}={}} \mbox{undefined}
+    &{\phantom{{}={}}} \mbox{undefined}
 \end{align*}
 \fi%dissertation
 We take $\mlmod p\dx \odot_g x$ to be undefined when $p > |x|$,
@@ -1972,10 +1972,10 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             the rule:
             \infrule
                 {\forall i. (x_i,c_i,d_i,y_i) \in S}
-                {(\blist x_1\cdots x_n\elist,
-                  \blist c_1\cdots c_n\elist,
-                  \blist d_1\cdots d_n\elist,
-                  \blist y_1\cdots y_n\elist)\in S'}
+                {(\blist x_1\clist x_n\elist,
+                  \blist c_1\clist c_n\elist,
+                  \blist d_1\clist d_n\elist,
+                  \blist y_1\clist y_n\elist)\in S'}
             Then $S'$ is a witness that $k\LIST\equiv\ell\LIST$. The initial
             quadruple
             \dissdis(\init_{X\LIST},k\LIST.\init,\ell\LIST.\init,\init_{Y\LIST})=(\NIL,\NIL,\NIL,\NIL)\dissdis
@@ -1994,8 +1994,8 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             witnesses the equivalence $\id_X\LIST \equiv \id_X$.
         \item Define the function $\ml{unzip}$ as follows:
             \[\begin{array}{l}
-            \ml{unzip}(\blist(x_1,y_1)\;(x_2,y_2) \cdots (x_n,y_n)\elist) \\
-            \qquad = (\blist x_1\;x_2\cdots x_n\elist,\blist y_1\;y_2\cdots y_n\elist)
+            \ml{unzip}(\blist(x_1,y_1)\mlist(x_2,y_2) \clist (x_n,y_n)\elist) \\
+            \qquad = (\blist x_1 \mlist x_2\clist x_n\elist,\blist y_1 \mlist y_2\clist y_n\elist)
             \end{array}\]
             Then the requisite simulation relation is:
             \[R = \{(x,\ml{unzip}(d),d,y) \mid (x,d,y) \in (k;\ell)\LIST.K\}\]
@@ -2038,17 +2038,17 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
     C &=& \{L,R\}\LIST \\
     \missing &=& \NIL \\
     K &=& 
-       \{(z, \ml{map}_\ml{tagof}(z), (\ml{lefts}(z),\ml{rights}(z)))
+       \{(z, \map_\ml{tagof}(z), (\ml{lefts}(z),\ml{rights}(z)))
     \mid z \in (|X|+|Y|)\LIST\}
 }
 \newcommand{\partitiondputrgdef}{
-    \dputr_g(\mlmod p\dv,c) &=& (\fail,c)\mbox{ when }p > |c|
+    \dputr_g(\mlmod p\dv,c) &=& (\mlleft\fail,c)\mbox{ when }p > |c|
     \markeqn{rmodbigp}%
  \\
     \dputr_g(\mlmod p\NIL,c) &=& (\NIL,c)\mbox{ when }1 \le p \le |c|
     \markeqn{rmodempty}%
  \\
-    \dputr_g(\mlmod p{\dv\dv s},c)
+    \dputr_g(\mlmod p{\dv\CONS\dv s},c)
         &=& \partitionarray{(d'\,d,c'')}{
             &&
             1 < n
@@ -2066,9 +2066,9 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
     \dputr_g(\mlmod p{\mlswitch_{jk}(\dv)},c)
         &=& \partitionarray{(d_2d_1d_0,c[p \mapsto k])}{
             (p_L,p_R) &=& \mlcount(p,c) &
-            d_0 &=& \ml{map}_{\lambda d.\,\mltag(j,d)}(\mldelete'(p_j)) \\
+            d_0 &=& \map_{\lambda d.\,\mltag(j,d)}(\mldelete'(p_j)) \\
             d_2 &=& \mltag(k,\mlmod{p_k}\dv) &
-            d_1 &=& \ml{map}_{\lambda d.\,\mltag(k,d)}(\mlinsert'(p_k))
+            d_1 &=& \map_{\lambda d.\,\mltag(k,d)}(\mlinsert'(p_k))
         }
         {rmodswitch}%
  \\
@@ -2077,7 +2077,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             (p_L,p_R) &=& \mlcount(p,c)
         } 
         {rmodstay}\\
-    \dputr_g(\mlmod p\fail,c) &=& (\fail,c)
+    \dputr_g(\mlmod p\fail,c) &=& (\mlleft\fail,c)
        \markeqn{rmodfail} 
 \\
     \dputr_g(\mlins i,c) &=& (\mlonl{\mlins i},\mlins i\,c)
@@ -2105,7 +2105,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             f_R(n_R) &=& \ml{inr};h'';\mluntag
         }
         {rreorder}\\
-    \dputr_g(\fail,c) &=& (\fail,c)
+    \dputr_g(\fail,c) &=& (\mlleft\fail,c)
       \markeqn{rfail}
 }
 \newcommand{\partitiondputlgdef}{
@@ -2182,6 +2182,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \end{center}
 \draftspaced
 \end{figure*}
+\newcommand{\partitionfigures}{Figures~\ref{fig:definition-partition},~\ref{fig:definition-partition-part-2}, and~\ref{fig:definition-partition-supplementary}\xspace}
 \else
 \begin{figure*}[t!]
 \lensdef{partition}
@@ -2199,7 +2200,8 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 {\bf Figure \ref{fig:definition-partition}:} The $\partition$ lens
 \end{center}
 \end{figure*}
-\fi
+\newcommand{\partitionfigures}{Figures~\ref{fig:definition-partition} and~\ref{fig:definition-partition-supplementary}\xspace}
+\fi%dissertation
 
 \begin{figure*}[!tp]
 \ifdissertation\singlespaced\fi
@@ -2214,8 +2216,8 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
                 \ml{tagof}(\mlinl x) &= L \\
                 \ml{tagof}(\mlinr y) &= R \\[1ex]
                 \ml{lefts}(\NIL) &= \NIL \\
-                \ml{lefts}(\mlinl xw) &= x\,\ml{lefts}(w) \\
-                \ml{lefts}(\mlinr yw) &= \ml{lefts}(w) \\[1ex]
+                \ml{lefts}(\mlinl x \CONS w) &= x\CONS\ml{lefts}(w) \\
+                \ml{lefts}(\mlinr y \CONS w) &= \ml{lefts}(w) \\[1ex]
                 \mltag(L,\dx) &= \mlonl\dx \\
                 \mltag(R,\dy) &= \mlonr\dy \\[1ex]
                 \mlcount(p,\NIL) &= (1,1)
@@ -2224,18 +2226,25 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
         \hfill
         \begin{minipage}[t]{\ifdissertation0.5\else0.1\fi\linewidth}
             \begin{align*}
-                \ml{map}_f(\NIL) &= \NIL \\
-                \ml{map}_f(cw) &= f(c)\,\ml{map}_f(w) \\[1ex]
+                \map_f(\NIL) &= \NIL \\
+                \map_f(c \CONS w) &= f(c)\CONS\map_f(w) \\[1ex]
                 \ml{rights}(\NIL) &= \NIL \\
-                \ml{rights}(\mlinl xw) &= \ml{rights}(w) \\
-                \ml{rights}(\mlinr yw) &= y\,\ml{rights}(w) \\[1ex]
+                \ml{rights}(\mlinl x \CONS w) &= \ml{rights}(w) \\
+                \ml{rights}(\mlinr y \CONS w) &= y\CONS\ml{rights}(w) \\[1ex]
                 \mluntag(\mlinl x) &= x \\
                 \mluntag(\mlinr y) &= y \\[1ex]
                 \mlcount(1,c) &= (1,1)
             \end{align*}
         \end{minipage}
     \end{center}
-\ifdissertation\else
+\ifdissertation
+\vspace{-4ex}
+\begin{align*}
+    \mlcount(p,c \CONS w)
+    ={}& \mllet (n_L,n_R) = \mlcount(p-1,w) \\
+    &\mlinb \cond{(n_L+1,n_R) & c = L \\ (n_L,n_R+1) & c = R}
+\end{align*}
+\else
 \end{minipage}
 \hfill
 \begin{minipage}[t]{.45\linewidth}
@@ -2250,9 +2259,11 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             m+1 & p \le m < n \\
             m & \mbox{otherwise}
             } \\[1ex]
-        \mlreverse(c_1 \cdots c_n) &= c_nc_{n-1}\cdots c_1 \\
-        \mldelete'(p) &= \mldel1\,\mlreorder{\ml{cycle}_p} \\
-        \mlinsert'(p) &= \mlreorder{\lambda n.\;\ml{cycle}_p(n)^{-1}}\,\mlins1 \\
+        \mlreverse(\blist c_1 \clist c_n \elist) &=
+            \blist c_n \mlist c_{n-1} \clist c_1 \elist\\
+        \mldelete'(p) &= \blist\mldel1\mlist\mlreorder{\ml{cycle}_p}\elist \\
+        \mlinsert'(p) &=
+            \blist\mlreorder{\lambda n.\;\ml{cycle}_p(n)^{-1}}\mlist\mlins1\elist \\
         \mliso(c) &=
            \lambda p.\;\mllet (n_L,n_R) = 
             \mlcount(p,c) \mlinm \\[-.5ex]
@@ -2263,11 +2274,6 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \end{minipage}\\[-2ex]
 \fi
 \ifdissertation
-\begin{align*}
-    \mlcount(p,c_1 \cdots c_n)
-    ={}& \mllet (n_L,n_R) = \mlcount(p\mathord{-}1,c_2 \cdots c_n) \\
-    &\mlinb \cond{(n_L+1,n_R) & c_1 = L \\ (n_L,n_R+1) & c_1 = R}
-\end{align*}
 \else
 \begin{align*}
     \mlcount(p,c_1 \cdots c_n)
@@ -2286,18 +2292,16 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \ifdissertation\draftspaced\fi
 \end{figure*}
 
+% TODO: in this section, call the repositories the ``sum'' and ``product''
+% repositories (or something similarly unambiguous) rather than ``left'' and
+% ``right'', to avoid confusion with the left and right sides of the
+% sums/products
 \paragraph*{Partition lens}
-Figures~\ref{fig:definition-partition}
-and~\ref{fig:definition-partition-supplementary} give the definition of a
-list partitioning lens that (as we saw in
-\S \ref{sec:delta-examples}) separates a list of tagged elements into
-those tagged $\ml{inl}$ and those tagged $\ml{inr}$. 
-%
-We write $\fail$ to stand for $\mlleft\fail\mlright\fail$ when defining
-$\dputr_g$.
-%
-Additionally, as with the mapping lens, we consider the complement to belong
-to a module; this time, to the module $\Unit_{L\in\{L,R\}}\LIST$.
+\partitionfigures give the definition of a list partitioning lens that (as
+we saw in \S \ref{sec:delta-examples}) separates a list of tagged elements
+into those tagged $\ml{inl}$ and those tagged $\ml{inr}$. Additionally, as
+with the mapping lens, we consider the complement to belong to a module;
+this time, to the module $\Unit_{L\in\{L,R\}}\LIST$.
 
 These figures may be a bit intimidating at first, but there is 
 nothing very deep going on---just some everyday functional programming over
@@ -2363,7 +2367,7 @@ $\mlmod5{\mlstayl{\d n}}$, where $\d n$ describes the string edit to the
 name. To translate this edit, we first need to 
 translate the index $5$ to an index into the list of composers in the
 right-hand repository (line \markref{rmodstay} in
-Figure~\ref{fig:definition-partition}).  We can do this by simply counting
+Figure~\ifdissertation\ref{fig:definition-partition-part-2}\else\ref{fig:definition-partition}\fi).  We can do this by simply counting
 how many composers 
 appear up to and including Dvorak, that is, how many $L$ values appear in the
 complement list up to index $5$---in this case, $3$.  We then wrap this
@@ -2499,17 +2503,17 @@ for ``after.''
 \iffull
 \begin{lemma}
     \label{lemma:unfold-mod-once}
-    \[\mlmod p{\dv\dv s}z=\mlmod p\dv\mlmod p{\dv s}z\]
+    \[\mlmod p{\dv\CONS\dv s}z=\mlmod p\dv\mlmod p{\dv s}z\]
 \end{lemma}
 
 \begin{proof}
     Let $n=|z|$.  Either $p>n$ or not. If it is, then both sides are
     undefined; otherwise:
     \begin{align*}
-        \mlmod p{\dv\dv s}z
-            &= z_1\cdots z_{p-1}((\dv\dv s)z_p)z_{p+1}\cdots z_n \\
-            &= z_1\cdots z_{p-1}(\dv(\dv sz_p))z_{p+1}\cdots z_n \\
-            &= \mlmod p\dv(z_1\cdots z_{p-1}(\dv sz_p)z_{p+1}\cdots z_n) \\
+        \mlmod p{\dv\CONS\dv s}z
+            &= z[p \mapsto (\dv\CONS\dv s)z_p] \\
+            &= z[p \mapsto \dv(\dv s\,z_p)] \\
+            &= \mlmod p\dv(z[p \mapsto \dv s\,z_p]) \\
             &= \mlmod p\dv\mlmod p{\dv s}z
     \end{align*}
 \end{proof}
@@ -2517,17 +2521,17 @@ for ``after.''
 \begin{lemma}
 \label{lemma:high-level-delete}
 If $1 \le p \le n$, then:
-\[\mldelete'(p) \odot v_1 \cdots v_n = v_1 \cdots v_{p-1} v_{p+1} \cdots v_n\]
+\[\mldelete'(p) \odot v = \blist v_1 \clist v_{p-1} \mlist v_{p+1} \clist v_n \elist\]
 \end{lemma}
 
 \begin{proof}
 The only tricky part of this proof is evaluating $\ml{cycle}_p(n)$:
 \begin{align*}
-    \mldelete'(p) \odot v_1\cdots v_n
-        &= \mldel 1\mlreorder{\ml{cycle}_p} \odot v_1\cdots v_n \\
-        &= \mldel 1 \odot v_{\ml{cycle}_p(n)(1)} \cdots v_{\ml{cycle}_p(n)(n)} \\
-        &= \mldel 1 \odot v_1 \cdots v_{p-1} v_{p+1} \cdots v_{n-1} v_p \\
-        &= v_1 \cdots v_{p-1} v_{p+1} \cdots v_{n-1}
+    \mldelete'(p) \odot v
+        &= \blist\mldel 1\mlist\mlreorder{\ml{cycle}_p}\elist \odot v \\
+        &= \blist\mldel 1\elist \odot \blist v_{\ml{cycle}_p(n)(1)} \clist v_{\ml{cycle}_p(n)(n)} \elist \\
+        &= \blist\mldel 1\elist \odot \blist v_1 \clist v_{p-1} \mlist v_{p+1} \clist v_{n-1} \mlist v_p \elist \\
+        &= \blist v_1 \clist v_{p-1} \mlist v_{p+1} \clist v_{n-1} \elist
 \end{align*}
 If $p=n$, then neither of the first two conditions in the definition of
 $\ml{cycle}$ will ever be true, so $\ml{cycle}_p(n)(m)=m$, making the
@@ -2600,7 +2604,7 @@ In the latter:
 \begin{lemma}
 \label{lemma:iso-coherent}
 The isomorphism produced by $\mliso$ is coherent in the following sense.
-Choose arbitrary $v\in(X+Y)\LIST$ and let $c=\ml{map}_{\ml{tagof}}(v)$ be
+Choose arbitrary $v\in(X+Y)\LIST$ and let $c=\map_{\ml{tagof}}(v)$ be
 the list of tags of $v$. If $\mliso(c)(p)=\mlinl{p'}$ then
 $\mlinl{\ml{lefts}(v)_{p'}}=v_p$ and likewise if $\mliso(c)(p)=\mlinr{p'}$
 then $\mlinr{\ml{rights}(v)_{p'}}=v_p$.
@@ -2620,9 +2624,8 @@ The argument that $\mliso$ is coherent with $\ml{rights}$ is similar.
 \end{proof}
 
 \begin{theorem}
-The $\partition$ defined in Figures~\ref{fig:definition-partition}
-and~\ref{fig:definition-partition-supplementary} is indeed a symmetric edit
-lens.   
+The $\partition$ defined in \partitionfigures is indeed a symmetric edit
+lens.
 \label{goodlens:partition}
 \end{theorem}
 
@@ -2644,7 +2647,7 @@ First we show that $\dputr_g$ respects $K$. We are given some $(z,c,(x,y))
 \in K$ and some $\dz \in G^{\mathrm{list}}_{X \oplus Y}$ such that $\dz\;z$
 is defined. By the definition of $K$, we know
 \begin{align*}
-    c &= \ml{map}_{\ml{tagof}}(z) \\
+    c &= \map_{\ml{tagof}}(z) \\
     x &= \ml{lefts}(z) \\
     y &= \ml{rights}(z).
 \end{align*}
@@ -2709,8 +2712,8 @@ $n_L=|x|$, and $n_R=|y|$ in the following.
         \dv &\in \partial Y\mbox{ when }k = R \\
         \dz' &= d_2d_1d_0 \\
         c' &= c[p \mapsto k] \\
-        d_0 &= \ml{map}_{\lambda d.\,\ml{tag}(j,d)}(\mldelete'(p_j)) \\
-        d_1 &= \ml{map}_{\lambda d.\,\ml{tag}(k,d)}(\mlinsert'(p_k)) \\
+        d_0 &= \map_{\lambda d.\,\ml{tag}(j,d)}(\mldelete'(p_j)) \\
+        d_1 &= \map_{\lambda d.\,\ml{tag}(k,d)}(\mlinsert'(p_k)) \\
         d_2 &= \ml{tag}(k,\mlmod{p_k}\dv) \\
         (p_L,p_R) &= \mlcount(p,c)
     \end{align*}
@@ -2720,14 +2723,14 @@ $n_L=|x|$, and $n_R=|y|$ in the following.
     Since $\dz\;z$ is defined, we know that $z_p = \mlinl v$ for some $v \in
     X$. Taking $v'=\dv\;\init_X$, we can now compute:
     \begin{align*}
-        \ml{map}_{\ml{tagof}}(\dz\;z)
-            &= \ml{map}_{\ml{tagof}}(z_1\cdots z_{p-1}\mlinl{v'}z_{p+1}\cdots z_n) \\
-            &= \ml{map}_{\ml{tagof}}(z_1\cdots z_{p-1})\;k\;\ml{map}_{\ml{tagof}}(z_{p+1}\cdots z_n)\\
+        \map_{\ml{tagof}}(\dz\;z)
+            &= \map_{\ml{tagof}}(z_1\cdots z_{p-1}\mlinl{v'}z_{p+1}\cdots z_n) \\
+            &= \map_{\ml{tagof}}(z_1\cdots z_{p-1})\;k\;\map_{\ml{tagof}}(z_{p+1}\cdots z_n)\\
             &= c_1\cdots c_{p-1}kc_{p+1}\cdots c_n \\
             &= c[p \mapsto k] \\
             &= c'
     \end{align*}
-    The second line follows from the first because $\ml{map}$ is a list
+    The second line follows from the first because \map is a list
     homomorphism.  Hence $\dputr_g$ maintains consistency of $c$ in this
     case; it remains to show that $\dputr_g$ maintains consistency of the
     output. We calculate the effects of $\dz$ and $\dz'$, starting with
@@ -2735,11 +2738,11 @@ $n_L=|x|$, and $n_R=|y|$ in the following.
     \begin{align*}
         \dz'\;(x,y)
             &= d_2d_1d_0(x,y) \\
-            &= d_2d_1(\ml{map}_{\lambda d.\ml{tag}(j,d)}(\mldelete'(p_j)))(x,y) \\
-            &= d_2d_1(\ml{map}_{\ml{left}}(\mldelete'(p_L)))(x,y) \\
+            &= d_2d_1(\map_{\lambda d.\ml{tag}(j,d)}(\mldelete'(p_j)))(x,y) \\
+            &= d_2d_1(\map_{\ml{left}}(\mldelete'(p_L)))(x,y) \\
             &= d_2d_1(\mldelete'(p_L)x,y) \\
-            &= d_2(\ml{map}_{\lambda d.\ml{tag}(k,d)}(\mlinsert'(p_k)))(\mldelete'(p_L)x,y) \\
-            &= d_2(\ml{map}_{\ml{left}}(\mlinsert'(p_L)))(\mldelete'(p_L)x,y) \\
+            &= d_2(\map_{\lambda d.\ml{tag}(k,d)}(\mlinsert'(p_k)))(\mldelete'(p_L)x,y) \\
+            &= d_2(\map_{\ml{left}}(\mlinsert'(p_L)))(\mldelete'(p_L)x,y) \\
             &= d_2(\mlinsert'(p_L)\mldelete'(p_L)x,y) \\
             &= \mltag(k,\mlmod(p_k,\dv))(\mlinsert'(p_L)\mldelete'(p_L)x,y) \\
             &= (\mlmod{p_L}\dv\mlinsert'(p_L)\mldelete'(p_L)x,y)
@@ -2791,8 +2794,8 @@ $n_L=|x|$, and $n_R=|y|$ in the following.
     $v=\ml{lefts}(z)_{p_L}=x_{p_L}$. Hence $\dz'\;(x,y)$ is defined.
 
     We now observe that $\mlmod p{\mlstayl\dv}$ does not change any tags or
-    any non-$\ml{inl}$ values, so $\ml{map}_{\ml{tagof}}(\dz\;z) =
-    \ml{map}_{\ml{tagof}}(z) = c$ and $\ml{rights}(\dz\;z) = \ml{rights}(z)
+    any non-$\ml{inl}$ values, so $\map_{\ml{tagof}}(\dz\;z) =
+    \map_{\ml{tagof}}(z) = c$ and $\ml{rights}(\dz\;z) = \ml{rights}(z)
     = y$. Furthermore:
     \begin{align*}
         \ml{lefts}(\dz\;z)
@@ -2827,10 +2830,10 @@ $n_L=|x|$, and $n_R=|y|$ in the following.
 \\
         c' &= c\replicate iL
     \end{align*}
-    Now, since $\ml{map}$ is a list homomorphism, we have:
+    Now, since \map is a list homomorphism, we have:
     \begin{align*}
-        \ml{map}_\ml{tagof}(\dz\;z)
-            &= \ml{map}_\ml{tagof}(z)\ml{map}_\ml{tagof}\left(\replicate i{\mlinl{\init_X}}\right) \\
+        \map_\ml{tagof}(\dz\;z)
+            &= \map_\ml{tagof}(z)\map_\ml{tagof}\left(\replicate i{\mlinl{\init_X}}\right) \\
             &= c\replicate iL \\
             &= c'
     \end{align*}
@@ -2845,7 +2848,7 @@ $n_L=|x|$, and $n_R=|y|$ in the following.
     \end{align*}
     These latter two computations amount to showing that
     \dissdis\dz'(x,y)=(\ml{lefts}(\dz\;z),\ml{right}(\dz\;z))\dissdis which, together with
-    the observation above that $\ml{map}_\ml{tagof}(\dz\;z)=c'$, shows that
+    the observation above that $\map_\ml{tagof}(\dz\;z)=c'$, shows that
     $\dputr_g$ preserves consistency in this case.
 
 \item {\bf Case \markref{rdel}:}
@@ -2915,10 +2918,10 @@ $n_L=|x|$, and $n_R=|y|$ in the following.
     consistent with $\dz\;z$.
 
     \begin{align}
-        \ml{map}_{\ml{tagof}}(\dz\;z)
-            &= \ml{map}_{\ml{tagof}}(z_{f(n)(1)}\cdots z_{f(n)(n)})
+        \map_{\ml{tagof}}(\dz\;z)
+            &= \map_{\ml{tagof}}(z_{f(n)(1)}\cdots z_{f(n)(n)})
             \label{eq:reorder-z} \\
-            &= \ml{map}_{\ml{tagof}}(z)_{f(n)(1)}\cdots\ml{map}_{\ml{tagof}}(z)_{f(n)(n)}
+            &= \map_{\ml{tagof}}(z)_{f(n)(1)}\cdots\map_{\ml{tagof}}(z)_{f(n)(n)}
             \label{eq:float-index} \\
             &= c_{f(n)(1)} \cdots c_{f(n)(n)}
             \label{eq:def-c} \\
@@ -2928,7 +2931,7 @@ $n_L=|x|$, and $n_R=|y|$ in the following.
 
     Equation~\ref{eq:reorder-z} follows by definition of edit application in
     the list module (and because $|z|=|c|=n$); equation~\ref{eq:float-index}
-    is a special property of $\ml{map}$; equation~\ref{eq:def-c} by
+    is a special property of \map; equation~\ref{eq:def-c} by
     definition of $c$; and equation~\ref{eq:def-reorder} by the definition
     of $\ml{reorder}$'s edit application.
 
@@ -2997,9 +3000,9 @@ the size of $\dx$.
 
 \item {\bf Case \markref{lins}:} We compute:
     \begin{align*}
-        \ml{map}_{\ml{tagof}}(\dz\;z)
-            &= \ml{map}_{\ml{tagof}}(z \replicate i{\init_{X \oplus Y}}) \\
-            &= \ml{map}_{\ml{tagof}}(z)\ml{map}_{\ml{tagof}}(\replicate i{\init_{X \oplus Y}}) \\
+        \map_{\ml{tagof}}(\dz\;z)
+            &= \map_{\ml{tagof}}(z \replicate i{\init_{X \oplus Y}}) \\
+            &= \map_{\ml{tagof}}(z)\map_{\ml{tagof}}(\replicate i{\init_{X \oplus Y}}) \\
             &= c\replicate iL \\
             &= \mlinsert(i)\;c \\
             &= c'

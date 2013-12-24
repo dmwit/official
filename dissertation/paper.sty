@@ -63,16 +63,20 @@
 \newcommand{\mlinr}{}
 \mlinjnoargs
 \ifdelta
-    \newcommand{\CONS}{}
+    \newcommand{\CONS}{\,}
     \newcommand{\LIST}{^*}
     \newcommand{\NIL}{\varepsilon}
     \newcommand{\blist}{}
+    \newcommand{\clist}{\cdots}
+    \newcommand{\mlist}{\,}
     \newcommand{\elist}{}
 \else
     \newcommand{\CONS}{\mathord{:}}
     \newcommand{\LIST}{^\star}
     \newcommand{\NIL}{\left<\right>}
     \newcommand{\blist}{\left<}
+    \newcommand{\clist}{,\ldots,}
+    \newcommand{\mlist}{,}
     \newcommand{\elist}{\right>}
 \fi
 % }}}
@@ -124,7 +128,7 @@
 \newcommand{\CONCRETELIST}[1]{\left<#1\right>}
 \newcommand{\cond}[1]{\left\{\begin{array}{ll}#1\end{array}\right.}
 \newcommand{\const}{\mathit{term}}
-\newcommand{\constU}{\mathit{const}}
+\newcommand{\constU}{\ml{const}}
 \newcommand{\countlens}{\mathit{count}}
 \newcommand{\CREATE}{\ensuremath{\acreate}\xspace}
 \newcommand{\createl}{\mathit{createl}}
@@ -213,8 +217,8 @@
 \newcommand{\live}{\ml{live}}
 \newcommand{\lolcat}[1]{\includegraphics[width=1cm]{images/#1.jpg}}
 \newcommand{\lolcattagsdef}[1]{\lolcattags{(root.north -| #1.east) +(4,0)}}
-\newcommand{\map}{\ensuremath{\mathit{map}}\xspace}
-\newcommand{\mapU}{\ensuremath{\mathit{map}_U}\xspace}
+\newcommand{\map}{\ensuremath{\ml{map}}\xspace}
+\newcommand{\mapU}{\ensuremath{\ml{map}_U}\xspace}
 \newcommand{\mdomain}[1]{\mathit{dom}(#1)}
 \newcommand{\mh}[1]{\finish{MH: #1}}
 \newcommand{\ml}[1]{\mathsf{#1}}
@@ -349,7 +353,7 @@
 \newcommand{\upclose}[2]{\llbracket #1 \rrbracket_{#2}}
 \newcommand{\x}{\mathbf x}
 \newcommand{\y}{\mathbf y}
-\newcommand{\zip}{\ensuremath{\mathit{zip}}\xspace}
+\newcommand{\zip}{\ensuremath{\ml{zip}}\xspace}
 \renewcommand{\d}{\textrm{d}}
 \newenvironment{diagram}[1][]{\begin{center}\begin{tikzpicture}[#1]}{\end{tikzpicture}\end{center}}
 \newenvironment{functoriality}{\begin{pflike}{Proof of functoriality}}{\end{pflike}}
