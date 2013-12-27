@@ -12,31 +12,81 @@ syntax, and how they relate
 % \left<a,...,b\right>; and the whole \lens vs. \dlens thing)
 % (note to self: corrected the list notation stuff in the edit lens section
 % up to lemma 3.3.25 (``When $1 \le p \le n+1$: \[\mlinsert'(p) ...\]'')
+\paragraph*{Naming}
+When naming a set, we will make the choices that follow (perhaps appending a
+subscript or prime) unless there is a compelling local reason to choose
+another name:
 \begin{itemize}
-    \item $S$ and $V$ for the source and view of asymmetric lenses
-    \item $V$, $W$, $X$, $Y$, $Z$ for symmetric lens repositories
-    \item $C$ for complement sets
-    \item lower case letters for members of upper case letters
-    \item $\DX$, $\DY$, $\DZ$, etc. for sets of edits to $X$, $Y$, $Z$, etc.
-    \item $\dx$, etc. for members of $\DX$, etc.
-    \item $\ml{sans}$ for code; \texttt{typewriter} for data;
-        \textsc{SmallCaps} for law names
-    \item $X\LIST$ for the set of lists with elements drawn from $X$;
-        $X\INFTY$ for the set of infinite lists with elements drawn from $X$
-    \item $\NIL$ for empty lists, $x \CONS t$ for the list that starts with
-        $x$ and ends with $t$, $\left<x_1,\ldots,x_n\right>$ for the
-        length-$n$ list with value $x_i$ in the $i$th element; will often
-        use the variable with no subscript to denote the whole list
-    \item we conflate elements $v$ and single-element lists $\blist v
-        \elist$ when it is clear from context
-    \item $|x|$ is the length of the list $x$
-    \item $x[i\mapsto v]$ is
-        $\left<x_1,\ldots,x_{i-1},v,x_{i+1},\ldots,x_n\right>$
-    \item $\unit$ for the single element of the singleton set $\Unit$
-    \item record syntax for lens definitions/uses
-    \item $A \to B$ vs. $A \lens B$ vs. $A \alens B$ vs. $A \cmaint B$ vs. $A \dlens B$
-    \item \emph{repository}: a collection of data
+    \item $S$ and $V$ for the source and view of asymmetric lenses,
+    \item $V$, $W$, $X$, $Y$, $Z$ for the values synchronized by symmetric
+        lenses,
+    \item and $C$ for complement sets.
 \end{itemize}
+If we need a set of edits for a named set, its default name is formed by
+prepending $\D$; for example, $\DX$ is the set of edits to values of type
+$X$. Set members will be named with lower case letters that match the set
+name; for example, $x \in X$ or $s \in S$. The lower case version of $\D$ is
+$\d$; for example, $\dx \in \DX$. Lenses are named $k$, $\ell$, $m$, and
+$n$.
+
+\paragraph*{Lists}
+We use $X\LIST$ to denote the set of lists with elements drawn from $X$. A
+length $n$ list with $x_i$ in the $i$th position is written $\blist x_1
+\clist x_n \elist$. A notable special case of this is $\NIL$, the empty
+list. We will also use $x \CONS t$ to denote the list whose first element
+is $x$ and whose remaining elements are in $t$. When there is only one list
+involved in the nearby discussion, we will use $n$ to denote the length of
+that list; otherwise, the notation $|x|$ gives the length of list $x$. To
+avoid clutter, we will write singleton lists $\blist x \elist$ simply as $x$
+when it is clear from context both that $x$ is a list element and that we
+expect a list, not an element. If there is a list $\blist x_1 \clist x_n
+\elist$ (with exactly the subscripts $1$ through $n$), we will also denote
+this list simply by $x$ with no subscript. We will write $x[i \mapsto v]$
+for the list $x$ with index $i$ replaced by element $v$, that is,
+\[x[i \mapsto v] = \blist x_1 \clist x_{i-1} \mlist v \mlist x_{i+1} \clist
+x_n \elist.\]
+
+We will also need to deal with infinite lists, which we denote $X\INFTY$
+when the elements are drawn from $X$. The infinite list with $x_i$ in the
+$i$th position is written $\blist x_1 \ilist$, and the infinite list
+where there is a single element $x$ in every position is written $x\INFTY$.
+As with finite lists, $x \CONS t$ denotes the infinite list whose first
+element is $x$ and whose remaining elements are in $t$.
+
+\paragraph*{Miscellaneous notation}
+We will use \rn{CamelCasedSmallCaps} for the names of behavioral laws; a
+\texttt{monospaced font} for data; and a $\ml{sans\ serif\ font}$ for code
+and globally-scoped defined values. We name the canonical single-element set
+and its single element by the definition $\Unit=\{\unit\}$. When defining
+and using lenses and similar structures, we will use record notation; for
+example, $\ell.\aget$ is the \GET component of lens $\ell$. We deal with
+many variations on functions in this document; Table~\ref{tab:arrows}
+summarizes them. We will use the term \emph{repository} to refer to an
+entity that contains a piece of data being kept in synch with another
+repository via a lens. (Thus, for example, a computer program might have two
+ref cells containing different representations of a piece of data and a lens
+that reads and writes to those cells; the cells themselves are
+``repositories'', while the values contained in the cells are repository
+values and have types that match the lens' type.)
+\begin{table}
+    \centering
+    % If we just use \begin{tabular}{c|l} in the obvious way, the notation
+    % column comes out looking a bit ragged. So we work a bit harder to make
+    % sure the arrows line up with each other by giving them their own
+    % column.
+    \begin{tabular}{r@{}c@{}l|l}
+        \multicolumn{3}{l|}{Notation} & Meaning \\
+        \hline
+        $A$ & ${}\to       {}$ & $B$ & normal functions from $A$ to $B$ \\
+        $A$ & ${}\partialto{}$ & $B$ & partial functions from $A$ to $B$ \\
+        $S$ & ${}\alens    {}$ & $V$ & asymmetric, state-based lenses connecting $S$ and $V$ \\
+        $X$ & ${}\cmaint   {}$ & $Y$ & constraint maintainers connecting $X$ and $Y$ \\
+        $X$ & ${}\lens     {}$ & $Y$ & symmetric, state-based lenses connecting $X$ and $Y$ \\
+        $X$ & ${}\dlens    {}$ & $Y$ & (symmetric) edit lenses connecting $X$ and $Y$
+    \end{tabular}
+    \caption{Function and lens types}
+    \label{tab:arrows}
+\end{table}
 
 \section{Asymmetric Lenses}
 \label{sec:asymmetric-lenses}
