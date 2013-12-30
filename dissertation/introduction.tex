@@ -1,9 +1,32 @@
-TODO: bidirectional programming is advantageous because it is concise (one
-iteration only) and has proven synchronization laws
-% TODO: introduce jargon like ``repository'' and friends in here
+Recent years have seen increased interest in the area of bidirectional
+programming. Broadly speaking, the problem domain involves maintaining a
+connection between two different representations of otherwise very similar
+information. The strong connections between an in-memory representation of a
+data structure and its serialized form; a piece of source code and its
+parsed abstract syntax tree~\cite{rendel2010invertible}; tool-specific
+configuration formats and a common configuration format~\cite{Augeas}; a
+database and some particular summary of interest; or two distant but
+partially replicated computers~\cite{pierce2004unison} are all examples of
+areas where two pieces of data are very similar. In all cases, one would
+like the two pieces of data to stay ``in synch'': modifications to one piece
+should be propagated and reflected in the other.
 
-TODO: perhaps we'd like a little discussion about the roles of semantics and
-syntax, and how they relate
+At the moment, one common way of tackling this problem is to design by hand
+two programs that work together. Calling the two pieces of data $A$ and $B$,
+the first program translates updates to $A$ into updates to $B$, and the
+second translates in the other direction, turning updates to $B$ into
+updates to $A$. (Taking the example of connecting a piece of source code and
+its abstract syntax tree from above, these two programs might be a parser
+and a pretty-printer.) However, this approach is messy and error-prone, and
+it can be difficult to extract behavioral guarantees that the two programs
+work together in appropriate ways. The goal of bidirectional programming
+language design, then, is to create a language in which each term can be
+interpreted in two ways and which makes it easy to prove that the two
+different interpretations work together appropriately.
+
+Before we introduce \emph{lenses}---one family of language-based approaches
+to the bidirectional problem---we will establish some conventions that will
+ease the discussion.
 
 \section{Notation and Conventions}
 % TODO: enforce these conventions (in particular, the list notation
