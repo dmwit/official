@@ -152,8 +152,40 @@ the \CREATE component of Figure~\ref{fig:asymmetric-lens-def}.
     \label{fig:asymmetric-lens-def}
 \end{figure}
 
-% TODO: there is no discussion of the laws at all!!!
-% TODO: asymmetric lenses needed to mature to add functionality
+Lenses have one more piece, which was alluded to above. The structure we
+have described so far already addresses the need to give two interpretations
+(namely \GET and \PUT), but does not yet address our desire to prove that
+these two interpretations work well together. Let us first try to build an
+intuition for what ``works well together'' might mean before we formalize
+this. Suppose we have a lens $\ell$; to simplify things, we will take
+$\ell.\aget$ to be unassailable and phrase all our desires in terms of
+constraints on $\ell.\aput$. It is natural to expect two things from our
+lens: first, that $\ell.\aput$ changes enough---that whatever change
+we make to the view is faithfully reflected in the source so that future
+calls to $\ell.\aget$ give exactly the value we changed the view to---and
+that $\ell.\aput$ does not change too much---that only the parts of the
+source that are used to compute the view are modified. The \rn{PutGet} law
+of Figure~\ref{fig:asymmetric-lens-def} formalizes the expectation that
+$\ell.\aput$ changes enough; the \rn{GetPut} law takes a step toward
+formalizing the expectating that $\ell.\aput$ does not change
+enough\footnote{To be precise, it actually only guarantees that unmodified
+views result in unmodified sources. It is very hard to come up with a better
+generic guarantee than this within the asymmetric, state-based lens
+framework, but Chapter~\ref{chap:delta} takes a step towards better
+guarantees.}. There is a third law, \rn{CreateGet}, which serves a similar
+purpose to the \rn{PutGet} law. Collectively, these behavioral laws are
+often also called \emph{roundtrip laws}: another way to read them is that in
+a given ``round trip'' through the lens the repository returns to exactly
+the same state it started at.
+% violating GetPut but satisfying PutGet:
+%     get(x,y) = x
+%     put(x',(x,y)) = (x',3)
+% violating PutGet but satisfying GetPut:
+%     get(x) = x
+%     put(x', x) = x + 2*(x'-x)
+
+In the remaining sections, we explore some scenarios which are challenges
+for the asymmetric, state-based lenses described here.
 
 \section{Alignment}
 \label{sec:intro-alignment}
