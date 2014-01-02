@@ -29,6 +29,7 @@ to the bidirectional problem---we will establish some conventions that will
 ease the discussion.
 
 \section{Notation and Conventions}
+\label{sec:notation}
 % TODO: enforce these conventions (in particular, the list notation
 % convention is probably egregiously violated in the edit lens stuff, which
 % I think used \varepsilon and a...b instead of \left<\right> and
@@ -113,34 +114,24 @@ match the lens' type.
 
 \section{Asymmetric Lenses}
 \label{sec:asymmetric-lenses}
-\begin{itemize}
-    \item Asymmetric Lenses
-        \begin{itemize}
-            \item Define what an asymmetric lens is and how its used
-            \item This was the initial approach to lenses
-            \item Asymmetric lenses needed to mature to add functionality
-        \end{itemize}
-\end{itemize}
-
 One well-studied approach to bidirectional programming, summarized in
 Figure~\ref{fig:asymmetric-lens-def}, is the framework of \emph{asymmetric},
 \emph{state-based} lenses. (A thorough review of this work is available
 elsewhere~\cite{FosterThesis}.) In this model, one of the two repositories is a
 \emph{view} of or \emph{query} on the other: that is, it can be completely
-reconstructed from the other without additional outside information.
-The \GET component of a lens (together with the \rn{PutGet} law,
-which we discuss below) reflects this assumption.
-In most cases, a query will keep only some of the information available in
-the source; as a result, the opposite reconstruction property---that the
-source can be completely reconstructed from the view---usually does not
-hold. Asymmetric, state-based lenses handle this situation by allowing their
-other major function component to have access to both a modified value from
-the view repository \emph{and} an original value from the source repository
-to merge the new data into, as reflected in the type of \PUT. As a technical
-detail, it is sometimes convenient to demand (and rarely difficult to
-supply) a way to generate a value in the source repository with some sane
-defaults. This is the \CREATE component of
-Figure~\ref{fig:asymmetric-lens-def}.
+reconstructed from the other without additional outside information.  The
+\GET component of a lens (together with the \rn{PutGet} law, which we
+discuss below) reflects this assumption. In most cases, a query will keep
+only some of the information available in the source; as a result, the
+opposite reconstruction property---that the source can be completely
+reconstructed from the view---usually does not hold. Asymmetric, state-based
+lenses handle this situation by allowing their other major function
+component to have access to both a modified value from the view repository
+\emph{and} an original value from the source repository to merge the new
+data into, as reflected in the type of \PUT. As a technical detail, it is
+sometimes convenient to demand (and rarely difficult to supply) a way to
+generate a value in the source repository with some sane defaults. This is
+the \CREATE component of Figure~\ref{fig:asymmetric-lens-def}.
 \begin{figure}
     \begin{minipage}{0.3333333\linewidth}
         \begin{align*}
@@ -162,6 +153,7 @@ Figure~\ref{fig:asymmetric-lens-def}.
 \end{figure}
 
 % TODO: there is no discussion of the laws at all!!!
+% TODO: asymmetric lenses needed to mature to add functionality
 
 \section{Alignment}
 \label{sec:intro-alignment}
@@ -776,6 +768,7 @@ will need to use similar tricks; so, for the theory to faithfully model such
 a tool, it must model not just repository states but also repository edits
 and how they affect the states.
 
+\dmwit{should there be a section on syntax?}
 \section{Contributions}
 \label{sec:intro-contributions}
 This document espouses a ``from-scratch'' effort to rebuild the lens
@@ -820,4 +813,4 @@ of implementing these lenses results in a lens which operates on relatively
 small descriptions of what has changed rather than on large repositories,
 which addresses some of the size issues raised above.
 
-% TODO: add a sentence or two about chapters 4 and on
+% TODO: add a sentence or two about chapters 4 and on, once they're written
