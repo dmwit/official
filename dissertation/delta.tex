@@ -2535,26 +2535,27 @@ The only tricky part of this proof is evaluating $\ml{cycle}_p(n)$:
 \end{align*}
 If $p=n$, then neither of the first two conditions in the definition of
 $\ml{cycle}$ will ever be true, so $\ml{cycle}_p(n)(m)=m$, making the
-evaluation given in these equations a special case where the $v_{p+1}\cdots
-v_{n-1}$ interval is empty and $v_p=v_n$. On the other hand, when $p<n$, the
-evaluation of $\ml{cycle}_p(n)$ is exactly in the form given here.
+evaluation given in these equations a special case where the interval from
+$p+1$ to $n-1$ is empty and $v_p=v_n$. On the other hand, when $p<n$, the
+value of $\ml{cycle}_p(n)$ is exactly in the form given here.
 \end{proof}
 
 \begin{lemma}
 \label{lemma:high-level-insert}
 When $1 \le p \le n+1$:
-\[\mlinsert'(p) \odot v_1 \cdots v_n = v_1 \cdots v_{p-1} \init\,v_p \cdots v_n\]
+\[\mlinsert'(p) \odot \blist v_1 \clist v_n \elist =
+    \blist v_1 \clist v_{p-1} \mlist \init \mlist v_p \clist v_n \elist\]
 \end{lemma}
 
 \begin{proof} Set $v_{n+1}=\init$ so that:
 \begin{align*}
     \mlinsert'(p) \odot v_1 \cdots v_n
-        &= \mlreorder{\lambda n.\ \ml{cycle}_p(n)^{-1}}\mlins 1 \odot v_1 \cdots v_n \\
-        &= \mlreorder{\lambda n.\ \ml{cycle}_p(n)^{-1}} \odot v_1 \cdots v_n\init \\
-        &= \mlreorder{\lambda n.\ \ml{cycle}_p(n)^{-1}} \odot v_1 \cdots v_{n+1} \\
-        &= v_{\ml{cycle}_p(n+1)^{-1}(1)} \cdots v_{\ml{cycle}_p(n+1)^{-1}(n+1)} \\
-        &= v_1 \cdots v_{p-1} v_{n+1} v_p \cdots v_n \\
-        &= v_1 \cdots v_{p-1} \init\,v_p \cdots v_n
+        &= \mlreorder{\lambda n.\ \ml{cycle}_p(n)^{-1}}\mlins 1 \odot \blist v_1 \clist v_n \elist \\
+        &= \mlreorder{\lambda n.\ \ml{cycle}_p(n)^{-1}} \odot \blist v_1 \clist v_n\mlist\init\elist \\
+        &= \mlreorder{\lambda n.\ \ml{cycle}_p(n)^{-1}} \odot \blist v_1 \clist v_{n+1} \elist \\
+        &= \blist v_{\ml{cycle}_p(n+1)^{-1}(1)} \clist v_{\ml{cycle}_p(n+1)^{-1}(n+1)} \elist \\
+        &= \blist v_1 \clist v_{p-1} \mlist v_{n+1} \mlist v_p \clist v_n \elist \\
+        &= \blist v_1 \clist v_{p-1} \mlist \init \mlist v_p \clist v_n \elist
 \end{align*}
 As with Lemma~\ref{lemma:high-level-delete}, the only tricky part is arguing
 that this evaluation of $\ml{cycle}_p$ is correct, and the argument is
@@ -2579,24 +2580,24 @@ the base case, $v=\NIL$, and:
         &= \ml{lefts}(\NIL)\ml{lefts}(w) \\
         &= \ml{lefts}(v)\ml{lefts}(w)
 \end{align*}
-Otherwise, $v=v_1v'$, we know from the induction hypothesis that
+Otherwise, $v=v_1 \CONS v'$, we know from the induction hypothesis that
 $\ml{lefts}(v'w)=\ml{lefts}(v')\ml{lefts}(w)$, and by case analysis either
 $v_1=\mlinl x$ or $v_1=\mlinr y$. In the former case:
 \begin{align*}
     \ml{lefts}(vw)
-        &= \ml{lefts}(\mlinl xv'w) \\
-        &= x\ml{lefts}(v'w) \\
-        &= x\ml{lefts}(v')\ml{lefts}(w) \\
-        &= \ml{lefts}(\mlinl xv')\ml{lefts}(w) \\
+        &= \ml{lefts}(\mlinl x \CONS v'w) \\
+        &= x\CONS\ml{lefts}(v'w) \\
+        &= x\CONS\ml{lefts}(v')\ml{lefts}(w) \\
+        &= \ml{lefts}(\mlinl x \CONS v')\ml{lefts}(w) \\
         &= \ml{lefts}(v)\ml{lefts}(w)
 \end{align*}
 In the latter:
 \begin{align*}
     \ml{lefts}(vw)
-        &= \ml{lefts}(\mlinr yv'w) \\
+        &= \ml{lefts}(\mlinr y \CONS v'w) \\
         &= \ml{lefts}(v'w) \\
         &= \ml{lefts}(v')\ml{lefts}(w) \\
-        &= \ml{lefts}(\mlinr yv')\ml{lefts}(w) \\
+        &= \ml{lefts}(\mlinr y \CONS v')\ml{lefts}(w) \\
         &= \ml{lefts}(v)\ml{lefts}(w)
 \end{align*}
 \end{proof}
@@ -2611,13 +2612,14 @@ then $\mlinr{\ml{rights}(v)_{p'}}=v_p$.
 \end{lemma}
 
 \begin{proof}
-Suppose there are $n_L$ copies of $L$ and $n_R$ copies of $R$ in $c_1 \cdots
-c_{p-1}$ and $p \le n+1$. Then it is easy to show (by induction on $c$) that
-$\ml{count}(p,c_1 \cdots c_n)=(1+n_L,1+n_R)$. Inspecting the definition of
-$\mliso$, it is therefore clear that $\mliso(c)(p)=\mlinl{p'}$ exactly when
-$c_p=L$ and there are $p'$ copies of $L$ in $c_1 \cdots c_p$. This implies
-there are exactly $p'$ elements tagged $\ml{inl}$ in $v_1 \cdots v_p$ (and
-that $v_p$ itself is tagged $\ml{inl}$), hence that
+Suppose there are $n_L$ copies of $L$ and $n_R$ copies of $R$ in $\blist c_1
+\clist c_{p-1} \elist$ and $p \le n+1$. Then it is easy to show (by
+induction on $c$) that $\ml{count}(p,\blist c_1 \clist c_n
+\elist)=(1+n_L,1+n_R)$. Inspecting the definition of $\mliso$, it is
+therefore clear that $\mliso(c)(p)=\mlinl{p'}$ exactly when $c_p=L$ and
+there are $p'$ copies of $L$ in $\blist c_1 \clist c_p \elist$. This implies
+there are exactly $p'$ elements tagged $\ml{inl}$ in $\blist v_1 \clist v_p
+\elist$ (and that $v_p$ itself is tagged $\ml{inl}$), hence that
 $\mlinl{\ml{lefts}(v)_{p'}}=v_p$.
 
 The argument that $\mliso$ is coherent with $\ml{rights}$ is similar.
@@ -2643,6 +2645,9 @@ show that $\dputr_g$ and $\dputl_g$ respect $K$; since $\dputr$ and $\dputl$
 are defined by specification from these, the fact that they respect $K$
 follows by induction on the number of atomic edits they are handed.
 
+% TODO: perhaps this question can help get the cases below sorted correctly
+% in both the dissertation and journal versions
+% http://tex.stackexchange.com/questions/6988/how-to-sort-an-alphanumeric-list
 First we show that $\dputr_g$ respects $K$. We are given some $(z,c,(x,y))
 \in K$ and some $\dz \in G^{\mathrm{list}}_{X \oplus Y}$ such that $\dz\;z$
 is defined. By the definition of $K$, we know
