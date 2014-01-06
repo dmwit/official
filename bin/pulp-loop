@@ -1,3 +1,4 @@
 #!/bin/sh
 
+(sleep 1; touch paper.log) &
 watch 'inotifywait -qqe close_write paper.log && pulp paper.log'
