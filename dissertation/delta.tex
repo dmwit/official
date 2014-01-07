@@ -2626,8 +2626,8 @@ The argument that $\mliso$ is coherent with $\ml{rights}$ is similar.
 \end{proof}
 
 \begin{theorem}
-The $\partition$ defined in \partitionfigures is indeed a symmetric edit
-lens.
+The $\partition$ operation defined in \partitionfigures is indeed a
+symmetric edit lens.
 \label{goodlens:partition}
 \end{theorem}
 
@@ -2645,21 +2645,11 @@ show that $\dputr_g$ and $\dputl_g$ respect $K$; since $\dputr$ and $\dputl$
 are defined by specification from these, the fact that they respect $K$
 follows by induction on the number of atomic edits they are handed.
 
-% TODO: perhaps this question can help get the cases below sorted correctly
-% in both the dissertation and journal versions
-% http://tex.stackexchange.com/questions/6988/how-to-sort-an-alphanumeric-list
-First we show that $\dputr_g$ respects $K$. We are given some $(z,c,(x,y))
-\in K$ and some $\dz \in G^{\mathrm{list}}_{X \oplus Y}$ such that $\dz\;z$
-is defined. By the definition of $K$, we know
-\begin{align*}
-    c &= \map_{\ml{tagof}}(z) \\
-    x &= \ml{lefts}(z) \\
-    y &= \ml{rights}(z).
-\end{align*}
-We can define $(\dz',c')=\dputr_g(\dz,c)$; then we must show
-that $\dz'(x,y)$ is defined and that $(\dz\;z,c',\dz'(x,y)) \in
-K$. We proceed by induction on the size of $\dz$. We will define $n=|z|$,
-$n_L=|x|$, and $n_R=|y|$ in the following.
+\newcommand{\partitiondputrproof}{
+We are given some $\dz \in G^{\mathrm{list}}_{X \oplus Y}$ such that
+$\dz\;z$ is defined. We can define $(\dz',c')=\dputr_g(\dz,c)$; then we
+must show that $\dz'(x,y)$ is defined and that $(\dz\;z,c',\dz'(x,y)) \in
+K$. We proceed by induction on the size of $\dz$.
 \begin{trivlist}
 \item {\bf Case \markref{rmodbigp}:}
     $\dv \in X \oplus Y$ and $\dz=\mlmod p\dv$ and $p > |c|$.
@@ -2988,14 +2978,14 @@ $n_L=|x|$, and $n_R=|y|$ in the following.
     is immediately contradicted.
 
 \end{trivlist}
-
-We now show that $\dputl_g$ respects $K$. We will give the proofs for atomic
-edits of the form $\mlonl\dx$; the proofs for edits of the form $\mlonr\dy$
-are similar. We take some $(z,c,(x,y)) \in K$ and define $n,n_L,n_R$ as
-before. Choose $\dx \in G^{\mathrm{list}}_X$ such that $\dx\;x$ is defined.
-We define $(\dz,c')=\dputl_g(\mlonl\dx,c)$ and must show that $\dz\;z$ is
-defined and that $(\dz\;z,c',(\dx\;x,y)) \in K$. We proceed by induction on
-the size of $\dx$.
+}
+\newcommand{\partitiondputlproof}{
+We will give the proofs for atomic edits of the form $\mlonl\dx$; the proofs
+for edits of the form $\mlonr\dy$ are similar. Choose $\dx \in
+G^{\mathrm{list}}_X$ such that $\dx\;x$ is defined. We define
+$(\dz,c')=\dputl_g(\mlonl\dx,c)$ and must show that $\dz\;z$ is defined and
+that $(\dz\;z,c',(\dx\;x,y)) \in K$. We proceed by induction on the size of
+$\dx$.
 
 \begin{trivlist}
 
@@ -3052,6 +3042,22 @@ the size of $\dx$.
     this case.
 
 \end{trivlist}
+}
+
+For the two parts of the proof that follow, choose some $(z,c,(x,y)) \in K$.
+We will define $n=|z|$, $n_L=|x|$, and $n_R=|y|$ in the following. By the
+definition of $K$, we know
+\begin{align*}
+    c &= \map_{\ml{tagof}}(z) \\
+    x &= \ml{lefts}(z) \\
+    y &= \ml{rights}(z).
+\end{align*}
+
+First we show that $\ifdissertation\dputl\else\dputr\fi_g$ respects $K$.
+\ifdissertation\partitiondputlproof\else\partitiondputrproof\fi
+
+We  now  show that $\ifdissertation\dputr\else\dputl\fi_g$ respects $K$.
+\ifdissertation\partitiondputrproof\else\partitiondputlproof\fi
 \end{proof}
 
 \fi
