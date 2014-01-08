@@ -63,6 +63,7 @@
 \newcommand{\mlinl}{}
 \newcommand{\mlinr}{}
 \mlinjnoargs
+\newlength{\blistlen}
 \ifdelta
     \newcommand{\CONS}{\,}
     \newcommand{\LIST}{^*}
@@ -72,6 +73,7 @@
     \newcommand{\mlist}{\,}
     \newcommand{\elist}{}
     \newcommand{\ilist}{\cdots}
+    \setlength{\blistlen}{0em}
 \else
     \newcommand{\CONS}{\mathord{:}}
     \newcommand{\LIST}{^\star}
@@ -81,6 +83,7 @@
     \newcommand{\mlist}{,}
     \newcommand{\elist}{\right>}
     \newcommand{\ilist}{,\ldots\right>}
+    \setlength{\blistlen}{0.5em}
 \fi
 % }}}
 \definecolor{bluegray}{rgb}{0.3,0.3,.6}
@@ -319,7 +322,12 @@
 \newcommand{\relR}{\relRx{}}
 \newcommand{\relRx}[1]{\mathrel{R_{#1}}}
 \newcommand{\Rename}{\mathit{rename}}
-\newcommand{\replicate}[2]{\underbrace{#2 \cdots #2}_{#1\ \mbox{\tiny times}}}
+\newcommand{\replicate}[2]{%
+    \hspace{\blistlen}%
+    \underbrace{\hspace{-\blistlen}\blist#2 \clist #2\elist\hspace{-\blistlen}}%
+    _{#1\ \mbox{\tiny times}}%
+    \hspace{\blistlen}%
+}
 \newcommand{\reviewcomment}[1]{\finish{\bf Reviewer: #1}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Rm}{\mathsf{rm}}
