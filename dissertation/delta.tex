@@ -3733,11 +3733,11 @@ quotient by the resulting equivalence relation.} The equations below demand
 that $\ml{left}$ and $\ml{right}$ be monoid homomorphisms, and that they
 commute:
 \begin{align*}
-    \mlleft\ONE &= \NIL \\
-    \mlleft\dx\mlleft{\dx'} &= \mlleft{\dx\dx'} \\
-    \mlright\ONE &= \NIL \\
-    \mlright\dy\mlright{\dy'} &= \mlright{\dy\dy'} \\
-    \mlleft\dx\mlright\dy &= \mlright\dy\mlleft\dx
+    \blist\mlleft\ONE\elist &= \NIL \\
+    \blist\mlleft\dx\mlist\mlleft{\dx'}\elist &= \blist\mlleft{\dx\dx'}\elist \\
+    \blist\mlright\ONE\elist &= \NIL \\
+    \blist\mlright\dy\mlist\mlright{\dy'}\elist &= \blist\mlright{\dy\dy'}\elist \\
+    \blist\mlleft\dx\mlist\mlright\dy\elist &= \blist\mlright\dy\mlist\mlleft\dx\elist
 \end{align*}
 It is not hard to show that the free monoid subject to the above
 equations is isomorphic to the natural monoid product.
@@ -3781,25 +3781,22 @@ lets $\ml{left}$ and $\ml{right}$ commute; the proofs that $\dputr$ treats
 $\ml{right}$ as a monoid homomorphism and that $\dputl_g$ respects all these
 laws are similar.
 
-To show that $\dputr$ respects the law $\mlleft\ONE=\NIL$:
+To show that $\dputr$ respects the law $\blist\mlleft\ONE\elist=\NIL$:
 \begin{align}
-    \dputr(\mlleft\ONE,(c_k,c_\ell))
+    \dputr(\blist\mlleft\ONE\elist,(c_k,c_\ell))
         ={}& \mllet (\dz,c_k')=k.\dputr(\ONE,c_k)\mline \nonumber\\
-           & (\mlleft\dz,(c_k',c_\ell)) \nonumber\\
-        ={}& (\mlleft\ONE,(c_k,c_\ell)) \label{eq:klens} \\
+           & (\blist\mlleft\dz\elist,(c_k',c_\ell)) \nonumber\\
+        ={}& (\blist\mlleft\ONE\elist,(c_k,c_\ell)) \label{eq:klens} \\
         ={}& (\NIL,(c_k,c_\ell)) \label{eq:law} \\
-        ={}& (\ONE,(c_k,c_\ell)) \label{eq:one1} \\
-        ={}& \dputr(\ONE,(c_k,c_\ell)) \nonumber\\
         ={}& \dputr(\NIL,(c_k,c_\ell)) \label{eq:one2}
 \end{align}
 Equation~\ref{eq:klens} follows because $k$ is a lens and hence $k.\dputr$
 is a stateful monoid homomorphism. Equation~\ref{eq:law} follows by
-assumption, and equations~\ref{eq:one1} and~\ref{eq:one2} follow because
-$\ONE=\NIL$ in both modules.
+assumption, and equation~\ref{eq:one2} follows by definition of $\dputr$.
 
 Next we will show that $\dputr$ respects the law
-$\mlleft\dx\mlleft{\dx'}=\mlleft{\dx\dx'}$. It will be convenient to name a
-few things. Pick a state $c_k$ and define:
+$\blist\mlleft\dx\mlist\mlleft{\dx'}\elist=\blist\mlleft{\dx\dx'}\elist$. It
+will be convenient to name a few things. Pick a state $c_k$ and define:
 \begin{align*}
     (\dy',c_k') &= k.\dputr(\dx',c_k) \\
     (\dy,c_k'') &= k.\dputr(\dx,c_k')
@@ -3809,53 +3806,54 @@ homomorphism, we can conclude that:
 \[k.\dputr(\dx\dx',c_k)=(\dy\dy',c_k'')\]
 We may now compute:
 \[\begin{array}{l}
-    \dputr(\mlleft\dx\mlleft{\dx'},(c_k,c_\ell)) \\
+    \dputr(\blist\mlleft\dx\mlist\mlleft{\dx'}\elist,(c_k,c_\ell)) \\
     \qquad=
         \mllet (\dy',(c_k',c_\ell')) = \dputr_g(\mlleft{\dx'},(c_k,c_\ell)) \mline \\
     \qquad{\color{white}={}}
         \mllet (\dy'',(c_k'',c_\ell'')) = \dputr_g(\mlleft\dx,(c_k',c_\ell')) \mline \\
     \qquad{\color{white}={}}
-        (\dy''\dy',(c_k'',c_\ell'')) \\
+        (\blist\dy''\mlist\dy'\elist,(c_k'',c_\ell'')) \\
     \qquad=
         \mllet (\dy'',(c_k'',c_\ell'')) = \dputr_g(\mlleft\dx,(c_k',c_\ell)) \mline \\
     \qquad{\color{white}={}}
-        (\dy''\mlleft{\dy'},(c_k'',c_\ell'')) \\
+        (\blist\dy''\mlist\mlleft{\dy'}\elist,(c_k'',c_\ell'')) \\
     \qquad=
-        (\mlleft\dy\mlleft{\dy'},(c_k'',c_\ell)) \\
+        (\blist\mlleft\dy\mlist\mlleft{\dy'}\elist,(c_k'',c_\ell)) \\
     \qquad=
-        (\mlleft{\dy\dy'},(c_k'',c_\ell)) \\
+        (\blist\mlleft{\dy\dy'}\elist,(c_k'',c_\ell)) \\
     \qquad=
         \dputr_g(\mlleft{\dx\dx'},(c_k,c_\ell)) \\
     \qquad=
-        \dputr(\mlleft{\dx\dx'},(c_k,c_\ell))
+        \dputr(\blist\mlleft{\dx\dx'}\elist,(c_k,c_\ell))
 \end{array}\]
 
 Finally, we show that $\dputr$ respects the law
-$\mlleft\dx\mlright\dy=\mlright\dy\mlleft\dx$. As before, we choose a $c_k$
-and $c_\ell$ and name a few intermediate computations:
+$\blist\mlleft\dx\mlist\mlright\dy\elist=\blist\mlright\dy\mlist\mlleft\dx\elist$.
+As before, we choose a $c_k$ and $c_\ell$ and name a few intermediate
+computations:
 \begin{align*}
     (\dx',c_k') &= k.\dputr(\dx,c_k) \\
     (\dy',c_\ell') &= \ell.\dputr(\dy,c_\ell)
 \end{align*}
 Now we may compute:
 \[\begin{array}{l}
-\dputr(\mlleft\dx\mlright\dy,(c_k,c_\ell)) \\
+\dputr(\blist\mlleft\dx\mlist\mlright\dy\elist,(c_k,c_\ell)) \\
     \qquad=
         \mllet (\dy',(c_k',c_\ell')) = \dputr_g(\mlright\dy,(c_k,c_\ell)) \mline \\
     \qquad{\color{white}={}}
         \mllet (\dx',(c_k'',c_\ell'')) = \dputr_g(\mlleft\dx,(c_k',c_\ell')) \mline \\
     \qquad{\color{white}={}}
-        (\dx'\dy',(c_k'',c_\ell'')) \\
+        (\blist\dx'\mlist\dy'\elist,(c_k'',c_\ell'')) \\
     \qquad=
         \mllet (\dx',(c_k'',c_\ell'')) = \dputr_g(\mlleft\dx,(c_k,c_\ell')) \mline \\
     \qquad{\color{white}={}}
-        (\dx'\mlright{\dy'},(c_k'',c_\ell'')) \\
+        (\blist\dx'\mlist\mlright{\dy'}\elist,(c_k'',c_\ell'')) \\
     \qquad=
-        (\mlleft{\dx'}\mlright{\dy'},(c_k',c_\ell')) \\
+        (\blist\mlleft{\dx'}\mlist\mlright{\dy'}\elist,(c_k',c_\ell')) \\
     \qquad=
-        (\mlright{\dy'}\mlleft{\dx'},(c_k',c_\ell')) \\
+        (\blist\mlright{\dy'}\mlist\mlleft{\dx'}\elist,(c_k',c_\ell')) \\
     \qquad=
-        \dputr(\mlright\dy\mlleft\dx,(c_k,c_\ell))
+        \dputr(\blist\mlright\dy\mlist\mlleft\dx\elist,(c_k,c_\ell))
 \end{array}\]
 The final line follows from the previous one by an argument almost identical
 (but reversed) to the argument showing that the second-to-last line follows
@@ -3873,9 +3871,15 @@ Let $f$ be the isomorphism between $X \otimes \Unit$ and $X$. Similarly, let
 $g$ be the obvious isomorphism between $\Unit \otimes Y$ and $Y$.%
 %
 \iffull
-\footnote{Readers familiar with earlier work on symmetric state-based
+% TODO: replace \color{white} by \phantom everywhere
+\footnote{%
+  \ifdissertation
+  Unlike the analogous state-based lenses from Chapter~\ref{chap:complement},
+  \else
+  Readers familiar with earlier work on symmetric state-based
   lenses~\cite{HofmannPierceWagner10} may observe that, unlike the analogous
-  state-based lenses, these projections are \emph{not} parameterized by an
+  state-based lenses,
+  \fi these projections are \emph{not} parameterized by an
   element of the set that is being projected away. Never fear: this element
   is still available, as the $\init$ value of the appropriate module.
   }
@@ -3909,11 +3913,16 @@ have not explored this possibility fully.
 We can perform a similar process for sum edits. We add the following
 equations:
 \begin{align*}
-    \mlswitch_{jk}(m)\;\mlswitch_{ij}(m') &= \mlswitch_{ik}(m) \\
-    \mlswitch_{ij}(m)\;\mlstay_i(m') &= \mlswitch_{ij}(m) \\
-    \mlstay_j(m)\;\mlswitch_{ij}(m') &= \mlswitch_{ij}(mm') \\
-    \mlstay_i(m)\;\mlstay_i(m') &= \mlstay_i(mm') \\
-    d\;d' &= \fail \qquad \mbox{in all other cases}
+    \blist\mlswitch_{jk}(m)\mlist\mlswitch_{ij}(m')\elist
+        &= \blist\mlswitch_{ik}(m)\elist \\
+    \blist\mlswitch_{ij}(m)\mlist\mlstay_i(m')\elist
+        &= \blist\mlswitch_{ij}(m)\elist \\
+    \blist\mlstay_j(m)\mlist\mlswitch_{ij}(m')\elist
+        &= \blist\mlswitch_{ij}(mm')\elist \\
+    \blist\mlstay_i(m)\mlist\mlstay_i(m')\elist
+        &= \blist\mlstay_i(mm')\elist \\
+    \blist d\mlist d'\elist
+        &= \blist\fail\elist \qquad \mbox{in all other cases}
 \end{align*}
 This explains why we did not originally choose to have just two combinators,
 $\mlswitch_L$ and $\mlswitch_R$, which would be interpreted as ``switch to
@@ -3932,6 +3941,7 @@ equations, and that, if $k$ and $\ell$ are lenses, then
 $(k\oplus\ell).\dputr_g$ and $(k\oplus\ell).\dputl_g$ respect the above
 equations.  \fi
 
+% TODO: \ml{inl} -> \mlinlx ?
 \iffull
 \begin{lemma}
     In the module defined above for sums, $\odot$ respects the above
@@ -3950,33 +3960,33 @@ equations.  \fi
     on $e\odot\mlinl x$ and $e'\odot\mlinl x$.
 
     \[\begin{array}{l}
-        \mlswitchll m\mlswitchll{m'} \odot \mlinl x \\
-        \qquad= \mlswitchll m\odot \mlinl{m'\odot \init} \\
+        \blist\mlswitchll m\mlist\mlswitchll{m'}\elist \odot \mlinl x \\
+        \qquad= \blist\mlswitchll m\elist\odot \mlinl{m'\odot \init} \\
         \qquad= \mlinl{m \odot \init} \\
-        \qquad= \mlswitchll{m} \odot \mlinl x
+        \qquad= \blist\mlswitchll{m}\elist \odot \mlinl x
     \end{array}\]
 
     \begin{align*}
-        \mlswitchll m\mlstayl{m'} \odot \mlinl x
-            &= \mlswitchll m \odot \mlinl{m'\odot x} \\
+        \blist\mlswitchll m\mlist\mlstayl{m'}\elist \odot \mlinl x
+            &= \blist\mlswitchll m\elist \odot \mlinl{m'\odot x} \\
             &= \mlinl{m \odot \init} \\
-            &= \mlswitchll m \odot \mlinl x
+            &= \blist\mlswitchll m\elist \odot \mlinl x
     \end{align*}
 
     \begin{align*}
-        \mlstayl m\mlswitchll{m'} \odot \mlinl x
-            &= \mlstayl m \odot \mlinl{m' \odot \init} \\
+        \blist\mlstayl m\mlist\mlswitchll{m'}\elist \odot \mlinl x
+            &= \blist\mlstayl m\elist \odot \mlinl{m' \odot \init} \\
             &= \mlinl{m \odot m' \odot \init} \\
             &= \mlinl{mm' \odot \init} \\
-            &= \mlswitchll{mm'} \odot \mlinl x
+            &= \blist\mlswitchll{mm'}\elist \odot \mlinl x
     \end{align*}
 
     \begin{align*}
-        \mlstayl m\mlstayl{m'} \odot \mlinl x
-            &= \mlstayl m \odot \mlinl{m' \odot x} \\
+        \blist\mlstayl m\mlist\mlstayl{m'}\elist \odot \mlinl x
+            &= \blist\mlstayl m\elist \odot \mlinl{m' \odot x} \\
             &= \mlinl{m \odot m' \odot x} \\
             &= \mlinl{mm' \odot x} \\
-            &= \mlstayl{mm'} \odot \mlinl x
+            &= \blist\mlstayl{mm'}\elist \odot \mlinl x
     \end{align*}
 \end{proof}
 
@@ -4055,7 +4065,7 @@ $(f_{12},c_{12}) = \dputr(e_2e_1,c_0)$.
 \nextcase{$e_1=\mlswitch_{hi}(\dx'),e_2=\mlswitch_{ij}(\dx)$} We have
             $e_2e_1=\mlswitch_{hj}(\dx)$. Since we consider only non-failing
             cases, we know $u(c_0)=h$---that is to say, the complement and the
-            edit are consistent, i.e.,
+            edit are consistent, and
             we are translating a ``sensible'' edit. We know two
             things: first, $f_1 = \mlswitch_{hi}(\dy')$ for some $\dy'$, and
             second, $u(c_1)=i$. From there, we can define
@@ -4182,7 +4192,7 @@ as follows:
 \iffull \item \else (2) \fi $(\partial_{xy}\ell).\missing = \ell.\smissing$;
 \iffull \item \else (3) \fi $(\partial_{xy}
 \ell).\dputr(\NIL,c)=(\NIL,c)$; 
-\iffull \item \else (4) \fi $(\partial_{xy} \ell).\dputr(xw,c)=(yv,c'')$ where
+\iffull \item \else (4) \fi $(\partial_{xy} \ell).\dputr(x\CONS w,c)=(y\CONS v,c'')$ where
   $(\partial_{xy}\ell).\dputr(w,c)=(v,c')$ and $\ell.\putr(x,c')=(y,c'')$;
 \iffull \item \else (5) \fi analogous definitions for $\dputl$; and
 \iffull \item \else (6) \fi $K = \{(x,c,y) \mid \ell.\putr(x,c)=(y,c)\}$%
@@ -4223,8 +4233,8 @@ must show that computing $\dputr$ with these values produces values that
 form a tuple in $\partial_{xy}S$. We proceed by induction on $\dx$.
 
 In case $\dx=\NIL$, we are done: after computing $\dputr$, we still
-have $x_0$, $y_0$, $c_k$, and $c_\ell$. Otherwise, $\dx = x_1\dx'$ and the
-induction hypothesis tells us that if
+have $x_0$, $y_0$, $c_k$, and $c_\ell$. Otherwise, $\dx = x_1\CONS\dx'$ and
+the induction hypothesis tells us that if
 $(\partial_{xy}k).\dputr(\dx',c_k)=(\dy_k,c_k')$ and
 $(\partial_{xy}\ell).\dputr(\dx',c_\ell)=(\dy_\ell,c_\ell')$ then
 $(c_k',c_\ell') \in S$ and $\dy_k=\dy_\ell$. We can then conclude that if
@@ -4232,9 +4242,9 @@ $k.\putr(x_1,c_k')=(y_k,c_k'')$ and
 $\ell.\putr(x_1,c_\ell')=(y_\ell,c_\ell'')$ then $y_k=y_\ell$ and
 $(c_k'',c_\ell'') \in S$ because $S$ is a witness that $k \equiv \ell$.
 We now compute with these definitions that
-$(\partial_{xy}k).\dputr(\dx,c_k)=(y_k\dy_k,c_k'')$ and
-$(\partial_{xy}\ell).\dputr(\dx,c_\ell)=(x_\ell\dx_\ell,c_\ell'')$. But we
-have already seen that $y_k\dy_k=x_\ell\dx_\ell$ and $(c_k'',c_\ell'') \in
+$(\partial_{xy}k).\dputr(\dx,c_k)=(y_k\CONS\dy_k,c_k'')$ and
+$(\partial_{xy}\ell).\dputr(\dx,c_\ell)=(x_\ell\CONS\dx_\ell,c_\ell'')$. But we
+have already seen that $y_k\CONS\dy_k=x_\ell\CONS\dx_\ell$ and $(c_k'',c_\ell'') \in
 S$, so we are done.
 \end{proof}
 \fi
@@ -4287,6 +4297,7 @@ $|Y|_{\init_Y}$, respectively, and $\ell\in X\lens Y$ then $\ell\equiv
 \partial_{\init_X,\init_Y}(|\ell|)$. To see this, we use the simulation 
 $S=\{(x,c,(x',c',y'),y)\mid x=x',y=y',c=c'\}$. We omit the verification 
 of both simulations.%
+\dmwit{proofneeded}
 \end{pf}
 \fi
 
