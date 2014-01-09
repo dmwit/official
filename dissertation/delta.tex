@@ -3809,13 +3809,13 @@ We may now compute:
     \dputr(\blist\mlleft\dx\mlist\mlleft{\dx'}\elist,(c_k,c_\ell)) \\
     \qquad=
         \mllet (\dy',(c_k',c_\ell')) = \dputr_g(\mlleft{\dx'},(c_k,c_\ell)) \mline \\
-    \qquad{\color{white}={}}
+    \qquad{\phantom{={}}}
         \mllet (\dy'',(c_k'',c_\ell'')) = \dputr_g(\mlleft\dx,(c_k',c_\ell')) \mline \\
-    \qquad{\color{white}={}}
+    \qquad{\phantom{={}}}
         (\blist\dy''\mlist\dy'\elist,(c_k'',c_\ell'')) \\
     \qquad=
         \mllet (\dy'',(c_k'',c_\ell'')) = \dputr_g(\mlleft\dx,(c_k',c_\ell)) \mline \\
-    \qquad{\color{white}={}}
+    \qquad{\phantom{={}}}
         (\blist\dy''\mlist\mlleft{\dy'}\elist,(c_k'',c_\ell'')) \\
     \qquad=
         (\blist\mlleft\dy\mlist\mlleft{\dy'}\elist,(c_k'',c_\ell)) \\
@@ -3840,13 +3840,13 @@ Now we may compute:
 \dputr(\blist\mlleft\dx\mlist\mlright\dy\elist,(c_k,c_\ell)) \\
     \qquad=
         \mllet (\dy',(c_k',c_\ell')) = \dputr_g(\mlright\dy,(c_k,c_\ell)) \mline \\
-    \qquad{\color{white}={}}
+    \qquad{\phantom{={}}}
         \mllet (\dx',(c_k'',c_\ell'')) = \dputr_g(\mlleft\dx,(c_k',c_\ell')) \mline \\
-    \qquad{\color{white}={}}
+    \qquad{\phantom{={}}}
         (\blist\dx'\mlist\dy'\elist,(c_k'',c_\ell'')) \\
     \qquad=
         \mllet (\dx',(c_k'',c_\ell'')) = \dputr_g(\mlleft\dx,(c_k,c_\ell')) \mline \\
-    \qquad{\color{white}={}}
+    \qquad{\phantom{={}}}
         (\blist\dx'\mlist\mlright{\dy'}\elist,(c_k'',c_\ell'')) \\
     \qquad=
         (\blist\mlleft{\dx'}\mlist\mlright{\dy'}\elist,(c_k',c_\ell')) \\
@@ -3871,7 +3871,6 @@ Let $f$ be the isomorphism between $X \otimes \Unit$ and $X$. Similarly, let
 $g$ be the obvious isomorphism between $\Unit \otimes Y$ and $Y$.%
 %
 \iffull
-% TODO: replace \color{white} by \phantom everywhere
 \footnote{%
   \ifdissertation
   Unlike the analogous state-based lenses from Chapter~\ref{chap:complement},
