@@ -2676,8 +2676,8 @@ K$. We proceed by induction on the size of $\dz$.
     We have all of the following:
     \begin{align}
         \dv &\in G^\oplus_{X,Y} \\
-        \dv s &\in X\oplus Y \\
-        \dz &= \mlmod p{\dv\dv s} \\
+        \dv s &\in \D(X\oplus Y) \\
+        \dz &= \mlmod p{\dv\CONS\dv s} \\
         1 &\le p \le |c| \\
         1 &< n \\
         (d,c'') &= \dputr_g(\mlmod p{\dv s},c) \label{eq:IH-1} \\
@@ -2685,14 +2685,14 @@ K$. We proceed by induction on the size of $\dz$.
         \dz' &= d'\;d
     \end{align}
     By Lemma~\ref{lemma:unfold-mod-once} and the assumption that $\mlmod
-    p{\dv\dv s}z$ is defined, we know $\mlmod p\dv\mlmod p{\dv s}z$ is
+    p{\dv\CONS\dv s}z$ is defined, we know $\mlmod p\dv(\mlmod p{\dv s}z)$ is
     defined, and hence $\mlmod p{\dv s}z$ is defined. The induction
     hypothesis for equation~\ref{eq:IH-1} therefore tells us that $d\;(x,y)$
     is defined and that
     \[(\mlmod p{\dv s}z,c'',d\;(x,y)) \in K.\]
     Again appealing to the induction hypothesis, this time for
-    equation~\ref{eq:IH-2}, we also know that $d'\;d\;(x,y)$ is defined and
-    \[(\mlmod p\dv\mlmod p{\dv s}z,c',d'\;d\;(x,y)) \in K.\]
+    equation~\ref{eq:IH-2}, we also know that $d'\;(d\;(x,y))$ is defined and
+    \[(\mlmod p\dv(\mlmod p{\dv s}z),c',d'\;(d\;(x,y))) \in K.\]
     By one final appeal to Lemma~\ref{lemma:unfold-mod-once}, we therefore
     conclude that
     \[(\dz\;z,c',\dz'(x,y)) \in K\]
@@ -2719,9 +2719,11 @@ K$. We proceed by induction on the size of $\dz$.
     X$. Taking $v'=\dv\;\init_X$, we can now compute:
     \begin{align*}
         \map_{\ml{tagof}}(\dz\;z)
-            &= \map_{\ml{tagof}}(z_1\cdots z_{p-1}\mlinl{v'}z_{p+1}\cdots z_n) \\
-            &= \map_{\ml{tagof}}(z_1\cdots z_{p-1})\;k\;\map_{\ml{tagof}}(z_{p+1}\cdots z_n)\\
-            &= c_1\cdots c_{p-1}kc_{p+1}\cdots c_n \\
+            &= \map_{\ml{tagof}}(z[p\mapsto\mlinl{v'}]) \\
+            &= \map_{\ml{tagof}}(\blist z_1\clist z_{p-1}\elist)\;
+               \blist k\elist\;
+               \map_{\ml{tagof}}(\blist z_{p+1}\clist z_n\elist)\\
+            &= \blist c_1\clist c_{p-1}\mlist k\mlist c_{p+1}\clist c_n \elist\\
             &= c[p \mapsto k] \\
             &= c'
     \end{align*}
@@ -2746,31 +2748,34 @@ K$. We proceed by induction on the size of $\dz$.
     and~\ref{lemma:high-level-insert} to simplify:
     \begin{align*}
         \dz'\;(x,y)
-            &= (\mlmod{p_L}\dv\mlinsert'(p_L)\mldelete'(p_L)(x_1\cdots x_{n_L}),y) \\
-            &= (\mlmod{p_L}\dv\mlinsert'(p_L)(x_1\cdots x_{p_L-1}x_{p_L+1}\cdots x_{n_L}),y) \\
-            &= (\mlmod{p_L}\dv(x_1\cdots x_{p_L-1}\init_Xx_{p_L+1}\cdots x_{n_L}),y) \\
-            &= (x_1\cdots x_{p_L-1}v'x_{p_L+1}\cdots x_{n_L},y)
+            &= (\mlmod{p_L}\dv\mlinsert'(p_L)\mldelete'(p_L)\blist x_1\clist x_{n_L}\elist,y) \\
+            &= (\mlmod{p_L}\dv\mlinsert'(p_L)\blist x_1\clist x_{p_L-1}\mlist x_{p_L+1}\clist x_{n_L}\elist,y) \\
+            &= (\mlmod{p_L}\dv\blist x_1\clist x_{p_L-1}\mlist\init_X\mlist x_{p_L+1}\clist x_{n_L}\elist,y) \\
+            &= (\blist x_1\clist x_{p_L-1}\mlist v'\mlist x_{p_L+1}\clist x_{n_L}\elist,y) \\
+            &= (x[p_L\mapsto v'], y)
     \end{align*}
     We now make some observations about the effects of $\dz$, making crucial
     use of Lemma~\ref{lemma:lefts-rights-homomorphism}:
     \begin{align*}
         \ml{rights}(\dz\;z)
-            &= \ml{rights}(z_1 \cdots z_{p-1} \mlinl{v'} z_{p+1} \cdots z_n) \\
-            &= \ml{rights}(z_1 \cdots z_{p-1})\ml{rights}(\mlinl{v'})\ml{rights}(z_{p+1} \cdots z_n) \\
-            &= \ml{rights}(z_1 \cdots z_{p-1})\ml{rights}(\mlinl{v})\ml{rights}(z_{p+1} \cdots z_n) \\
-            &= \ml{rights}(z_1 \cdots z_{p-1})\ml{rights}(z_p)\ml{rights}(z_{p+1} \cdots z_n) \\
-            &= \ml{rights}(z_1 \cdots z_{p-1}z_pz_{p+1} \cdots z_n) \\
+            &= \ml{rights}(\blist z_1 \clist z_{p-1} \mlist \mlinl{v'} \mlist z_{p+1} \clist z_n \elist) \\
+            &= \ml{rights}(\blist z_1 \clist z_{p-1}\elist) \ml{rights}(\mlinl{v'}) \ml{rights}(\blist z_{p+1} \clist z_n \elist) \\
+            &= \ml{rights}(\blist z_1 \clist z_{p-1}\elist) \ml{rights}(\mlinl{v}) \ml{rights}(\blist z_{p+1} \clist z_n \elist) \\
+            &= \ml{rights}(\blist z_1 \clist z_{p-1}\elist) \ml{rights}(z_p) \ml{rights}(\blist z_{p+1} \clist z_n \elist) \\
+            &= \ml{rights}(\blist z_1 \clist z_{p-1} \mlist z_p \mlist z_{p+1} \clist z_n \elist) \\
             &= \ml{rights}(z) \\
             &= y
     \end{align*}
     We now observe that Lemma~\ref{lemma:iso-coherent} implies that
-    $\ml{lefts}(z_1 \cdots z_{p-1})=x_1 \cdots x_{p_L-1}$ and likewise that
-    $\ml{lefts}(z_{p+1} \cdots z_n)=x_{p_L+1} \cdots x_{n_L}$.
+    $\ml{lefts}(\blist z_1 \clist z_{p-1} \elist)=\blist x_1 \clist
+    x_{p_L-1} \elist$ and likewise that $\ml{lefts}(\blist z_{p+1} \clist
+    z_n \elist)=\blist x_{p_L+1} \clist x_{n_L} \elist$.
     \begin{align*}
-        \ml{rights}(\dz\;z)
-            &= \ml{lefts}(z_1 \cdots z_{p-1} \mlinl{v'} z_{p+1} \cdots z_n) \\
-            &= \ml{lefts}(z_1 \cdots z_{p-1})\ml{lefts}(\mlinl{v'})\ml{lefts}(z_{p+1} \cdots z_n) \\
-            &= x_1\cdots x_{p_L-1}v'x_{p_L+1}\cdots x_{n_L}
+        \ml{lefts}(\dz\;z)
+            &= \ml{lefts}(z[p \mapsto \mlinl{v'}]) \\
+            &= \ml{lefts}(\blist z_1 \clist z_{p-1} \elist)\ml{lefts}(\mlinl{v'})\ml{lefts}(\blist z_{p+1} \clist z_n \elist) \\
+            &= \blist x_1\clist x_{p_L-1}\mlist v'\mlist x_{p_L+1}\clist x_{n_L}\elist \\
+            &= x[p_L\mapsto v']
     \end{align*}
     Taken together, these last three computations show that
     \[\dz'\;(x,y) = (\ml{lefts}(\dz\;z),\ml{rights}(\dz\;z))\]
@@ -2794,10 +2799,9 @@ K$. We proceed by induction on the size of $\dz$.
     = y$. Furthermore:
     \begin{align*}
         \ml{lefts}(\dz\;z)
-        &= \ml{lefts}(\mlmod p{\mlstayl\dv}\;z_1 \cdots z_{p-1} \mlinl v
-        z_{p+1} \cdots z_n) \\
-        &= \ml{lefts}(z_1 \cdots z_{p-1} \mlinl{\dv\;v} z_{p+1} \cdots z_n) \\
-        &= x_1 \cdots x_{p_L-1} (\dv\;x_{p_L}) x_{p_L+1} \cdots x_n \\
+        &= \ml{lefts}(\mlmod p{\mlstayl\dv}\;z[p \mapsto \mlinl{x_{p_L}}]) \\
+        &= \ml{lefts}(z[p\mapsto\mlinl{\dv\;x_{p_L}}]) \\
+        &= x[p_L\mapsto \dv\;x_{p_L}] \\
         &= \mlmod{p_L}{\dv}\;x
     \end{align*}
     That is, $\dz\;z$ and $\dz'\;(x,y)=(\mlmod{p_L}\dv\;x,y)$ are synchronized as desired.
@@ -2872,9 +2876,9 @@ K$. We proceed by induction on the size of $\dz$.
         &= \mldel{1+\mlfst(\mlcount(i,c^r))-1}\ml{lefts}(z) \\
         &= \mldel1\mldel{\mlfst(\mlcount(i,c^r))-1}\ml{lefts}(z) \\
         &= \mldel1\ml{lefts}(\mldel{i-1}\;z) \\
-        &= \mldel1\ml{lefts}(z_1 \cdots z_{n-i}\mlinl x) \\
-        &= \mldel1(\ml{lefts}(z_1 \cdots z_{n-i})x) \\
-        &= \ml{lefts}(z_1 \cdots z_{n-i}) \\
+        &= \mldel1\ml{lefts}(\blist z_1 \clist z_{n-i}\mlist\mlinl x\elist) \\
+        &= \mldel1(\ml{lefts}(\blist z_1 \clist z_{n-i}\elist)x) \\
+        &= \ml{lefts}(\blist z_1 \clist z_{n-i}\elist) \\
         &= \ml{lefts}(\mldel i\;z)
     \end{align*}
     Otherwise, $z_{n-i+1}=\mlinr y$ for some $y$ and:
@@ -2883,8 +2887,8 @@ K$. We proceed by induction on the size of $\dz$.
         &= \mldel{\mlfst(\mlcount(i+1,c^r))-1}\ml{lefts}(z) \\
         &= \mldel{\mlfst(\mlcount(i,c^r))-1}\ml{lefts}(z) \\
         &= \ml{lefts}(\mldel{i-1}\;z) \\
-        &= \ml{lefts}(z_1 \cdots z_{n-i}\mlinr y) \\
-        &= \ml{lefts}(z_1 \cdots z_{n-i}) \\
+        &= \ml{lefts}(\blist z_1 \clist z_{n-i}\mlist\mlinr y\elist) \\
+        &= \ml{lefts}(\blist z_1 \clist z_{n-i}\elist) \\
         &= \ml{lefts}(\mldel i\;z)
     \end{align*}
     as desired.
@@ -2914,11 +2918,11 @@ K$. We proceed by induction on the size of $\dz$.
 
     \begin{align}
         \map_{\ml{tagof}}(\dz\;z)
-            &= \map_{\ml{tagof}}(z_{f(n)(1)}\cdots z_{f(n)(n)})
+            &= \map_{\ml{tagof}}(\blist z_{f(n)(1)}\clist z_{f(n)(n)}\elist)
             \label{eq:reorder-z} \\
-            &= \map_{\ml{tagof}}(z)_{f(n)(1)}\cdots\map_{\ml{tagof}}(z)_{f(n)(n)}
+            &= \blist\map_{\ml{tagof}}(z)_{f(n)(1)}\clist\map_{\ml{tagof}}(z)_{f(n)(n)}\elist
             \label{eq:float-index} \\
-            &= c_{f(n)(1)} \cdots c_{f(n)(n)}
+            &= \blist c_{f(n)(1)} \clist c_{f(n)(n)} \elist
             \label{eq:def-c} \\
             &= \mlreorder f\;c
             \label{eq:def-reorder}
@@ -3026,9 +3030,9 @@ $\dx$.
 
     A similar computation to the previous one shows that
     $\ml{rights}(\dz\;z)=\ml{rights}(z)=y$.
-
+%
     This concludes the proof of this case, since our three computations have
-    shown that $(\dz\;z,(\dx\;x,c',y)) \in K$.
+    shown that $(\dz\;z,c',(\dx\;x,y)) \in K$.
 
 \item {\bf Case \markref{ldel0}:} Since $\dz\;z=z$, $\dx\;x=x$, and $c'=c$,
     we are in the happy situation of having assumed exactly what we need to
@@ -3055,10 +3059,13 @@ definition of $K$, we know
     y &= \ml{rights}(z).
 \end{align*}
 
-First we show that $\ifdissertation\dputl\else\dputr\fi_g$ respects $K$.
+% TODO: in partitiondputrproof, we clearly label what equations we learn at
+% the beginning of each case, but partitiondputlproof deosn't follow this
+% very nice structure; make it do so
+First we show that $\ifdissertation\dputl\else\dputr\fi_g$ respects $K$.%
 \ifdissertation\partitiondputlproof\else\partitiondputrproof\fi
 
-We  now  show that $\ifdissertation\dputr\else\dputl\fi_g$ respects $K$.
+We  now  show that $\ifdissertation\dputr\else\dputl\fi_g$ respects $K$.%
 \ifdissertation\partitiondputrproof\else\partitiondputlproof\fi
 \end{proof}
 
