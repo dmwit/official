@@ -2997,13 +2997,14 @@ $\dx$.
 
 \item {\bf Case \markref{lreorder}:}\dmwit{proofneeded}
 
-\item {\bf Case \markref{lins}:} We compute:
+\item {\bf Case \markref{lins}:} We know $\dx = \mlins i$ and $\dz = \mlins
+    i$ and $c' = \mlins i\; c$. We compute:
     \begin{align*}
         \map_{\ml{tagof}}(\dz\;z)
             &= \map_{\ml{tagof}}(z \replicate i{\init_{X \oplus Y}}) \\
             &= \map_{\ml{tagof}}(z)\map_{\ml{tagof}}(\replicate i{\init_{X \oplus Y}}) \\
             &= c\replicate iL \\
-            &= \mlinsert(i)\;c \\
+            &= \mlins i\;c \\
             &= c'
     \end{align*}
     There's a slight left-bias here; in the right- version of this proof, we
@@ -3034,18 +3035,20 @@ $\dx$.
     This concludes the proof of this case, since our three computations have
     shown that $(\dz\;z,c',(\dx\;x,y)) \in K$.
 
-\item {\bf Case \markref{ldel0}:} Since $\dz\;z=z$, $\dx\;x=x$, and $c'=c$,
+\item {\bf Case \markref{ldel0}:} We have $\dx = \mldel 0$ and $\dz = \NIL$
+    and $c' = c$. Since $\dz\;z=z$, $\dx\;x=x$, and $c'=c$,
     we are in the happy situation of having assumed exactly what we need to
     prove, namely that $(\dz\;z,c',(\dx\;x,y))=(z,c,(x,y)) \in K$.
 
 \item {\bf Case \markref{ldeli}:}\dmwit{proofneeded}
 
-\item {\bf Case \markref{ldelfail}:} When $i>n_L+1$ we find that $\dx\;x$ is
-    not defined, contradicting our assumption that it is.
+\item {\bf Case \markref{ldelfail}:} We know $\dx=\mldel i$ and, since the
+    previous cases did not apply, $i>n_L+1$. Hence we know $\dx\;x$ is not
+    defined, a contradiction to our assumption that it is.
 
-\item {\bf Case \markref{lfail}:} The assumption that $\dx$ successfully
-    applies is immediately contradicted, so there is nothing to prove in
-    this case.
+\item {\bf Case \markref{lfail}:} Since $\dx=\fail$, the assumption that
+    $\dx$ successfully applies is immediately contradicted, so there is
+    nothing to prove in this case.
 
 \end{trivlist}
 }
