@@ -184,6 +184,15 @@ for the asymmetric, state-based lenses described here.
 
 \section{Alignment}
 \label{sec:intro-alignment}
+% TODO: Diskin et al notes that there's another very subtle flaw with the
+% way state-based lenses do alignment. Since each lens is responsible for
+% rediscovering the alignment, it's possible for the sublenses to disagree!
+% Perhaps we can come up with a really compelling example of lenses k and l
+% such that k;l is well-typed but l.put produces some output with one
+% alignment in mind, and k.put consumes that output with another alignment
+% in mind. We'll need to think about where such an example should fit in the
+% flow, too.
+
 One very common operation when doing functional (unidirectional) programming
 is the \map operation\footnote{As of April 3, 2012, there were 3878 packages
 on Hackage~\cite{Hackage2012}, the central code repository for Haskell
