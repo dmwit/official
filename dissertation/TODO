@@ -1,11 +1,17 @@
-* improve latex.hs
 * look at overfull hboxes
-* pick a title
 * proofneeded's
 * move boring proofs to an appendix
 * triage TODO marks (and move them here, maybe)
-* introduction chapter
-* background chapter
 * chapter intros
 * move category theory stuff to an appendix
-* rewrite hyperlens material
+* Diskin's paper on symmetric delta lenses proposed a neat trip-and-a-half law
+  (though I wouldn't call it a round-trip-and-a-half law!); an analog for edit
+  lenses would be roughly:
+
+  dputr(a,s) = (b,s')
+  dputl(b,s) = (a',s'')
+  ---------------------
+  dputr(a',s) = (b,s''')
+
+  (note that the behavior on states is essentially completely unconstrained)
+  I wonder how many of our edit lenses conform to this law.
