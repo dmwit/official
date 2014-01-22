@@ -1,0 +1,323 @@
+% high-level comments from BCP 20140117 (before anything was written):
+% * on purpose: also just want to give an overview of the field as a whole
+%   (in addition to just saying where we do better)
+% * on writing: should give some exposition/explanation of the high-priority
+%   papers (which are the category-based delta lenses and the algebraic
+%   studies)
+% * on citations: cite many, but discuss only the latest one in detail
+\section{Category-based delta lenses}
+\label{sec:delta}
+
+\subsection{Asymmetric}
+\label{sec:delta:asymmetric}
+% describe ``From state-based to delta-based bidirectional transformations:
+% the asymmetric case''
+
+\subsection{Symmetric}
+\label{sec:delta:symmetric}
+% describe ``From state-based to delta-based bidirectional transformations:
+% the symmetric case''
+
+\subsection{Comparison}
+\label{sec:delta:comparison}
+% compare delta lenses to edit lenses
+% do tackle symmetry; do have edit-based things; do have some neat new laws
+% that we didn't consider; don't consider size; don't provide syntax
+%
+% some text below that we can also scan for ideas about what to write here
+
+\section{Algebraic rephrasing}
+\label{sec:algebraic}
+% Perdita's explorations figuring out what properties transformations have
+% without working out what those transformations are
+% (but totally uninterested in syntax)
+
+\section{Matching lenses}
+\label{sec:matching}
+% defining good alignment heuristics along with your lens
+% decouples alignment discovery from lens operation
+% does give concrete operations for discovering alignments; but is
+% significantly more complex; can only handle containers with a single kind
+% of data inside (e.g. could give good treatment to either the [a] or the
+% [b] in a ([a], [b]))
+
+\section{Hole-based delta lenses}
+\label{sec:holes}
+% lenses that operate on full data structures with node
+% creation/deletion/modification ``holes'' in them -- tackles alignment
+% problems, but not size or symmetry
+%
+% some text below that we can also scan for ideas about what to write here
+
+\section{Fibrations}
+\label{sec:fibrations}
+% Johnson+Rosebrugh's work on sketch-based data modeling; see FogBugz for a
+% list of resources to consult when it comes time to write this section
+%
+% still digesting, but it seems they have a notion of edit but that it
+% doesn't help with alignment (?) and that they don't really propose much in
+% the way of syntax -- they only give a way to check if a particular
+% hand-constructed transformation is allowed
+
+\section{Constraint maintainers}
+\label{sec:constraint-maintainers}
+% symmetric, but we improve in many ways
+%
+% some text below that we can also scan for ideas about what to write here
+
+\section{Others}
+\label{sec:other-related-work}
+% In case of time crunch, may be able to drop this section!
+
+\subsection{Graph transformations}
+\label{sec:other-related-work:graph}
+% BiG-lab's stuff -- check if they make any attempt at symmetry or edits
+
+\subsection{Triple graph grammars}
+\label{sec:other-related-work:triple}
+% gives an attempt at parsing graphs; some of the tools are symmetric, and
+% may be in use, but need to review a bit before knowing what to say here
+
+\subsection{Incremental XML transformations}
+\label{sec:other-related-work:xml}
+% sort of tangentially related; lots of stuff is based on tree transducers;
+% very interested in good models for edits and edit transformations so
+% perhaps we have something to teach them there
+
+% dump from our delta lenses paper {{{
+%
+%The most closely related attempt at developing a theory of update
+%propagation is \cite{Diskin-Delta11} by Diskin et al. Their starting
+%point is the observation (also discussed in \cite{Matching10}) that discovery of
+%edits should be decoupled from their propagation. They thus propose a
+%formalism, \emph{sd-lenses}, for the propagation of edits across
+%synchronized data structures, bearing some similarities with our
+%edit lenses. The replicas, which we model as modules, are there modeled
+%as categories (presented as reflexive graphs)\iffull, as we discussed in 
+%\S \ref{cats}\fi. Thus, for any two states $x,x'$ there is a set of
+%edits $X(x,x')$. An sd-lens then comprises two reflexive graphs $X,Y$
+%and for any $x\in X$ and $y\in Y$ a set $C(x,y)$ of
+%``correspondences'' which roughly correspond to our
+%complements. Forward and backward operations similar to our $\dputl$ and
+%$\dputr$ then complete the picture. No concrete
+%examples are given of sd-lenses, no composition, no notion of equivalence, and
+%no combinators for constructing sd-lenses; the focus of the paper is
+%rather on the discovery of suitable axioms, such as invertibility and
+%undoability of edits, and a 
+%generalization of {\em hippocraticness} in the sense of
+%Stevens~\cite{Stevens07}. They also develop a comparison 
+%with the state-based framework (cf.\ \S \ref{stateb} above). In
+%our opinion, the separation of edits and correspondences according to
+%the states that they apply to or relate has two important
+%disadvantages.  First, in our examples, it is often the case that one
+%and the same edit applies to more than one state and can be
+%meaningfully propagated (and more compactly represented) as such. For example, while many of the
+%container edits tend to only work for a particular shape, they are
+%completely polymorphic in the contents of the container. Second, the
+%fact that state sets are already categories suggests 
+%that a category of sd-lenses would be
+%2-categorical in flavor, entailing extra technical difficulties such as
+%coherence conditions. 
+%
+%%% \finish{Here's a quick start from a brief scan of their most recent
+%%%   paper~\cite{Diskin-Delta11} by BCP...
+%%%   \begin{itemize}
+%%%   \item Their motivations and goals are exactly the same.
+%%%   \item The technicalities of their approach are pretty dense.  I haven't
+%%%   internalized them yet.  In particular, I don't have a good intuition for
+%%%   their ``sameness'' relations---what they say makes sense for ``flat''
+%%%   structures like lists or simple graphs, but not for more structured data
+%%%   (where you'd want to know about correspondences at various levels of
+%%%   structure). 
+%%%   \item They don't say anything about the size of their deltas, and at
+%%%   least a naive representation would be big.  We're much more careful about
+%%%   this. 
+%%%   \item They propose two new laws (weak invertability and undoability).  I'm
+%%%   not sure what to say about these, but I guess it's an important point of
+%%%   comparison, since it's one of the main points of their paper.
+%%%   \item They don't handle $\missing$ (a small point)
+%%%   \item They don't define any combinators, just the semantic space itself (a
+%%%   larger point, and related) 
+%%%   \item Their Definition 19 and Theorem 5 relate their delta-lenses to our
+%%%   symmetric lenses.  I'm not completely sure how to interpret it (does our
+%%%   ``trivial module'' correspond to their ``simple graph''?), but in any case
+%%%   our result is stronger because it goes both directions.  (Their
+%%%   characterization of our symmetric lenses is a little bit wrong---it puts
+%%%   $C$ in the wrong place---but I'm not sure this matters.)
+%%%   \end{itemize}
+%%% }
+%
+%Meertens's seminal paper on {\em constraint maintainers}~\cite{Meertens98}
+%discusses a form of containers for lists equipped with a notion of edits
+%similar to our edit language for lists, but does not develop a general
+%theory of edit-transforming constraint maintainers.
+%
+%A long series of papers from the group at the University of Tokyo
+%\cite[etc.]{Hu04, Mu2004, MuAlgebraic2004, HuModels07,
+%  Hidaka10}\iffull\discuss{double-check these, and add more, and add to abstract
+%  too}\fi{} deal with the alignment issue using an approach that might be
+%characterized as a hybrid of state-based and edit-based.  Lenses work with
+%whole states, but these states are internally annotated with tags showing
+%where edits have been applied---e.g., marking inserted or deleted elements
+%of lists.
+%%
+%Barbosa et al.'s {\em matching lenses}~\cite{Matching10} offer another 
+%approach to dealing with issues of alignment in the framework of pure
+%state-based lenses.  
+%
+%
+%%% \noindent
+%%% Other things we definitely need to compare to:
+%%% \begin{itemize}
+%%% \item Diskin's ``tile algebras'' \cite{DBLP:conf/gttse/Diskin09}
+%%% \item The other delta-lens papers that Diskin refers to in the intro
+%%% of~\cite{Diskin-Delta11} 
+%%% \item Other papers addressing the alignment problem in different ways (e.g.,
+%%% our Matching Lenses~\cite{Matching10}, Tokyo group papers such
+%%% as~\cite{Mu2004} and maybe the ICFP10 paper on bidirectional graph
+%%% transformations)
+%%% \item Maybe some papers on edits in the context of version management (see
+%%% last year's grant proposal for some citations)
+%%% \item other lens-like things that have used some kind of deltas~\cite{HuModels07} 
+%%% \begin{itemize}
+%%% \item \finish{Meertens \cite{Meertens98} introduces edit operations in section 5.3
+%%% (p. 68ff) to talk about edits to lists.  I have not grokked yet exactly how
+%%% all this works, or how it fits into his general framework of constraint
+%%% maintainers.  Some possible text:}
+%
+%%% \item 
+%%% \end{itemize}
+%%% \end{itemize}
+%
+%%% \iflater
+%%% \finish{
+%%% Other things to think about:
+%%% \begin{itemize}
+%%%     \item other research on edit lenses
+%%%     \item practical tools that use notions of an edit
+%%%     \item Is there any correspondence with other tools like SVN, Unison,
+%%%     ...? 
+%%% \item operation transform papers?
+%%% \end{itemize}
+%%% }
+%%% \fi
+%
+% }}}
+
+% dump from our complement lenses paper {{{
+%
+%There is a large literature on lenses and related approaches to
+%propagating updates between connected structures.  We discuss only the most
+%closely related work here; good general surveys of the area can be found
+%in~\cite{FosterThesis,DBLP:conf/icmt/CzarneckiFHLST09}.  Connections to the
+%literature on {\em view update} in databases are surveyed
+%in~\cite{Focal2005-shortcite}. \iffull A short version of this paper is available
+%in~\cite{HofmannPierceWagner10}.\fi
+%
+%The first symmetric approach to update propagation was proposed by
+%Meer\-tens~\cite{Meertens98} and followed up \iffull in the context of
+%model-driven design \fi by Stevens~\cite{Stevens07},
+%Diskin~\cite{DBLP:conf/models/Diskin08}, and Xiong, et
+%al~\cite{xiong2009supporting}.
+%%
+%Meertens suggests modeling synchronization between two sets
+%$X$ and $Y$ by a {\em consistency relation} $R\subseteq
+%X\times Y$ and two {\em consistency maintainers}
+%$\triangleleft: X\times Y\rightarrow X$ and $\triangleright: X\times Y
+%\rightarrow Y$ such that $(x\triangleleft y) \relR y$ and
+%$x \relR (x\triangleright y)$ always hold, and such that $x \relR y$ implies
+%$x \triangleleft y = x$ and $x \triangleright y = y$.
+%
+%The main advantage of symmetric lenses over consistency maintainers is
+%their closure under composition. Indeed, all of the aforementioned
+%authors note that, in general, consistency maintainers do not compose
+%and view this as a drawback.
+%%
+%Suppose that we have relations $R\subseteq X\times Y$ and
+%$R'\subseteq Y\times Z$ maintained by $\triangleright,\triangleleft$
+%and $\triangleright', \triangleleft'$, resp. If we want to construct a
+%maintainer for the composition $R;R'$, we face the problem that, given
+%$x\in X$ and $z\in Z$, there is no canonical way of coming up with a
+%$y\in Y$ that will allow us to use either of the existing maintainer
+%functions. Concretely, Meertens gives the following counterexample.
+%Let $X$ be the set of nonempty context free grammars over some alphabet, and let
+%$Y$ be the set of words over that same alphabet. Let $R\subseteq
+%X\times Y$ be given by $G \relR x\iff x\in L(G)$. It is easy to define
+%computable maintainer functions making this relation a constraint
+%maintainer. Composing this relation with its opposite yields an 
+%undecidable relation (namely, whether the intersection of two context-free
+%grammars is nonempty), so there cannot be computable maintainer functions.
+%
+%We can transform any constraint maintainer into a  symmetric lens as
+%follows: take the relation $R$ itself (viewed as a set of pairs) as
+%the complement, and define $\putl(x',(x,y))=(x'\triangleright
+%y,(x',x'\triangleright y))$ and similarly 
+%for $\putr$. If we compose such a symmetric lens with its opposite
+%we obtain $R\times R\op$ as the complement and, for example,
+%$\putr(x',((x_1,y_1),(y_2,x_2))) = 
+%(x_2\triangleleft(x'\triangleright y_1), ((x',x'\triangleright
+%y_1),(x'\triangleright y_1,x_2\triangleleft(x'\triangleright y_1))))$. 
+%%
+%For Meertens' counterexample, we would have complements of the form
+%$((G_1,w_1),(w_2,G_2))$, with $w_1\in L(G_1)$
+%and $w_2\in L(G_2)$; ``$\putr$''-ing a new grammar
+%$G_1'$ through the composed lens yields the complement
+%$((G_1',w_1'),(w_1',G_2'))$, where $w_1'$ is $w_1$ if $w_1\in L(G_1)$ and
+%some default otherwise, and where $G_2'=G_2$ if $w_1'\in L(G_2)$ and
+%$S{\rightarrow}w_1'$ (where $S$ is the start state) otherwise. We observe
+%that there is a property of lenses analogous to Meertens' requirement that
+%$x \relR y$ implies $x \triangleleft y = x$. This property is not
+%necessarily preserved by composition, and in particular the lens described
+%above for synchronizing languages does not have it.
+%%
+%Meertens recommends using a {\em chain} of consistency maintainers in such a
+%situation to achieve a similar effect; however, the properties of such
+%chains have not been explored.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%For asymmetric lenses, a number of alternative \iffull choices of behavioral
+%\fi
+%laws 
+%have been explored.  Some of these are \iffull strictly \fi weaker than ours; for
+%example, a number of papers from a community of researchers based in Tokyo
+%replace the \rn{PutGet} law with a somewhat looser \rn{PutGetPut} law,
+%permitting a broader range of useful behaviors for lenses that duplicate
+%information.  It would be interesting to see what kind of categorical
+%structures arise from these choices.  The proposal by Matsuda et
+%al.~\cite{matsuda2007btb} is particularly interesting because it also employs
+%the idea of complements.  Conversely, stronger laws can be imagined, such as
+%the \rn{PutPut} law discussed by Foster et
+%al.~\cite{Focal2005-shortcite}\iffull{} and the more refined variants
+%in~\cite{updatable-security-views}\fi\iflater\finish{Say something more
+%  about this?}\fi.
+%
+%A different foundation for defining lenses by recursion was explored by
+%Foster et al.~\cite{Focal2005-shortcite}, using standard tools from domain
+%theory to define monotonicity and continuity for lens combinators
+%parametrized on other lenses.  The main drawback of this approach is that
+%the required (manual) proofs that such recursive lenses are total tend to be
+%somewhat intricate.  By contrast, we expect that our initial-algebra
+%approach can be equipped with automatic proofs of totality (that is, choices
+%of the weight function $w$) in many cases of interest.
+%
+%\ifdelta
+%\finish{
+%Updates: (note that the point in our paper is not update as such but rather
+%how to marry it with lenses)  \finish{BCP will look for a good canonical
+%  reference for updates}
+%\begin{itemize}
+%\item lens-like things that have used deltas~\cite{Hu04,Meertens98,MuAlgebraic2004,HuModels07}
+%\item old update transformation
+%\item old view update stuff
+%\item new Waterloo stuff 
+%\begin{itemize}
+%\item flexibility, not efficiency
+%\item no proposal for syntax---composition is the only operator they study
+%at all
+%\end{itemize}
+%\end{itemize}
+%}
+%\fi
+%
+% }}}
