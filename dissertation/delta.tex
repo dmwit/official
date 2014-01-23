@@ -3081,13 +3081,33 @@ $\dx$.
     Corollary~\ref{lemma:iso-tag-index}, this time ``in reverse'', gives us
     the final equation~\ref{eq:swap-iso-to-index}. We conclude that
     \[\map_{\ml{tagof}}(\dz\;z) = \map_{\ml{tagof}}(z) = c = c',\]
-    part of what we need to show that $(\dz\;z,c',(\dx\;x,y))\in K$.
+    part of what we need to show that $(\dz\;z,c',(\dx\;x,y))\in K$. (It
+    also means that $h$ is the appropriate isomorphism to use when applying
+    Lemma~\ref{lemma:iso-coherent} to $\dz\;z$.)
 
     Let us now turn our attention to showing that $\dz\;z$ and $\dx\;x$ have
-    the appropriate relationship. \dmwit{proofneeded}
+    the appropriate relationship. We reason as follows:
+    \begin{align}
+        \mlinl{\ml{lefts}(\dz\;z)_p}
+            &= (\dz\;z)_{h^{-1}(\mlinl p)}          \label{eq:lreorder-x-iso} \\
+            &= z_{(h^{-1};h;g;h^{-1})(\mlinl p)}    \label{eq:lreorder-x-reorder} \\
+            &= z_{(g;h^{-1})(\mlinl p)}             \label{eq:lreorder-x-elim-iso} \\
+            &= z_{h^{-1}(f(n_L)(p))}                \label{eq:lreorder-x-g} \\
+            &= \mlinl{\ml{lefts}(z)_{f(n_L)(p)}}    \label{eq:lreorder-x-iso2}
+    \end{align}
+    Equation~\ref{eq:lreorder-x-iso} is an application of
+    Lemma~\ref{lemma:iso-coherent}. The next three equations,
+    \ref{eq:lreorder-x-reorder} through \ref{eq:lreorder-x-g}, are mere
+    computations that invoke the definitions of $\dz$, edit application, and
+    $g$. The final equation~\ref{eq:lreorder-x-iso2} follows from the
+    previous by Lemma~\ref{lemma:iso-coherent}. A similar argument to the
+    above, differing only in line~\ref{eq:lreorder-x-g} where the definition
+    of $g$ is used, shows that
+    \[\mlinr{\ml{rights}(\dz\;z)_p} = \mlinr{\ml{rights}(z)_p}.\]
 
-    Finally, we must show that $\dz\;z$ and $y$ have the appropriate
-    relationship. \dmwit{proofneeded}
+    We can therefore conclude that $\ml{lefts}(\dz\;z) = \dx\;\ml{lefts}(z)
+    = \dx\;x$ and that $\ml{rights}(\dz\;z) = \ml{rights}(z) = y$, that is,
+    that $(\dz\;z,c',(\dx\;x,y))\in K$ as desired.
 
 \item {\bf Case \markref{lins}:} We know $\dx = \mlins i$ and $\dz = \mlins
     i$ and $c' = \mlins i\; c$. We compute:
@@ -3132,7 +3152,27 @@ $\dx$.
     we are in the happy situation of having assumed exactly what we need to
     prove, namely that $(\dz\;z,c',(\dx\;x,y))=(z,c,(x,y)) \in K$.
 
-\item {\bf Case \markref{ldeli}:}\dmwit{proofneeded}
+\item {\bf Case \markref{ldeli}:} To fit in with the surrounding
+    conventions in the proof, we will rename a few of the bindings
+    of this case. To be specific, we have
+    \begin{align*}
+        \dx &= \mldel i \\
+        \dz &= d'd \\
+        (d',c') &= \dputl_g(d'',c'') \\
+        d'' &= \mlonl{\mldel{i-1}} \\
+        c'' &= d\;c \\
+        d &= \mldelete'(\mliso(c)^{-1}(\mlinl{n_L}))
+    \end{align*}
+    and we know that $0 < i \le n_L + 1$. Our strategy is to show that
+    $(d\;z,c'',(\mldel1\;x,y)) \in K$; the induction hypothesis then
+    tells us that $(d'\;(d\;z),c',d''(\mldel1\;x,y))\in K$. This means that
+    $((d'd)\;z,c',(\mldel i\;x,y)) \in K$, which concludes this case.
+
+    % TODO: this ``count'' think is super-weird. check out the base cases on
+    % that thing! I think we might need to change it... how many places
+    % is it used?? (answer: 30 total)
+
+    \dmwit{proofneeded}
 
 \item {\bf Case \markref{ldelfail}:} We know $\dx=\mldel i$ and, since the
     previous cases did not apply, $i>n_L+1$. Hence we know $\dx\;x$ is not
