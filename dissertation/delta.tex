@@ -2233,7 +2233,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
                 \ml{rights}(\mlinr y \CONS w) &= y\CONS\ml{rights}(w) \\[1ex]
                 \mluntag(\mlinl x) &= x \\
                 \mluntag(\mlinr y) &= y \\[1ex]
-                \mlcount(1,c) &= (1,1)
+                \mlcount(1,w) &= (1,1)
             \end{align*}
         \end{minipage}
     \end{center}
@@ -2628,7 +2628,7 @@ The argument that $\mliso$ is coherent with $\ml{rights}$ is similar.
 
 \begin{corollary}
 \label{lemma:iso-tag-index}
-If $c=\map_{\ml{tagof}}(v)$ and $p$ is in the range of $\mliso(c)$, then
+If $c=\map_{\ml{tagof}}(v)$ and $1 \le p \le |v|$, then
 \[\ml{tagof}(v_p)=\ml{tagof}(\mliso(c)(p)).\]
 \end{corollary}
 
