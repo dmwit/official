@@ -2110,7 +2110,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 }
 \newcommand{\partitiondputlgdef}{
     \dputl_g(\mlonl{\mlmod p\dx},c)
-        &=& \partitionarray{(\mlstayl{\mlmod{p'}\dx},c)}{
+        &=& \partitionarray{(\mlmod{p'}{\mlstayl\dx},c)}{
             p' &=& \mliso(c)^{-1}(\mlinl p)
         }
         {lmod}\\
@@ -2626,6 +2626,12 @@ $\mlinl{\ml{lefts}(v)_{p'}}=v_p$.
 The argument that $\mliso$ is coherent with $\ml{rights}$ is similar.
 \end{proof}
 
+\begin{corollary}
+\label{lemma:iso-tag-index}
+If $c=\map_{\ml{tagof}}(v)$ and $p$ is in the range of $\mliso(c)$, then
+\[\ml{tagof}(v_p)=\ml{tagof}(\mliso(c)(p)).\]
+\end{corollary}
+
 \begin{theorem}
 The $\partition$ operation defined in \partitionfigures is indeed a
 symmetric edit lens.
@@ -2994,9 +3000,94 @@ $\dx$.
 
 \begin{trivlist}
 
-\item {\bf Case \markref{lmod}:}\dmwit{proofneeded}
+\item {\bf Case \markref{lmod}:} In this case, we have the following
+    equalities:
+    \begin{align*}
+        \dx &= \mlmod p\dv \\
+        \dz &= \mlmod{p'}{\mlstayl\dv} \\
+        c' &= c \\
+        p' &= \mliso(c)^{-1}(\mlinl p)
+    \end{align*}
+    By Lemma~\ref{lemma:iso-coherent},
+    $z_{p'}=\mlinl{\ml{lefts}(z)_p}=\mlinl{x_p}$. This gives us enough to
+    know that $\dz\;z$ is defined and in fact that
+    \begin{align*}
+        \dz\;z
+            &= z[p' \mapsto \mlstayl\dv\;z_{p'}] \\
+            &= z[p' \mapsto \mlstayl\dv\;\mlinl{x_p}] \\
+            &= z[p' \mapsto \mlinl{\dv\;x_p}]
+    \end{align*}
+    Since none of the tags of $z$ changes during this operation, this makes
+    the computation of $\ml{lefts}$, $\ml{rights}$, and $\map_{\ml{tagof}}$
+    easy:
+    \begin{align*}
+        \map_{\ml{tagof}}(\dz\;z)
+            &= \map_{\ml{tagof}}(z) \\
+            &= c \\
+            &= c' \\
+        \ml{rights}(\dz\;z)
+            &= \ml{rights}(z) \\
+            &= y \\
+        \ml{lefts}(\dz\;z)
+            &= \ml{lefts}(z)[p \mapsto \dv\;x_p] \\
+            &= x[p \mapsto \dv\;x_p] \\
+            &= \dx\;x
+    \end{align*}
+    These three computations establish that $(\dz\;z,c',(\dx\;x,y)) \in K$,
+    as desired.
 
-\item {\bf Case \markref{lreorder}:}\dmwit{proofneeded}
+\item {\bf Case \markref{lreorder}:} We have a slew of equalities in hand to
+    begin with. We have some chosen $f$ and three main equalities:
+    \begin{align*}
+        \dx &= \mlreorder f \\
+        \dz &= \mlreorder{f'} \\
+        c' &= c \\
+    \end{align*}
+    These depend on the additional definitions:
+    \begin{align*}
+        g(\mlinr p) &= \mlinr p &
+        f'(n \ne |c|) &= \lambda p.\,p \\
+        g(\mlinl p) &= \mlinl{f(n_L)(p)} &
+        f'(|c|) &= h;g;h^{-1} \\
+        (n_L,n_R) &= \mlcount(|c|,c) &
+        h &= \mliso(c)
+    \end{align*}
+    Although it may appear as though we are shadowing the earlier
+    definitions of $n_L$ and $n_R$, Lemma~\ref{lemma:iso-coherent} tells us
+    that the definition here is in agreement with the remainder of this
+    proof's established convention.
+
+    We first observe that $\mlreorder{f'}$ does not affect tags at all. To
+    be precise, for $1 \le p \le n$, we have:
+    \begin{align}
+        \ml{tagof}((\mlreorder{f'}\;z)_p)
+            &= \ml{tagof}(z_{(h;g;h^{-1})(p)})
+            \label{eq:def-reorder-f} \\
+            &= \ml{tagof}((h;g;h^{-1};h)(p))
+            \label{eq:swap-index-to-iso} \\
+            &= \ml{tagof}((h;g)(p))
+            \label{eq:elim-iso} \\
+            &= \ml{tagof}(h(p))
+            \label{eq:inspect-g} \\
+            &= \ml{tagof}(z_p)
+            \label{eq:swap-iso-to-index}
+    \end{align}
+    Equation~\ref{eq:def-reorder-f} follows from the definition of $f'$ and
+    edit application. Equation~\ref{eq:swap-index-to-iso} is an application
+    of Corollary~\ref{lemma:iso-tag-index}; we can then simplify
+    significantly in equations~\ref{eq:elim-iso} and~\ref{eq:inspect-g}
+    because $h$ is an isomorphism and $g$ does not modify tags, as is
+    evident from its definition. A second application of
+    Corollary~\ref{lemma:iso-tag-index}, this time ``in reverse'', gives us
+    the final equation~\ref{eq:swap-iso-to-index}. We conclude that
+    \[\map_{\ml{tagof}}(\dz\;z) = \map_{\ml{tagof}}(z) = c = c',\]
+    part of what we need to show that $(\dz\;z,c',(\dx\;x,y))\in K$.
+
+    Let us now turn our attention to showing that $\dz\;z$ and $\dx\;x$ have
+    the appropriate relationship. \dmwit{proofneeded}
+
+    Finally, we must show that $\dz\;z$ and $y$ have the appropriate
+    relationship. \dmwit{proofneeded}
 
 \item {\bf Case \markref{lins}:} We know $\dx = \mlins i$ and $\dz = \mlins
     i$ and $c' = \mlins i\; c$. We compute:
