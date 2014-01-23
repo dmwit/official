@@ -2479,10 +2479,11 @@ repository using $\mliso^{-1}$. Expanding the table above with these
 translations yields:
 \begin{center}
 \begin{tabular}{@{}c|ccccc@{}}
-    left  & $1$ & $2$ & $3$ & $4$ & $5$ \\
-    $\mliso(\mbox{left})$ & $\mlinl 1$ & $\mlinl 2$ & $\mlinr 1$ & $\mlinr 2$ & $\mlinl 3$ \\
-    $g(\mliso(\mbox{left}))$ & $\mlinl 3$ & $\mlinl 2$ & $\mlinr 1$ & $\mlinr 2$ & $\mlinl 1$ \\
-    $\mliso^{-1}(g(\mliso(\mbox{left})))$ & $5$ & $2$ & $3$ & $4$ & $1$
+    left & $1$ & $2$ & $3$ & $4$ & $5$ \\
+    \hline
+    $\mliso$ & $\mlinl 1$ & $\mlinl 2$ & $\mlinr 1$ & $\mlinr 2$ & $\mlinl 3$ \\
+    $\mliso;g$ & $\mlinl 3$ & $\mlinl 2$ & $\mlinr 1$ & $\mlinr 2$ & $\mlinl 1$ \\
+    $\mliso;g;\mliso^{-1}$ & $5$ & $2$ & $3$ & $4$ & $1$
 \end{tabular}
 \end{center}
 This swaps indices $1$ and $5$, so our final $f'$ looks like:
