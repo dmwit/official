@@ -2858,6 +2858,13 @@ K$. We proceed by induction on the size of $\dz$.
     $\dputr_g$ preserves consistency in this case.
 
 \item {\bf Case \markref{rdel}:}
+    % TODO: Say something about shadowing the conventional $n_L$ and $n_R$
+    % bindings. (In fact, in all the other cases, the shadowing is
+    % benign because the definitions coincide -- can we say something about
+    % that when we set up the convention so we don't have to mention it
+    % every time? Then the sentence here will be more memorable because it
+    % only appears here, rather than appearing here and merely being
+    % different from the other five such sentences.)
     \begin{align*}
         \dz &= \mldel i \\
         \dz' &= \mlright{\mldel{n_L-1}}\mlleft{\mldel{n_R-1}} \\
@@ -3171,6 +3178,16 @@ $\dx$.
     % TODO: this ``count'' think is super-weird. check out the base cases on
     % that thing! I think we might need to change it... how many places
     % is it used?? (answer: 30 total)
+
+    % Conclusion after some thinking and rereading: do not need to change
+    % definition of count, but do need to change all invocations that look
+    % like this:
+    % (n_L, n_R) = count(|c|, c)
+    % to look like this instead:
+    % (n_L+1, n_R+1) = count(|c|+1, c)
+    % See also the note about conventions in the proof of the rdel case for
+    % a good idea about writing that should be implemented at the same time
+    % as this change.
 
     \dmwit{proofneeded}
 
