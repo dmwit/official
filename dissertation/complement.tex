@@ -8,7 +8,7 @@ asymmetric lenses.
 %
 (Other definitions can be given, featuring weaker or stronger laws, but this
 version is widely accepted.  We discuss variants in
-Section~\ref{sec:relwork}.)
+\S\ref{sec:relwork}.)
 %
 Suppose $X$ is some set of source structures (say, the possible states of a
 database) and $Y$ a set of target structures (views of the database).
@@ -520,7 +520,7 @@ them).  The reason is that they demand that the effect of every update is
 completely undoable---not only the effect on the other replica, but also the
 effect of the first update on the complement must be completely forgotten if
 we make a second update.  In particular, neither of the list-mapping lenses
-in Section~\ref{lists} satisfy these laws.
+in \S\ref{lists} satisfy these laws.
 \fi
 
 %% But this means we
@@ -589,7 +589,7 @@ either we can generalize the mechanisms of {\em matching
 refine the whole framework of symmetric lenses with a notion of {\em delta
 propagation}; see
 \ifdissertation Chapter~\ref{chap:delta}%
-\else Section~\ref{future}%
+\else \S\ref{future}%
 \fi.
 
 \section{Equivalence}\label{equiv}
@@ -1780,7 +1780,7 @@ product, the tensor construction is algebraically quite well behaved.
 Second, it justifies a convenient intuition where lenses built from multiple
 tensors are pictured as graphical ``wiring diagrams,'' and suggests a
 possible syntax for lenses that shuffle product components (which we briefly
-discuss in Section~\ref{sec:future}).
+discuss in \S\ref{sec:future}).
 
 \iflater\finish{Nate: The discussion of "wiring diagrams" in the context of
   symmetric monoidal categories made me wonder, can you explain Janis's
@@ -2021,7 +2021,7 @@ categorical sums than what we saw with products.
 \fi
 
 The two tensors, which we called \emph{retentive} and \emph{forgetful} in
-Section~\ref{symm}, differ in how they handle
+\S\ref{symm}, differ in how they handle
 the complement when the new value being \PUT{}
 is from a different branch of the sum than the old value that was \PUT{}.
 The retentive sum keeps complements for {\em both} sublenses in its own
@@ -2903,7 +2903,7 @@ list of $x$'s.
 }
 \end{defn}
 
-As we saw in Section~\ref{symm}, there is also a forgetful variant of the
+As we saw in \S\ref{symm}, there is also a forgetful variant of the
 list mapping lens.  Indeed, this is the one that corresponds to the known
 list mapping operator on asymmetric lenses~\cite{Focal2005-shortcite,%
 Boomerang07}. Additionally, the $\map$ lens gives us the machinery we
@@ -3408,7 +3408,7 @@ Analogs of Theorem~\ref{listiter} and
 Corollary~\ref{hylo} are available for a number of other functors, in
 particular those that are built up from variables by $+$ and $\times$.
 All of these can also be construed as containers (see
-Section~\ref{contain}), but the iterator and hylomorphism patterns
+\S\ref{contain}), but the iterator and hylomorphism patterns
 provide more powerful operations for the construction of lenses than
 the mapping operation available for general containers. Moreover, the
 universal property of the iterator provides a modular proof method,
@@ -3987,7 +3987,7 @@ witnesses the equivalence $F_{I,B}(k;\ell) \equiv F_{I,B}(k);F_{I,B}(\ell)$.
 \fi
 
 For the case of lists, this mapping lens coincides with the retentive map
-that we obtained from the iterator in Section~\ref{iter}.
+that we obtained from the iterator in \S\ref{iter}.
 %
 In general, two pieces of data synchronized by one of these mapping lenses
 will have exactly the same shape; any shape change to one of the sides will
@@ -4017,7 +4017,7 @@ show how known constructions on asymmetric lenses correspond to the
 constructions we have considered.
 
 Write $X \alens Y$ for the set of asymmetric lenses from $X$ to $Y$ (using
-the first presentation of asymmetric lenses from Section~\ref{symm}, with
+the first presentation of asymmetric lenses from \S\ref{symm}, with
 \GET, \PUT, and \CREATE{} components).  
 
 \iffull

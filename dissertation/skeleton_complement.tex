@@ -161,17 +161,17 @@ First, we show that lenses can be generalized from their usual asymmetric
 presentation---where one of the structures is always a ``view'' of the
 other---to a 
 fully {\em symmetric} version where each of the two structures may 
-contain information that is not present in the other (Section~\ref{symm}).
+contain information that is not present in the other (\S\ref{symm}).
 This generalization is significantly more expressive than any previously
 known: although symmetric variants of lenses have been
 studied~\cite{Meertens98,stevens2008tat,DBLP:conf/models/Diskin08}, they
 all lack a notion of sequential composition of lenses, a significant
-technical and practical limitation (see Section~\ref{sec:relwork}).
+technical and practical limitation (see \S\ref{sec:relwork}).
 %
 As we will see, the extra structure that we need to support composition is
 nontrivial; in particular, constructions involving
 symmetric lenses need to be proved correct modulo a notion of {\em behavioral
-  equivalence} (Section~\ref{equiv}).
+  equivalence} (\S\ref{equiv}).
 
 Second, we undertake a systematic investigation of the {\em
   algebraic structure} of the space of lenses, using the concepts of
@@ -185,8 +185,8 @@ version of the paper, available from the second author's web page.\fi)
 We begin this algebraic investigation with some simple generic constructions
 on symmetric 
 lenses: composition, dualization, terminal lenses, simple bijections, etc.
-(Section~\ref{basic}). We then settle some basic questions about products
-and sums (Sections~\ref{prod} and~\ref{sumlist}). In particular, it was
+(\S\ref{basic}). We then settle some basic questions about products
+and sums (\S\ref{prod} and \S\ref{sumlist}). In particular, it was
 previously known 
 that asymmetric lenses admit constructions intuitively corresponding to
 pairing and projection~\cite{Boomerang07} and another construction that is
@@ -200,7 +200,7 @@ products or sums, but does have ``symmetric monoidal'' structures
 with many of the useful properties of products and sums.
 
 Next, we consider how to build lenses over more complex data
-structures such as lists and trees (Section~\ref{iter}).  We first observe
+structures such as lists and trees (\S\ref{iter}).  We first observe
 that the standard construction of algebraic datatypes can be lifted
 straightforwardly from the category of sets to the category of lenses.  For
 example, from the definition of lists as the least solution of the equation
@@ -224,7 +224,7 @@ lists and trees.
   
 Finally, we briefly investigate an even more general technique for
 constructing ``mapping lenses'' that apply the action of a given sublens to
-all the elements of some data structure (Section~\ref{contain}).  This
+all the elements of some data structure (\S\ref{contain}).  This
 technique applies not only to algebraic data structures but to an arbitrary
 {\em container} in the sense of Abbot, Altenkirch, and
 Ghani~\cite{1195941}.  This extends the variety of list and tree mapping
@@ -236,13 +236,13 @@ non-inductive datatypes such as labeled dags and graphs.
 \fi
 
 %% Finally---our most technically substantial contribution---we consider lenses
-%% for recursive datatypes such as lists and trees.  Section~\ref{sumlist}
+%% for recursive datatypes such as lists and trees.  \S\ref{sumlist}
 %% gives direct definitions of two variants of a ``list mapping'' constructor
-%% (corresponding to the two variants of sum).  Sections~\ref{iter}
+%% (corresponding to the two variants of sum).  \S\ref{iter}
 %% and~\ref{contain} develop two different ways to obtain the same lens as an
-%% instance of a much more general construction.  In Section~\ref{iter} we use
+%% instance of a much more general construction.  In \S\ref{iter} we use
 %% the methods of universal algebra \finish{... fill this in ...}.  In
-%% Section~\ref{contain} we use Joyal's notion of {\em
+%% \S\ref{contain} we use Joyal's notion of {\em
 %%   containers}~\cite{JoyalContainers} \finish{... fill this in ...}.
 %% \PENDING{This paragraph ought to be the most compelling in the whole intro
 %%   because it describes our (in some sense) main results, but it's definitely
@@ -250,7 +250,7 @@ non-inductive datatypes such as labeled dags and graphs.
 
 We carry out these investigations in the richer space of symmetric lenses,
 but many of the results and techniques should also apply to the special case of
-asymmetric lenses.  Indeed, we can show (Section~\ref{asymm}) that
+asymmetric lenses.  Indeed, we can show (\S\ref{asymm}) that
 asymmetric lenses form a subcategory
 of symmetric ones in a natural way: every
 asymmetric lens can be embedded in a symmetric lens, and many of the
@@ -258,7 +258,7 @@ algebraic operators on symmetric lenses specialize to known constructions on
 asymmetric lenses.  Conversely, a symmetric lens can be factored into a
 ``back to back'' assembly of two asymmetric ones.
 
-Sections~\ref{sec:relwork} and~\ref{sec:future} discuss related and future
+\S\ref{sec:relwork} and \S\ref{sec:future} discuss related and future
 work. 
 
 \input{complement}
@@ -401,7 +401,7 @@ folding constructs.
 Although we have focused here on semantic and algebraic foundations, many of
 our constructions have a straightforward syntactic realization.  In
 particular, it is easy to give a string-transformation interpretation to all
-the constructions in Sections~\ref{basic} to~\ref{sumlist} (including lenses
+the constructions in \S\ref{basic} through \S\ref{sumlist} (including lenses
 over lists); these could easily be used to build a symmetric version of
 Boomerang~\cite{Boomerang07}. 
 \iffull
@@ -434,7 +434,7 @@ are sets or possibly syntactic type expressions and where $t$ is a
 linear term made up from basic lenses, lens combinators, and the
 variables $x_1,\dots,x_n$. This could be taken as denoting a symmetric lens
 $A_1\otimes\dots\otimes A_n\lens A_0$. For example, here is such a term for
-the lens $\mathit{concat}'$ from Section~\ref{concatprime}:  
+the lens $\mathit{concat}'$ from \S\ref{concatprime}:  
 \[\begin{array}{@{}l}
 z{:}\Unit \oplus A \otimes A\LIST\otimes A\LIST\vdash 
 \begin{array}[t]{@{}l}
@@ -485,7 +485,7 @@ implementation.  An additional improvement comes from
 the next potential extension.
 
 \paragraph*{Alignment and Delta Lenses}
-As we mentioned in Section~\ref{firstalign}, dealing correctly with
+As we mentioned in \S\ref{firstalign}, dealing correctly with
 alignment of structured information is crucial in practice.  This issue has
 been extensively explored in the context of asymmetric lenses, and it seems
 it should be possible to adapt existing ideas such as {\em dictionary
