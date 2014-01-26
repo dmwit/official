@@ -31,6 +31,44 @@
 % Perdita's explorations figuring out what properties transformations have
 % without working out what those transformations are
 % (but totally uninterested in syntax)
+There is a line of work on algebraic foundations for delta lenses that
+arrives at a model very similar to the edit lens framework described
+above~\cite{stevens2008tat}. They consider, as we do, edit monoids together
+with edit translation homomorphisms and (total) edit application actions.
+One significant difference is that they consider generalizing asymmetric
+rather than symmetric lenses, adopting correspondingly modified behavioral
+laws. In particular, in their setting, a delta lens is a \emph{lens-like
+split short exact sequence}. Below we discuss each of these restrictions in
+right-to-left order.
+
+\begin{definition}
+    The \emph{kernel} of a monoid homomorphism $f$, denoted $\ker(f)$, is
+    the preimage of $\ONE$:
+    \[\ker(f) = \{x \mid f(x) = \ONE\}\]
+\end{definition}
+
+\begin{definition}
+    An \emph{exact sequence} is a sequence $\blist f_1 \clist f_n \elist$ of
+    monoid homomorphisms with compatible domains and codomains, that is,
+    \begin{diagram}
+        \path
+            node                      (0)    {$X_0$}
+            node[right=2.5em of 0]    (1)    {$X_1$}
+            node[right=2.5em of 1]    (2)    {$X_2$}
+            node[right=2.5em of 2]    (dots) {$\cdots$}
+            node[right=2.5em of dots] (n2)   {$X_{n-2}$}
+            node[right=2.5em of n2]   (n1)   {$X_{n-1}$}
+            node[right=2.5em of n1]   (n0)   {$X_n$}
+            (0)    edge[->] node[above] {$f_1$}     (1)
+            (1)    edge[->] node[above] {$f_2$}     (2)
+            (2)    edge[->] node[above] {$f_3$}     (dots)
+            (dots) edge[->] node[above] {$f_{n-2}$} (n2)
+            (n2)   edge[->] node[above] {$f_{n-2}$} (n1)
+            (n1)   edge[->] node[above] {$f_n$}     (n0)
+        ;
+    \end{diagram}
+    and such that $\im(f_i)=\ker(f_{i+1})$ for each $i$.
+\end{definition}
 
 \section{Matching lenses}
 \label{sec:matching}
