@@ -2096,7 +2096,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             h &=& \mliso(c) &
             c' &=& \mlreorder f\,c \\
             h' &=& \mliso(c') &
-            (n_L,n_R) &=& \mlcount(|c|,c) \\
+            (n_L+1,n_R+1) &=& \mlcount(|c|+1,c) \\
             h'' &=& h'^{-1};f(|c|);h &
             f_k(n \ne n_k) &=& \lambda p.\,p \\
             d_L &=& \mlleft{\mlreorder{f_L}} &
@@ -2120,7 +2120,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             f'(n \ne |c|) &=& \lambda p.\,p \\
             g(\mlinl p) &=& \mlinl{f(n_L)(p)} &
             f'(|c|) &=& h;g;h^{-1} \\
-            (n_L,n_R) &=& \mlcount(|c|,c) &
+            (n_L+1,n_R+1) &=& \mlcount(|c|+1,c) &
             h &=& \mliso(c)
         }
         {lreorder}\\
@@ -2133,14 +2133,14 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
     \dputl_g(\mlonl{\mldel i},c)
         &=& \partitionarray{(d''\;\mldelete'(p),c'')}{
             h &=& \mliso(c) &
-            (n_L,n_R) &=& \mlcount(|c|,c) \\
+            (n_L+1,n_R+1) &=& \mlcount(|c|+1,c) \\
             p &=& h^{-1}(\mlinl{n_L}) &
             (d'',c'') &=& \dputl_g(d',c') \\
             c' &=& \mldelete'(p)\;c &
             d' &=& \mlonl{\mldel{i\mathord{-}1}}}
         {ldeli} \\
             && % \hspace{6.7em} 
-            \mbox{when }0 < i \le n_L\mathord{+1}
+            \mbox{when }1 \le i \le n_L
 \\
     \dputl_g(\mlonl{\mldel i},c) &=& (\fail,c)\mbox{ otherwise}
       \markeqn{ldelfail}
@@ -2233,7 +2233,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
                 \ml{rights}(\mlinr y \CONS w) &= y\CONS\ml{rights}(w) \\[1ex]
                 \mluntag(\mlinl x) &= x \\
                 \mluntag(\mlinr y) &= y \\[1ex]
-                \mlcount(1,w) &= (1,1)
+                \mlcount(1,\ifdissertation w\else c\fi) &= (1,1)
             \end{align*}
         \end{minipage}
     \end{center}
@@ -2500,6 +2500,13 @@ in the left repository may shuffle which positions are $\mlinlx$'s and which
 are $\mlinrx$'s. As a result, we must take care to construct \emph{two}
 separate position isomorphisms: one for ``before'' the reordering, and one
 for ``after.''
+
+% TODO: Somewhere in the above discussion we should probably try to give
+% some intuition for what \mlcount does, since it's got such odd base cases.
+% An attempt at English might go like this: Suppose we were to insert an L
+% (respectively R) before index i in list c. How many Ls (respectively, Rs)
+% would there be, up to this newly inserted item? These two numbers are the
+% output of \mlcount(i,c).
 
 \iffull
 \begin{lemma}
@@ -2858,18 +2865,14 @@ K$. We proceed by induction on the size of $\dz$.
     $\dputr_g$ preserves consistency in this case.
 
 \item {\bf Case \markref{rdel}:}
-    % TODO: Say something about shadowing the conventional $n_L$ and $n_R$
-    % bindings. (In fact, in all the other cases, the shadowing is
-    % benign because the definitions coincide -- can we say something about
-    % that when we set up the convention so we don't have to mention it
-    % every time? Then the sentence here will be more memorable because it
-    % only appears here, rather than appearing here and merely being
-    % different from the other five such sentences.)
     \begin{align*}
         \dz &= \mldel i \\
         \dz' &= \mlright{\mldel{n_L-1}}\mlleft{\mldel{n_R-1}} \\
         (n_L,n_R) &= \mlcount(i+1,\mlreverse(c))
     \end{align*}
+    (Take careful notice of the definition of $n_L$ and $n_R$ here: it
+    differs from the convention established at the beginning of the proof!
+    We will use these local definitions for the remainder of this case.)
 
     The interesting thing to prove is that $\ml{lefts}(\mldel i\;z) =
     \mldel{n_L-1}\ml{lefts}(z)$ (and similarly for $\ml{rights}$). We
@@ -2910,13 +2913,7 @@ K$. We proceed by induction on the size of $\dz$.
     A similar argument shows that:
     \[\ml{rights}(\mldel i\;z) = \mldel{n_R-1}\ml{rights}(z)\]
 
-\item {\bf Case \markref{rreorder}:} Before we begin, we address the two
-    apparently conflicting definitions of $n_L$ and $n_R$: one from the
-    convention established at the beginning of this proof and one from the
-    local definitions for this specific case. However,
-    Lemma~\ref{lemma:iso-coherent} tells us that these are in fact
-    coincident definitions.
-
+\item {\bf Case \markref{rreorder}:}
     The main idea of the proof for this case is to observe that $c$ contains
     enough information to deduce the length of $x$, $y$, and $z$, and in
     particular which index the various $\ml{reorder}$ edits will be
@@ -3048,7 +3045,7 @@ $\dx$.
     \begin{align*}
         \dx &= \mlreorder f \\
         \dz &= \mlreorder{f'} \\
-        c' &= c \\
+        c' &= c
     \end{align*}
     These depend on the additional definitions:
     \begin{align*}
@@ -3056,13 +3053,8 @@ $\dx$.
         f'(n \ne |c|) &= \lambda p.\,p \\
         g(\mlinl p) &= \mlinl{f(n_L)(p)} &
         f'(|c|) &= h;g;h^{-1} \\
-        (n_L,n_R) &= \mlcount(|c|,c) &
         h &= \mliso(c)
     \end{align*}
-    Although it may appear as though we are shadowing the earlier
-    definitions of $n_L$ and $n_R$, Lemma~\ref{lemma:iso-coherent} tells us
-    that the definition here is in agreement with the remainder of this
-    proof's established convention.
 
     We first observe that $\mlreorder{f'}$ does not affect tags at all. To
     be precise, for $1 \le p \le n$, we have:
@@ -3170,24 +3162,10 @@ $\dx$.
         c'' &= d\;c \\
         d &= \mldelete'(\mliso(c)^{-1}(\mlinl{n_L}))
     \end{align*}
-    and we know that $0 < i \le n_L + 1$. Our strategy is to show that
+    and we know that $1 \le i \le n_L$. Our strategy is to show that
     $(d\;z,c'',(\mldel1\;x,y)) \in K$; the induction hypothesis then
     tells us that $(d'\;(d\;z),c',d''(\mldel1\;x,y))\in K$. This means that
     $((d'd)\;z,c',(\mldel i\;x,y)) \in K$, which concludes this case.
-
-    % TODO: this ``count'' think is super-weird. check out the base cases on
-    % that thing! I think we might need to change it... how many places
-    % is it used?? (answer: 30 total)
-
-    % Conclusion after some thinking and rereading: do not need to change
-    % definition of count, but do need to change all invocations that look
-    % like this:
-    % (n_L, n_R) = count(|c|, c)
-    % to look like this instead:
-    % (n_L+1, n_R+1) = count(|c|+1, c)
-    % See also the note about conventions in the proof of the rdel case for
-    % a good idea about writing that should be implemented at the same time
-    % as this change.
 
     \dmwit{proofneeded}
 
@@ -3210,6 +3188,13 @@ definition of $K$, we know
     x &= \ml{lefts}(z) \\
     y &= \ml{rights}(z).
 \end{align*}
+In many of the cases below, the definition of $\dputr_g$ or $\dputl_g$ has
+its own bindings for $n_L$ and $n_R$ using the idiom
+\[(n_L+1,n_R+1)=\mlcount(|c|+1,c).\]
+At first blush, these definitions conflict with the convention we are
+establishing here. However, Lemma~\ref{lemma:iso-coherent} tells us that
+these are in fact coincident definitions; so we will not remark on them
+further in the cases where they occur.
 
 % TODO: in partitiondputrproof, we clearly label what equations we learn at
 % the beginning of each case, but partitiondputlproof deosn't follow this
