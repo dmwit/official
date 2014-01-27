@@ -49,8 +49,8 @@ some notation.
 \end{definition}
 
 \begin{definition}
-    The \emph{kernel} of a monoid morphism $f$, denoted $\ker(f)$, is the
-    preimage of $\ONE$:
+    The \emph{kernel} of a monoid homomorphism $f$, denoted $\ker(f)$, is
+    the preimage of $\ONE$:
     \[\ker(f) = \{x \mid f(x) = \ONE\}\]
 \end{definition}
 
@@ -99,18 +99,19 @@ some notation.
 \end{definition}
 
 Before we define what split and lens-like mean, let us consider when an
-edit translation morphism $f \in \DS \to \DV$ may be extended to a short exact
-sequence. The morphism $s \in \DV \to \D\Unit$ must be the constantly-$\ONE$
-function (there are no other functions with that type), so that its kernel
-is $\ker(i)=Y$. Hence the restriction $\im(f)=\ker(i)$ that arises from
-extending the sequence to the right says that $f$ must be surjective. On the
-other hand, the sequence may always be extended to the left by choosing $K$
-to be the submonoid $\ker(f)$ and $k$ to be the inclusion function. (The
-morphism $i$ is completely determined by the morphism laws once we have
-chosen a monoid $K$: it must map the sole input element $\ONE_{\D\Unit}$ to
-$\ONE_K$.) Other choices for $K$ are possible---for example, by adding a
-fresh generator to $K$ that $k$ maps to any non-trivial element of $X$---but
-we will not be interested in this ability below.
+edit translation homomorphism $f \in \DS \to \DV$ may be extended to a short
+exact sequence. The homomorphism $s \in \DV \to \D\Unit$ must be the
+constantly-$\ONE$ function (there are no other functions with that type), so
+that its kernel is $\ker(i)=Y$. Hence the restriction $\im(f)=\ker(i)$ that
+arises from extending the sequence to the right says that $f$ must be
+surjective. On the other hand, the sequence may always be extended to the
+left by choosing $K$ to be the submonoid $\ker(f)$ and $k$ to be the
+inclusion function. (The homomorphism $i$ is completely determined by the
+homomorphism laws once we have chosen a monoid $K$: it must map the sole
+input element $\ONE_{\D\Unit}$ to $\ONE_K$.) Other choices for $K$ are
+possible---for example, by adding a fresh generator to $K$ that $k$ maps to
+any non-trivial element of $X$---but we will not be interested in this
+ability below.
 
 In lens terms, one should think of $f$ as being an edit-lens analog of the
 asymmetric lens framework's \GET function. Giving a short exact sequence
@@ -120,17 +121,18 @@ has at least one analogous $S$-edit.
 
 \begin{definition}
     A short exact sequence around $f\in\DS\to\DV$ is said to \emph{split} if
-    there is a morphism $g\in\DV\to\DS$ such that $g;f = \id_{\DV}$.
+    there is a homomorphism $g\in\DV\to\DS$ such that $g;f = \id_{\DV}$.
 \end{definition}
 
 We are guaranteed that there is a \emph{function} $g$ by the fact that $f$
 is surjective, but not guaranteed that any such function is a monoid
-morphism. If we do have such a morphism $g$ that splits the sequence, then
-in lens terms we should consider that $g$ to be an edit-lens analog of the
-\PUT function. Then $g;f = \id_{\DV}$ says that all the information available in
-$V$-edits are also available in $S$-edits, an analogous restriction to the
-one on state-based lenses that says that all the information available in
-the view repository is available in the source repository.
+homomorphism. If we do have such a homomorphism $g$ that splits the
+sequence, then in lens terms we should consider that $g$ to be an edit-lens
+analog of the \PUT function. Then $g;f = \id_{\DV}$ says that all the
+information available in $V$-edits are also available in $S$-edits, an
+analogous restriction to the one on state-based lenses that says that all
+the information available in the view repository is available in the source
+repository.
 
 The final condition placed on this variant of delta lenses is that they be
 lens-like. Thus far, all the conditions have been purely in terms of edits;
@@ -155,6 +157,19 @@ $\dputl$ to respect a consistency relation on states.
         {\dv\;f(\ds)\;\init_V = f(\ds)\;\init_V}
         {g(\dv)\;\ds\;\init_S = \ds\;\init_S}
 \end{definition}
+
+Rule \rn{LL1} amounts to saying that $f$ is a module homomorphism (not just
+a monoid homomorphism). Rule \rn{LL2} is a bit more subtle, but is motivated
+by this rephrasing of the state-based asymmetric lens framework's
+\rn{GetPut} law:
+\infrule[GetPutAlt]
+    {\aget(s)=v}
+    {\aput(v,s)=s}
+Rule \rn{GetPutAlt} says, roughly, ``if the view $v$ has not changed since
+the last synchronization, then the source $s$ should not change, either.''
+Similarly, \rn{LL2} says, roughly, ``if the edit we are about to translate
+does not change the current view $f(\ds)\;\init_V$, then the edit we output
+should not change the current source $\ds\;\init_S$.''
 
 % TODO: notation correspondence
 % our \D\Unit is their 1
