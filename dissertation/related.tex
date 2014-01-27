@@ -31,8 +31,6 @@
 % Perdita's explorations figuring out what properties transformations have
 % without working out what those transformations are
 % (but totally uninterested in syntax)
-% TODO: use S and V instead of X and Y, to emphasize the connection with
-% asymmetric lenses?
 There is a line of work on algebraic foundations for delta lenses that
 arrives at a model very similar to the edit lens framework described
 above~\cite{stevens2008tat}. They consider, as we do, edit monoids together
@@ -41,8 +39,8 @@ One significant difference is that they consider generalizing asymmetric
 rather than symmetric lenses, adopting correspondingly modified behavioral
 laws. In particular, in their setting, a delta lens is a \emph{lens-like
 split short exact sequence}. Below we discuss each of these restrictions in
-right-to-left order. We begin with two standard definitions to fix some
-notation.
+right-to-left order. We begin with two standard definitions to establish
+some notation.
 
 \begin{definition}
     The \emph{image} of a function $f \in X \to Y$ is the set of elements
@@ -86,29 +84,29 @@ notation.
         \path
             node                   (1-1) {$\D\Unit$}
             node[right=4em of 1-1] (K)   {$K$}
-            node[right=4em of K]   (X)   {$X$}
-            node[right=4em of X]   (Y)   {$Y$}
+            node[right=4em of K]   (X)   {$\DS$}
+            node[right=4em of X]   (Y)   {$\DV$}
             node[right=4em of Y]   (1-2) {$\D\Unit$}
-            (1-1) edge[->] node[above] {$s$} (K)
+            (1-1) edge[->] node[above] {$i$} (K)
             (K)   edge[->] node[above] {$k$} (X)
             (X)   edge[->] node[above] {$f$} (Y)
-            (Y)   edge[->] node[above] {$i$} (1-2)
+            (Y)   edge[->] node[above] {$s$} (1-2)
             ;
     \end{diagram}
     We will say \emph{around} to mean the third element of a sequence, as
-    in, ``$\blist s \mlist k \mlist f \mlist i \elist$ is a short exact
+    in, ``$\blist i \mlist k \mlist f \mlist s \elist$ is a short exact
     sequence around $f$.''
 \end{definition}
 
 Before we define what split and lens-like mean, let us consider when an
-edit translation morphism $f \in X \to Y$ may be extended to a short exact
-sequence. The morphism $i \in Y \to \D\Unit$ must be the constantly-$\ONE$
+edit translation morphism $f \in \DS \to \DV$ may be extended to a short exact
+sequence. The morphism $s \in \DV \to \D\Unit$ must be the constantly-$\ONE$
 function (there are no other functions with that type), so that its kernel
 is $\ker(i)=Y$. Hence the restriction $\im(f)=\ker(i)$ that arises from
 extending the sequence to the right says that $f$ must be surjective. On the
 other hand, the sequence may always be extended to the left by choosing $K$
 to be the submonoid $\ker(f)$ and $k$ to be the inclusion function. (The
-morphism $s$ is completely determined by the morphism laws once we have
+morphism $i$ is completely determined by the morphism laws once we have
 chosen a monoid $K$: it must map the sole input element $\ONE_{\D\Unit}$ to
 $\ONE_K$.) Other choices for $K$ are possible---for example, by adding a
 fresh generator to $K$ that $k$ maps to any non-trivial element of $X$---but
@@ -116,54 +114,64 @@ we will not be interested in this ability below.
 
 In lens terms, one should think of $f$ as being an edit-lens analog of the
 asymmetric lens framework's \GET function. Giving a short exact sequence
-amounts to identifying an edit translation function $f \in X \to Y$ that is
-compatible with the monoid structure on edits and such that each $Y$-edit
-has at least one analogous $X$-edit.
+amounts to identifying an edit translation function $f\in\DS\to\DV$ that is
+compatible with the monoid structure on edits and such that each $V$-edit
+has at least one analogous $S$-edit.
 
 \begin{definition}
-    A short exact sequence around $f \in X \to Y$ is said to \emph{split} if
-    there is a morphism $g \in Y \to X$ such that $g;f = \id_Y$.
+    A short exact sequence around $f\in\DS\to\DV$ is said to \emph{split} if
+    there is a morphism $g\in\DV\to\DS$ such that $g;f = \id_{\DV}$.
 \end{definition}
 
 We are guaranteed that there is a \emph{function} $g$ by the fact that $f$
 is surjective, but not guaranteed that any such function is a monoid
 morphism. If we do have such a morphism $g$ that splits the sequence, then
 in lens terms we should consider that $g$ to be an edit-lens analog of the
-\PUT function. Then $g;f = \id_Y$ says that all the information available in
-$Y$-edits are also available in $X$-edits, an analogous restriction to the
+\PUT function. Then $g;f = \id_{\DV}$ says that all the information available in
+$V$-edits are also available in $S$-edits, an analogous restriction to the
 one on state-based lenses that says that all the information available in
 the view repository is available in the source repository.
 
 The final condition placed on this variant of delta lenses is that they be
 lens-like. Thus far, all the conditions have been purely in terms of edits;
 this final pair of properties connect the world of edits and the world of
-states in a way similar to the edit lens law that requires $\dputr$ and
-$\dputl$ to respect a consistency relation.
+states. This is similar to the edit lens law that requires $\dputr$ and
+$\dputl$ to respect a consistency relation on states.
 
 \begin{definition}
-    A monoid action $\odot \in \DX \times X \to X$ is \emph{transitive} if
-    for all $x,x' \in X$ there is $\dx \in \DX$ such that $\dx\odot x=x'$. We
-    will say a module is transitive when its action is.
+    A monoid action $\odot \in \DX \times |X| \to |X|$ is \emph{transitive}
+    if for all $x,x' \in |X|$ there is $\dx \in \DX$ such that $\dx\odot
+    x=x'$. We will say a module is transitive when its action is.
 \end{definition}
 
-% TODO: this is so imprecise now, because we're using X instead of \DX
 \begin{definition}
-    A short exact sequence around $f \in X \to Y$ split by $g$ is
+    A short exact sequence around $f\in\DS\to\DV$ split by $g$ is
     \emph{lens-like} if it comes equipped with transitive, total modules for
-    $X$ and $Y$ such that two conditions hold:
+    $\DS$ and $\DV$ such that two conditions hold:
     \infrule[LL1]
-        {\dx\;\init_X = \dx'\;\init_X}
-        {f(\dx)\;\init_Y = f(\dx')\;\init_Y}
+        {\ds\;\init_S = \ds'\;\init_S}
+        {f(\ds)\;\init_V = f(\ds')\;\init_V}
     \infrule[LL2]
-        {\dy\;f(\dx)\;\init_Y = f(\dx)\;\init_Y}
-        {g(\dy)\;\dx\;\init_X = \dx\;\init_X}
+        {\dv\;f(\ds)\;\init_V = f(\ds)\;\init_V}
+        {g(\dv)\;\ds\;\init_S = \ds\;\init_S}
 \end{definition}
 
 % TODO: notation correspondence
 % our \D\Unit is their 1
 % our \init is their \Omega
 % we use f and g for a split sequence; they use \mu and \lambda
-% we use \dx and \dy (\d s and \d v?) for edits, they use g
+% we use \ds and \dv for edits, they use g
+
+% TODO: some differences
+% * we have partial actions; they have total ones
+% * should think about what this condition of having g;f=id means, and whether
+%   we have an analog
+% * their lens-like requirement seems too strong (e.g. it's not clear to me
+%   that if an edit happens to do nothing on one side it should be
+%   translated to an edit which happens to do nothing)
+% * we have way more syntax
+% * we haven't thought much about groups at all
+% * asymmetric vs. symmetric, of course
 
 \section{Matching lenses}
 \label{sec:matching}
