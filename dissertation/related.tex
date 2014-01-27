@@ -168,22 +168,30 @@ by this rephrasing of the state-based asymmetric lens framework's
 Rule \rn{GetPutAlt} says, roughly, ``if the view $v$ has not changed since
 the last synchronization, then the source $s$ should not change, either.''
 Similarly, \rn{LL2} says, roughly, ``if the edit we are about to translate
-does not change the current view $f(\ds)\;\init_V$, then the edit we output
-should not change the current source $\ds\;\init_S$.''
+does not change the view $f(\ds)\;\init_V$, then the edit we output should
+not change the source $\ds\;\init_S$.''
 
-% TODO: high points of the work once we get past the definitions:
-% * a lens-like sequence + a diff operation -> a state-based lens
-% * take \DV to be the monoid of invertible endofunctions on V; can define a
-%   submonoid \DS of endofunctions on S and turn a vwb lens into a lens-like
-%   sequence on groups
-% * lens -> lens-like sequence -> lens = id
-% * close relationship between inverse edits and PutPut
+That work goes on to explore the properties of this kind of delta lens. One
+can take a lens-like sequence around $f\in\DS\to\DV$ equipped with a diffing
+operation $\dif\in|S|\times|V|\to\DV$ (satisfying the obvious sanity
+condition) and produce an asymmetric, state-based lens. Additionally, there
+is a close relationship between demanding the existence of inverse
+edits---that is, working with edit groups rather than edit monoids---and the
+\rn{PutPut} asymmetric lens law:
+\infax[PutPut]{\aput(v,\aput(v',s))=\aput(v,s)}
+They show that one can define suitably restricted submonoids $\DV \subset V
+\to V$ and $\DS \subset S \to S$ and lift \rn{PutPut}-abiding asymmetric
+lenses into a lens-like sequence on groups. Furthermore, the two
+translations agree with each other: converting a lens to a lens-like
+sequence and back is the identity transformation, regardless of the choice
+of $\dif$ operation in the latter transformation.
 
 % TODO: notation correspondence
 % our \D\Unit is their 1
 % our \init is their \Omega
 % we use f and g for a split sequence; they use \mu and \lambda
 % we use \ds and \dv for edits, they use g
+% we say \dif operation; they say oracle
 
 % TODO: some differences
 % * we have partial actions; they have total ones
