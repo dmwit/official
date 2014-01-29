@@ -193,16 +193,23 @@ of $\dif$ operation in the latter transformation.
 % we use \ds and \dv for edits, they use g
 % we say \dif operation; they say oracle
 
-% TODO: some differences
-% * we have partial actions; they have total ones
-% * should think about what this condition of having g;f=id means, and whether
-%   we have an analog
-% * their lens-like requirement seems too strong (e.g. it's not clear to me
-%   that if an edit happens to do nothing on one side it should be
-%   translated to an edit which happens to do nothing)
-% * we have way more syntax
-% * we haven't thought much about groups at all
-% * asymmetric vs. symmetric, of course
+% TODO: differences, along with a proposed order for tackling them
+% * asymmetric vs. symmetric
+% * they have some fundamentally different restrictions:
+%   * g;f=id, akin to Diskin's triple-trip law; seems nice, and one we
+%     haven't considered carefully, but which might be achievable by adding
+%     laws to our free monoids as in that one section
+%   * groups instead of monoids
+%   * lens-like requirement; needed to ensure that their delta lenses behave
+%     like state-based lenses even in the face of a sadistic oracle, but
+%     seems too strong, generally; e.g. map(pi_1) should probably be allowed
+%     to replace field 2 with missing on the LHS if an element is deleted
+%     then reinserted on the RHS
+%   * partial vs. total actions: we think treating partiality as a core
+%     concern is an important real-world consideration, and it lets us write
+%     properties like ``defined on one side => defined on the other''
+% * but we have way more syntax, which is good evidence that our
+%   restrictions are light enough to allow a wide range of behaviors
 
 \section{Matching lenses}
 \label{sec:matching}
