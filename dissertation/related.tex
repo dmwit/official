@@ -28,9 +28,6 @@
 
 \section{Algebraic rephrasing}
 \label{sec:algebraic}
-% Perdita's explorations figuring out what properties transformations have
-% without working out what those transformations are
-% (but totally uninterested in syntax)
 There is a line of work on algebraic foundations for delta lenses that
 arrives at a model very similar to the edit lens framework described
 above~\cite{stevens2008tat}. They consider, as we do, edit monoids together
@@ -186,30 +183,95 @@ translations agree with each other: converting a lens to a lens-like
 sequence and back is the identity transformation, regardless of the choice
 of $\dif$ operation in the latter transformation.
 
+The primary difference between their work and ours is that they consider
+only asymmetric situations. However, they also consider many fundamentally
+different restrictions than the current development does, even after
+accounting for the different setting. For example, they propose a law
+requiring that when $g$ splits a sequence around $f$ we additionally have
+$g;f=\id$. Since $f$ is surjective, this is the same as demanding $f;g;f=f$,
+akin to Diskin's proposed triple-trip law discussed above. As mentioned in
+that discussion, it is not a law that we have considered carefully; but it
+seems we may be able to achieve something similar in many of the lenses we
+defined by introducing appropriate equalities to our edit monoids for
+structured data. The paper also spends some time discussing the
+ramifications of demanding an edit group rather than an edit monoid. We have
+not explored this restriction deeply, but some cursory investigations
+suggest that including enough information to undo each operation may be at
+odds with the size benefits promised above. Another restriction they have
+throughout their development is that their edit application actions are
+invariably total. We believe that partiality of these actions is an
+important real-world consideration. Treating it carefully allows us to
+distinguish between error conditions and edits which successfully do
+nothing, and to give a guarantee that our lenses do not spuriously turn a
+succesful nothing into an error condition.
+
+They also treat backwards-compatibility with asymmetric, state-based lenses
+very seriously, which gives rise to their lens-like restrictions.  Their
+rule \rn{LL1} stating that the \GET direction is a module homomorphism can
+be seen as saying that edit translation is consistent with state
+translation.  Our demand that the edit translations preserve a consistency
+relation can be seen as a generalization of this. On the other hand, their
+rule \rn{LL2}---necessary to ensure that their delta lenses behave like
+state-based lenses regardless of $\dif$ operation---seems quite strong. The
+goal appears to be to preserve the state-based behavior that changing
+nothing on one side changes nothing on the other; however, it is our view
+that demanding that the distinguished do-nothing edit from one module be
+translated to the distinguished do-nothing edit from the other module
+already captures this intuition. There are edits which appear to do nothing
+to a given view but which nevertheless have semantic content, and should
+therefore be allowed to be distinguished by a lens. Consider the example of
+Figure~\ref{fig:school-salaries} again, reproduced here as
+Figure~\ref{fig:school-salaries-delins}. An edit which deletes the last
+element of the secretary's view, then inserts a fresh element with value
+``Mary Jones'', apparently does nothing to the current view. Nevertheless,
+it seems quite natural\footnote{Possibly even desirable---an obviously
+incorrect value is often preferable to a plausible incorrect value.} for the
+translation of this edit to reset the salary associated with ``Mary Jones''
+to a default value; a rule like \rn{LL2} would prevent lenses from having
+this kind of nuanced behavior.
+
+\begin{figure}
+    \begin{minipage}{0.5\linewidth}
+        \centering
+        \begin{tabular}{lr}
+            Teacher name & Salary \\
+            \hline
+            Sam Rickard & 57,000 \\
+            Jon Jacobs & 50,000 \\
+            Mary Jones & 65,000 \\
+        \end{tabular}
+        \subcaption{HR's view}
+        \label{fig:school-salaries-delins-hr}
+    \end{minipage}%
+    \begin{minipage}{0.5\linewidth}
+        \centering
+        \begin{tabular}{l}
+            Teacher name \\
+            \hline
+            Sam Rickard \\
+            Jon Jacobs \\
+            Mary Jones \\
+        \end{tabular}
+        \subcaption{A secretary's view}
+        \label{fig:school-salaries-delins-sec-pre}
+    \end{minipage}%
+    \caption{A school's staff list, as seen by HR and by the principal's secretary}
+    \label{fig:school-salaries-delins}
+\end{figure}
+
+Finally, our development includes significantly more instantiations of the
+lens framework to particular lenses and lens combinators. We believe that
+this is good evidence that our behavioral restrictions are relaxed enough to
+accomodate important use cases, but strict enough to capture many genuinely
+undesirable behaviors in early proposals for these combinators (not
+documented here).
+
 % TODO: notation correspondence
 % our \D\Unit is their 1
 % our \init is their \Omega
 % we use f and g for a split sequence; they use \mu and \lambda
 % we use \ds and \dv for edits, they use g
 % we say \dif operation; they say oracle
-
-% TODO: differences, along with a proposed order for tackling them
-% * asymmetric vs. symmetric
-% * they have some fundamentally different restrictions:
-%   * g;f=id, akin to Diskin's triple-trip law; seems nice, and one we
-%     haven't considered carefully, but which might be achievable by adding
-%     laws to our free monoids as in that one section
-%   * groups instead of monoids
-%   * lens-like requirement; needed to ensure that their delta lenses behave
-%     like state-based lenses even in the face of a sadistic oracle, but
-%     seems too strong, generally; e.g. map(pi_1) should probably be allowed
-%     to replace field 2 with missing on the LHS if an element is deleted
-%     then reinserted on the RHS
-%   * partial vs. total actions: we think treating partiality as a core
-%     concern is an important real-world consideration, and it lets us write
-%     properties like ``defined on one side => defined on the other''
-% * but we have way more syntax, which is good evidence that our
-%   restrictions are light enough to allow a wide range of behaviors
 
 \section{Matching lenses}
 \label{sec:matching}
