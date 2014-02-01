@@ -17,6 +17,76 @@
 \label{sec:delta:symmetric}
 % describe ``From state-based to delta-based bidirectional transformations:
 % the symmetric case''
+Diskin et al. also spend some effort considering what machinery is needed to
+support transformations between domains that each have missing
+information---that is, symmetric transformations~\cite{Diskin-Delta11}.
+Before we get to their somewhat idiosyncratic algebraic structure
+abstracting edits, let us introduce some notation for handling graphs.
+
+\begin{definition}
+    A \emph{graph} $G$ is a quadruple $\left<G_0,G_1,\mldom,\mlcod\right>$
+    consisting of a set of nodes $G_0$, a set of edges $G_1$, and two
+    functions $\mldom,\mlcod \in G_1 \to G_0$ giving the source and target
+    of each edge. We will write $e:v \dedge v'$ as shorthand for the
+    assertion that $e \in G_1$, that $\mldom(e)=v$, and that $\mlcod(e)=v'$.
+    If the directionality of the edge is uninteresting, we will write $e:v
+    \uedge v'$ to mean either $e: v \dedge v'$ or $e: v' \dedge v$.
+\end{definition}
+
+\begin{definition}
+    A \emph{model space} is a triple $\left<G,\id,\swoop\right>$ of a
+    graph $G$ together with an involution $\swoop\in G_1 \to G_1$ which
+    associates with each edge $e : v \dedge v'$ an opposing edge $e\swoop:
+    v' \dedge v$ and a function $\id \in G_0 \to G_1$ which chooses a
+    distinguished self loop $\id_v : v \dedge v$ for each node $v$. The two
+    operations are required to be coherent in the sense that $\id_v\swoop =
+    \id_v$.
+\end{definition}
+
+Model spaces are---like modules in our development---intended to abstract
+edits and values. With this motivation in mind, there are a few points of
+interest about this definition. Most notable is that a given edit (edge)
+uniquely identifies both the value it can be applied to and the value that
+results. Additionally, edits are required to support an ``undo'' operation
+via $\swoop$. However, because there is no notion of edit composition, we
+cannot require that identity edits are a unit or that $e$ and $e\swoop$
+compose to the identity. We will see later that the $\id$ and $\swoop$
+operations are included to aid in stating behavioral laws about lenses;
+perhaps this explains why there is little attempt to give behavioral laws
+about the edit structure implied by these operations.
+
+\begin{definition}
+    Given graphs $G$ and $H$, we define the \emph{source-} and
+    \emph{target-coincident} edge pairings as follows:
+    \begin{align*}
+        G \domco H &= \{(e_g,e_h) \mid e_g : v \dedge v' \land e_h : v
+        \uedge v''\} \\
+        G \codco H &= \{(e_g,e_h) \mid e_g : v \dedge v' \land e_h : v'
+        \uedge v''\}
+    \end{align*}
+\end{definition}
+
+\begin{definition}
+    A \emph{symmetric delta lens} $\ell$ connecting model spaces $A$ and
+    $B$, written $\ell \in A \sdlens B$, consists of:
+    \begin{itemize}
+        \item a bipartite graph $R$ whose two parts are $A_0$ and $B_0$ (the
+            edges of $R$ are called \emph{correspondence relations}),
+        \item a function $\mlfppg \in A \domco R \to B \codco R$,
+            and
+        \item a function $\mlbppg \in B \domco R \to A \codco R$
+    \end{itemize}
+    such that if $(b,r') = \mlfppg(a,r)$ then $r : \mldom(a) \uedge \mldom
+    (b)$ and $r' : \mlcod(a) \uedge \mlcod(b)$ (and similarly for
+    $\mlbppg$).
+\end{definition}
+
+The preconditions for $\mlfppg$ above stating that the edit and
+correspondence relations are source-coincident and the postconditions saying
+that the two edits and two correspondence relations together make a
+well-typed square are somewhat similar to our precondition requiring an edit
+which applies cleanly and postconditions saying that we produce an
+applicable edit that restores consistency.
 
 \subsection{Comparison}
 \label{sec:delta:comparison}

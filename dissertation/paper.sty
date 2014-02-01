@@ -10,6 +10,7 @@
 \usepackage{fnpct}
 \usepackage{ifpdf}
 \usepackage{mathtools}
+\usepackage{metre}
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage{stmaryrd}
@@ -130,6 +131,7 @@
 \newcommand{\cmaint}{\overset{c}{\lens}}
 \newcommand{\codiag}{\mathit{codiag}}
 \newcommand{\codomain}{\mathit{codomain}}
+\newcommand{\codco}{\times_\mlcod}
 \newcommand{\comp}{\mathit{comp}}
 \newcommand{\CONCRETELIST}[1]{\left<#1\right>}
 \newcommand{\cond}[1]{\left\{\begin{array}{ll}#1\end{array}\right.}
@@ -143,6 +145,7 @@
 \newcommand{\D}{\partial}
 \newcommand{\danger}{\mathcal D}
 \newcommand{\DD}{\mathbf{D}}
+\newcommand{\dedge}{\to}
 \newcommand{\Deep}{\mathit{deep}}
 \newcommand{\Defined}{{\downarrow}} % double braces to affect spacing, see http://tex.stackexchange.com/a/38984/16779
 \newcommand{\Delete}{\mathit{delete}}
@@ -161,6 +164,7 @@
 \newcommand{\dmwit}[1]{\finish{dmwit: #1}}
 \newcommand{\Domain}{\mathit{dom}}
 \newcommand{\domain}{\mathit{domain}}
+\newcommand{\domco}{\times_\mldom}
 \newcommand{\dputl}{\mathord{\Lleftarrow}}
 \newcommand{\Dputl}{\mathord{\Lleftarrow}}
 \newcommand{\DPUT}{\mathit{dput}}
@@ -231,15 +235,19 @@
 \newcommand{\mdomain}[1]{\mathit{dom}(#1)}
 \newcommand{\mh}[1]{\finish{MH: #1}}
 \newcommand{\ml}[1]{\mathsf{#1}}
+\newcommand{\mlbppg}{\ml{bPpg}}
+\newcommand{\mlcod}{\ml{cod}}
 \newcommand{\mlcount}{\ml{count}}
 \newcommand{\mldel}[1]{\ml{del}(#1)}
 \newcommand{\mldelete}{\ml{del}}
+\newcommand{\mldom}{\ml{dom}}
 \newcommand{\mldoubleletarray}[1]{\begin{array}[t]{@{}r@{\;}c@{\;}l@{\quad}r@{\;}c@{\;}l@{}}#1\end{array}}
 \newcommand{\mlelse}{\ml{else}\ }
 \newcommand{\mlens}[1]{\mathcal M(#1)}
 \newcommand{\mlfailed}{\ml{failed}}
 \newcommand{\mlfalse}{\false}
 \newcommand{\mlfind}{\ml{find}}
+\newcommand{\mlfppg}{\ml{fPpg}}
 \newcommand{\mlfst}{\ml{fst}}
 \newcommand{\mlhead}[1]{\ml{head}(#1)}
 \newcommand{\mlif}{\ml{if}\ }
@@ -335,6 +343,7 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Rm}{\mathsf{rm}}
 \newcommand{\run}{\mathit{run}}
+\newcommand{\sdlens}{\overset{sd}{\lens}}
 \newcommand{\Sed}{\mathsf{sed}}
 \newcommand{\SET}{{\sc set}}
 \newcommand{\SMALLSECTIONHEADER}{\paragraph*}
@@ -347,6 +356,7 @@
 \newcommand{\swap}{\mathit{swap}}
 \newcommand{\switch}{\mathit{switch}}
 \newcommand{\swizzle}{\times}
+\newcommand{\swoop}{\breve{\ }}
 \newcommand{\sym}{^\mathit{sym}}
 \newcommand{\Tag}{\ml{Tag}}
 \newcommand{\TagM}{\ml{TagM}}
@@ -359,6 +369,7 @@
 \newcommand{\Trit}{\mathit{Trit}}
 \newcommand{\tr}{\triangleright}
 \newcommand{\true}{\ml{true}}
+\newcommand{\uedge}{\mathrel{\obelus}}
 \newcommand{\Undefined}{{\uparrow}} % double braces to affect spacing, see http://tex.stackexchange.com/a/38984/16779
 \newcommand{\Unedited}{\mathsf{unedited}}
 \newcommand{\union}{\mathit{union}}
