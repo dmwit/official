@@ -8,11 +8,10 @@ programming. Broadly speaking, the problem domain involves maintaining a
 connection between two different representations of otherwise very similar
 information. The strong connections between an in-memory representation of a
 data structure and its serialized form; a piece of source code and its
-parsed abstract syntax tree~\cite{rendel2010invertible}; tool-specific
-configuration formats and a common configuration format~\cite{Augeas}; a
-database and some particular summary of interest; or two distant but
-partially replicated computers~\cite{pierce2004unison} are all examples of
-areas where two pieces of data are very similar. In each case, one would
+parsed abstract syntax tree; tool-specific configuration formats and a
+common configuration format; a database and some particular summary of
+interest; or two distant but partially replicated computers are all examples
+of areas where two pieces of data are very similar. In each case, one would
 like the two pieces of data to stay ``in synch'': modifications to one piece
 should be propagated and reflected in the other.
 
@@ -30,9 +29,8 @@ interpreted in two ways and which makes it easy to prove that the two
 different interpretations work together appropriately.
 
 One well-studied approach to bidirectional programming is the framework of
-\emph{asymmetric}, \emph{state-based} lenses. (A thorough review of this
-work is available elsewhere~\cite{FosterThesis}.) In this model, one of the
-two repositories is a \emph{source}, and the other is a \emph{view} of or
+\emph{asymmetric}, \emph{state-based} lenses. In this model, one of the two
+repositories is a \emph{source}, and the other is a \emph{view} of or
 \emph{query} on the other: that is, it can be completely reconstructed from
 the other without additional outside information. Updates to the source can
 be easily propagated to the view by rerunning the query, but propagating
