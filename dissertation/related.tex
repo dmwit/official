@@ -59,25 +59,25 @@ about the edit structure implied by these operations.
     Given graphs $G$ and $H$, we define the \emph{source-} and
     \emph{target-coincident} edge pairings as follows:
     \begin{align*}
-        G \domco H &= \{(e_g,e_h) \mid e_g : v \dedge v' \land e_h : v
-        \uedge v''\} \\
-        G \codco H &= \{(e_g,e_h) \mid e_g : v \dedge v' \land e_h : v'
-        \uedge v''\}
+        G \domco H &= \{(e_g,e_h) \mid e_g : v \dedge v' \in G_1 \land e_h :
+        v \uedge v'' \in H_1\} \\
+        G \codco H &= \{(e_g,e_h) \mid e_g : v \dedge v' \in G_1 \land e_h :
+        v' \uedge v'' \in H_1\}
     \end{align*}
 \end{definition}
 
 \begin{definition}
-    A \emph{symmetric delta lens} $\ell$ connecting model spaces $A$ and
-    $B$, written $\ell \in A \sdlens B$, consists of:
+    A \emph{symmetric delta lens} $\ell$ connecting model spaces $X$ and
+    $Y$, written $\ell \in X \sdlens Y$, consists of:
     \begin{itemize}
-        \item a bipartite graph $R$ whose two parts are $A_0$ and $B_0$ (the
+        \item a bipartite graph $R$ whose two parts are $X_0$ and $Y_0$ (the
             edges of $R$ are called \emph{correspondence relations}),
-        \item a function $\mlfppg \in A \domco R \to B \codco R$,
+        \item a function $\mlfppg \in X \domco R \to Y_1 \times R_1$,
             and
-        \item a function $\mlbppg \in B \domco R \to A \codco R$
+        \item a function $\mlbppg \in Y \domco R \to X_1 \times R_1$
     \end{itemize}
-    such that if $(b,r') = \mlfppg(a,r)$ then $r : \mldom(a) \uedge \mldom
-    (b)$ and $r' : \mlcod(a) \uedge \mlcod(b)$ (and similarly for
+    such that if $(y,r') = \mlfppg(x,r)$ then $r : \mldom(x) \uedge \mldom
+    (y)$ and $r' : \mlcod(x) \uedge \mlcod(y)$ (and similarly for
     $\mlbppg$).
 \end{definition}
 
@@ -87,6 +87,18 @@ that the two edits and two correspondence relations together make a
 well-typed square are somewhat similar to our precondition requiring an edit
 which applies cleanly and postconditions saying that we produce an
 applicable edit that restores consistency.
+
+A major contribution of this line of research is an exploration of
+behavioral guarantees that reasonable symmetric delta lenses might offer.
+The obvious laws are too strong; but the insight of this development is that
+if we take the obvious laws and replace equalities by a slightly coarser
+equivalence relation, we get laws that are much more plausible. The core of
+the problem is that equality on $X$ edits distinguishes between edits that
+modify information not available in $Y$; we would prefer a relation that
+compares only the parts of the edit that affect the shared information.
+At first it seems difficult to define ``shared information'' formally, but
+lenses are exactly transformations that define what information is shared;
+so the relation is parameterized by a lens.
 
 \subsection{Comparison}
 \label{sec:delta:comparison}
