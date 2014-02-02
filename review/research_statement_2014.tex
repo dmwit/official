@@ -42,33 +42,35 @@ of correct, convenient tools for this backward propagation; however, there
 are several practical considerations which encourage further research. My
 efforts are focused on four of these: size, symmetry, syntax, and alignment.
 
-{\bf Size} When the two repositories being connected reside on separate computers,
-transferring even a small copy of a repository across the network to the
-other computer can take quite a noticeable amount of time. Mitigating this
-effect typically involves using a compression scheme; empirically, one of
-the most effective ones involves noting ``what has changed'' since previous
-incarnations of the synchronization tool. Most file system synchronizers and
-revision control systems have some such notion internally.  It seems likely
-that a practical tool based on lenses will need to use similar tricks; so,
-for the theory to faithfully model such a tool, it must model not just
-repository states but also repository edits and how they affect the states.
+{\bf Size} When the two repositories being connected reside on separate
+computers, transferring even a small copy of a repository across the network
+to the other computer can take quite a noticeable amount of time. Mitigating
+this effect typically involves using a compression scheme; empirically, one
+of the most effective ones involves noting ``what has changed'' since
+previous incarnations of the synchronization tool. Most file system
+synchronizers and revision control systems have some such notion internally.
+It seems likely that a practical tool based on lenses will need to use
+similar tricks; so, for the theory to faithfully model such a tool, it must
+model not just repository states but also repository edits and how they
+affect the states.
 
-{\bf Symmetry} The standard theory of lenses is asymmetric: one repository is assumed to
-contain \emph{strictly more} information than the other. This is the case
-for a surprising number of real-world bidirectional settings; however, there
-certainly are some settings where each repository contains information not
-available in the other, yet it is desirable to synchronize the common parts.
-Designing a pair of lenses that synchronizes the two repositories of
-interest with a third repository---freshly designed to contain all the
-information available in either of the two existing ones---is messy and
-error-prone for all the same reasons that designing a pair of unidirectional
-programs is. One instead desires a symmetric theory of lenses in which a
-single object can connect mutually incomplete repositories.
+{\bf Symmetry} The standard theory of lenses is asymmetric: one repository
+is assumed to contain \emph{strictly more} information than the other. This
+is the case for a surprising number of real-world bidirectional settings;
+however, there certainly are some settings where each repository contains
+information not available in the other, yet it is desirable to synchronize
+the common parts. Designing a pair of lenses that synchronizes the two
+repositories of interest with a third repository---freshly designed to
+contain all the information available in either of the two existing
+ones---is messy and error-prone for all the same reasons that designing a
+pair of unidirectional programs is. One instead desires a symmetric theory
+of lenses in which a single object can connect mutually incomplete
+repositories.
 
-{\bf Syntax} All lens theories begin with a foundation that includes an interface that
-lenses must implement together with a set of behavioral laws restricting
-which implementations are considered reasonable. Getting the right
-definition for this foundation is critical, and many theories spend
+{\bf Syntax} All lens theories begin with a foundation that includes an
+interface that lenses must implement together with a set of behavioral laws
+restricting which implementations are considered reasonable. Getting the
+right definition for this foundation is critical, and many theories spend
 significant effort developing and motivating the interface and behavioral
 laws. A practical theory should also include instantiations of this
 framework -- particular lenses and lens combinators that are proven to
@@ -76,9 +78,9 @@ satisfy the interface and behavioral laws. This collection of instantiations
 forms the basis for bidirectional language syntax, and hence should include
 tools for handling common data types and for sequencing.
 
-{\bf Alignment} One of the most difficult problems in lens research involves correctly
-associating data between versions of a repository. For example, consider a
-function which merges changes to a lower-cased string back into
+{\bf Alignment} One of the most difficult problems in lens research involves
+correctly associating data between versions of a repository. For example,
+consider a function which merges changes to a lower-cased string back into
 the mixed-case string. Many cases are easy to get right:
 \begin{align*}
     \mathit{merge}(\mathtt{uppercasedword},\mathtt{UpperCasedQord})
