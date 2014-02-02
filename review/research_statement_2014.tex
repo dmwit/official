@@ -1,0 +1,106 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+{\noindent Daniel Wagner}\\[0ex]
+
+Recent years have seen increased interest in the area of bidirectional
+programming. Broadly speaking, the problem domain involves maintaining a
+connection between two different representations of otherwise very similar
+information. The strong connections between an in-memory representation of a
+data structure and its serialized form; a piece of source code and its
+parsed abstract syntax tree~\cite{rendel2010invertible}; tool-specific
+configuration formats and a common configuration format~\cite{Augeas}; a
+database and some particular summary of interest; or two distant but
+partially replicated computers~\cite{pierce2004unison} are all examples of
+areas where two pieces of data are very similar. In each case, one would
+like the two pieces of data to stay ``in synch'': modifications to one piece
+should be propagated and reflected in the other.
+
+At the moment, one common way of tackling this problem is to design by hand
+two programs that work together. Calling the two pieces of data $X$ and $Y$,
+the first program translates updates to $X$ into updates to $Y$, and the
+second translates in the other direction, turning updates to $Y$ into
+updates to $X$. (Taking the example of connecting a piece of source code and
+its abstract syntax tree from above, these two programs might be a parser
+and a pretty-printer.) However, this approach is messy and error-prone, and
+it can be difficult to extract behavioral guarantees that the two programs
+work together in appropriate ways. The goal of bidirectional programming
+language design, then, is to create a language in which each term can be
+interpreted in two ways and which makes it easy to prove that the two
+different interpretations work together appropriately.
+
+One well-studied approach to bidirectional programming is the framework of
+\emph{asymmetric}, \emph{state-based} lenses. (A thorough review of this
+work is available elsewhere~\cite{FosterThesis}.) In this model, one of the
+two repositories is a \emph{source}, and the other is a \emph{view} of or
+\emph{query} on the other: that is, it can be completely reconstructed from
+the other without additional outside information. Updates to the source can
+be easily propagated to the view by rerunning the query, but propagating
+updates from the view to the source can require significant sophistication.
+The basic theory of lenses offers significant insight into the construction
+of correct, convenient tools for this backward propagation; however, there
+are several practical considerations which encourage further research. My
+efforts are focused on four of these: size, symmetry, syntax, and alignment.
+
+% TODO: transitions between paragraphs
+
+When the two repositories being connected reside on separate computers,
+transferring even a small copy of a repository across the network to the
+other computer can take quite a noticeable amount of time. Mitigating this
+effect typically involves using a compression scheme; empirically, one of
+the most effective ones involves noting ``what has changed'' since previous
+incarnations of the synchronization tool. Most file system synchronizers and
+revision control systems have some such notion internally.  It seems likely
+that a practical tool based on lenses will need to use similar tricks; so,
+for the theory to faithfully model such a tool, it must model not just
+repository states but also repository edits and how they affect the states.
+
+The standard theory of lenses is asymmetric: one repository is assumed to
+contain \emph{strictly more} information than the other. This is the case
+for a surprising number of real-world bidirectional settings; however, there
+certainly are some settings where each repository contains information not
+available in the other, yet it is desirable to synchronize the common parts.
+Designing a pair of lenses that synchronizes the two repositories of
+interest with a third repository---freshly designed to contain all the
+information available in either of the two existing ones---is messy and
+error-prone for all the same reasons that designing a pair of unidirectional
+programs is. One instead desires a symmetric theory of lenses in which a
+single object can connect mutually incomplete repositories.
+
+All lens theories begin with a foundation that includes an interface that
+lenses must implement together with a set of behavioral laws restricting
+which implementations are considered reasonable. Getting the right
+definition for this foundation is critical, and many theories spend
+significant effort developing and motivating the interface and behavioral
+laws. A practical theory should also include instantiations of this
+framework -- particular lenses and lens combinators that are proven to
+satisfy the interface and behavioral laws. This collection of instantiations
+forms the basis for bidirectional language syntax, and hence should include
+tools for handling common data types and for sequencing.
+
+One of the most difficult problems in lens research involves correctly
+associating data between versions of a repository. For example, consider a
+function which merges changes to a lower-cased string back into
+the mixed-case string. Many cases are easy to get right:
+\begin{align*}
+    \mathit{merge}(\mathtt{uppercasedword},\mathtt{UpperCasedQord})
+        &= \mathtt{UpperCasedWord} \\
+    \mathit{merge}(\mathtt{uppercased},\mathtt{UpperCasedWord})
+        &= \mathtt{UpperCased} \\
+    \mathit{merge}(\mathtt{uppercasedsentence},\mathtt{UpperCasedWord})
+        &= \mathtt{UpperCasedSentence}
+\end{align*}
+If done naively---e.g. upper-casing letters in the new string in the same
+places as there were upper-case letters in the old string---it is easy to
+get a surprising result like $\mathit{merge}(\mathtt{uppercasedword},
+\mathtt{UperCasedWord}) = \mathtt{uppeRcaseDword}$.  The problem is already
+tricky with lists (though for lack of space we stop with this simple
+example), and gets even trickier with more complicated data structures.
+
+My research is focused on making lens languages practical, beginning with
+the problems described above: reducing sizable communication costs,
+providing symmetric synchronization tools to connect mutually incomplete
+repositories, ensuring that the foundations can be instantiated with a
+usable syntax, and developing techniques for identifying and using
+information about the alignment between old and new versions of data.
+\end{document}
