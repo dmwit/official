@@ -10,7 +10,6 @@
 \usepackage{fnpct}
 \usepackage{ifpdf}
 \usepackage{mathtools}
-\usepackage{metre}
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage{stmaryrd}
@@ -506,4 +505,13 @@
     ;
 \draw[->] (A)  to node[above] {\GET} (B);
 \draw[->] (B') to node[below] {\PUT} (A');
+}
+
+% stolen from the metre package
+\newcommand{\obelus}[1][0]{\leavevmode 
+    \setbox0=\hbox to 1.33em
+      {\leaders \hrule height .33pt\hfill}%
+    \dimen0=.48ex
+    \advance \dimen0 by #1ex
+    \raisebox {\dimen0}[\z@][\z@]{\box0}%
 }
