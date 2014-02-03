@@ -5,7 +5,7 @@ while true
 do
     # gvim writes a file named 4913 to test if it has write permissions in the
     # directory, so ignore writes to that file
-    if inotifywait -qre close_write --format "$FORMAT" . | grep -v './4913'
+    if inotifywait -qre close_write --format "$FORMAT" --exclude 4913 .
     then "$@"
     fi
 done
