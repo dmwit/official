@@ -6,6 +6,7 @@
 \usepackage{caption}
 \usepackage{latexsym}
 \usepackage{fancyvrb}
+\usepackage[T1]{fontenc}
 \usepackage{framed}
 \usepackage{fnpct}
 \usepackage{ifpdf}
@@ -190,6 +191,13 @@
 \newcommand{\EQCLASS}[1]{[#1]}
 \newcommand{\eq}{\mathit{eq}}
 \newcommand{\eqR}{\relR}
+% see also http://www.tex.ac.uk/cgi-bin/texfaq2html?label=cmdstar
+\newcommand{\@eqsharedl}[1]{\mathrel{{\sim}_{#1}}}
+\newcommand{\@eqsharedlstar}[2]{\@eqsharedl{#1/#2}}
+\newcommand{\@eqsharedr}[1]{\mathrel{{}_{#1}{\sim}}}
+\newcommand{\@eqsharedrstar}[2]{\@eqsharedr{#1/#2}}
+\newcommand{\eqsharedl}{\@ifstar\@eqsharedlstar\@eqsharedl}
+\newcommand{\eqsharedr}{\@ifstar\@eqsharedrstar\@eqsharedr}
 \newcommand{\equivl}{\equiv}
 \newcommand{\Except}{\setminus}
 \newcommand{\fail}{\ml{fail}}
@@ -370,6 +378,7 @@
 \newcommand{\true}{\ml{true}}
 \newcommand{\uedge}{\mathrel{\obelus}}
 \newcommand{\Undefined}{{\uparrow}} % double braces to affect spacing, see http://tex.stackexchange.com/a/38984/16779
+\newcommand{\under}{\approx}
 \newcommand{\Unedited}{\mathsf{unedited}}
 \newcommand{\union}{\mathit{union}}
 \newcommand{\unit}{{()}}

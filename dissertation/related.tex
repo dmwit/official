@@ -100,6 +100,23 @@ At first it seems difficult to define ``shared information'' formally, but
 lenses are exactly transformations that define what information is shared;
 so the relation is parameterized by a lens.
 
+\begin{definition}
+    Given function $f \in X \to Y$ we say $x$ and $x'$ are \emph{equivalent
+    under $f$}, denoted $x \under_f x'$, when $f(x)=f(x')$.
+\end{definition}
+
+\begin{definition}
+    Given symmetric delta lens $\ell \in X \sdlens Y$ and a correspondence
+    relation $r$ for $\ell$, we define equivalence relations:
+    \begin{align*}
+        \eqsharedl*\ell r &={} \under_{\lambda x.\;\ell.\mlfppg(x,r)} \\
+        \eqsharedr*\ell r &={} \under_{\lambda y.\;\ell.\mlbppg(y,r)}
+    \end{align*}
+    When the lens is understood from context, we will write $x\eqsharedl
+    rx'$ instead of $x\eqsharedl*\ell rx'$ (and similarly for $y\eqsharedr
+    ry'$).
+\end{definition}
+
 \subsection{Comparison}
 \label{sec:delta:comparison}
 % compare delta lenses to edit lenses
