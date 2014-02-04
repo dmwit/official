@@ -182,7 +182,9 @@ a valuable crucible in which to test prospective frameworks, as the design
 of a lens language makes a mismatch between behavioral laws and actual
 behavior much more clear. (Just as a good framework helps to spot
 potential implementation bugs, an implementation helps point out potential
-framework bugs.)
+framework bugs.) In particular, sequential composition---in our experience,
+a crucial tool for building practical lenses---is not considered, and the
+ensuing need for a notion of lens equivalence is not addressed.
 
 Though the proposed edit model does not include edit composition in its
 structure, many of the comments about using an edit category from
@@ -213,8 +215,6 @@ be quite natural restrictions. Our development does not have analagous laws,
 and it seems that including them would necessitate a stronger equational
 theory for many of the modules proposed above. Exploring the consequences of
 these laws could be an interesting avenue for future work on edit lenses.
-
-% TODO: scan the text below for things we forgot to discuss above
 
 \section{Algebraic rephrasing}
 \label{sec:algebraic}
@@ -552,6 +552,10 @@ for these combinators (not documented here).
 %that a category of sd-lenses would be
 %2-categorical in flavor, entailing extra technical difficulties such as
 %coherence conditions. 
+%
+% [dmwit comments after the fact: perhaps there is a middle ground! e.g. a
+% category whose objects represent a set of similar states -- lists might
+% have one object per length, for example]
 %
 %%% \finish{Here's a quick start from a brief scan of their most recent
 %%%   paper~\cite{Diskin-Delta11} by BCP...
