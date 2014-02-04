@@ -74,19 +74,15 @@ about the edit structure implied by these operations.
             edges of $R$ are called \emph{correspondence relations}),
         \item a function $\mlfppg \in X \domco R \to Y_1 \times R_1$,
             and
-        \item a function $\mlbppg \in Y \domco R \to X_1 \times R_1$
+        \item a function $\mlbppg \in Y \domco R \to X_1 \times R_1$.
     \end{itemize}
-    such that if $(y,r') = \mlfppg(x,r)$ then $r : \mldom(x) \uedge \mldom
-    (y)$ and $r' : \mlcod(x) \uedge \mlcod(y)$ (and similarly for
-    $\mlbppg$).
+    We will write $\mlfppg_1$ and $\mlfppg_2$ (and similarly for $\mlbppg$)
+    for the $Y_1$ and $R$ parts of $\mlfppg$'s output, respectively.
 \end{definition}
 
 The preconditions for $\mlfppg$ above stating that the edit and
-correspondence relations are source-coincident and the postconditions saying
-that the two edits and two correspondence relations together make a
-well-typed square are somewhat similar to our precondition requiring an edit
-which applies cleanly and postconditions saying that we produce an
-applicable edit that restores consistency.
+correspondence relations are source-coincident is somewhat similar to our
+precondition requiring an edit which applies cleanly.
 
 A major contribution of this line of research is an exploration of
 behavioral guarantees that reasonable symmetric delta lenses might offer.
@@ -105,17 +101,93 @@ so the relation is parameterized by a lens.
     under $f$}, denoted $x \under_f x'$, when $f(x)=f(x')$.
 \end{definition}
 
+It is easy to see that $\under_f$ is an equivalence relation for any $f$.
+
 \begin{definition}
     Given symmetric delta lens $\ell \in X \sdlens Y$ and a correspondence
-    relation $r$ for $\ell$, we define equivalence relations:
+    relation $r : x \uedge y$ for $\ell$, we define equivalence relations on
+    edits to $x$ and $y$, respectively:
     \begin{align*}
-        \eqsharedl*\ell r &={} \under_{\lambda x.\;\ell.\mlfppg(x,r)} \\
-        \eqsharedr*\ell r &={} \under_{\lambda y.\;\ell.\mlbppg(y,r)}
+        \eqsharedl*\ell r &={} \under_{\lambda \dx.\;\ell.\mlfppg_1(\dx,r)} \\
+        \eqsharedr*\ell r &={} \under_{\lambda \dy.\;\ell.\mlbppg_1(\dy,r)}
     \end{align*}
-    When the lens is understood from context, we will write $x\eqsharedl
-    rx'$ instead of $x\eqsharedl*\ell rx'$ (and similarly for $y\eqsharedr
-    ry'$).
+    When the lens is understood from context, we will write $\dx\eqsharedl
+    r\dx'$ instead of $\dx\eqsharedl*\ell r\dx'$ (and similarly for
+    $\dy\eqsharedr r\dy'$).
 \end{definition}
+
+Armed with this notation, they propose several possible restrictions that
+one could place on symmetric delta lenses. The first two restrictions are
+analogous to ones discussed in our work above. Like our demand that
+applicable edits get translated to applicable edits that restore
+consistency, rule \rn{SDWellTyped} below demands that the edits and
+correspondence relations involved in an invocation of $\mlfppg$ form a
+well-typed square. They also demand that the propagation functions preserve
+the self-loop structure of the edit graphs via the \rn{SDIdId} rule.
+\infrule[SDWellTyped]
+    {\mlfppg(\dx,r) = (\dy,r')}
+    {r  : \mldom(\dx) \uedge \mldom(\dy) \\
+     r' : \mlcod(\dx) \uedge \mlcod(\dy)}
+\infrule[SDId]{r : x \uedge y}{\mlfppg(\id_x,r)=(\id_y,r)}
+
+The edit graphs have another kind of structure given by the $\swoop$
+undo operation. One might hope that this structure is preserved in a similar
+way; for example, a rule like \rn{SDUndo-Strong*} seems reasonable at first
+blush.
+\infrule[SDUndo-Strong*]
+    {\mlfppg(\dx,r)=(\dy,r')}
+    {\mlfppg(\dx\swoop,r')=(\dy\swoop,r)}
+Unfortunately, this rule is very restrictive. Suppose the $Y$ side of the
+lens were to store some information not available in the $X$ side, and
+propagating $\dx$ produces a $\dy$ that deletes some of that information.
+Then this information could not be restored from the information in
+$\dx\swoop$\footnote{One could imagine storing just enough information in
+the correspondence relations to allow undoing one operation. Perhaps this
+could be made to work, but it is unlikely this would scale well in
+situations where there are composite edits (and hence composite undos).}.
+One way to weaken this law to something more plausible would be to demand
+that we output something that behaves like $\dy\swoop$ on the shared
+information; that is, by weakening the equality in the conclusion to our
+coarser equivalence relation from above:
+\infrule[SDUndo]
+    {\mlfppg(\dx,r)=(\dy,r')}
+    {\mlfppg_1(\dx\swoop,r') \eqsharedr{r'} \dy\swoop}
+
+The fourth and final behavioral law proposed demands that the edit
+propagation functions be near inverses: that is, if we propagate $\dx$ to
+$\dy$, then the corresponding edit determined by the other propagation
+function should be $\dx$. As stated, this law is again too strong, because
+some of the modifications described by $\dx$ are to unshared data, and hence
+are not available in $\dy$ during re-propagation. As before, we can make the
+rule more reasonable by weakening from equality to equivalence:
+\infax[SDInvertible]{\mlbppg_1(\mlfppg_1(\dx,r),r)\eqsharedl r\dx}
+This behavioral law is called a roundtrip law in their development, but that
+name is a little misleading, as the update to the $y$ value and the updated
+correspondence relation are discarded before applying the $\mlbppg$
+function. (It is as if two separate people happened to take flights that
+crossed paths in the middle, rather than a single person taking a round
+trip.) We will instead call this law a \emph{triple-trip} law---for the two
+trips evident in the law plus one trip hidden by the equivalence relation.
+
+The line of research goes on to describe other theoretical
+frameworks with interfaces closer to what an end-user programmer might want
+to implement that can give rise to symmetric delta lenses. In particular,
+they describe a framework they call \emph{consistency
+maintainers}~\cite{Diskin-Delta11} which include explicit alignment and
+consistency-restoration phases as well as explore conditions under which a
+triple-graph grammar can be used to produce a law-abiding
+lens~\cite{hermann2011correctness}.
+
+% TODO: but no examples of particular constructions that satisfy the given
+% constraints or guidance on creating such
+
+% TODO: model of edits is WHACK, which prevents both small edits and small
+% complements
+
+% TODO: SDInvertible neat, and perhaps future work can consider an edit lens
+% analog and how often it's satisfied (seems plausible if we include some
+% laws in our module presentations); SDUndo might be hard if we reject
+% inverse edits as being too large but otherwise seems like a good idea
 
 \subsection{Comparison}
 \label{sec:delta:comparison}
