@@ -2639,6 +2639,18 @@ If $c=\map_{\ml{tagof}}(v)$ and $1 \le p \le |v|$, then
 \[\ml{tagof}(v_p)=\ml{tagof}(\mliso(c)(p)).\]
 \end{corollary}
 
+\begin{lemma}
+\label{lemma:iso-monotonic}
+Suppose $\mliso(c)(m)=\mlinl n$ (respectively, $\mlinr n$) and
+$\mliso(c)(m')=\mlinl{n'}$ (resp. $\mlinr{n'}$). Then $m<m'$ if and only if
+$n<n'$.
+\end{lemma}
+
+\begin{proof}
+    % I guess we'll need to prove something about \mlcount first... =/
+    \dmwit{proofneeded}
+\end{proof}
+
 \begin{theorem}
 The $\partition$ operation defined in \partitionfigures is indeed a
 symmetric edit lens.
@@ -3164,10 +3176,77 @@ $\dx$.
     \end{align*}
     and we know that $1 \le i \le n_L$. Our strategy is to show that
     $(d\;z,c'',(\mldel1\;x,y)) \in K$; the induction hypothesis then
-    tells us that $(d'\;(d\;z),c',d''(\mldel1\;x,y))\in K$. This means that
-    $((d'd)\;z,c',(\mldel i\;x,y)) \in K$, which concludes this case.
+    tells us that $(d'\;(d\;z),c',d''\;(\mldel1\;x,y))\in K$. This means
+    that $((d'd)\;z,c',(\mldel i\;x,y)) \in K$, which concludes this case.
+    In the remainder of this case, let $m=\mliso(c)^{-1}(\mlinl{n_L})$ so
+    that $d=\mldelete'(m)$.
 
-    \dmwit{proofneeded}
+    Let us begin by showing that $\map_{\ml{tagof}}(d\;z)=d\;c$. Then
+    Lemma~\ref{lemma:high-level-delete} tells us two things:
+    \begin{align*}
+        d\;z &= \blist z_1 \clist z_{m-1} \mlist z_{m+1} \clist z_n \elist \\
+        d\;c &= \blist c_1 \clist c_{m-1} \mlist c_{m+1} \clist c_n \elist
+    \end{align*}
+    The desired equality then follows from the fact that $\map$ is a list
+    homomorphism and that $\map_{\ml{tagof}}(z)=c$.
+
+    We must also show that $\ml{lefts}(d\;z)=\mldel1\;x$. By
+    Lemma~\ref{lemma:iso-coherent}, $z_m=\mlinl{x_{n_L}}$, and by
+    Lemma~\ref{lemma:iso-monotonic}, $z_{m'}$ is an $\mlinrx$ for all
+    $m'>m$. Since $\ml{lefts}$ is a list homomorphism, we can conclude that
+    \begin{align*}
+        \ml{lefts}(d\;z) &=
+            \ml{lefts}(\blist z_1 \clist z_{m-1} \mlist z_{m+1} \clist z_n \elist)
+        \\ &=
+            \ml{lefts}(\blist z_1 \clist z_{m-1} \elist)\;
+            \ml{lefts}(\blist z_{m+1} \clist z_n \elist)
+        \\ &=
+            \ml{lefts}(\blist z_1 \clist z_{m-1} \elist)
+        \\ &=
+            \mldel1\;(\ml{lefts}(\blist z_1 \clist z_{m-1} \elist)\;
+                      \ml{lefts}(\blist \mlinl{x_{n_L}} \elist))
+        \\ &=
+            \mldel1\;(\ml{lefts}(\blist z_1 \clist z_{m-1} \elist)\;
+                      \ml{lefts}(\blist \mlinl{x_{n_L}} \elist)\;
+                      \ml{lefts}(\blist z_{m+1} \clist z_n \elist))
+        \\ &=
+            \mldel1\;(\ml{lefts}(z))
+        \\ &=
+            \mldel1\;x
+    \end{align*}
+    as desired.
+
+    Next, we show that $\ml{rights}(d\;z)=y$. By
+    Lemma~\ref{lemma:iso-coherent}, we know $z_m=\mlinl{x_{n_L}}$. Since
+    $\ml{rights}$ is a list homomorphism and $\ml{rights}(\mlinl v)=\NIL$
+    for any $v$, we then can compute that:
+    \begin{align*}
+        \ml{rights}(d\;z) &=
+            \ml{rights}(\blist z_1 \clist z_{m-1} \mlist z_{m+1} \clist z_n \elist)
+        \\ &=
+            \ml{rights}(\blist z_1 \clist z_{m-1} \elist)\;
+            \ml{rights}(\blist z_{m+1} \clist z_n \elist)
+        \\ &=
+            \ml{rights}(\blist z_1 \clist z_{m-1} \elist)\;
+            \ml{rights}(\blist \mlinl{x_{n_L}} \elist)\;
+            \ml{rights}(\blist z_{m+1} \clist z_n \elist)
+        \\ &=
+            \ml{rights}(\blist z_1 \clist z_{m-1} \mlist z_m \mlist z_{m+1} \clist z_n \elist)
+        \\ &=
+            \ml{rights}(z)
+        \\ &=
+            y
+    \end{align*}
+
+    The previous three paragraphs establish that $(d\;z, c'',
+    (\mldel1\;x, y)) \in K$. Since $d''=\mlonl{\mldel{i-1}}$ is a smaller
+    edit than $\mlonl\dx=\mlonl{\mldel i}$, we can apply the induction
+    hypothesis to conclude that $(d'\;(d\;z), c', d''\;(\mldel1\;x, y)) \in
+    K$. Since edit application is a monoid action, we know
+    $d'\;(d\;z)=(d'd)\;z$. By definition of the edit application, we know
+    $d''\;(\mldel1\;x,y)=(\mldel{i-1}\;(\mldel1\;x),y)=(\mldel i\;x,y)$.
+    These last two equalities directly mean that $(\dz\;z,c',(\dx\;x,y)) \in
+    K$, which completes this case.
 
 \item {\bf Case \markref{ldelfail}:} We know $\dx=\mldel i$ and, since the
     previous cases did not apply, $i>n_L+1$. Hence we know $\dx\;x$ is not
