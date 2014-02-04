@@ -176,26 +176,45 @@ they describe a framework they call \emph{consistency
 maintainers}~\cite{Diskin-Delta11} which include explicit alignment and
 consistency-restoration phases as well as explore conditions under which a
 triple-graph grammar can be used to produce a law-abiding
-lens~\cite{hermann2011correctness}.
+lens~\cite{hermann2011correctness}. No concrete instantiations are given for
+any of the three frameworks. We have found that undertaking this endeavor is
+a valuable crucible in which to test prospective frameworks, as the design
+of a lens language makes a mismatch between behavioral laws and actual
+behavior much more clear. (Just as a good framework helps to spot
+potential implementation bugs, an implementation helps point out potential
+framework bugs.)
 
-% TODO: but no examples of particular constructions that satisfy the given
-% constraints or guidance on creating such
+Though the proposed edit model does not include edit composition in its
+structure, many of the comments about using an edit category from
+\S\ref{sec:delta:symmetric} apply; in particular the model proposed here
+requires significantly more information be available in the edit than our
+model. One significant difference between the development in the previous
+section and the one here is the existence of undo edits.  We could perhaps
+incorporate such a thing into our definition of modules by requiring each
+module to include an involution $\swoop$ such that $(\dx\swoop\;\dx)\odot
+x=x$ whenever $\dx\odot x$ is defined. (Thus $\dx\swoop\;\dx$ is a
+restricted identity: not necessarily equal to $\ONE$, but behaves like it
+for some subset of the values being edited.) Many of the modules and module
+combinators we have defined above can be equipped with this structure. A
+notable few include edit operations which actually delete information, such
+as the sum module's $\ml{switch}$ edits and the list module's $\mldelete$
+edits. These edits would need to be enriched or restricted to include the
+information being deleted; for example, one could modify the action
+associated with $\mldelete$ edits to only succeed when the list elements
+being deleted were $\init$ (so that edits which wish to delete an element
+must first modify it to being $\init$ with $\mlmodify$ edits), and one could
+enrich the $\ml{switch}$ edits with an edit that returns the value to a
+tagged $\init$ before switching sides of the sum. Thus in general it seems
+that requiring an ``undo'' ability can require somewhat larger edit
+operations.
 
-% TODO: model of edits is WHACK, which prevents both small edits and small
-% complements
+The proposed \rn{SDInvertible} and \rn{SDUndo} laws seem on the surface to
+be quite natural restrictions. Our development does not have analagous laws,
+and it seems that including them would necessitate a stronger equational
+theory for many of the modules proposed above. Exploring the consequences of
+these laws could be an interesting avenue for future work on edit lenses.
 
-% TODO: SDInvertible neat, and perhaps future work can consider an edit lens
-% analog and how often it's satisfied (seems plausible if we include some
-% laws in our module presentations); SDUndo might be hard if we reject
-% inverse edits as being too large but otherwise seems like a good idea
-
-\subsection{Comparison}
-\label{sec:delta:comparison}
-% compare delta lenses to edit lenses
-% do tackle symmetry; do have edit-based things; do have some neat new laws
-% that we didn't consider; don't consider size; don't provide syntax
-%
-% some text below that we can also scan for ideas about what to write here
+% TODO: scan the text below for things we forgot to discuss above
 
 \section{Algebraic rephrasing}
 \label{sec:algebraic}
