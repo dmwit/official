@@ -1,16 +1,140 @@
-\section{Category-based delta lenses}
+\section{Graph-based delta lenses}
 \label{sec:delta}
 
-% TODO: perhaps we can begin with a generic discussion of the model Diskin
-% et al seem to have in mind for edits, and categorize the different
-% kinds of structure they impose at various times -- like composition,
-% undos, etc. -- before diving into the asymmetric/symmetric work. is there
-% a sense of ``structure-preserving maps'' that simplifies the definitions
-% of asymmetric/symmetric lenses somehow? at the very least we should
-% probably unify the discussion a lot compared to how it's laid out
-% currently. especially since one of our big criticisms of their work is
-% that their delta model is typed, which kills the size argument, and that
-% model is shared between the two papers.
+There is a closely related line of work focused on designing edit-based
+lenses which begins with much the same motivation our work
+does~\cite{diskin2011asymmetric,Diskin-Delta11,hermann2011correctness}. They
+arrive at a slightly different point in the design space compared to us,
+with a primary difference being their treatment of edits. For them, edits
+are typed---with edit type $x \dedge x'$ classifying edits that can be
+applied to value $x$ and result in value $x'$---and edit application is
+total. Before we investigate their definitions of asymmetric and symmetric
+delta lens, let us review their model of edits in detail. We will begin with
+a few standard definitions to put some notation in place.
+
+\begin{definition}
+    A \emph{graph} $G$ is a quadruple $\left<G_0,G_1,\mldom,\mlcod\right>$
+    consisting of a set of nodes $G_0$, a set of edges $G_1$, and two
+    functions $\mldom,\mlcod \in G_1 \to G_0$ giving the source and target
+    of each edge. We will write $e:v \dedge v'$ as shorthand for the
+    assertion that $e \in G_1$, that $\mldom(e)=v$, and that $\mlcod(e)=v'$.
+    If the directionality of the edge is uninteresting, we will write $e:v
+    \uedge v'$ to mean either $e: v \dedge v'$ or $e: v' \dedge v$.
+\end{definition}
+
+Below, we will use graphs to model edits: nodes of the graph will correspond
+to repository states, and an edge $\dx : x \to x'$ will correspond to an
+edit $\dx$ which, when applied to state $x$, results in state $x'$. As in
+our development, it is natural to impose a little bit of structure on edges,
+such as the existence of a ``do-nothing'' edit and the ability to combine
+two edits into one. We introduce these restrictions separately so that we
+may talk about lenses between edit models with only some of this structure.
+We will also introduce a constraint that says that no matter which two
+repository states you choose, there is some edit between them, which may be
+an important practical consideration but does not seem to affect the theory
+significantly one way or another.
+
+% TODO: do we really need to define semicategory? we don't use it anywhere,
+% do we? let's just skip straight from ``reflexive'' to ``category''
+
+\begin{definition}
+    A graph $G$ is \emph{reflexive} if it comes equipped with a function
+    $\id_G \in G_0 \to G_1$ which chooses a distinguished self loop
+    $\id_{G,v} : v \dedge v$ for each node $v$. By abuse of notation, we
+    will write $\id_v$ instead of $\id_{G,v}$ when there can be no confusion
+    about which graph is meant.
+\end{definition}
+
+\begin{definition}
+    A graph $G$ is a \emph{semicategory} if it comes equipped with a partial
+    function $;_G \in G_1 \times G_1 \partialto G_1$ such that
+    \begin{itemize}
+        \item $e;_Ge' : v \to v''$ iff there is $v'$ for which $e : v \to
+            v'$ and $e' : v' \to v''$, and
+        \item $e_1;_G(e_2;_Ge_3)=(e_1;_Ge_2);_Ge_3$.
+    \end{itemize}
+    As with identities, we will often omit the $G$ subscript, writing just
+    $;$ when the graph is clear from context.
+\end{definition}
+
+\begin{definition}
+    A graph $G$ is \emph{connected} if for each $v,v'\in G_0$ there exists
+    an edge $e : v \dedge v'$.
+\end{definition}
+
+It's easy to see that a reflexive semicategory is a category, so long as the
+``do-nothing'' edits and the edit composition work together in the sense
+that $\id_v;e=e;\id_{v'}=e$ whenever $e : v \to v'$. For the discussion of
+symmetric delta lenses, we will also want to consider edits which can be
+``undone''.
+
+\begin{definition}
+    A reflexive graph $G$ is \emph{involutive} if it comes equipped with a
+    function $\swoop \in G_1 \to G_1$ which associates with each edge $e : v
+    \dedge v'$ an opposing edge $e\swoop : v' \dedge v$. It is required to
+    be an involution (so that $e\swoop\swoop = e$) and to respect the
+    reflexive structure of the graph (so that $\id_v\swoop=\id_v$).
+\end{definition}
+
+Before we come to a discussion of the lens frameworks proposed in this line
+of work, it is worth comparing our modules to their choice of edit model.
+They essentially consider two models: their asymmetric lenses are based on a
+connected category model of edits, and their symmetric lenses are based on a
+connected involutive graph model of edits.
+
+In both cases, there is an underlying graph, and in particular this means
+that each edit must uniquely identify the state that it can be applied to
+along with the state it produces. At least naively, this requirement seems
+to be in conflict with our goal of representing edits with objects
+significantly smaller than the repository states. Many of our edit modules
+exploit the ability to reuse edits as modifications to many different
+repository states. Nevertheless, totality of edit application is a nice
+feature. One can view the two approaches as two extremes, with on one end
+graphs with a single node representing all possible repository states and on
+the other end graphs with many nodes where each node represents a single
+repository state. There may be a middle ground in which graph nodes each
+represent many possible repository states; the hope then would be that one
+could keep the benefit of a total edit application function while reusing
+single edits on many different states. For example, consider our list edits.
+One might consider a graph with one node for each possible length of list.
+Then one would have, for example, deletion edges $\mldelete : m \dedge n$
+when $m<n$; such an edge must store marginally more information than our
+edit module did (the source and target length rather than a single number
+telling their difference), but the set of repositories to which it applies
+is much more clearly delimited. Attempting to recast the edit modules and
+lenses proposed above in this light would be an interesting area for future
+work.
+
+% TODO: give the precise connection between modules and categories (show how
+% to translate between them), as we did in the edit lens paper
+The connection between modules and edit graphs can be made precise as
+follows. To pass from a module $X$ to a graph $G$, let $G_0=|X|$ be the set
+of nodes and $G_1=\{m : x \dedge y \mid mx=y\}$ be the set of edges (so that
+$\mldom(m : x \dedge y)=x$ and $\mlcod(m : x \dedge y)=y$, hence $(m : x
+\dedge y) : x \dedge y$). The graph can be made reflexive by defining $\id_x
+= \ONE : x \dedge x$; if we further define the composition $(m : x \dedge
+y);(m' : y \dedge z)=mm' : x \dedge z$, the monoid action laws guarantee
+that we can regard the graph as a category.
+
+The involutive graph model of edits demands the existence of undo edits,
+something we did not consider carefully in the edit lens framework above. A
+suitable module-based analog of the typed involution would be to require
+each module to include an untyped involution $\swoop$ such that
+$(\dx\swoop\;\dx)\odot x=x$ whenever $\dx\odot x$ is defined. (Thus
+$\dx\swoop\;\dx$ is a restricted identity: not necessarily equal to $\ONE$,
+but behaves like it for some subset of the values being edited.) Many of the
+modules and module combinators we have defined above can be equipped with
+this structure. A notable few that cannot include edit operations which
+actually delete information, such as the sum module's $\ml{switch}$ edits
+and the list module's $\mldelete$ edits. These edits would need to be
+enriched or restricted to include the information being deleted; for
+example, one could modify the action associated with $\mldelete$ edits to
+only succeed when the list elements being deleted were $\init$ (so that
+edits which wish to delete an element must first modify it to being $\init$
+with $\mlmodify$ edits), and one could enrich the $\ml{switch}$ edits with
+an edit that returns the value to a tagged $\init$ before switching sides of
+the sum. Thus in general it seems that requiring an ``undo'' ability can
+require somewhat larger edit operations.
 
 \subsection{Asymmetric}
 \label{sec:delta:asymmetric}
@@ -25,21 +149,14 @@ There is a closely related line of work on designing edit-based
 \label{sec:delta:symmetric}
 % describe ``From state-based to delta-based bidirectional transformations:
 % the symmetric case''
+
+% TODO: rework now that we've moved some discussion into the shared prefix
+% above
 Diskin et al. also spend some effort considering what machinery is needed to
 support transformations between domains that each have missing
 information---that is, symmetric transformations~\cite{Diskin-Delta11}.
 Before we get to their somewhat idiosyncratic algebraic structure
 abstracting edits, let us introduce some notation for handling graphs.
-
-\begin{definition}
-    A \emph{graph} $G$ is a quadruple $\left<G_0,G_1,\mldom,\mlcod\right>$
-    consisting of a set of nodes $G_0$, a set of edges $G_1$, and two
-    functions $\mldom,\mlcod \in G_1 \to G_0$ giving the source and target
-    of each edge. We will write $e:v \dedge v'$ as shorthand for the
-    assertion that $e \in G_1$, that $\mldom(e)=v$, and that $\mlcod(e)=v'$.
-    If the directionality of the edge is uninteresting, we will write $e:v
-    \uedge v'$ to mean either $e: v \dedge v'$ or $e: v' \dedge v$.
-\end{definition}
 
 \begin{definition}
     A \emph{model space} is a triple $\left<G,\id,\swoop\right>$ of a
@@ -193,30 +310,6 @@ potential implementation bugs, an implementation helps point out potential
 framework bugs.) In particular, sequential composition---in our experience,
 a crucial tool for building practical lenses---is not considered, and the
 ensuing need for a notion of lens equivalence is not addressed.
-
-Though the proposed edit model does not include edit composition in its
-structure, many of the comments about using an edit category from
-\S\ref{sec:delta:symmetric} apply; in particular the model proposed here
-requires significantly more information be available in the edit than our
-model. One significant difference between the development in the previous
-section and the one here is the existence of undo edits.  We could perhaps
-incorporate such a thing into our definition of modules by requiring each
-module to include an involution $\swoop$ such that $(\dx\swoop\;\dx)\odot
-x=x$ whenever $\dx\odot x$ is defined. (Thus $\dx\swoop\;\dx$ is a
-restricted identity: not necessarily equal to $\ONE$, but behaves like it
-for some subset of the values being edited.) Many of the modules and module
-combinators we have defined above can be equipped with this structure. A
-notable few include edit operations which actually delete information, such
-as the sum module's $\ml{switch}$ edits and the list module's $\mldelete$
-edits. These edits would need to be enriched or restricted to include the
-information being deleted; for example, one could modify the action
-associated with $\mldelete$ edits to only succeed when the list elements
-being deleted were $\init$ (so that edits which wish to delete an element
-must first modify it to being $\init$ with $\mlmodify$ edits), and one could
-enrich the $\ml{switch}$ edits with an edit that returns the value to a
-tagged $\init$ before switching sides of the sum. Thus in general it seems
-that requiring an ``undo'' ability can require somewhat larger edit
-operations.
 
 The proposed \rn{SDInvertible} and \rn{SDUndo} laws seem on the surface to
 be quite natural restrictions. Our development does not have analagous laws,
