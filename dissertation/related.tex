@@ -114,7 +114,30 @@ $\mldom(m : x \dedge y)=x$ and $\mlcod(m : x \dedge y)=y$, hence $(m : x
 \dedge y) : x \dedge y$). The graph can be made reflexive by defining $\id_x
 = \ONE : x \dedge x$; if we further define the composition $(m : x \dedge
 y);(m' : y \dedge z)=mm' : x \dedge z$, the monoid action laws guarantee
-that we can regard the graph as a category.
+that we can regard the graph as a category. Now let us see how to pass from
+a category $G$ to a module $X$. (An arbitrary reflexive graph may be turned
+into a category: for the arrows between nodes $v$ and $v'$, use the set of
+paths from $v$ to $v'$ that do not have any $\id$
+edges\footnote{Equivalently, the set of paths quotiented by the smallest
+congruence relation containing the equation that ensures that $\id$ edges
+are the unit for composition: $\blist \id \elist = \NIL$.}; for the
+composition, use path concatenation; and for the identities, use empty
+paths.) Let the values $|X|=G_0$ be the set of nodes, and edits
+$\DX=\{\fail\}\cup G_1/\sim_\id$ be the set of edges quotiented by the
+relation that identifies identities adjoined with a fresh absorptive failing
+edit $\fail$. We let the identity element of the monoid $\ONE=\id$ be the
+element representing the identities of the objects in the category;
+multiplication is composition when well-typed and $\fail$ otherwise. Edit
+application of $\ONE$ does nothing ($\ONE\odot x=x$); of well-typed edges
+chooses the codomain ($(f : x \dedge y)\odot x=y$); and in all other cases
+is undefined. One may choose any object to play the role of $\init$ (so that
+there are as many ways to turn a category into a module as there are objects
+in the category). Passing from a category to a module and back results in an
+isomorphic category (because the freshly-adjoined $\fail$ edit is not an
+arrow between any pair of objects); however, passing from a module to a
+category and back may produce a significantly more verbose edit language:
+each edit $m$ in the source module induces a collection of edits $\{m : x
+\dedge y \mid mx=y\}$ in the target module.
 
 The involutive graph model of edits demands the existence of undo edits,
 something we did not consider carefully in the edit lens framework above. A
