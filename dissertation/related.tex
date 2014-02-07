@@ -10,7 +10,9 @@ are typed---with edit type $x \dedge x'$ classifying edits that can be
 applied to value $x$ and result in value $x'$---and edit application is
 total. Before we investigate their definitions of asymmetric and symmetric
 delta lens, let us review their model of edits in detail. We will begin with
-a few standard definitions to put some notation in place.
+a few standard definitions to put some notation in place. Whenever possible,
+we will pun notation between graphs and categories; after all, a graph with
+suitable extra structure \emph{is} a category.
 
 \begin{definition}
     A \emph{graph} $G$ is a quadruple $\left<G_0,G_1,\mldom,\mlcod\right>$
@@ -32,10 +34,8 @@ may talk about lenses between edit models with only some of this structure.
 We will also introduce a constraint that says that no matter which two
 repository states you choose, there is some edit between them, which may be
 an important practical consideration but does not seem to affect the theory
-significantly one way or another.
-
-% TODO: do we really need to define semicategory? we don't use it anywhere,
-% do we? let's just skip straight from ``reflexive'' to ``category''
+significantly one way or another. For the discussion of symmetric delta
+lenses, we will also want to consider edits which can be ``undone''.
 
 \begin{definition}
     A graph $G$ is \emph{reflexive} if it comes equipped with a function
@@ -46,27 +46,9 @@ significantly one way or another.
 \end{definition}
 
 \begin{definition}
-    A graph $G$ is a \emph{semicategory} if it comes equipped with a partial
-    function $;_G \in G_1 \times G_1 \partialto G_1$ such that
-    \begin{itemize}
-        \item $e;_Ge' : v \to v''$ iff there is $v'$ for which $e : v \to
-            v'$ and $e' : v' \to v''$, and
-        \item $e_1;_G(e_2;_Ge_3)=(e_1;_Ge_2);_Ge_3$.
-    \end{itemize}
-    As with identities, we will often omit the $G$ subscript, writing just
-    $;$ when the graph is clear from context.
-\end{definition}
-
-\begin{definition}
     A graph $G$ is \emph{connected} if for each $v,v'\in G_0$ there exists
     an edge $e : v \dedge v'$.
 \end{definition}
-
-It's easy to see that a reflexive semicategory is a category, so long as the
-``do-nothing'' edits and the edit composition work together in the sense
-that $\id_v;e=e;\id_{v'}=e$ whenever $e : v \to v'$. For the discussion of
-symmetric delta lenses, we will also want to consider edits which can be
-``undone''.
 
 \begin{definition}
     A reflexive graph $G$ is \emph{involutive} if it comes equipped with a
@@ -95,18 +77,15 @@ the other end graphs with many nodes where each node represents a single
 repository state. There may be a middle ground in which graph nodes each
 represent many possible repository states; the hope then would be that one
 could keep the benefit of a total edit application function while reusing
-single edits on many different states. For example, consider our list edits.
-One might consider a graph with one node for each possible length of list.
-Then one would have, for example, deletion edges $\mldelete : m \dedge n$
-when $m<n$; such an edge must store marginally more information than our
-edit module did (the source and target length rather than a single number
-telling their difference), but the set of repositories to which it applies
-is much more clearly delimited. Attempting to recast the edit modules and
-lenses proposed above in this light would be an interesting area for future
-work.
+single edits on many different states. For example, for list edits, one
+might consider a graph with one node for each possible length of list. Then
+one would have, for example, deletion edges $\mldelete : m \dedge n$ when
+$m<n$; such an edge must store marginally more information than our edit
+module did (the source and target length rather than a single number telling
+their difference), but the set of repositories to which it applies is much
+more clearly delimited. Attempting to recast the edit modules and lenses
+proposed above in this light would be an interesting area for future work.
 
-% TODO: give the precise connection between modules and categories (show how
-% to translate between them), as we did in the edit lens paper
 The connection between modules and edit graphs can be made precise as
 follows. To pass from a module $X$ to a graph $G$, let $G_0=|X|$ be the set
 of nodes and $G_1=\{m : x \dedge y \mid mx=y\}$ be the set of edges (so that
@@ -157,7 +136,11 @@ edits which wish to delete an element must first modify it to being $\init$
 with $\mlmodify$ edits), and one could enrich the $\ml{switch}$ edits with
 an edit that returns the value to a tagged $\init$ before switching sides of
 the sum. Thus in general it seems that requiring an ``undo'' ability can
-require somewhat larger edit operations.
+require mildly larger edit operations.
+
+With these considerations about edits in mind, let us discuss how to
+generalize asymmetric, state-based lenses first to asymmetric delta lenses
+and then to symmetric delta lenses.
 
 \subsection{Asymmetric}
 \label{sec:delta:asymmetric}
