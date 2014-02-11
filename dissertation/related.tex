@@ -87,22 +87,22 @@ more clearly delimited. Attempting to recast the edit modules and lenses
 proposed above in this light would be an interesting area for future work.
 
 The connection between modules and edit graphs can be made precise as
-follows. To pass from a module $X$ to a graph $G$, let $G_0=|X|$ be the set
-of nodes and $G_1=\{m : x \dedge y \mid mx=y\}$ be the set of edges (so that
+follows. To pass from a module $X$ to a graph $\Gr(X)$, let $\Gr(X)_0=|X|$ be the set
+of nodes and $\Gr(X)_1=\{m : x \dedge y \mid mx=y\}$ be the set of edges (so that
 $\mldom(m : x \dedge y)=x$ and $\mlcod(m : x \dedge y)=y$, hence $(m : x
 \dedge y) : x \dedge y$). The graph can be made reflexive by defining $\id_x
 = \ONE : x \dedge x$; if we further define the composition $(m : x \dedge
 y);(m' : y \dedge z)=mm' : x \dedge z$, the monoid action laws guarantee
 that we can regard the graph as a category. Now let us see how to pass from
-a category $G$ to a module $X$. (An arbitrary reflexive graph may be turned
+a category $G$ to a module $\Mod(G)$. (An arbitrary reflexive graph may be turned
 into a category: for the arrows between nodes $v$ and $v'$, use the set of
 paths from $v$ to $v'$ that do not have any $\id$
 edges\footnote{Equivalently, the set of paths quotiented by the smallest
 congruence relation containing the equation that ensures that $\id$ edges
 are the unit for composition: $\blist \id \elist = \NIL$.}; for the
 composition, use path concatenation; and for the identities, use empty
-paths.) Let the values $|X|=G_0$ be the set of nodes, and edits
-$\DX=\{\fail\}\cup G_1/\sim_\id$ be the set of edges quotiented by the
+paths.) Let the values $|\Mod(G)|=G_0$ be the set of nodes, and edits
+$\D \Mod(G)=\{\fail\}\cup G_1/\sim_\id$ be the set of edges quotiented by the
 relation that identifies identities adjoined with a fresh absorptive failing
 edit $\fail$. We let the identity element of the monoid $\ONE=\id$ be the
 element representing the identities of the objects in the category;
@@ -199,9 +199,42 @@ their differencing operation violates a similar \rn{DiffDiff} law---that is,
 failure is never due to incorrect edit propagation, only incorrect edit
 discovery.
 
-% TODO: can we lift asymmetric delta lenses to edit lenses?
-% TODO: can we lower edit lenses to asymmetric delta lenses?
-% TODO: addresses alignment, but not really symmetry, syntax, or size
+One can construct an edit lens out of an asymmetric delta lens as follows.
+The complement set will be source objects adjoined with a fresh $\fail$
+value, so that the partial edit application can be extended to a total one
+with explicit failure:
+\begin{align*}
+    \ds \odot_t \mlinl s &= \mlinl {\ds \odot s} & \ds\odot s\Defined \\
+    \ds \odot_t s &= \fail & \mbox{otherwise}
+\end{align*}
+Then the lens construction goes as follows.
+\lensdef{delta_symmetrize}
+    {\infruleplain
+        {\ell \in S \adlens V \quad s \in S_0}
+        {\mlsymm_s(\ell) \in \Mod(S) \dlens \Mod(V)}
+    }
+    {
+        C &=& S_0 \uplus \{\fail\} \\
+        \missing &=& \mlinl s \\
+        K &=& \{(s,\mlinl s,\ell.\aget_0(s)) \mid s \in S_0\} \\
+        \dputr(\ds, s) &=& (\ell.\aget_1(\ds),\ds\odot_t s) \\
+        \dputl(\dv, \mlinl s) &=& \mllet \ds = \ell.\aput_1(\dv)(s) \mlinm (\ds, \ds\odot_t s) \\
+        && \mbox{when }\mldom(\dv)=\ell.\aget_0(s) \\
+        \dputl(\dv, s) &=& (\fail,\mlinr \fail) \mbox{ otherwise}
+    }
+% TODO: prove this is well-defined (respects the equivalence class that \Mod
+% introduces) and an edit lens
+We conjecture that a construction similar to the one used to decompose
+symmetric lenses into a pair of asymmetric, state-based lenses can be used
+to decompose edit lenses into a pair of asymmetric delta lenses.
+% TODO: could try to flesh out this conjecture a bit
+
+The asymmetric delta lens framework described above is motivated by the
+difficulty of alignment problems in the state-based lens world. It seems
+plausible that an approach like this one could, indeed, address that
+problem; however, no examples of lenses are given. This makes it difficult
+to assess whether the behavioral laws are achievable or whether the
+alignment problem is suitably addressed.
 
 \subsection{Symmetric}
 \label{sec:delta:symmetric}
