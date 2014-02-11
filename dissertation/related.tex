@@ -144,12 +144,64 @@ and then to symmetric delta lenses.
 
 \subsection{Asymmetric}
 \label{sec:delta:asymmetric}
-There is a closely related line of work on designing edit-based
-\emph{asymmetric} lenses by Diskin, et al~\cite{diskin2011asymmetric}.
+Now, let us take the edit model above and see how to enrich asymmetric
+lenses to take edit information rather than states. As with the state-based
+version, we will assume that there is strictly more information in the
+source category $S$ than in the view category $V$. This means that in the
+\GET direction, it seems natural to assume that each source edit $\ds : s
+\dedge s'$ uniquely determines a view edit $\dv : v \dedge v'$ by ``throwing
+away'' the extra information. It is also quite natural to require this \GET
+transformation to respect the category structure in $S$: that is, we should
+expect $\aget(\id)=\id$ and $\aget(\ds;\ds')=\aget(\ds);\aget(\ds')$.
+Together, these say that $\aget$ is a functor from $S$ to $V$.
 
-% TODO: high points of this paper: a definition of an asymmetric delta lens,
-% how to do sequential composition, a characterization of diffing, and a
-% neat weakening of PutPut based on diffing
+As always, the \PUT direction is a bit more delicate because it needs to
+restore missing information. Suppose we have a view edit $\dv : v \dedge
+v'$ and wish to produce a source edit. It seems natural to wish that the
+source edit we produce respects typing in the sense that if we produce $\ds
+: s \dedge s'$, then $s$ is in the preimage of $v$ and $s'$ is in the
+preimage of $v'$. But this is still very unconstrained; in particular, since
+there really is a particular $s_0$ which is currently in synch with $v$, we
+really want to produce an edit $\ds$ whose source is $s_0$---that is, there
+is simply not enough information available in a view edit to produce a
+reasonable translation function \PUT. So we cannot translate directly from a
+view edit to a source edit; however, the key insight of this line of work is
+that we can translate from a view edit to a \emph{family} of source edits
+indexed by the source that is currently synchronized with the view.
+
+In detail, given a functor $\aget \in S \to V$, we can construct the
+preimage category $S/\aget$ as follows. The objects of $S/\aget$ are the
+objects of $V$. The arrows $f : v \dedge v'$ of $S/\aget$ are the functions
+which take a preimage $s$ of $v$ (i.e. such that $\aget(s)=v$) and produce
+an arrow $f(s) : s \dedge s'$ of $S$ to a preimage $s'$ of $v'$ (i.e. such that
+$\aget(s')=v'$). The identity arrow is the one which associates to each $s$
+the arrow $\id_s$; the composition is defined by
+$(f;g)(s)=f(s);g(\mlcod(f(s)))$. With this category in hand, we are ready to
+define asymmetric delta lenses.
+
+\begin{definition}
+    An asymmetric delta lens $\ell \in S \adlens V$ between categories $S$
+    and $V$ is a pair $\left<\aget,\aput\right>$ of functors $\aget \in S
+    \to V$ and $\aput \in V \to S/\aget$ that satisfy the behavioral law:
+    \infax[ADPutGet]{\aget(\aput(\dv)(s))=\dv}
+\end{definition}
+
+The suggested behavioral law enforces the intuition given above that all of
+the information available in the view edits is available in source edits,
+too. It turns out that the obvious definitions for identity and composition
+lenses satisfy the behavioral law and induce a category whose objects are
+categories and arrows are asymmetric delta lenses. As in our discussion
+above relating edit lenses to symmetric lenses, one can connect asymmetric
+delta lenses to asymmetric state-based lenses by adjoining an operation to
+compute the difference between two states. The paper goes on to show that
+asymmetric delta lenses only violate the controversial \rn{PutPut} law if
+their differencing operation violates a similar \rn{DiffDiff} law---that is,
+failure is never due to incorrect edit propagation, only incorrect edit
+discovery.
+
+% TODO: can we lift asymmetric delta lenses to edit lenses?
+% TODO: can we lower edit lenses to asymmetric delta lenses?
+% TODO: addresses alignment, but not really symmetry, syntax, or size
 
 \subsection{Symmetric}
 \label{sec:delta:symmetric}
