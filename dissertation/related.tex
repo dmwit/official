@@ -87,22 +87,22 @@ more clearly delimited. Attempting to recast the edit modules and lenses
 proposed above in this light would be an interesting area for future work.
 
 The connection between modules and edit graphs can be made precise as
-follows. To pass from a module $X$ to a graph $\Gr(X)$, let $\Gr(X)_0=|X|$ be the set
-of nodes and $\Gr(X)_1=\{m : x \dedge y \mid mx=y\}$ be the set of edges (so that
-$\mldom(m : x \dedge y)=x$ and $\mlcod(m : x \dedge y)=y$, hence $(m : x
-\dedge y) : x \dedge y$). The graph can be made reflexive by defining $\id_x
-= \ONE : x \dedge x$; if we further define the composition $(m : x \dedge
-y);(m' : y \dedge z)=mm' : x \dedge z$, the monoid action laws guarantee
-that we can regard the graph as a category. Now let us see how to pass from
-a category $G$ to a module $\Mod(G)$. (An arbitrary reflexive graph may be turned
-into a category: for the arrows between nodes $v$ and $v'$, use the set of
-paths from $v$ to $v'$ that do not have any $\id$
-edges\footnote{Equivalently, the set of paths quotiented by the smallest
-congruence relation containing the equation that ensures that $\id$ edges
-are the unit for composition: $\blist \id \elist = \NIL$.}; for the
+follows. To pass from a module $X$ to a graph $\Gr(X)$, let $\Gr(X)_0=|X|$
+be the set of nodes and $\Gr(X)_1=\{m : x \dedge y \mid mx=y\}$ be the set
+of edges (so that $\mldom(m : x \dedge y)=x$ and $\mlcod(m : x \dedge y)=y$,
+hence $(m : x \dedge y) : x \dedge y$). The graph can be made reflexive by
+defining $\id_x = \ONE : x \dedge x$; if we further define the composition
+$(m : x \dedge y);(m' : y \dedge z)=mm' : x \dedge z$, the monoid action
+laws guarantee that we can regard the graph as a category. Now let us see
+how to pass from a category $G$ to a module $\Mod(G)$. (An arbitrary
+reflexive graph may be turned into a category: for the arrows between nodes
+$v$ and $v'$, use the set of paths from $v$ to $v'$ that do not have any
+$\id$ edges\footnote{Equivalently, the set of paths quotiented by the
+smallest congruence relation containing the equation that ensures that $\id$
+edges are the unit for composition: $\blist \id \elist = \NIL$.}; for the
 composition, use path concatenation; and for the identities, use empty
-paths.) Let the values $|\Mod(G)|=G_0$ be the set of nodes, and edits
-$\D \Mod(G)=\{\fail\}\cup G_1/\sim_\id$ be the set of edges quotiented by the
+paths.) Let the values $|\Mod(G)|=G_0$ be the set of nodes, and edits $\D
+\Mod(G)=\{\fail\}\cup G_1/\sim_\id$ be the set of edges quotiented by the
 relation that identifies identities adjoined with a fresh absorptive failing
 edit $\fail$. We let the identity element of the monoid $\ONE=\id$ be the
 element representing the identities of the objects in the category;
