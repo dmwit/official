@@ -238,38 +238,11 @@ alignment problem is suitably addressed.
 
 \subsection{Symmetric}
 \label{sec:delta:symmetric}
-% describe ``From state-based to delta-based bidirectional transformations:
-% the symmetric case''
-
-% TODO: rework now that we've moved some discussion into the shared prefix
-% above
 Diskin et al. also spend some effort considering what machinery is needed to
 support transformations between domains that each have missing
 information---that is, symmetric transformations~\cite{Diskin-Delta11}.
-Before we get to their somewhat idiosyncratic algebraic structure
-abstracting edits, let us introduce some notation for handling graphs.
 
-\begin{definition}
-    A \emph{model space} is a triple $\left<G,\id,\swoop\right>$ of a
-    graph $G$ together with an involution $\swoop\in G_1 \to G_1$ which
-    associates with each edge $e : v \dedge v'$ an opposing edge $e\swoop:
-    v' \dedge v$ and a function $\id \in G_0 \to G_1$ which chooses a
-    distinguished self loop $\id_v : v \dedge v$ for each node $v$. The two
-    operations are required to be coherent in the sense that $\id_v\swoop =
-    \id_v$.
-\end{definition}
-
-Model spaces are---like modules in our development---intended to abstract
-edits and values. With this motivation in mind, there are a few points of
-interest about this definition. Most notable is that a given edit (edge)
-uniquely identifies both the value it can be applied to and the value that
-results. Additionally, edits are required to support an ``undo'' operation
-via $\swoop$. However, because there is no notion of edit composition, we
-cannot require that identity edits are a unit or that $e$ and $e\swoop$
-compose to the identity. We will see later that the $\id$ and $\swoop$
-operations are included to aid in stating behavioral laws about lenses;
-perhaps this explains why there is little attempt to give behavioral laws
-about the edit structure implied by these operations.
+% TODO: this definitely needs more introduction
 
 \begin{definition}
     Given graphs $G$ and $H$, we define the \emph{source-} and
