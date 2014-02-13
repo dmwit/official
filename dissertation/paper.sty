@@ -20,7 +20,7 @@
 \usepackage{wrapfig}
 \usepackage{xcolor}
 \usepackage{xspace}
-\usetikzlibrary{calc,chains,fit,shadows,scopes,positioning}
+\usetikzlibrary{calc,chains,fit,shadows,scopes,matrix,positioning}
 
 % conditional definitions {{{
 \ifdelta
@@ -91,6 +91,7 @@
 \definecolor{blue}{rgb}{0,0,1}
 \definecolor{brown}{rgb}{.3,.3,.5}
 \definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkred}{rgb}{0.7,0,0}
 \definecolor{gray}{rgb}{.5,.5,.5}
 \definecolor{lightblue}{rgb}{.5,.5,1}
 \definecolor{pink}{rgb}{1,.5,.5}
@@ -421,6 +422,19 @@
 \newenvironment{longitem}{\begin{itemize}}{\end{itemize}}
 \fi
 
+\newcount\lastcolumn
+\tikzstyle{hline}=[
+    row 1/.style={execute at end cell={\global\lastcolumn\pgfmatrixcurrentcolumn}},
+    after node path=(\tikzlastnode-1-1.south west) -- (\tikzlastnode-1-\the\lastcolumn.south east)
+    ]
+\tikzstyle{tabular}=[
+    matrix of nodes,
+    nodes={anchor=west},
+    inner ysep=0,
+    column sep=1em,
+    execute at  begin node=\strut
+    ]
+\tikzstyle{reorder}=[->, lightgray, thick]
 \tikzstyle{alignment diagram}=[
     start chain=source,
     start chain=intermediate,
