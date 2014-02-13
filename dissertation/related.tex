@@ -684,13 +684,18 @@ alignment.
                 Sam Rickard & |[darkred]| 65,000 & 314 \\
             }
 
-            ($(V'-2-1.west) +(-0.5em,0)$) edge[reorder, bend right=60] ($(V'-4-1.west) +(-0.5em,0)$)
-            (V'-3-1.west)                 edge[reorder, bend left]     (V'-2-1.west)
-            (V'-4-1.west)                 edge[reorder, bend left]     (V'-3-1.west)
+            ($(V'-2-2.east |- V'-2-2.east) +(0.5em,0)$) edge[reorder, bend left=60] ($(V'-2-2.east |- V'-4-2.east) +(0.5em,0)$)
+              (V'-2-2.east |- V'-3-2.east)              edge[reorder, bend right]     (V'-2-2.east |- V'-2-2.east)
+              (V'-2-2.east |- V'-4-2.east)              edge[reorder, bend right]     (V'-2-2.east |- V'-3-2.east)
 
             ($(S'-2-1.west) +(-0.5em,0)$) edge[reorder, bend right=60] ($(S'-4-1.west) +(-0.5em,0)$)
-            (S'-3-1.west)                 edge[reorder, bend left]     (S'-2-1.west)
-            (S'-4-1.west)                 edge[reorder, bend left]     (S'-3-1.west)
+              (S'-3-1.west)               edge[reorder, bend left]       (S'-2-1.west)
+              (S'-4-1.west)               edge[reorder, bend left]       (S'-3-1.west)
+
+            (S)  edge[->] node[above] {\GET}                    (V)
+            (V)  edge[->] node[right] {\tiny user modification} (V')
+            (V') edge[->] node[below] {\PUT}                    (S')
+            (S.east) +(0, -1ex) edge[bend left=90] (S'.east)
             ;
     \end{diagram}
     \caption{An easily fixed misalignment, and a more subtle one}
