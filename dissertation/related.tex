@@ -650,8 +650,11 @@ discussed above. We will consider a variation of our motivating example from
 Chapter~\ref{chap:introduction} which showcases a particularly annoying
 example of bad alignment---annoying both because it is a common scenario and
 because it seems especially clear how to get the right answer.
-Figure~\ref{fig:school-salaries-keys} shows the bad behavior of positional
-alignment.
+Figure~\ref{fig:school-salaries-keys} shows again the bad behavior of
+positional alignment. Gray annotations mark changes with respect to a
+previous version of a given repository. The salary column of the updated
+source repository is marked in red because it has been misaligned with the
+updated view: the names have been shuffled, but the salaries have not.
 
 \begin{figure}
     \begin{diagram}
@@ -662,14 +665,14 @@ alignment.
                 Jon Jacobs & 50,000 & 108b \\
                 Mary Jones & 65,000 & 109 \\
             }
-            (S.north east) +(3, 0)
+            (S.north east) +(2, 0)
             node[matrix anchor=north west, tabular, hline] (V) {
                 Teacher name & Room \\
                 Sam Rickard & 314 \\
                 Jon Jacobs & 108b \\
                 Mary Jones & 109 \\
             }
-            (V.south) +(0, -2)
+            (V.south) +(0, -1)
             node[matrix anchor=north, tabular, hline] (V') {
                 Teacher name & Room \\
                 Jon Jacobs & 108b \\
@@ -698,9 +701,93 @@ alignment.
             (S.east) +(0, -1ex) edge[bend left=90] (S'.east)
             ;
     \end{diagram}
-    \caption{An easily fixed misalignment, and a more subtle one}
+    \caption{An easily fixed misalignment}
     \label{fig:school-salaries-keys}
 \end{figure}
+
+The observation of dictionary lenses is that the teacher names in the view
+repository act somewhat like a key: the reordering that the user did can be
+recovered by comparing the order of names before and after the modification.
+Experience with lens programming shows that the existence of a key is fairly
+common, so merely giving the programmer the ability to specify which parts
+of the data correspond to keys can improve the \PUT behavior in a wide range
+of applications. However, there is an unfortunate behavioral regression:
+with positional alignment, changing a key is handled gracefully, but with a
+dictionary lens, a changed key results in a loss of any associated
+information. Figure~\ref{fig:school-salaries-key-change} gives an example of
+a dictionary lens resetting a salary that a plain lens would preserve. The
+observation here is that simple key equality is too strict. Matching lenses
+relax this restriction; they parameterize lenses by an alignment
+strategy---which can do arbitrary computation---that computes how chunks of
+the old and new copies of the repository correspond. Several heuristics that
+satisfy the interface of an alignment strategy are given, for example, for
+computing the least-cost alignment according to some function that computes
+the cost of a single-chunk change.
+
+\begin{figure}
+    \begin{diagram}
+        \draw
+            node[tabular, hline] (S) {
+                Teacher name & Salary & Room \\
+                Sam Rickard & 57,000 & 314 \\
+                Jon Jacobs & 50,000 & 108b \\
+                Mary Jones & 65,000 & 109 \\
+            }
+            (S.north east) +(2, 0)
+            node[matrix anchor=north west, tabular, hline] (V) {
+                Teacher name & Room \\
+                Sam Rickard & 314 \\
+                Jon Jacobs & 108b \\
+                Mary Jones & 109 \\
+            }
+            (V.south) +(0, -1)
+            node[matrix anchor=north, tabular, hline] (V') {
+                Teacher name & Room \\
+                Sam Richards & 314 \\
+                Jon Jacobs & 108b \\
+                |[fill=lightgray]| Mary Smith & 109 \\
+            }
+            (S |- V')
+            node[tabular, hline] (S') {
+                Teacher name & Salary & Room \\
+                Sam Richards & 57,000 & 314 \\
+                Jon Jacobs & 50,000 & 108b \\
+                |[fill=lightgray]| Mary Smith &
+                \path
+                    node[anchor=west] (phantom) {\phantom{65,000}} (phantom.east)
+                    node[anchor=east, darkred, fill=lightgray] {0}
+                    ;
+                & 109 \\
+            }
+
+            (S)  edge[->] node[above] {\GET}                    (V)
+            (V)  edge[->] node[right] {\tiny user modification} (V')
+            (V') edge[->] node[below] {\PUT}                    (S')
+            (S.east) +(0, -1ex) edge[bend left=90] (S'.east)
+            ;
+    \end{diagram}
+    \caption{With dictionary lenses, changing a key causes information loss}
+    \label{fig:school-salaries-key-change}
+\end{figure}
+
+Matching lenses give a concrete way to separate alignment discovery from
+update propagation, and propose several promising discovery heuristics.
+There is also an implementation available for a string-based data model.
+
+The basic model discussed handles a sort of mix of our container mapping and
+restructuring lenses: the structure of the source and view containers need
+not be identical, but there must be an identical set of positions (and the
+connection between the positions in the source and the positions in the view
+must be the trivial one---that is, no reordering). They show how to extend
+the basic model to allow the contained values to have different types, to
+allow reordering, and to allow the contained values to themselves be
+containers. The framework of the basic model of matching lenses is already
+complicated; by the time it is extended in this way, the machinery is quite
+baroque. By comparison, the basic formalism of edit lenses can be summarized
+quite compactly, and is nevertheless flexible enough to accommodate all the
+extensions proposed. Additionally, edit lenses support a more flexible array
+of container operations, and in particular may be used to define lenses
+between structures with differing numbers of holes.
 
 \section{Hole-based delta lenses}
 \label{sec:holes}
