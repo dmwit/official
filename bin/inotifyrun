@@ -3,7 +3,7 @@ FORMAT=$(echo -e "\033[1;33m%w%f\033[0m written")
 "$@"
 # gvim writes a file named 4913 to test if it has write permissions in the
 # directory, so ignore writes to that file
-while inotifywait -qre close_write --format "$FORMAT" --exclude 4913 .
+while inotifywait -qre close_write --format "$FORMAT" --exclude '/4913$' .
 do
     "$@"
 done
