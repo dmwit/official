@@ -2647,7 +2647,25 @@ $n<n'$.
 \end{lemma}
 
 \begin{proof}
-    % I guess we'll need to prove something about \mlcount first... =/
+    We will first show a similar property of the $\mlcount$ function, namely
+    that if $1 \le p \le p'$ then $\mlcount(p,w)\le\mlcount(p',w)$ using the
+    ordering on pairs for which $(n_L,n_R)\le(n_L',n_R')$ whenever $n_L\le
+    n_L'$ and $n_R\le n_R'$. Each of the four properties we want to prove
+    will then be a straightforward application of this fact to an unrolling
+    of the definition of $\mliso$.
+
+    We proceed by induction on $w$. In the base case, $\mlcount(p,\NIL) =
+    \mlcount(p',\NIL) = (1,1)$, hence the inequality is satisfied. Now
+    suppose $w=c \CONS w'$. There are two cases of interest: either $p=1$
+    (in which case $\mlcount(p,w) = (1,1)$ is the minimum value that
+    $\mlcount$ can return, hence the inequality is satisfied) or else $p>1$.
+    Letting $(n_L,n_R)=\mlcount(p-1,w')$ and $(n_L',n_R') =
+    \mlcount(p'-1,w')$, we may appeal to the induction hypothesis to
+    conclude that $(n_L,n_R) \le (n_L',n_R')$. But now we are finished,
+    since if $c=L$ then
+    \[\mlcount(p,w) = (n_L+1,n_R) \le (n_L'+1,n_R') = \mlcount(p',w)\]
+    and similarly for the other possibility $c=R$.
+
     \dmwit{proofneeded}
 \end{proof}
 
