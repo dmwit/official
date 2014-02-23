@@ -159,19 +159,19 @@ expect $\aget(\id)=\id$ and $\aget(\ds;\ds')=\aget(\ds);\aget(\ds')$.
 Together, these say that $\aget$ is a functor from $S$ to $V$.
 
 As with all asymmetric frameworks, the \PUT direction is a bit more
-delicate, because it needs to
-restore missing information. Suppose we have a view edit $\dv : v \dedge
-v'$ and wish to produce a source edit. It seems natural to wish that the
-source edit we produce respects typing in the sense that if we produce $\ds
-: s \dedge s'$, then $s$ is in the preimage of $v$ and $s'$ is in the
-preimage of $v'$. But this is still very unconstrained; in particular, since
-there really is a particular $s_0$ which is currently in synch with $v$, we
-really want to produce an edit $\ds$ whose source is $s_0$---that is, there
-is simply not enough information available in a view edit to produce a
-reasonable translation function \PUT. So we cannot translate directly from a
-view edit to a source edit; however, the key insight of this line of work is
-that we can translate from a view edit to a \emph{family} of source edits
-indexed by the source that is currently synchronized with the view.
+delicate, because it needs to restore missing information. Suppose we have a
+view edit $\dv : v \dedge v'$ and wish to produce a source edit. It seems
+natural to wish that the source edit we produce respects typing in the sense
+that if we produce $\ds : s \dedge s'$, then $s$ is in the preimage of $v$
+and $s'$ is in the preimage of $v'$. But this is still very unconstrained;
+in particular, since there really is a particular $s_0$ which is currently
+in synch with $v$, we really want to produce an edit $\ds$ whose source is
+$s_0$---that is, there is simply not enough information available in a view
+edit to produce a reasonable translation function \PUT. So we cannot
+translate directly from a view edit to a source edit; however, the key
+insight of this line of work is that we can translate from a view edit to a
+\emph{family} of source edits indexed by the source that is currently
+synchronized with the view.
 
 In detail, given a functor $\aget \in S \to V$, we can construct the
 preimage category $S/\aget$ as follows. The objects of $S/\aget$ are the
