@@ -1,3 +1,5 @@
 #!/bin/sh
-
-inotifyrun pdflatex -interaction nonstopmode paper
+if [ -n "$1" ]
+then inotifyrun pdflatex -interaction nonstopmode "$@"
+else inotifyrun pdflatex -interaction nonstopmode paper
+fi
