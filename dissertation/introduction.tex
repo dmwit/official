@@ -640,7 +640,7 @@ the above one.
             \draw
                 (A.east) +(0,-0.1)
                     .. controls (B.west) and (B'.west) ..
-                (near A'.center);
+                (near A');
             \draw[->,dashed] (B)  to node[right] {user modification} (B');
             \draw[->,dashed] (A') to node[left]  {user modification} (A);
         \end{tikzpicture}
@@ -664,11 +664,11 @@ the above one.
             \draw
                 (A.east) +(0,-0.1)
                     .. controls (B.west) and (B'.west) ..
-                (near A'.center);
+                (near A');
             \draw
                 (B'.west) +(0,0.1)
                     .. controls (A'.east) and (A.east) ..
-                (near B.center);
+                (near B);
             \draw[->,dashed] (B)  to (B');
             \draw[->,dashed] (A') to (A);
         \end{tikzpicture}
