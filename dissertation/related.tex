@@ -41,6 +41,13 @@ significantly one way or another. For the discussion of symmetric delta
 lenses, we will also want to consider edits which can be ``undone''.
 
 \begin{definition}
+    Given function $f \in X \to Y$, we say $x$ and $x'$ are \emph{equivalent
+    under $f$}, denoted $x \under_f x'$, when $f(x)=f(x')$.
+\end{definition}
+
+It is easy to see that $\under_f$ is an equivalence relation for any $f$.
+
+\begin{definition}
     A graph $G$ is \emph{reflexive} if it comes equipped with a function
     $\id_G \in G_0 \to G_1$ which chooses a distinguished self loop
     $\id_{G,v} : v \dedge v$ for each node $v$. By abuse of notation, we
@@ -61,11 +68,10 @@ lenses, we will also want to consider edits which can be ``undone''.
     reflexive structure of the graph (so that $\id_v\swoop=\id_v$).
 \end{definition}
 
-Before we come to a discussion of the lens frameworks proposed in this line
-of work, it is worth comparing our modules to their choice of edit model.
-They essentially consider two models: their asymmetric lenses are based on a
-connected category model of edits, and their symmetric lenses are based on a
-connected involutive graph model of edits.
+The delta lens frameworks discussed here are based on two edit models: their
+asymmetric lenses are based on a connected category model of edits, and
+their symmetric lenses are based on a connected involutive graph model of
+edits.
 
 In both cases, there is an underlying graph, and in particular this means
 that each edit must uniquely identify the state that it can be applied to
@@ -173,37 +179,56 @@ insight of this line of work is that we can translate from a view edit to a
 \emph{family} of source edits indexed by the source that is currently
 synchronized with the view.
 
-In detail, given a functor $\aget \in S \to V$, we can construct the
-preimage category $S/\aget$ as follows. The objects of $S/\aget$ are the
-objects of $V$. The arrows $f : v \dedge v'$ of $S/\aget$ are the functions
-which take a preimage $s$ of $v$ (i.e. such that $\aget(s)=v$) and produce
-an arrow $f(s) : s \dedge s'$ of $S$ to a preimage $s'$ of $v'$ (i.e. such that
-$\aget(s')=v'$). The identity arrow is the one which associates to each $s$
-the arrow $\id_s$; the composition is defined by
-$(f;g)(s)=f(s);g(\mlcod(f(s)))$. With this category in hand, we are ready to
-define asymmetric delta lenses.
+In detail, given an object mapping $\aget_0 \in S_0 \to V_0$, we can
+construct the preimage category $S/\aget_0$ as follows. The objects of
+$S/\aget_0$ are the equivalence classes of objects of $S$ under
+$\under_{\aget_0}$. The arrows $f : [s_i] \dedge [s_o]$ are the functions
+which take an element $s \in [s_i]$ and produce an arrow $f(s) : s \dedge
+s'$ for some $s' \in [s_o]$. The identity arrow is the one which associates
+to each $s$ the arrow $\id_s$; the composition is defined by
+$(f;g)(s)=f(s);g(\mlcod(f(s)))$. When $\aget$ is a graph morphism, we will
+write $S/\aget$ as shorthand for $S/\aget_0$. With this category in hand, we
+are ready to define asymmetric delta lenses.
 
 \begin{definition}
-    An asymmetric delta lens $\ell \in S \adlens V$ between categories $S$
-    and $V$ is a pair $\left<\aget,\aput\right>$ of functors $\aget \in S
-    \to V$ and $\aput \in V \to S/\aget$ that satisfy the behavioral law:
+    A \emph{graph morphism} $f \in S \to V$ between graphs $S$ and $V$ is a
+    pair $\left<f_0,f_1\right>$ of mappings $f_0 \in S_0 \to V_0$ and $f_1
+    \in S_1 \to V_1$ such that $f_1(e) : f_0(\mldom(e)) \dedge
+    f_0(\mlcod(e))$.
+\end{definition}
+
+\begin{definition}
+    A \emph{semifunctor} $f \in S \to V$ between reflexive graphs is a graph
+    morphism for which $f_1(\id_s)=\id_{f_0(s)}$.
+\end{definition}
+
+\begin{definition}
+    An \emph{asymmetric delta lens} $\ell \in S \adlens V$ between connected
+    categories $S$ and $V$ is a pair $\left<\aget,\aput\right>$ of graph
+    morphisms $\aget \in S \to V$ and $\aput \in V \to S/\aget$. The lens is
+    \emph{well behaved} (respectively, \emph{very well behaved}) if $\aget$
+    and $\aput$ are semifunctors (resp. functors) and satisfy the behavioral
+    law:
     \infax[ADPutGet]{\aget(\aput(\dv)(s))=\dv}
+    We will abbreviate ``well behaved asymmetric delta lens'' to
+    ``\WBADL'' and ``very well behaved asymmetric delta lens'' to
+    ``\VWBADL''.
 \end{definition}
 
 The suggested behavioral law enforces the intuition given above that all of
 the information available in the view edits is available in source edits,
 too. It turns out that the obvious definitions for identity and composition
 lenses satisfy the behavioral law and induce a category whose objects are
-categories and arrows are asymmetric delta lenses. As in our discussion
-above relating edit lenses to symmetric lenses, one can connect asymmetric
-delta lenses to asymmetric state-based lenses by adjoining an operation to
+connected categories and arrows are \VWBADLs. As in our discussion
+above relating edit lenses to symmetric lenses, one can connect \WBADLs
+to asymmetric state-based lenses by adjoining an operation to
 compute the difference between two states. The paper goes on to show that
-asymmetric delta lenses only violate the controversial \rn{PutPut} law if
+\VWBADLs only violate the controversial \rn{PutPut} law if
 their differencing operation violates a similar \rn{DiffDiff} law---that is,
 failure is never due to incorrect edit propagation, only incorrect edit
 discovery.
 
-One can construct an edit lens out of an asymmetric delta lens as follows.
+One can construct an edit lens out of a \VWBADL as follows.
 The complement set will be source objects adjoined with a fresh $\fail$
 value, so that the partial edit application can be extended to a total one
 with explicit failure:
@@ -230,7 +255,7 @@ Then the lens construction goes as follows.
 % introduces) and an edit lens
 We conjecture that a construction similar to the one used to decompose
 symmetric lenses into a pair of asymmetric, state-based lenses can be used
-to decompose edit lenses into a pair of asymmetric delta lenses.
+to decompose edit lenses into a pair of \VWBADLs.
 % TODO: could try to flesh out this conjecture a bit
 
 The asymmetric delta lens framework described above is motivated by the
@@ -299,13 +324,6 @@ compares only the parts of the edit that affect the shared information.
 At first it seems difficult to define ``shared information'' formally, but
 lenses are exactly transformations that define what information is shared;
 so the relation is parameterized by a lens.
-
-\begin{definition}
-    Given function $f \in X \to Y$ we say $x$ and $x'$ are \emph{equivalent
-    under $f$}, denoted $x \under_f x'$, when $f(x)=f(x')$.
-\end{definition}
-
-It is easy to see that $\under_f$ is an equivalence relation for any $f$.
 
 \begin{definition}
     Given symmetric delta lens $\ell \in X \sdlens Y$ and a correspondence
