@@ -1,8 +1,5 @@
 \section{Graph-based delta lenses}
 \label{sec:delta}
-% TODO: change "source" and "target" to "domain" and "codomain" everywhere
-% below to maintain consistency -- and to make the names \mldom and \mlcod
-% more obvious
 
 There is a closely related line of work focused on designing edit-based
 lenses which begins with much the same motivation our work
@@ -20,7 +17,7 @@ suitable extra structure \emph{is} a category.
 \begin{definition}
     A \emph{graph} $G$ is a quadruple $\left<G_0,G_1,\mldom,\mlcod\right>$
     consisting of a set of nodes $G_0$, a set of edges $G_1$, and two
-    functions $\mldom,\mlcod \in G_1 \to G_0$ giving the source and target
+    functions $\mldom,\mlcod \in G_1 \to G_0$ giving the domain and codomain
     of each edge. We will write $e:v \dedge v'$ as shorthand for the
     assertion that $e \in G_1$, that $\mldom(e)=v$, and that $\mlcod(e)=v'$.
     If the directionality of the edge is uninteresting, we will write $e:v
@@ -90,7 +87,7 @@ single edits on many different states. For example, for list edits, one
 might consider a graph with one node for each possible length of list. Then
 one would have, for example, deletion edges $\mldelete : m \dedge n$ when
 $m<n$; such an edge must store marginally more information than our edit
-module did (the source and target length rather than a single number telling
+module did (the domain and codomain length rather than a single number telling
 their difference), but the set of repositories to which it applies is much
 more clearly delimited. Attempting to recast the edit modules and lenses
 proposed above in this light would be an interesting area for future work.
@@ -171,7 +168,7 @@ natural to wish that the source edit we produce respects typing in the sense
 that if we produce $\ds : s \dedge s'$, then $s$ is in the preimage of $v$
 and $s'$ is in the preimage of $v'$. But this is still very unconstrained;
 in particular, since there really is a particular $s_0$ which is currently
-in synch with $v$, we really want to produce an edit $\ds$ whose source is
+in synch with $v$, we really want to produce an edit $\ds$ whose domain is
 $s_0$---that is, there is simply not enough information available in a view
 edit to produce a reasonable translation function \PUT. So we cannot
 translate directly from a view edit to a source edit; however, the key
@@ -289,8 +286,8 @@ is also typed, as we discuss now.
 % TODO: this might need more introduction
 
 \begin{definition}
-    Given graphs $G$ and $H$, we define the \emph{source-} and
-    \emph{target-coincident} edge pairings as follows:
+    Given graphs $G$ and $H$, we define the \emph{domain-} and
+    \emph{codomain-coincident} edge pairings as follows:
     \begin{align*}
         G \domco H &= \{(e_g,e_h) \mid e_g : v \dedge v' \in G_1 \land e_h :
         v \uedge v'' \in H_1\} \\
@@ -315,7 +312,7 @@ is also typed, as we discuss now.
 \end{definition}
 
 The preconditions for $\mlfppg$ above stating that the edit and
-correspondence relations are source-coincident is somewhat similar to our
+correspondence relations are domain-coincident is somewhat similar to our
 precondition requiring an edit which applies cleanly. The bipartite graph
 $R$ plays a similar role to our consistency relations: if there is an edge
 $r : x \uedge y$, then we can think of $r$ as being a (typed) complement
