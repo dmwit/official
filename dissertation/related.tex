@@ -825,8 +825,28 @@ between structures with differing numbers of holes.
 % lenses that operate on full data structures with node
 % creation/deletion/modification ``holes'' in them -- tackles alignment
 % problems, but not size or symmetry
-%
-% some text below that we can also scan for ideas about what to write here
+A weakness of our approach is that the lack of categorical products
+indicates that we cannot duplicate information during our transformations.
+For some applications, this is a critical feature; allowing this requires
+different fundamentals. Work on hole-based delta lenses addresses this
+niche~\cite{Hu04,HuEditor08,MuAlgebraic2004}. Their foundations are
+fundamentally symmetric; however, the way they propose using it is
+essentially asymmetric. Besides that, there are two key differences between
+their development and ours. First, their data model is ordered, node-labeled
+trees, and rather than separating edits from the data, they merge them:
+edits are represented by annotating the trees with insertion, deletion, and
+modification markings. Reordering is not considered at all; furthermore,
+annotated trees are always at least as big as the real tree they represent,
+so size issues are not addressed. Additionally, their behavioral laws govern
+how lenses treat annotated values. There is an erasure process to turn
+annotated trees into plain ones (by performing the respective insertions,
+deletions, and modifications), but no exploration of the interaction between
+erasure and the lens' behavioral laws. The second key difference is that
+allowing duplication requires them to significantly relax the behavioral
+laws: for example, if only one copy of some duplicated information is
+modified, one wishes a roundtrip of the transformations to modify the other
+copy analogously. The weakened laws allow this, but also allow many other
+apparently undesirable behaviors like ignoring all changes indiscriminately.
 
 \section{Constraint maintainers}
 \label{sec:constraint-maintainers}
