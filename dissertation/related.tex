@@ -6,7 +6,7 @@
 
 There is a closely related line of work focused on designing edit-based
 lenses which begins with much the same motivation our work
-does~\cite{diskin2011asymmetric,Diskin-Delta11,hermann2011correctness}. They
+does~\cite{diskin2011asymmetric,Diskin-Delta11,hermann2011correctness,Pacheco2012}. They
 arrive at a slightly different point in the design space compared to us,
 with a primary difference being their treatment of edits. For them, edits
 are typed---with edit type $x \dedge x'$ classifying edits that can be
@@ -256,12 +256,22 @@ symmetric lenses into a pair of asymmetric, state-based lenses can be used
 to decompose edit lenses into a pair of \VWBADLs.
 % TODO: could try to flesh out this conjecture a bit
 
-The asymmetric delta lens framework described above is motivated by the
-difficulty of alignment problems in the state-based lens world. It seems
-plausible that an approach like this one could, indeed, address that
-problem; however, no examples of lenses are given. This makes it difficult
-to assess whether the behavioral laws are achievable or whether the
-alignment problem is suitably addressed.
+Later work proposes a concrete edit model and a collection of \WBADLs and
+combinators~\cite{Pacheco2012}. In addition to the above definition of
+\WBADLs, they give a proposal for a framework of \emph{horizontal delta
+lenses} which are more convenient to implement but make less intuitive
+behavioral promises. Horizontal delta lenses are nevertheless suitably
+constrained so that they can be converted into \WBADLs as necessary. Their
+data model is based on containers, with edits containing (in part) an
+injective relation between the positions of the old and new pieces of data.
+In addition many constructions similar to ours, they also discuss fold and
+unfold operations for containers that are built from fixpoints of regular
+higher-order functors. These give rise to significant complications in
+handling the full range of edits; they discuss how to handle insertions and
+deletions of nodes, but do not discuss reordering. Unlike our development,
+all repositories are homogeneous containers; in particular, their tensor
+product analog restricts the contained values in the two parts of the tuple
+to have identical types.
 
 \subsection{Symmetric}
 \label{sec:delta:symmetric}
