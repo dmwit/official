@@ -1,6 +1,5 @@
 \section{Graph-based delta lenses}
 \label{sec:delta}
-
 There is a closely related line of work focused on designing edit-based
 lenses which begins with much the same motivation our work
 does~\cite{diskin2011asymmetric,Diskin-Delta11,hermann2011correctness,Pacheco2012}.
@@ -671,10 +670,6 @@ for these combinators (not documented here).
 
 \section{Matching lenses}
 \label{sec:matching}
-% defining good alignment heuristics along with your lens
-% decouples alignment discovery from lens operation
-% does give concrete operations for discovering alignments; but is
-% significantly more complex
 Dictionary lenses~\cite{Boomerang07} and their sequel, matching
 lenses~\cite{Matching10}, are also motivated by the alignment problems
 discussed above. We will consider a variation of our motivating example from
@@ -822,9 +817,6 @@ between structures with differing numbers of holes.
 
 \section{Annotation-based delta lenses}
 \label{sec:annotations}
-% lenses that operate on full data structures with node
-% creation/deletion/modification ``holes'' in them -- tackles alignment
-% problems, but not size or symmetry
 A weakness of our approach is that the lack of categorical products
 indicates that we cannot duplicate information during our transformations.
 For some applications, this is a critical feature; allowing this requires
