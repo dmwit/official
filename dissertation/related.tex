@@ -210,28 +210,26 @@ are ready to define asymmetric delta lenses.
     and $\aput$ are semifunctors (resp. functors) and satisfy the behavioral
     law:
     \infax[ADPutGet]{\aget(\aput(\dv)(s))=\dv}
-    We will abbreviate ``well behaved asymmetric delta lens'' to
-    ``\WBADL'' and ``very well behaved asymmetric delta lens'' to
-    ``\VWBADL''.
+    We will abbreviate ``well behaved asymmetric delta lens'' to ``\WBADL''
+    and ``very well behaved asymmetric delta lens'' to ``\VWBADL''.
 \end{definition}
 
 The suggested behavioral law enforces the intuition given above that all of
 the information available in the view edits is available in source edits,
 too. It turns out that the obvious definitions for identity and composition
 lenses satisfy the behavioral law and induce a category whose objects are
-connected categories and arrows are \VWBADLs. As in our discussion
-above relating edit lenses to symmetric lenses, one can connect \WBADLs
-to asymmetric state-based lenses by adjoining an operation to
-compute the difference between two states. The paper goes on to show that
-\VWBADLs only violate the controversial \rn{PutPut} law if
-their differencing operation violates a similar \rn{DiffDiff} law---that is,
-failure is never due to incorrect edit propagation, only incorrect edit
-discovery.
+connected categories and arrows are \VWBADLs. As in our discussion above
+relating edit lenses to symmetric lenses, one can connect \WBADLs to
+asymmetric state-based lenses by adjoining an operation to compute the
+difference between two states. The paper goes on to show that \VWBADLs only
+violate the controversial \rn{PutPut} law if their differencing operation
+violates a similar \rn{DiffDiff} law---that is, failure is never due to
+incorrect edit propagation, only incorrect edit discovery.
 
-One can construct an edit lens out of a \VWBADL as follows.
-The complement set will be source objects adjoined with a fresh $\fail$
-value, so that the partial edit application can be extended to a total one
-with explicit failure:
+One can construct an edit lens out of a \VWBADL as follows.  The complement
+set will be source objects adjoined with a fresh $\fail$ value, so that the
+partial edit application can be extended to a total one with explicit
+failure:
 \begin{align*}
     \ds \odot_t \mlinl s &= \mlinl {\ds \odot s} & \ds\odot s\Defined \\
     \ds \odot_t s &= \fail & \mbox{otherwise}
