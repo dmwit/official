@@ -845,6 +845,50 @@ apparently undesirable behaviors like ignoring all changes indiscriminately.
 % symmetric, but we improve in many ways
 %
 % some text below that we can also scan for ideas about what to write here
+Constraint maintainers are an early exploration of a symmetric framework for
+bidirectional transformations~\cite{Meertens98}. The framework is a very
+natural one, as mentioned in \S\ref{sec:intro-symmetry}: given a relation $R
+\subset X \times Y$, a constraint maintainer is a pair of functions
+$\triangleright \in X \times Y \to Y$ and $\triangleleft \in X \times Y \to
+X$ for which $x\relR(x \triangleright y)$ and $(x \triangleleft y)\relR y$.
+One may optionally also require that related values remain unchanged, that
+is:
+
+\noindent
+\hfil$\infruleplain{x \relR y}{x \triangleright y = y}$
+\hfil$\infruleplain{x \relR y}{x \triangleleft y = x}$
+\hfil
+
+\noindent Some discussion of generalizing these behavioral laws to a Principle of
+Least Change is given; in any case, those maintainers which satisfy the
+property above can be lifted to symmetric lenses as follows.
+\lensdef
+    {cmaint}
+    {\infruleplain
+        {\left<\triangleleft,\triangleright\right>
+            \mbox{ a maintainer for }
+            R \subset X \times Y \\
+            x \relR y
+        }
+        {\mathit{cmaint}(R,\triangleleft,\triangleright,x,y) \in X \lens Y}
+    }
+    {
+        C &=& R \\
+        \missing &=& (x,y) \\
+        \putr(x,(x',y)) &=& (x \triangleright y, (x, x \triangleright y)) \\
+        \putl(y,(x,y')) &=& (x \triangleleft y, (x \triangleleft y, y))
+    }
+There is a significant body of maintainers discussed there, with a notable
+exception being constraint maintainer composition. General maintainer
+composition is shown to be uncomputable, though a restricted composition in
+the case where one of the two maintainers corresponds to an asymmetric lens
+is given. There is some exploration of how to deal with alignment issues;
+the main idea they propose is to lift relations on values to relations on
+the edit sequences used to build values. One can then define constraint
+maintainers which inspect such edit sequences. However, little consideration
+is given to desirable behavioral laws with respect to these more
+fine-grained structures; furthermore, the incremental capability we expose
+from our edit lenses to allow for small updates is not explored.
 
 \section{Fibrations}
 \label{sec:fibrations}
