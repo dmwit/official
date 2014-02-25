@@ -122,6 +122,9 @@ arrow between any pair of objects); however, passing from a module to a
 category and back may produce a significantly more verbose edit language:
 each edit $m$ in the source module induces a collection of edits $\{m : x
 \dedge y \mid mx=y\}$ in the target module.
+% TODO: yikes, \Mod(G) is not a module! we might be able to factor \id into
+% f;g, but f\odot(g\odot x) will be ill-typed whereas \id\odot x succeeds
+% because of the quotienting
 
 The involutive graph model of edits demands the existence of undo edits,
 something we did not consider carefully in the edit lens framework above. A
@@ -228,12 +231,12 @@ partial edit application can be extended to a total one with explicit
 failure:
 \begin{align*}
     \ds \odot_t \mlinl s &= \mlinl {\ds \odot s} & \ds\odot s\Defined \\
-    \ds \odot_t s &= \fail & \mbox{otherwise}
+    \ds \odot_t s &= \mlinr \fail & \mbox{otherwise}
 \end{align*}
 Then the lens construction goes as follows.
 \lensdef{delta_symmetrize}
     {\infruleplain
-        {\ell \in S \adlens V \quad s \in S_0}
+        {\ell \in S \adlens V \qquad \ell\mbox{ is a \VWBADL} \qquad s \in S_0}
         {\mlsymm_s(\ell) \in \Mod(S) \dlens \Mod(V)}
     }
     {
@@ -241,12 +244,16 @@ Then the lens construction goes as follows.
         \missing &=& \mlinl s \\
         K &=& \{(s,\mlinl s,\ell.\aget_0(s)) \mid s \in S_0\} \\
         \dputr(\ds, s) &=& (\ell.\aget_1(\ds),\ds\odot_t s) \\
+        \dputl(\ONE, s) &=& (\ONE, s) \\
         \dputl(\dv, \mlinl s) &=& \mllet \ds = \ell.\aput_1(\dv)(s) \mlinm (\ds, \ds\odot_t s) \\
-        && \mbox{when }\mldom(\dv)=\ell.\aget_0(s) \\
+        && \mbox{when }\mldom(\dv)=\ell.\aget_0(s) \land \dv \ne \ONE\\
         \dputl(\dv, s) &=& (\fail,\mlinr \fail) \mbox{ otherwise}
     }
 % TODO: prove this is well-defined (respects the equivalence class that \Mod
 % introduces) and an edit lens
+% TODO: yikes, this is NOT an edit lens! (we might be able to factor \fail
+% into \ds\ds' where \ds and \ds' are ill-typed, but get translated to
+% well-typed \dv and \dv')
 We conjecture that a construction similar to the one used to decompose
 symmetric lenses into a pair of asymmetric, state-based lenses can be used
 to decompose edit lenses into a pair of \VWBADLs.
@@ -295,10 +302,9 @@ is also typed, as we discuss now.
     \end{align*}
 \end{definition}
 
-% TODO: somehow we lost the definition of a model space
 \begin{definition}
-    A \emph{symmetric delta lens} $\ell$ connecting model spaces $X$ and
-    $Y$, written $\ell \in X \sdlens Y$, consists of:
+    A \emph{symmetric delta lens} $\ell$ connecting connected categories $X$
+    and $Y$, written $\ell \in X \sdlens Y$, consists of:
     \begin{itemize}
         \item a bipartite graph $R$ whose two parts are $X_0$ and $Y_0$ (the
             edges of $R$ are called \emph{correspondence relations}),

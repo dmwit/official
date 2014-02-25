@@ -101,7 +101,7 @@
 \newcommand{\acopy}{\mathit{copy}}
 \newcommand{\acreate}{\mathit{create}}
 \newcommand{\adget}{\mathit{dget}}
-\newcommand{\adlens}{\underset{a}{\dlens}}
+\newcommand{\adlens}{\closeunder{a}{\dlens}}
 \newcommand{\adput}{\mathit{dput}}
 \newcommand{\aget}{\mathit{get}}
 \newcommand{\aIT}{\mathit{fold}}
@@ -129,6 +129,7 @@
 \newcommand{\Cat}{\mathbf{Cat}}
 \newcommand{\CC}{\mathbf{C}}
 \newcommand{\Close}{|\hspace{-2pt}\}}
+\newcommand{\closeunder}[1]{\underset{\raisebox{0.4ex}{\scriptsize$#1$}}}
 \newcommand{\cmaint}{\overset{c}{\lens}}
 \newcommand{\codiag}{\mathit{codiag}}
 \newcommand{\codomain}{\mathit{codomain}}
@@ -353,7 +354,7 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Rm}{\mathsf{rm}}
 \newcommand{\run}{\mathit{run}}
-\newcommand{\sdlens}{\underset{s}{\dlens}}
+\newcommand{\sdlens}{\closeunder{s}{\dlens}}
 \newcommand{\Sed}{\mathsf{sed}}
 \newcommand{\SET}{{\sc set}}
 \newcommand{\SMALLSECTIONHEADER}{\paragraph*}
