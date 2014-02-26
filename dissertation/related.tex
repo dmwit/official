@@ -284,13 +284,14 @@ support transformations between domains that each have missing
 information---that is, symmetric transformations~\cite{Diskin-Delta11}. As
 we observed in our symmetric lens development, passing from asymmetric to
 symmetric lenses is cleanest if one introduces a complement---some extra
-information about how the values in the two repositories correspond. This
+information about how the values in the two repositories correspond. Their
 development similarly allows for extra information, with a little bit of
 extra notational complexity arising from the pervasive use of typing: edits
-are typed via a category, as discussed above, and correspondence information
-is also typed, as we discuss now.
-
-% TODO: this might need more introduction
+are typed via a category, as discussed above, and complements are also
+typed, as we discuss now. Because complements are typed, we will need a
+notion of when the types of an edit and a complement match. We give two such
+notions below: one for complements that match before an edit is applied, and
+one for complements that match after.
 
 \begin{definition}
     Given graphs $G$ and $H$, we define the \emph{domain-} and
