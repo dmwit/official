@@ -107,24 +107,30 @@ smallest congruence relation containing the equation that ensures that $\id$
 edges are the unit for composition: $\blist \id \elist = \NIL$.}; for the
 composition, use path concatenation; and for the identities, use empty
 paths.) Let the values $|\Mod(G)|=G_0$ be the set of nodes, and edits $\D
-\Mod(G)=\{\fail\}\cup G_1/\sim_\id$ be the set of edges quotiented by the
-relation that identifies identities adjoined with a fresh absorptive failing
-edit $\fail$. We let the identity element of the monoid $\ONE=\id$ be the
-element representing the identities of the objects in the category;
-multiplication is composition when well-typed and $\fail$ otherwise. Edit
-application of $\ONE$ does nothing ($\ONE\odot x=x$); of well-typed edges
-chooses the codomain ($(f : x \dedge y)\odot x=y$); and in all other cases
-is undefined. One may choose any object to play the role of $\init$ (so that
+\Mod(G)=G_1\LIST/{\sim}_;$ be the set of paths quotiented by the
+relation that identifies factorable paths $\blist f;g \elist$ with the
+factoring $\blist g \mlist f \elist$. In other words, the edits of $\Mod(G)$
+are sequences of edges $\blist g_1 \clist g_n \elist$ which are \emph{not}
+well-typed: $\mlcod(g_{i+1}) \ne \mldom(g_i)$ for each $i$. (One can further
+identify all lists of length more than one---that is, lists that have an
+internal typing error---with a single $\fail$ edit. The result is still a
+module, but the lens lifting we perform below would not result in a lens.)
+The empty list serves as the identity. Edit application is given by
+\begin{align*}
+    \NIL \odot x &= x \\
+    (\dx \CONS t) \odot x &= x' & \mbox{when }\dx : (t \odot x) \dedge x'
+\end{align*}
+and undefined if the side-condition of the second case is not met or is
+undefined. One may choose any object to play the role of $\init$ (so that
 there are as many ways to turn a category into a module as there are objects
-in the category). Passing from a category to a module and back results in an
-isomorphic category (because the freshly-adjoined $\fail$ edit is not an
-arrow between any pair of objects); however, passing from a module to a
-category and back may produce a significantly more verbose edit language:
-each edit $m$ in the source module induces a collection of edits $\{m : x
-\dedge y \mid mx=y\}$ in the target module.
-% TODO: yikes, \Mod(G) is not a module! we might be able to factor \id into
-% f;g, but f\odot(g\odot x) will be ill-typed whereas \id\odot x succeeds
-% because of the quotienting
+in the category). Passing from a category to a module and back adjoins a
+fresh identity edit to each object, but otherwise leaves the category
+unchanged. On the other hand, passing from a module to a category and back
+may produce a significantly more verbose edit language, even after
+accounting for the many ways to represent internal failure: each edit $m$ in
+the source module induces a collection of edits $\{\blist m : x \dedge
+y\elist \mid mx = y\}$ in the target module.
+% TODO: prove \Mod(C) is a module
 
 The involutive graph model of edits demands the existence of undo edits,
 something we did not consider carefully in the edit lens framework above. A
@@ -243,17 +249,13 @@ Then the lens construction goes as follows.
         C &=& S_0 \uplus \{\fail\} \\
         \missing &=& \mlinl s \\
         K &=& \{(s,\mlinl s,\ell.\aget_0(s)) \mid s \in S_0\} \\
-        \dputr(\ds, s) &=& (\ell.\aget_1(\ds),\ds\odot_t s) \\
-        \dputl(\ONE, s) &=& (\ONE, s) \\
-        \dputl(\dv, \mlinl s) &=& \mllet \ds = \ell.\aput_1(\dv)(s) \mlinm (\ds, \ds\odot_t s) \\
-        && \mbox{when }\mldom(\dv)=\ell.\aget_0(s) \land \dv \ne \ONE\\
-        \dputl(\dv, s) &=& (\fail,\mlinr \fail) \mbox{ otherwise}
+        \dputr_g(\ds, s) &=& (\ell.\aget_1(\ds),\ds\odot_t s) \\
+        \dputl_g(\dv, \mlinl s) &=& \mllet \ds = \ell.\aput_1(\dv)(s) \mlinm (\ds, \ds\odot_t s) \\
+        && \mbox{when }\mldom(\dv)=\ell.\aget_0(s) \\
+        \dputl_g(\dv, s) &=& (\fail,\mlinr \fail) \mbox{ otherwise}
     }
 % TODO: prove this is well-defined (respects the equivalence class that \Mod
 % introduces) and an edit lens
-% TODO: yikes, this is NOT an edit lens! (we might be able to factor \fail
-% into \ds\ds' where \ds and \ds' are ill-typed, but get translated to
-% well-typed \dv and \dv')
 We conjecture that a construction similar to the one used to decompose
 symmetric lenses into a pair of asymmetric, state-based lenses can be used
 to decompose edit lenses into a pair of \VWBADLs.
