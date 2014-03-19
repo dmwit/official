@@ -7,172 +7,131 @@ parsed abstract syntax tree~\cite{rendel2010invertible}; tool-specific
 configuration formats and a common configuration format~\cite{Augeas}; a
 database and some particular summary of interest; or two distant but
 partially replicated computers~\cite{pierce2004unison} are all examples of
-areas where two pieces of data are very similar. In each case, one would
-like the two pieces of data to stay ``in synch'': modifications to one piece
-should be propagated and reflected in the other.
+areas where two pieces of data are very similar. We will call each of the
+two objects in these pairings \emph{repositories}. In each case, one would
+like the two repositories to stay ``in synch'': modifications to one
+repository should be propagated and reflected in the other.
 
 At the moment, one common way of tackling this problem is to design by hand
-two programs that work together. Calling the two pieces of data $X$ and $Y$,
+two programs that work together. Calling the two repositories $X$ and $Y$,
 the first program translates updates to $X$ into updates to $Y$, and the
 second translates in the other direction, turning updates to $Y$ into
 updates to $X$. (Taking the example of connecting a piece of source code and
 its abstract syntax tree from above, these two programs might be a parser
-and a pretty-printer.) However, this approach is messy and error-prone, and
-it can be difficult to extract behavioral guarantees that the two programs
-work together in appropriate ways. The goal of bidirectional programming
-language design, then, is to create a language in which each term can be
-interpreted in two ways and which makes it easy to prove that the two
-different interpretations work together appropriately.
+and a pretty-printer.) Programming in this style, however, quickly grows
+unmanageable. Recent developments in bidirectional transformations have
+suggested that a language-based approach---that is, the creation of a
+language where each term represents two transformations---may be more
+practical in many ways. Existing languages have a uniform interface across
+terms: different programs are run in the same manner. This means that such
+bidirectional programs are easy to extend to accommodate the evolution of
+the data structures being connected. Moreover, the language itself can
+provide evidence that the transformations are correct, for example, by
+guaranteeing that any transformation that can be constructed within the
+language will restore synchrony on each run, will not discard too much
+information, will not disrupt synchrony unnecessarily, or similar behavioral
+guarantees. Designing a language is also a more modular approach to solving
+the bidirectional transformation problem, as the design of bidirectional
+building blocks can be separated from the process of gluing the blocks
+together into particular useful transformations.
 
-Before we introduce \emph{lenses}---one family of language-based approaches
-to the bidirectional problem---we will establish some conventions that will
-ease the discussion.
+The term ``lens'' is a broad term encompassing a large family of related
+language-based approaches to the bidirectional transformation problem.
+In \S\ref{sec:asymmetric-lenses}, we will introduce one of the earliest
+language-based approaches, asymmetric lenses, as a way to ground our ongoing
+discussion of the features that make bidirectional programming attractive
+and practical. We will identify four key features that asymmetric,
+state-based lenses lack: alignment (the ability to represent data evolution
+precisely, \S\ref{sec:intro-alignment}), symmetry (no more restrictions on
+one piece of connected data than on the other, \S\ref{sec:intro-symmetry}),
+performance (handling data in an incremental way, \S\ref{sec:intro-size}),
+and syntax (the existence of example transformations,
+\S\ref{sec:intro-syntax}). Figure~\ref{fig:related-work-matrix} shows how
+other approaches stack up on these four key features; our ultimate target is
+edit lenses, which are the first lens framework to support all four.
 
-\section{Notation and Conventions}
-\label{sec:notation}
-% TODO: enforce these conventions
-\paragraph*{Naming}
-When naming a set, we will make the choices that follow (perhaps appending a
-subscript or prime) unless there is a compelling local reason to choose
-another name:
-\begin{itemize}
-    \item $S$ and $V$ for the source and view of asymmetric lenses,
-    \item $V$, $W$, $X$, $Y$, $Z$ for the kinds of values synchronized by
-        symmetric lenses,
-    \item and $C$ for complement sets.
-\end{itemize}
-If we need a set of edits for a named set, its default name is formed by
-prepending $\D$; for example, $\DX$ is the set of edits to values of type
-$X$. Set members will be named with lower case letters that match the set
-name; for example, $x \in X$ or $s \in S$. The lower case version of $\D$ is
-$\d$; for example, $\dx \in \DX$. Lenses are named $k$, $\ell$, $m$, and
-$n$.
-
-\paragraph*{Lists}
-We use $X\LIST$ to denote the set of lists with elements drawn from $X$. A
-length $n$ list with $x_i$ in the $i$th position is written $\blist x_1
-\clist x_n \elist$. A notable special case of this is $\NIL$, the empty
-list. We will also use $x \CONS t$ to denote the list whose first element
-is $x$ and whose remaining elements are in $t$. When there is only one list
-involved in the nearby discussion, we will use $n$ to denote the length of
-that list; otherwise, the notation $|x|$ gives the length of list $x$. To
-avoid clutter, we will write singleton lists $\blist x \elist$ simply as $x$
-when it is clear from context both that $x$ is a list element and that we
-expect a list, not an element. If there is a list $\blist x_1 \clist x_n
-\elist$ (with exactly the subscripts $1$ through $n$), we will also denote
-this list simply by $x$ with no subscript. We will write $x[i \mapsto v]$
-for the list $x$ with index $i$ replaced by element $v$, that is,
-\[x[i \mapsto v] = \blist x_1 \clist x_{i-1} \mlist v \mlist x_{i+1} \clist
-x_n \elist.\]
-
-We will also need to deal with the set of infinite lists, which we denote
-$X\INFTY$ when the elements are drawn from $X$. The infinite list with $x_i$
-in the $i$th position is written $\blist x_1 \ilist$, and the infinite list
-where there is a single element $x$ in every position is written $x\INFTY$.
-As with finite lists, $x \CONS t$ denotes the infinite list whose first
-element is $x$ and whose remaining elements are in $t$.
-
-\paragraph*{Miscellaneous notation}
-We will use \rn{CamelCasedSmallCaps} for the names of behavioral laws; a
-\texttt{monospaced font} for data; and a $\ml{sans\ serif\ font}$ for code
-and globally-scoped defined values. We name the canonical single-element set
-and its single element by the definition $\Unit=\{\unit\}$. When defining
-and using lenses and similar structures, we will use record notation; for
-example, $\ell.\aget$ is the \GET component of lens $\ell$. We deal with
-many variations on functions in this document; Table~\ref{tab:arrows}
-summarizes them. We will use the term \emph{repository} to refer to an
-entity that contains a piece of data being kept in synch with another
-repository via a lens. Thus, for example, a computer program might have two
-ref cells containing different representations of a piece of data and a lens
-that reads and writes to those cells; the cells themselves are repositories,
-while the values contained in the cells are repository values whose types
-match the lens' type.
-\begin{table}
-    \centering
-    % If we just use \begin{tabular}{c|l} in the obvious way, the notation
-    % column comes out looking a bit ragged. So we work a bit harder to make
-    % sure the arrows line up with each other by giving them their own
-    % column.
-    \begin{tabular}{r@{}c@{}l|l}
-        \multicolumn{3}{l|}{Notation} & Meaning \\
+\begin{figure}
+     % TODO: add \cite commands for each row
+    \begin{center}
+    \begin{tabular}{l|cccc}
+        & Alignment & Symmetry & Performance & Syntax \\
         \hline
-        $A$ & ${}\to       {}$ & $B$ & normal functions from $A$ to $B$ \\
-        $A$ & ${}\partialto{}$ & $B$ & partial functions from $A$ to $B$ \\
-        $S$ & ${}\alens    {}$ & $V$ & asymmetric, state-based lenses connecting $S$ and $V$ \\
-        $X$ & ${}\cmaint   {}$ & $Y$ & constraint maintainers connecting $X$ and $Y$ \\
-        $X$ & ${}\lens     {}$ & $Y$ & symmetric, state-based lenses connecting $X$ and $Y$ \\
-        $X$ & ${}\dlens    {}$ & $Y$ & (symmetric) edit lenses connecting $X$ and $Y$
-        % TODO: switch out \lens for \dlens everywhere in delta.tex
+        group-based lenses      &\Y&\N&\N&\N\\
+        symmetric delta lenses  &\Y&\Y&\N&\N\\
+        symmetric lenses        &\N&\Y&\N&\Y\\
+        triple graph grammars   &\N&\Y&\N&\Y\\
+        asymmetric delta lenses &\Y&\N&\N&\Y\\
+        matching lenses         &\Y&\N&\N&\Y\\
+        hole-based delta lenses &\Y&\N&\N&\Y\\
+        constraint maintainers  &\Y&\Y&\N&\Y\\
+        edit lenses             &\Y&\Y&\Y&\Y
     \end{tabular}
-    \caption{Function and lens types}
-    \label{tab:arrows}
-\end{table}
+    \end{center}
+    \caption{Feature coverage for various approaches to bidirectional
+    programming}
+    \label{fig:related-work-matrix}
+\end{figure}
 
 \section{Asymmetric Lenses}
 \label{sec:asymmetric-lenses}
-One well-studied approach to bidirectional programming, summarized in
-Figure~\ref{fig:asymmetric-lens-def}, is the framework of \emph{asymmetric},
-\emph{state-based} lenses. (A thorough review of this work is available
-elsewhere~\cite{FosterThesis}.) In this model, one of the two repositories is a
-\emph{view} of or \emph{query} on the other: that is, it can be completely
-reconstructed from the other without additional outside information.  The
-\GET component of a lens (together with the \rn{PutGet} law, which we
-discuss below) reflects this assumption. In most cases, a query will keep
-only some of the information available in the source; as a result, the
-opposite reconstruction property---that the source can be completely
-reconstructed from the view---usually does not hold. Asymmetric, state-based
-lenses handle this situation by allowing their other major function
-component to have access to both a modified value from the view repository
-\emph{and} an original value from the source repository to merge the new
-data into, as reflected in the type of \PUT. As a technical detail, it is
-sometimes convenient to demand (and rarely difficult to supply) a way to
-generate a value in the source repository with some sane defaults. This is
-the \CREATE component of Figure~\ref{fig:asymmetric-lens-def}.
-\begin{figure}
-    \begin{minipage}{0.3333333\linewidth}
-        \begin{align*}
-            \aget &\in S \to V \\
-            \aput &\in V \times S \to S \\
-            \acreate &\in V \to S
-        \end{align*}
-    \end{minipage}
-    \begin{minipage}{0.6666666\linewidth}
-        \begin{align*}
-            \aput(\aget(s),s) &= s  & \rn{GetPut} \\
-            \aget(\aput(v,s)) &= v  & \rn{PutGet} \\
-            \aget(\acreate(v)) &= v & \rn{CreateGet}
-        \end{align*}
-    \end{minipage}
-    \caption{The required components and behavioral guarantees of a lens in
-    $S \alens V$}
-    \label{fig:asymmetric-lens-def}
-\end{figure}
+One well-studied approach to bidirectional programming is the framework of
+\emph{asymmetric}, \emph{state-based} lenses. A thorough review of this work
+is available elsewhere~\cite{FosterThesis}, so we will give only a brief
+introduction to the core concepts. Suppose we have two repositories; one
+repositories stores a piece of data represented by an element of the set
+$S$, and the other stores a representation of an element of $V$. Then a lens
+connecting the two repositories has three components:
+\begin{align*}
+    \aget &\in S \to V \\
+    \aput &\in V \times S \to S \\
+    \acreate &\in V \to S
+\end{align*}
+In this model, the $V$ repository is a \emph{view} of or \emph{query} on the
+$S$ repository (called a \emph{source}): that is, it can be completely
+reconstructed from the other without additional outside information. The
+type of the \GET component of the lens reflects this assumption. In most
+cases, a query will keep only some of the information available in the
+source; as a result, the opposite reconstruction property---that the source
+can be completely reconstructed from the view---usually does not hold.
+Asymmetric, state-based lenses handle this situation by allowing their other
+major function component to have access to both a modified value from the
+view repository \emph{and} an original value from the source repository to
+merge the new data into, as reflected in the type of \PUT. As a technical
+detail, it is sometimes convenient to demand (and rarely difficult to
+supply) a way to generate a value in the source repository with some sane
+defaults. This is the \CREATE component of the lens.
 
 Lenses have one more piece, which was alluded to above. The structure we
-have described so far already addresses the need to give two interpretations
+have described so far already addresses the need to give two transformations
 (namely \GET and \PUT), but does not yet address our desire to prove that
-these two interpretations work well together. Let us first try to build an
+these two transformations work well together. Let us first try to build an
 intuition for what ``works well together'' might mean before we formalize
-this. Suppose we have a lens $\ell$; to simplify things, we will take
-$\ell.\aget$ to be unassailable and phrase all our desires in terms of
-constraints on $\ell.\aput$. It is natural to expect two things from our
-lens: first, that $\ell.\aput$ changes enough---that whatever change
-we make to the view is faithfully reflected in the source so that future
-calls to $\ell.\aget$ give exactly the value we changed the view to---and
-that $\ell.\aput$ does not change too much---that only the parts of the
-source that are used to compute the view are modified. The \rn{PutGet} law
-of Figure~\ref{fig:asymmetric-lens-def} formalizes the expectation that
-$\ell.\aput$ changes enough; the \rn{GetPut} law takes a step toward
-formalizing the expectating that $\ell.\aput$ does not change
-enough\footnote{To be precise, it actually only guarantees that unmodified
-views result in unmodified sources. It is very hard to come up with a better
-generic guarantee than this within the asymmetric, state-based lens
-framework, but Chapter~\ref{chap:delta} takes a step towards better
-guarantees.}. There is a third law, \rn{CreateGet}, which serves a similar
-purpose to the \rn{PutGet} law. Collectively, these behavioral laws are
-often also called \emph{roundtrip laws}: another way to read them is that in
-a given ``round trip'' through the lens the repository returns to exactly
-the same state it started at.
+this. Suppose we have a lens $\ell$\footnote{We will use record notation to
+refer to its components, so that $\ell.\aget$ is the \GET component of lens
+$\ell$.}; to simplify things, we will take $\ell.\aget$ to be unassailable
+and phrase all our desires in terms of constraints on $\ell.\aput$. It is
+natural to expect two things from our lens: first, that $\ell.\aput$ changes
+enough---that whatever change we make to the view is faithfully reflected in
+the source so that future calls to $\ell.\aget$ give exactly the value we
+changed the view to---and second, that $\ell.\aput$ does not change too
+much---that only the parts of the source that are used to compute the view
+are modified. Three behavioral laws address this intuition:
+\begin{align*}
+    \aput(\aget(s),s) &= s  & \rn{GetPut} \\
+    \aget(\aput(v,s)) &= v  & \rn{PutGet} \\
+    \aget(\acreate(v)) &= v & \rn{CreateGet}
+\end{align*}
+The \rn{PutGet} law formalizes the expectation that $\ell.\aput$ changes
+enough; the \rn{GetPut} law takes a step toward formalizing the expectation
+that $\ell.\aput$ does not change enough\footnote{To be precise, it actually
+only guarantees that unmodified views result in unmodified sources. It is
+very hard to come up with a better generic guarantee than this within the
+asymmetric, state-based lens framework, but Chapter~\ref{chap:delta} takes a
+step towards better guarantees.}. There is a third law, \rn{CreateGet},
+which serves a similar purpose to the \rn{PutGet} law. Collectively, these
+behavioral laws are often also called \emph{roundtrip laws}: another way to
+read them is that in a given ``round trip'' through the lens the repository
+returns to exactly the same state it started at.
 % violating GetPut but satisfying PutGet:
 %     get(x,y) = x
 %     put(x',(x,y)) = (x',3)
@@ -851,3 +810,85 @@ small descriptions of what has changed rather than on large repositories,
 which addresses some of the size issues raised above.
 
 % TODO: add a sentence or two about chapters 4 and on, once they're written
+
+\section{Notation and Conventions}
+\label{sec:notation}
+% TODO: review the comments about this section in drafts/140109_comments_rew.pdf
+% TODO: enforce these conventions
+\paragraph*{Naming}
+When naming a set, we will make the choices that follow (perhaps appending a
+subscript or prime) unless there is a compelling local reason to choose
+another name:
+\begin{itemize}
+    \item $S$ and $V$ for the source and view of asymmetric lenses,
+    \item $V$, $W$, $X$, $Y$, $Z$ for the kinds of values synchronized by
+        symmetric lenses,
+    \item and $C$ for complement sets.
+\end{itemize}
+If we need a set of edits for a named set, its default name is formed by
+prepending $\D$; for example, $\DX$ is the set of edits to values of type
+$X$. Set members will be named with lower case letters that match the set
+name; for example, $x \in X$ or $s \in S$. The lower case version of $\D$ is
+$\d$; for example, $\dx \in \DX$. Lenses are named $k$, $\ell$, $m$, and
+$n$.
+
+\paragraph*{Lists}
+We use $X\LIST$ to denote the set of lists with elements drawn from $X$. A
+length $n$ list with $x_i$ in the $i$th position is written $\blist x_1
+\clist x_n \elist$. A notable special case of this is $\NIL$, the empty
+list. We will also use $x \CONS t$ to denote the list whose first element
+is $x$ and whose remaining elements are in $t$. When there is only one list
+involved in the nearby discussion, we will use $n$ to denote the length of
+that list; otherwise, the notation $|x|$ gives the length of list $x$. To
+avoid clutter, we will write singleton lists $\blist x \elist$ simply as $x$
+when it is clear from context both that $x$ is a list element and that we
+expect a list, not an element. If there is a list $\blist x_1 \clist x_n
+\elist$ (with exactly the subscripts $1$ through $n$), we will also denote
+this list simply by $x$ with no subscript. We will write $x[i \mapsto v]$
+for the list $x$ with index $i$ replaced by element $v$, that is,
+\[x[i \mapsto v] = \blist x_1 \clist x_{i-1} \mlist v \mlist x_{i+1} \clist
+x_n \elist.\]
+
+We will also need to deal with the set of infinite lists, which we denote
+$X\INFTY$ when the elements are drawn from $X$. The infinite list with $x_i$
+in the $i$th position is written $\blist x_1 \ilist$, and the infinite list
+where there is a single element $x$ in every position is written $x\INFTY$.
+As with finite lists, $x \CONS t$ denotes the infinite list whose first
+element is $x$ and whose remaining elements are in $t$.
+
+\paragraph*{Miscellaneous notation}
+We will use \rn{CamelCasedSmallCaps} for the names of behavioral laws; a
+\texttt{monospaced font} for data; and a $\ml{sans\ serif\ font}$ for code
+and globally-scoped defined values. We name the canonical single-element set
+and its single element by the definition $\Unit=\{\unit\}$. When defining
+and using lenses and similar structures, we will use record notation; for
+example, $\ell.\aget$ is the \GET component of lens $\ell$. We deal with
+many variations on functions in this document; Table~\ref{tab:arrows}
+summarizes them. We will use the term \emph{repository} to refer to an
+entity that contains a piece of data being kept in synch with another
+repository via a lens. Thus, for example, a computer program might have two
+ref cells containing different representations of a piece of data and a lens
+that reads and writes to those cells; the cells themselves are repositories,
+while the values contained in the cells are repository values whose types
+match the lens' type.
+\begin{table}
+    \centering
+    % If we just use \begin{tabular}{c|l} in the obvious way, the notation
+    % column comes out looking a bit ragged. So we work a bit harder to make
+    % sure the arrows line up with each other by giving them their own
+    % column.
+    \begin{tabular}{r@{}c@{}l|l}
+        \multicolumn{3}{l|}{Notation} & Meaning \\
+        \hline
+        $A$ & ${}\to       {}$ & $B$ & normal functions from $A$ to $B$ \\
+        $A$ & ${}\partialto{}$ & $B$ & partial functions from $A$ to $B$ \\
+        $S$ & ${}\alens    {}$ & $V$ & asymmetric, state-based lenses connecting $S$ and $V$ \\
+        $X$ & ${}\cmaint   {}$ & $Y$ & constraint maintainers connecting $X$ and $Y$ \\
+        $X$ & ${}\lens     {}$ & $Y$ & symmetric, state-based lenses connecting $X$ and $Y$ \\
+        $X$ & ${}\dlens    {}$ & $Y$ & (symmetric) edit lenses connecting $X$ and $Y$
+        % TODO: switch out \lens for \dlens everywhere in delta.tex
+    \end{tabular}
+    \caption{Function and lens types}
+    \label{tab:arrows}
+\end{table}
+
