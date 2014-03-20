@@ -40,15 +40,17 @@ language-based approaches to the bidirectional transformation problem.
 In \S\ref{sec:asymmetric-lenses}, we will introduce one of the earliest
 language-based approaches, asymmetric lenses, as a way to ground our ongoing
 discussion of the features that make bidirectional programming attractive
-and practical. We will identify four key features that asymmetric,
-state-based lenses lack: alignment (the ability to represent data evolution
-precisely, \S\ref{sec:intro-alignment}), symmetry (no more restrictions on
-one piece of connected data than on the other, \S\ref{sec:intro-symmetry}),
-performance (handling data in an incremental way, \S\ref{sec:intro-size}),
-and syntax (the existence of example transformations,
-\S\ref{sec:intro-syntax}). Figure~\ref{fig:related-work-matrix} shows how
-other approaches stack up on these four key features; our ultimate target is
-edit lenses, which are the first lens framework to support all four.
+and practical. We will identify four key challenges in lens design:
+alignment (the ability to represent data evolution precisely,
+\S\ref{sec:intro-alignment}), symmetry (no more restrictions on one piece of
+connected data than on the other, \S\ref{sec:intro-symmetry}), performance
+(handling data in an incremental way, \S\ref{sec:intro-size}), and syntax
+(the existence of example transformations, \S\ref{sec:intro-syntax}).
+Figure~\ref{fig:related-work-matrix} shows how other approaches stack up on
+these four key features. We will discuss this figure in depth in
+Chapter~\ref{chap:related}; for now, it suffices to observe that the edit
+lens framework as described in this document is the first framework to
+support all four features.
 
 \begin{figure}
      % TODO: add \cite commands for each row
@@ -78,9 +80,9 @@ One well-studied approach to bidirectional programming is the framework of
 \emph{asymmetric}, \emph{state-based} lenses. A thorough review of this work
 is available elsewhere~\cite{FosterThesis}, so we will give only a brief
 introduction to the core concepts. Suppose we have two repositories; one
-repositories stores a piece of data represented by an element of the set
-$S$, and the other stores a representation of an element of $V$. Then a lens
-connecting the two repositories has three components:
+repository stores a piece of data represented by an element of the set $S$,
+and the other stores an element of $V$. Then a lens connecting the two
+repositories has three components:
 \begin{align*}
     \aget &\in S \to V \\
     \aput &\in V \times S \to S \\
@@ -106,10 +108,10 @@ have described so far already addresses the need to give two transformations
 (namely \GET and \PUT), but does not yet address our desire to prove that
 these two transformations work well together. Let us first try to build an
 intuition for what ``works well together'' might mean before we formalize
-this. Suppose we have a lens $\ell$\footnote{We will use record notation to
-refer to its components, so that $\ell.\aget$ is the \GET component of lens
-$\ell$.}; to simplify things, we will take $\ell.\aget$ to be unassailable
-and phrase all our desires in terms of constraints on $\ell.\aput$. It is
+this. Suppose we have a lens $\ell$; to simplify things, we will take
+$\ell.\aget$ to be unassailable\footnote{We will use record notation for
+lens components, so that $\ell.\aget$ is the \GET component of $\ell$.} and
+phrase all our desires in terms of constraints on $\ell.\aput$. It is
 natural to expect two things from our lens: first, that $\ell.\aput$ changes
 enough---that whatever change we make to the view is faithfully reflected in
 the source so that future calls to $\ell.\aget$ give exactly the value we
@@ -117,27 +119,31 @@ changed the view to---and second, that $\ell.\aput$ does not change too
 much---that only the parts of the source that are used to compute the view
 are modified. Three behavioral laws address this intuition:
 \begin{align*}
-    \aput(\aget(s),s) &= s  & \rn{GetPut} \\
-    \aget(\aput(v,s)) &= v  & \rn{PutGet} \\
+    \aput(\aget(s),s)  &= s & \rn{GetPut} \\
+    \aget(\aput(v,s))  &= v & \rn{PutGet} \\
     \aget(\acreate(v)) &= v & \rn{CreateGet}
 \end{align*}
 The \rn{PutGet} law formalizes the expectation that $\ell.\aput$ changes
 enough; the \rn{GetPut} law takes a step toward formalizing the expectation
-that $\ell.\aput$ does not change enough\footnote{To be precise, it actually
-only guarantees that unmodified views result in unmodified sources. It is
-very hard to come up with a better generic guarantee than this within the
-asymmetric, state-based lens framework, but Chapter~\ref{chap:delta} takes a
-step towards better guarantees.}. There is a third law, \rn{CreateGet},
-which serves a similar purpose to the \rn{PutGet} law. Collectively, these
-behavioral laws are often also called \emph{roundtrip laws}: another way to
-read them is that in a given ``round trip'' through the lens the repository
-returns to exactly the same state it started at.
+that $\ell.\aput$ does not change too much\footnote{To be precise, it
+actually only guarantees that unmodified views result in unmodified sources.
+It is very hard to come up with a better generic guarantee than this within
+the asymmetric, state-based lens framework, but Chapter~\ref{chap:delta}
+takes a step towards better guarantees.}. There is a third law,
+\rn{CreateGet}, which serves a similar purpose to the \rn{PutGet} law.
+Collectively, these behavioral laws are often also called \emph{roundtrip
+laws}: another way to read them is that in a given ``round trip'' through
+the lens the repository returns to exactly the same state it started at.
 % violating GetPut but satisfying PutGet:
 %     get(x,y) = x
 %     put(x',(x,y)) = (x',3)
 % violating PutGet but satisfying GetPut:
 %     get(x) = x
 %     put(x', x) = x + 2*(x'-x)
+In the remainder, we will write $\ell \in S \alens V$ to assert that $\ell$
+is an asymmetric, state-based lens---that is, that it is a triple of
+functions whose types are as above that satisfy the three behavioral laws
+discussed.
 
 In the remaining sections, we explore some scenarios which are challenges
 for the asymmetric, state-based lenses described here.
@@ -154,42 +160,44 @@ for the asymmetric, state-based lenses described here.
 % flow, too.
 
 One very common operation when doing functional (unidirectional) programming
-is the \map operation\footnote{As of April 3, 2012, there were 3878 packages
+is the \map operation, which runs a computation on each element of a list.
+To give an idea of how common, as of April 3, 2012, there were 3878 packages
 on Hackage~\cite{Hackage2012}, the central code repository for Haskell
 projects, which made a total of 90,040 calls to \map---an average of more
-than twenty calls per project. In fact, the program used to calculate these
-numbers itself makes two calls to \map:
+than twenty calls per project\footnote{In fact, the program used to
+calculate these numbers itself makes two calls to \map:
 
-\noindent\texttt{ack -cl '\textbackslash bmap\textbackslash b' | cut -d: -f2 |}
+\noindent\texttt{ack -cl '\textbackslash bmap\textbackslash b' | cut -d:\ -f2 |}
 
 \noindent\texttt{ghc -e 'interact \$ unlines . map show . scanl (+) 0 . map read . lines'}
-}, which runs a computation on each element of a list. Most serious attempts
-at designing a bidirectional language therefore provide some variant of a
-mapping operation. Since it is such a popular operation, it is important to
-do a really good job of designing the bidirectional \map, and that job turns
-out to be surprisingly difficult! To see why, let us implement \map in the
-most obvious way; then we can discuss the deficiencies of this approach.
+}. Most serious attempts at designing a bidirectional language therefore
+provide some variant of a mapping operation. Since it is such a popular
+operation, it is important to do a really good job of designing the
+bidirectional \map, and that job turns out to be surprisingly difficult! To
+see why, let us implement \map in the most obvious way; then we can discuss
+the deficiencies of this approach.
 
 % TODO: for consistency with later chapters, use \map for \mapU and -\LIST
 % for \map
 Like the unidirectional \map, which is parameterized by a unidirectional
 function to apply to list elements, our bidirectional \map will be
-parameterized by a bidirectional operation. That is, when $\ell \in S \alens
-V$, we will have $\map(\ell) \in S\LIST \alens V\LIST$.
+parameterized by a bidirectional operation. That is, writing $S\LIST$ for
+the set of lists with elements drawn from $S$, when $\ell \in S \alens V$,
+we will have $\map(\ell) \in S\LIST \alens V\LIST$.
 Figures~\ref{fig:uni-map-zip-const} and~\ref{fig:naive-asymmetric-map}
 define the \map lens. In these figures, and in the remainder of the text, we
 distinguish the unidirectional mapping operation \mapU from the
 bidirectional \map. The \GET and \CREATE operations are fairly
 straightforward---direct analogues of the unidirectional version---but the
 \PUT operation is more delicate. Since \PUT takes one value from each
-repository, our $\map(\ell).\aput$ operation takes two lists of types
-$S\LIST$ and $V\LIST$.
-When these lists are the same length we can just ``zip'' them together with
-$\ell.\aput$. When they are different lengths, we can zip together as much
-as we can (up to the shorter of the two lengths), then either treat the
-remainder as deletions (if the $S\LIST$ list is longer) and so do nothing, or
-treat the remainder as insertions (if the $V\LIST$ list is longer) and so use
-$\ell$'s \CREATE method.
+repository, our $\map(\ell).\aput$ operation takes two lists, of types
+$S\LIST$ and $V\LIST$. When these lists are the same length we can just zip
+them together with $\ell.\aput$. When they are different lengths, there have
+been insertions or deletions. Deletions can be reflected directly by
+deleting the last few elements of the $S\LIST$ list until the lengths match.
+For insertions, we recover elements of $S$ by treating the last few elements
+of the $V\LIST$ list as the insertions and using \CREATE to fabricate $S$
+elements to insert.
 \begin{figure}
     \begin{align*}
         \mapU(f,t) &= \cond{
@@ -282,10 +290,11 @@ algorithm~\cite{hunt1976algorithm} or something similar. This idea has been
 developed quite far~\cite{Matching10}; let us see how. At first blush, it
 seems difficult to use the \texttt{diff} algorithm directly. Elements of the
 source and view have different types, so it is not clear how to compare
-them\footnote{In this case, the types are close enough that we could
-probably fudge it, but in general there may be very different kinds of
-objects in the source and view.}. However, the alignment diagram above may
-be broken into two stages:
+them\footnote{One might be tempted to use \texttt{diff} anyway, or to use a
+case-insensitive \texttt{diff}. In the general case, the elements of the
+source and view lists are very different kinds of objects, so that kind of
+trick does not scale well.}. However, the alignment diagram above may be
+broken into two stages:
 
 \begin{diagram}[alignment diagram]
     \foreach \c in {U,p,e,r,C,a,s,e,d,W,o,r,d}
@@ -351,12 +360,16 @@ which require more sophisticated algorithms than the traditional
 % how should this whole section be structured?
 
 Indeed, it is not even clear that it is always possible to correctly guess
-the alignment given just an old and a new copy of the data, as shown in
-Figure~\ref{fig:school-salaries}. Parts~\subref{fig:school-salaries-hr}
-and~\subref{fig:school-salaries-sec-pre} show the human resources database
-for a small school, which tracks the salaries of their teachers, along with
-a document maintained by a secretary who should not be privy to salary
-information. The document and the database are connected by a \map lens.
+the alignment given just an old and a new copy of the data.
+Figure~\ref{fig:school-salaries} gives an example of a particularly tricky
+situation involving a school's employee database.
+Part~\subref{fig:school-salaries-hr} shows the full database, which includes
+a listing of all the teachers and their salaries. It transpires that the
+school secretary finds it useful to have access to this database; however,
+the secretary should not be privy to the confidential salary information.
+Consequently there is a secretarial view, shown in
+Part~\subref{fig:school-salaries-sec-pre}, with salaries redacted, and we
+would like to keep the database and view synchronized using a \map lens.
 Now, suppose one of two scenarios happens:
 \begin{itemize}
     \item Mary Jones gets married and changes her name to Mary Smith.
@@ -366,13 +379,16 @@ Now, suppose one of two scenarios happens:
 In both cases, when the secretary updates her document, it will look as it
 does in part~\subref{fig:school-salaries-sec-post}. As shown in
 part~\subref{fig:school-salaries-align}, there are really two feasible
-alignments. In the former scenario, we should align Mary with her former
-self, and reflect the change as an update to her name (but keep her old
-salary). In contrast, in the new scenario, we should not align the new Mary
-with any of the teachers that used to teach at the school. Since only the
-old and new copies of the secretary's document are available to a lens, the
-lens cannot choose correctly: it has no way to distinguish between these two
-scenarios.
+alignments, corresponding to whether the dotted edge should be present or
+not. In the first scenario above, the edge should be present: we should
+align Mary with her former self, and reflect the change as an update to her
+name (but keep her old salary). In contrast, in the second scenario, the
+edge should not be present: we should not align the new Mary with any of the
+teachers that used to teach at the school. Since only the old and new copies
+of the secretary's document are available to a lens, the lens cannot choose
+correctly. The context under which the change was made is invisible to the
+lens, and it has no way to distinguish between these two scenarios merely by
+observing what has changed.
 
 \begin{figure}
     \begin{minipage}{0.33333333\linewidth}
@@ -454,78 +470,37 @@ intermingled with the implementation of alignment usage and propagation
 inside each lens' definition; and alignment information cannot be internally
 communicated between lens components. The conclusion we must draw is that
 doing a really good job of implementing \map involves rethinking some or all
-of the theoretical foundations of lenses!
+of the theoretical foundations of lenses to address the representation,
+propagation, and use of alignment information.
 
 % TODO: it almost seems like this last paragraph appears out of nowhere. I
 % wonder if it is worth trying to explode even that into a page or two.
 
 \section{Symmetry}
 \label{sec:intro-symmetry}
+Let us turn our attention to a second fundamental challenge in lens design:
+symmetry. The asymmetric lenses discussed above assume that one repository
+is a view of the other. In the following, we will discuss two bidirectional
+scenarios, one that highlights the need to relax this assumption, and one
+that identifies a useful feature of asymmetric lenses that has long been
+thought incompatible with symmetry.
+
 Continuing the example from \ref{sec:intro-alignment}, suppose our school
-secretary decided to begin tracking which room each teacher taught in.
-Figure~\ref{fig:school-rooms} shows how the two repositories might look
-after this schema change. As before, the salary information should be hidden
-from the secretary for privacy reasons; on the other hand, in our scenario
-the human resources department is not interested in room assignments. A more
-whimsical situation is shown in Figure~\ref{fig:cat-server}, in which a web
-server must keep a file system storing pictures of cats synchronized with a
-user-modifiable web page (modeled here as a list of cat pictures with
-descriptive tags)\footnote{Pictures used with
-    permission~\cite{pumpkin-cat,skateboard-cat,pineapple-cat}.}.
-
-% TODO: possible idea: merge these two examples. e.g. perhaps the school
-% example could have an org chart on the HR side; this lets you keep the
-% whole ``I wish I could have a tree-flattening lens and a list mapping lens
-% that I compose'' thing
-\begin{figure}
-    \centering
-    \begin{tabular}{ll}
-        Teacher name & Salary \\
-        \hline
-        Sam Rickard & 57,000 \\
-        Jon Jacobs  & 50,000 \\
-        Mary Jones  & 65,000
-    \end{tabular}
-    \hfil
-    \begin{tabular}{ll}
-        Teacher name & Room \\
-        \hline
-        Sam Rickard & 314 \\
-        Jon Jacobs  & 108b \\
-        Mary Jones  & 109
-    \end{tabular}
-    \caption{A slightly more complicated synchronization scenario}
-    \label{fig:school-rooms}
-\end{figure}
-
-\begin{figure}
-    \begin{diagram}
-        \draw[short picture tree]
-            node (root) {} child {
-                node (Jan) {Jan}
-                    \lolcatchildren{pumpkin,skateboard}
-            } child {
-                node (May) {May}
-                    \lolcatchildren{pineapple}
-            }
-            ;
-        \lolcattagsdef{pineapple-fs-pic}
-            {pumpkin/{costume,food},skateboard/{anthro},pineapple/{food}}
-    \end{diagram}
-    \caption{A whimsical symmetric synchronization scenario}
-    \label{fig:cat-server}
-\end{figure}
-
-Sadly, the slightly modified school scenario and the image server scenario
-are both outside the realm of problems that our asymmetric, state-based lens
-tools can help with. In each scenario, neither repository can be completely
+secretary decided to begin tracking which room each teacher taught in. The
+two lower tables in Figure~\ref{fig:span-lenses} shows how the two
+repositories might look after this schema change. As before, the salary
+information should be hidden from the secretary for privacy reasons; on the
+other hand, in our new scenario the human resources department is not
+interested in room assignments. Unfortunately, this slight modification puts
+our scenario firmly outside the realm of problems that asymmetric,
+state-based lens tools can help with: neither repository can be completely
 reconstructed just from the information available in the other.
 
 Since the problem is that neither repository contains all the information,
 one thing that can be done is to design a third repository that \emph{does}
 contain all the information. One would then design two lenses with that
-third repository as a common source; Figure~\ref{fig:span-lenses} shows how
-this architecture might look. The new repository sits at the top, and
+third repository as a common source, as shown in the remainder of
+Figure~\ref{fig:span-lenses}. The new repository sits at the top, and
 contains teacher names, salaries, and room assignments all in one location.
 The two repositories we are really interested in sit below, and are derived
 via two lenses. (We introduce the notation $\pi_{i_1,\ldots,i_n}$ for the
@@ -536,8 +511,8 @@ annotations to avoid clutter.)
 
 Suppose the secretary updates the room assignments document. The process to
 find a corresponding update for the salary document involves two lens
-operations: first, we use $\map(\pi_{1,2}).\aput$ to update the common
-source, then $\map(\pi_{1,3}).\aget$ to regenerate the salary document from
+operations: first, we use $\map(\pi_{1,3}).\aput$ to update the common
+source, then $\map(\pi_{1,2}).\aget$ to regenerate the salary document from
 the common source.
 
 \begin{figure}
@@ -572,24 +547,26 @@ the common source.
         \draw[<->] (common source) -- node[left=1em]  {$\map(\pi_{1,2})$} (salary);
         \draw[<->] (common source) -- node[right=1em] {$\map(\pi_{1,3})$} (room);
     \end{diagram}
-    \caption{If a lens doesn't work, use two!}
+    \caption{A slightly more complicated synchronization scenario}
     \label{fig:span-lenses}
 \end{figure}
 
 This approach is workable, and is fairly comprehensive. However, it is a
 little bit awkward in a few ways, the most notable of which is that we are
 now constructing two lenses. Even in this simple example, we can see that
-the structure of the lenses are very similar. Since one of the arguments for
-using lenses in the first place was that we did not want to develop and
-maintain two separate programs, this seems a bit hypocritical. It would be
+the structure of the lenses are very similar. All of the arguments which led
+people to prefer bidirectional languages over pairs of unidirectional
+programs in the first place---uniformity, guaranteed correctness,
+maintainability, modularity, etc.---arise here against writing pairs of
+bidirectional programs, too. It would be
 better to develop some theory which models the two operations together, so
 that we can write a single program and derive the two synchronization
 operations of interest. One could continue by designing a
 ``bi-bidirectional'' language---where each term could be interpreted as two
 lenses which are intended to be run back-to-back as in this example---but we
-choose instead to start over from scratch and design a framework of
-symmetric bidirectional transformations that natively handles scenarios like
-the above one.
+choose instead to reconsider the foundations of lens theory and design a
+framework of symmetric bidirectional transformations that natively handles
+symmetric scenarios.
 
 \begin{figure}
     \centering
@@ -653,12 +630,13 @@ former are known as isomorphisms, and several languages whose terms
 represent invertible functions in this way have been
 designed~\cite{xsugar,rendel2010invertible}. They are especially useful as a
 formalism when the extra information available in the repositories is
-unimportant; for example, when parsing text, the exact whitespace used may
-not be available in the abstract syntax tree, but can often be replaced with
-different whitespace without causing too much pain. In the example given
+unimportant. For example, when parsing text, the exact whitespace used may
+not be available in the abstract syntax tree, but often a few simple rules
+will produce very similar replacement whitespace; and moreover the
+whitespace has aesthetic but not semantic significance. In the example given
 above, however, the extra information \emph{is} important, and cannot be
-replaced with default data without pain: resetting room assignments and
-salaries on each roundtrip would be very undesirable behavior.
+replaced with default data: resetting room assignments and salaries on each
+roundtrip would be very undesirable behavior.
 
 The latter (again with some appropriate roundtrip laws) are known as
 constraint maintainers~\cite{Meertens98}, and do handle extra information
@@ -667,11 +645,41 @@ when designing a bidirectional transformation for the school scenario above.
 They can express the connection between salaries and room numbers---that is,
 no connection at all---well, and support a \map-like combinator to turn this
 single-record maintainer into one which handles lists of records like the
-ones stored in the repositories.
+ones stored in the repositories. However, constraint maintainers do not
+support \emph{sequential composition}, the ability to run one maintainer
+after the other, and experience with asymmetric lenses shows that this is a
+very common tool when designing bidirectional programs. To see why, we will
+introduce a bidirectional transformation which is most naturally modeled
+using composition.
 
-Constraint maintainers are not quite as natural a fit for the image server
-scenario described above. One modular approach to implementing the
-transformation needed in that scenario is pictured in
+% TODO: possible idea: merge these two examples. e.g. perhaps the school
+% example could have an org chart on the HR side; this lets you keep the
+% whole ``I wish I could have a tree-flattening lens and a list mapping lens
+% that I compose'' thing
+\begin{figure}
+    \begin{diagram}
+        \draw[short picture tree]
+            node (root) {} child {
+                node (Jan) {Jan}
+                    \lolcatchildren{pumpkin,skateboard}
+            } child {
+                node (May) {May}
+                    \lolcatchildren{pineapple}
+            }
+            ;
+        \lolcattagsdef{pineapple-fs-pic}
+            {pumpkin/{costume,food},skateboard/{anthro},pineapple/{food}}
+    \end{diagram}
+    \caption{A whimsical symmetric synchronization scenario}
+    \label{fig:cat-server}
+\end{figure}
+
+The whimsical situation shown in Figure~\ref{fig:cat-server} involves a web
+server, which must keep a file system storing pictures of cats synchronized
+with a user-modifiable web page (modeled here as a list of cat pictures with
+descriptive tags)\footnote{Pictures used with
+permission~\cite{pumpkin-cat,skateboard-cat,pineapple-cat}.}. One natural
+approach to implementing this transformation is pictured in
 Figure~\ref{fig:cats-composition}. First, we separately implement two
 constraint maintainers: a $\mathit{flatten}$ maintainer that flattens trees
 to lists by extracting the leaves, and a $\mathit{relabel}$ maintainer that
@@ -745,24 +753,31 @@ So an ideal a model would capture the behavior of ``sequencing'', retain a
 symmetric presentation, and allow each repository to retain information not
 available in the other.
 
-\section{Size}
+\section{Performance}
 \label{sec:intro-size}
 
-There is a third consideration that real-world synchronization tools
-inevitably address, and that is in communication costs. When the
-repositories in question reside on separate computers, transferring even a
-small copy of a repository across the network to the other computer can
-take quite a noticeable amount of time. Mitigating this effect typically
-involves using a compression scheme; empirically, one of the most effective
-ones involves noting ``what has changed'' since previous incarnations of the
-synchronization tool. For example, file system synchronizers like rsync,
-DropBox, and Unison and revision control systems like CVS, SVN, darcs,
-mercurial, and git all have some such notion internally~%
-\cite{Tridgell96rsync,dropbox,pierce2004unison,berliner1990cvs,subversion,darcs,mercurial,git}.
-It seems likely that a practical tool based on whatever theory we develop
-will need to use similar tricks; so, for the theory to faithfully model such
-a tool, it must model not just repository states but also repository edits
-and how they affect the states.
+Real-world synchronization tools inevitably address a third concern:
+performance. Typical repositories are large objects; consequently, there can
+be significant time or memory costs associated with processing the data in a
+repository or transmitting a repository across a network. For existing file
+system synchronization tools like rsync, DropBox, and Unison and revision
+control systems like CVS, SVN, darcs, mercurial, and git~%
+\cite{Tridgell96rsync,dropbox,pierce2004unison,berliner1990cvs,subversion,darcs,mercurial,git},
+network speed is a significant bottleneck. For these tools, where little
+computation on the repositories themselves is required, the relatively
+simple \emph{delta compression} technique, which involves noting what has
+changed since a previous run of the tool, provides a serious network
+transmission performance boost. For bidirectional transformations, where
+repositories must be not just copied but transformed, computation time or
+memory usage may also be concerns. Extending the use of delta compression to
+address processing speed and memory requirements involves, in part, showing
+that the computations of interest can be performed solely by inspecting the
+deltas---that is, without decompressing and traversing the original
+repositories. Since it seems likely that a practical tool will need to avoid
+incurring high resource usage, a theory that faithfully models a successful
+tool should therefore model not just repository states but also repository
+edits, edit transformations, and the connection between edits and repository
+states.
 
 \dmwit{should there be a section on syntax?}
 \section{Contributions}
@@ -813,6 +828,7 @@ which addresses some of the size issues raised above.
 
 \section{Notation and Conventions}
 \label{sec:notation}
+% TODO: transition; give the purpose of this section; etc.
 % TODO: review the comments about this section in drafts/140109_comments_rew.pdf
 % TODO: enforce these conventions
 \paragraph*{Naming}
