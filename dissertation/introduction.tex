@@ -782,19 +782,19 @@ states.
 \dmwit{should there be a section on syntax?}
 \section{Contributions}
 \label{sec:intro-contributions}
-This document espouses a ``from-scratch'' effort to rebuild the lens
+This document espouses a foundational effort to rebuild the lens
 formalism with the above challenges in mind from the beginning. Many
 previous efforts to address these challenges have begun with asymmetric,
 state-based lenses as a base and built additional capabilities on top.
 Adding to the existing theory in this way is quite useful, but a system
 which attempts to combines these additional features quickly grows baroque.
-By starting from scratch, we have a unique opportunity to address these
+By starting from first principles, we have a unique opportunity to address these
 concerns in the base theory in a new way. We focus on semantics first
 (modeling the core behaviors that lenses must allow primitively) and let the
 syntax (that is, what transformations are possible with the core building
-blocks) fall subordinate. Because we take this approach, we have developed
-an elegant core lens theory which nevertheless has the ability to address
-each of the three challenges discussed above.
+blocks) fall subordinate. Our commitment to this approach has resulted in an
+elegant core lens theory which nevertheless has the ability to address each
+of the three challenges discussed above.
 
 Chapter~\ref{chap:complement} develops the machinery needed for a symmetric
 lens theory in isolation from the issues of alignment and size. The key
@@ -822,7 +822,7 @@ capable of disambiguating between edits that are traditionally the source of
 serious alignment headaches. Additionally, we observe that the natural way
 of implementing these lenses results in a lens which operates on relatively
 small descriptions of what has changed rather than on large repositories,
-which addresses some of the size issues raised above.
+which addresses some of the performance issues raised above.
 
 % TODO: add a sentence or two about chapters 4 and on, once they're written
 
