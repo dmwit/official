@@ -46,13 +46,13 @@ alignment (the ability to represent data evolution precisely,
 connected data than on the other, \S\ref{sec:intro-symmetry}), performance
 (handling data in an incremental way, \S\ref{sec:intro-size}), and syntax
 (the existence of example transformations, \S\ref{sec:intro-syntax}).
-Figure~\ref{fig:related-work-matrix} shows how other approaches stack up on
+Table~\ref{tab:related-work-matrix} shows how other approaches stack up on
 these four key features. We will discuss this figure in depth in
 Chapter~\ref{chap:related}; for now, it suffices to observe that the edit
 lens framework as described in this document is the first framework to
 support all four features.
 
-\begin{figure}
+\begin{table}
      % TODO: add \cite commands for each row
     \begin{center}
     \begin{tabular}{l|cccc}
@@ -61,18 +61,18 @@ support all four features.
         group-based lenses      &\Y&\N&\N&\N\\
         symmetric delta lenses  &\Y&\Y&\N&\N\\
         symmetric lenses        &\N&\Y&\N&\Y\\
-        triple graph grammars   &\N&\Y&\N&\Y\\
+%        triple graph grammars   &\N&\Y&\N&\Y\\
         asymmetric delta lenses &\Y&\N&\N&\Y\\
         matching lenses         &\Y&\N&\N&\Y\\
         hole-based delta lenses &\Y&\N&\N&\Y\\
         constraint maintainers  &\Y&\Y&\N&\Y\\
-        edit lenses             &\Y&\Y&\Y&\Y
+        edit lenses             &\Y&\Y&\Y&\Y\\
     \end{tabular}
     \end{center}
     \caption{Feature coverage for various approaches to bidirectional
     programming}
-    \label{fig:related-work-matrix}
-\end{figure}
+    \label{tab:related-work-matrix}
+\end{table}
 
 \section{Asymmetric Lenses}
 \label{sec:asymmetric-lenses}
