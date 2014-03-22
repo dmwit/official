@@ -792,13 +792,13 @@ principles, we have a unique opportunity to address these concerns in the
 base theory in a new way. We focus on semantics first (modeling the core
 behaviors that lenses must allow primitively) and let the syntax (that is,
 what transformations are possible with the core building blocks) fall
-subordinate. As we hoped, our commitment to this approach has resulted in an elegant core
-lens theory which nevertheless has the ability to address each of the three
-challenges discussed above.
+subordinate. As we hoped, our commitment to this approach has resulted in an
+elegant core lens theory which nevertheless has the ability to address each
+of the three challenges discussed above.
 
 Chapter~\ref{chap:complement} develops the machinery needed for a symmetric
-lens theory in isolation from the issues of alignment and performance. The key
-observation is that we can think of the two transformations in a lens as
+lens theory in isolation from the issues of alignment and performance. The
+key observation is that we can think of the two transformations in a lens as
 sharing some state that is independent of the two repositories. We will show
 that all the usual lens combinators can be construed as pairs of stateful
 transformations. However, there is a price to pay for symmetry: though the
@@ -811,18 +811,19 @@ equivalence.
 
 In Chapter~\ref{chap:delta}, these observations about how to achieve
 symmetry will be used as the basis for a system that tackles the alignment
-and performance problems (while retaining symmetry). Because the exact nature of
-alignment information is so different between data structures---and even
-between different transformations on the same structure---the framework
-proposed in this chapter will treat such information as almost completely
-abstract. It then becomes the responsibility of each lens definition to
-specify what information it expects to receive. We then go on to again
-implement many of the usual lens combinators, and show that many of them are
-capable of disambiguating between edits that are traditionally the source of
-serious alignment headaches. Additionally, we observe that the natural way
-of implementing these lenses results in a lens which operates on relatively
-small descriptions of what has changed rather than on large repositories,
-which addresses some of the performance issues raised above.
+and performance problems (while retaining symmetry). Because the exact
+nature of alignment information is so different between data
+structures---and even between different transformations on the same
+structure---the framework proposed in this chapter will treat such
+information as almost completely abstract. It then becomes the
+responsibility of each lens definition to specify what information it
+expects to receive. We then go on to again implement many of the usual lens
+combinators, and show that many of them are capable of disambiguating
+between edits that are traditionally the source of serious alignment
+headaches. Additionally, we observe that the natural way of implementing
+these lenses results in a lens which operates on relatively small
+descriptions of what has changed rather than on large repositories, which
+addresses some of the performance issues raised above.
 
 % TODO: add a sentence or two about chapters 4 and on, once they're written
 
