@@ -792,12 +792,12 @@ principles, we have a unique opportunity to address these concerns in the
 base theory in a new way. We focus on semantics first (modeling the core
 behaviors that lenses must allow primitively) and let the syntax (that is,
 what transformations are possible with the core building blocks) fall
-subordinate. Our commitment to this approach has resulted in an elegant core
+subordinate. As we hoped, our commitment to this approach has resulted in an elegant core
 lens theory which nevertheless has the ability to address each of the three
 challenges discussed above.
 
 Chapter~\ref{chap:complement} develops the machinery needed for a symmetric
-lens theory in isolation from the issues of alignment and size. The key
+lens theory in isolation from the issues of alignment and performance. The key
 observation is that we can think of the two transformations in a lens as
 sharing some state that is independent of the two repositories. We will show
 that all the usual lens combinators can be construed as pairs of stateful
@@ -811,7 +811,7 @@ equivalence.
 
 In Chapter~\ref{chap:delta}, these observations about how to achieve
 symmetry will be used as the basis for a system that tackles the alignment
-and size problems (while retaining symmetry). Because the exact nature of
+and performance problems (while retaining symmetry). Because the exact nature of
 alignment information is so different between data structures---and even
 between different transformations on the same structure---the framework
 proposed in this chapter will treat such information as almost completely
