@@ -1,3 +1,69 @@
+\begin{table}
+     % TODO: add \cite commands for each row
+    \begin{center}
+    \begin{tabular}{l|ccccc}
+        & Align. & Symm. & Perf. & Synt. & Disc. \\
+        \hline
+%        triple graph grammars   &\N&\Y&\N&\Y&\\
+        symmetric lenses        &\N&\Y&\N&\Y&Chap.~\ref{chap:complement}\\
+        asymmetric delta lenses &\Y&\N&\N&\Y&\S\ref{sec:delta:asymmetric}\\
+        symmetric delta lenses  &\Y&\Y&\N&\N&\S\ref{sec:delta:symmetric}\\
+        group-based lenses      &\Y&\N&\N&\N&\S\ref{sec:algebraic}\\
+        matching lenses         &\Y&\N&\N&\Y&\S\ref{sec:matching}\\
+        annotation-based lenses &\Y&\N&\N&\Y&\S\ref{sec:annotations}\\
+        constraint maintainers  &\Y&\Y&\N&\Y&\S\ref{sec:constraint-maintainers}\\
+    \end{tabular}
+    \end{center}
+    \caption{Feature coverage for various alternatives to edit lenses}
+    \label{tab:related-work-matrix-2}
+\end{table}
+
+Recent years have seen a large body of work on bidirectional transformations
+in general, and frameworks based on the language-based approach embodied by
+lenses in particular. A great deal of the work is motivated by the apparent
+difficulty of the alignment problem discussed in
+\S\ref{sec:intro-alignment}. Table~\ref{tab:related-work-matrix-2} gives a
+summary of the most closely related work in the area. The first four columns
+indicate whether the approach addresses alignment, symmetry, performance,
+and syntax concerns, while the final columns gives a pointer to a section
+with more in-depth discussion of the approach.
+
+Asymmetric delta lenses and group-based lenses are extensions of asymmetric,
+state-based lenses which replace all or most of the repository data being
+consumed or produced by a lens with edit information, instead. Symmetric
+delta lenses extend asymmetric delta lenses with some significant additional
+machinery for handling complement information, very similarly to the way our
+symmetric lenses generalize asymmetric, state-based lenses. The two variants
+of delta lenses are predicated on a model of edits which includes
+information about the repositories themselves; this makes it difficult to
+guarantee that the lenses are not traversing the repositories and causing
+performance problems. Additionally, the body of work on symmetric delta
+lenses does not yet include a collection of lenses which satisfy the
+proposed behavioral laws, and in particular, the need for behavioral
+equivalence to redress the loss of equational reasoning is not explored. The
+group-based lenses seem to have the potential to address performance issues,
+but it is difficult to know for sure without an instantiation of the lens
+framework to particular lenses.
+
+Matching lenses and annotation-based lenses take a complementary approach:
+rather than specifying how edits should behave and trying to instantiate
+those behavioral expectations with edit sets, as the previous group of
+approaches did, matching and annotation-based lenses begin with a particular
+representation of alignment information and build a specialized lens
+framework around that representation. As a result, these two approaches are
+both instantiated with a significant collection of syntax. There is no
+attempt to generalize to symmetric settings here, though, and the alignment
+information involved is provided in addition to the repository states, so
+performance issues remain. Finally, constraint maintainers have a very
+complete syntax, and address alignment by treating alignment information as
+simply more repository data. This has the advantage of being a very
+intuitive model, but little consideration is given to the extra properties
+one would want from a repository consisting of alignment information.
+Finally, it is worth noting that this is one of the only symmetric
+approaches with a significant body of syntax; however, sequential
+composition, a valuable tool for modular bidirectional programming, is not
+supported.
+
 \section{Graph-based delta lenses}
 \label{sec:delta}
 There is a closely related line of work focused on designing edit-based
