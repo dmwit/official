@@ -838,9 +838,15 @@ avenues for future research in Chapter~\ref{chap:conclusion}.
 
 \section{Notation and Conventions}
 \label{sec:notation}
-% TODO: transition; give the purpose of this section; etc.
-% TODO: review the comments about this section in drafts/140109_comments_rew.pdf
+% TODO: search the other chapters for other notation/conventions to include
 % TODO: enforce these conventions
+This section is intended to be a reference for the most common notation used
+in this dissertation. All non-standard notation will also be introduced and
+explained inline before its first use, so this section can safely be skimmed
+or even completely skipped; however it might nevertheless be useful for the
+reader who has forgotten what some particular piece of notation means and
+would not like to pore through the entire document to find its first use.
+
 \paragraph*{Naming}
 When naming a set, we will make the choices that follow (perhaps appending a
 subscript or prime) unless there is a compelling local reason to choose
@@ -890,13 +896,8 @@ and its single element by the definition $\Unit=\{\unit\}$. When defining
 and using lenses and similar structures, we will use record notation; for
 example, $\ell.\aget$ is the \GET component of lens $\ell$. We deal with
 many variations on functions in this document; Table~\ref{tab:arrows}
-summarizes them. We will use the term \emph{repository} to refer to an
-entity that contains a piece of data being kept in synch with another
-repository via a lens. Thus, for example, a computer program might have two
-ref cells containing different representations of a piece of data and a lens
-that reads and writes to those cells; the cells themselves are repositories,
-while the values contained in the cells are repository values whose types
-match the lens' type.
+summarizes them.
+
 \begin{table}
     \centering
     % If we just use \begin{tabular}{c|l} in the obvious way, the notation
@@ -913,8 +914,8 @@ match the lens' type.
         $X$ & ${}\lens     {}$ & $Y$ & symmetric, state-based lenses connecting $X$ and $Y$ \\
         $X$ & ${}\dlens    {}$ & $Y$ & (symmetric) edit lenses connecting $X$ and $Y$
         % TODO: switch out \lens for \dlens everywhere in delta.tex
+        % TODO: is this really all the kinds of arrows we have everywhere?
     \end{tabular}
     \caption{Function and lens types}
     \label{tab:arrows}
 \end{table}
-
