@@ -779,7 +779,30 @@ tool should therefore model not just repository states but also repository
 edits, edit transformations, and the connection between edits and repository
 states.
 
-\dmwit{should there be a section on syntax?}
+\section{Syntax}
+\label{sec:intro-syntax}
+
+% TODO: some thoughts on points to make in this section
+% WHY
+% * don't want a specialized synchronization tool: want a synchronization
+%   tool tool; more examples of building blocks gives the tool-user more
+%   power to build more synchronization tools
+% * two main thrusts: framework, plus instantiation; a good framework can
+%   have the potential to solve the problems described above, but only the
+%   instantiation can realize or dispel that potential
+% * the semantics and syntax cross-validate each other: when one dreams up a
+%   lens and it does not conform to the semantics, one then has a valuable
+%   question to ask about whether the transformation is ill-behaved or the
+%   semantics is unreasonable (good example is dup)
+% WHAT
+% * asymmetric lenses already do this, and it's a very nice feature we want
+%   to keep (note to self: perhaps ``outstanding'' is a good adjective for
+%   this feature of the original lens work)
+% * experience shows sequential composition is important; also want stuff
+%   for the most common data structures and their operations
+%   (e.g. tuples+projection/parallel composition, sums+injection/parallel
+%   composition, lists+map, recursive structures+fold/unfold)
+
 \section{Contributions}
 \label{sec:intro-contributions}
 This document espouses a foundational effort to rebuild the lens formalism
