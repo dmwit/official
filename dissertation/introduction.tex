@@ -809,17 +809,20 @@ transformation would be useful, imagine the process of turning wiki markup
 into an HTML page that includes both a table of contents and a content body.
 One might structure this as duplicating the markup, then extracting the
 section titles from one duplicate and rendering the other.}. Many lens
-frameworks rule this transformation illegal, because supporting it involves
-relaxing the restriction that a single run of the synchronization tool
-produces a synchronized state. Whether one prioritizes behavioral guarantees
-or richer syntax may be a matter of taste; but the choice would not be
+frameworks rule this transformation illegal (including ours), because
+supporting it involves relaxing the restriction that a single run of the
+synchronization tool produces a synchronized state. Whether one prioritizes
+behavioral guarantees like single-pass synchronization or richer syntax like
+duplication lenses may be a matter of taste; but the choice would not be
 readily apparent without attempting to design the syntax in parallel with
 the semantics.
 
-Finally, the design of a collection of instantiations is a critical proving
-ground for the practicality of other features. A good lens framework can
-have the potential to solve alignment, symmetry, or performance problems,
-but only an instantiation can realize or dispel that potential.
+Finally, syntax is a proving ground for the practicality of other features.
+The ultimate goal of a lens theory is to be an integral part of a
+widely-used tool, and designing a collection of instantiations is a critical
+first step on that path. A good lens framework can have the potential to
+solve alignment, symmetry, or performance problems, and attempting to
+design a syntax can quickly realize or dispel that potential.
 
 Experience from the asymmetric, state-based lens work shows that supporting
 the majority of synchronization scenarios requires only a handful of lenses.
