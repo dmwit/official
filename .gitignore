@@ -8,6 +8,8 @@
 *.snm
 *.toc
 *.vrb
+*.lof
+*.lot
 *.hi
 *.o
 shake
