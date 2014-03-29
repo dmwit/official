@@ -44,8 +44,8 @@ and practical. We will identify four key challenges in lens design:
 alignment (the ability to represent data evolution precisely,
 \S\ref{sec:intro-alignment}), symmetry (no more restrictions on one piece of
 connected data than on the other, \S\ref{sec:intro-symmetry}), performance
-(handling data in an incremental way, \S\ref{sec:intro-size}), and syntax
-(the existence of example transformations, \S\ref{sec:intro-syntax}).
+(handling data in an incremental way, \S\ref{sec:intro-performance}), and
+syntax (the existence of example transformations, \S\ref{sec:intro-syntax}).
 Table~\ref{tab:related-work-matrix} shows how other approaches stack up on
 these four key features. We will discuss this figure in depth in
 Chapter~\ref{chap:related}; for now, it suffices to observe that the edit
@@ -754,7 +754,7 @@ symmetric presentation, and allow each repository to retain information not
 available in the other.
 
 \section{Performance}
-\label{sec:intro-size}
+\label{sec:intro-performance}
 
 Real-world synchronization tools inevitably address a third concern:
 performance. Typical repositories are large objects; consequently, there can
