@@ -1377,9 +1377,9 @@ elements of $X$.
 
 \iffull
 \begin{proof}
-\dmwit{review}
-The behavior of $k$ is uniquely defined by the given data: $\putl$ must return $x$ the first time and echo the last $\putr$ henceforth. Formally, we may define a simulation relation and return $x$ the first time.
-We use the simulation relation 
+The behavior of $k$ is uniquely defined by the given data: $\putl$ must
+return $x$ the first time and echo the last $\putr$ henceforth. Formally, we
+may define a simulation relation as follows:
 \[
 R = \{(c,y)\mid \mlfst(k.\putl(\unit,c))=y\}
 \]
@@ -1408,7 +1408,7 @@ $k.\putl(\unit,c') = (z,c')$, and hence $c' \relR z$.
 \end{proof}
 \fi
 
-\iffull\clearpage\fi
+\iffull\ifdissertation\else\clearpage\fi\fi
 
 \begin{defn}[Disconnect lens]\ 
 \lensdef{disconnect}
@@ -2489,7 +2489,6 @@ In both cases, the value output matches the value input and the complement
 remains unaffected by $\putr$.
 \end{goodlens}
 
-\formartin{from here to the proposition is new}
 As with the projection lenses for tensor products, we may ask whether the
 injection lenses for tensor sums are natural. If they were, we would expect
 a diagram like the following one to commute for all $f$:
@@ -2560,7 +2559,6 @@ one will give a higher count than the other.
 The proof for $\inr$ is symmetric. 
 \end{proof}
 
-\formartin{this proof is new}
 \begin{goodlens}
 For completeness, we must also show that $\countlens_x$ satisfies the lens
 laws.
@@ -2632,7 +2630,7 @@ we define a more general lens $\union \in X + Y \lens X \cup Y$.
 Occasionally, a value that is both an $X$ and a $Y$ may be put to the left
 across one of these union lenses. In this situation, the lens may
 legitimately choose either an $\mlinrx$ tag or an $\mlinlx$ tag.
-\iffull Below, we propose two lenses that break this tie in different ways.\fi
+\iffull Below, we propose two lenses that break this tie in different ways. \fi
 The $\union$ lens uses the most recent unambiguous put to break the tie.
 \iffull\else (In the long version, we also define a variant that looks back
 to the last tagged value that was put to the right that was in both
