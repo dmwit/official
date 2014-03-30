@@ -821,7 +821,6 @@ in the long version.
 
 \iffull
 \begin{goodlens}
-\dmwit{review}
 We show that the lens satisfies \rn{PutRL}; the proof that it satisfies
 \rn{PutLR} is entirely symmetric. Assume that $k$ and $\ell$ each satisfy
 \rn{PutRL}, and that $(k;\ell).\putr(x,(c_k,c_\ell))=(z,(c_k',c_\ell'))$.
@@ -1040,7 +1039,6 @@ of symmetric lenses.)
 
 \iffull
 \begin{goodlens}
-\dmwit{review}
     We verify that the \rn{PutRL} law holds for bijection lenses; the proof
     that \rn{PutLR} holds is symmetric. Observe that
     $\bij_f.\putr(x,\unit)=(f(x),\unit)$. We can therefore compute that
@@ -1049,7 +1047,6 @@ of symmetric lenses.)
     complement, $\unit$, validating the law.
 \end{goodlens}
 
-\dmwit{review the lemma, its proof, and the corollary}
 In fact, any stateless lens is an instance of a bijection lens:
 \begin{lemma}
 If $\ell \in X \lens Y$ and $h \in \ell.C \to \Unit$ is a bijection, then
@@ -1216,7 +1213,11 @@ $c_k'\relRx 2c_\ell'$, that is, $c' \in R_2$.
 \end{proof}
 \end{lemma}
 
+\ifcomplement
 \begin{corollary}[Isomorphisms are indexed bijections]
+\else
+\begin{corollary}
+\fi
 Consider the functions $f$ and $g$ which give the value-only part of a lens'
 puts:
 \begin{eqnarray*}
@@ -1761,7 +1762,7 @@ the coherence equations:
 some coherence conditions (given in the full version).
 \fi
 
-\begin{prop}[\LENS{},$\otimes$ is a symmetric monoidal category]
+\begin{prop}[\LENS{},$\otimes$ is \ifdissertation symmetric monoidal\else a symmetric monoidal category\fi]
 In the category \SET, the Cartesian product is a bifunctor with $\Unit$ as
 unit, and gives rise to a symmetric monoidal category. Let
 $\alpha^\times,\lambda^\times,\rho^\times,\gamma^\times$ be associator,
@@ -2287,7 +2288,7 @@ choose arbitrary $v \in X+Y$ and $c \in \Unit + \Unit$.
     \id.\putr(v,c) &= (v,\unit)
 \end{align*}
 Since $v=v$ and the complements are always related, this shows that
-$(\id\oplus^f\id).\putr\sim_R\id.\putr$.
+\dissdis(\id\oplus^f\id).\putr\sim_R\id.\putr.\dissdis
 
 For preservation of composition, we use the relation $R$ defined by:
 \[\begin{array}{l}
@@ -2396,7 +2397,7 @@ The $\putl$ direction is similar.
 \fi
 
 \begin{prop}[\LENS{},$\oplus$\iffull, $\oplus^f$ are \else{} is a \fi
-symmetric monoidal \iffull categories\else category\fi] 
+symmetric monoidal\ifcomplement\iffull categories\else category\fi\fi]
 In \SET, the disjoint union gives rise to a symmetric monoidal category with
 $\emptyset$ as unit. Let $\alpha^+,\lambda^+,\rho^+,\gamma^+$ be associator,
 left-unitor, right-unitor, and symmetry natural isomorphisms.
@@ -3003,7 +3004,7 @@ in the category \LENS{}.
 \begin{defn}
 \fi
 An {\em $X$-list algebra} on a set $Z$ is an arrow $\ell \in \Unit + (X
-\mathord{\times} Z) \Lens Z$ and a function $w \in Z \rightarrow \NAT$ such
+\mathord{\times} Z) \Lens Z$ and a \ifdissertation weight \fi function $w \in Z \rightarrow \NAT$ such
 that $\ell.\putl(z,c)=(\mlinr(x,z'),c')$ implies $w(z') < w(z)$.
 %
 \finish{is $T\LIST_X$ a good name for this functor?}
@@ -3015,11 +3016,13 @@ The function $w$ here plays the role of a termination measure. We will be
 iterating $\ell.\putl$, producing a stream of values of type $Z$, which we
 would like to guarantee eventually ends.
 
-\iffull
-\begin{theorem}[List iteration is well-defined]\label{listiter}
+\iffull\ifcomplement
+\begin{theorem}[List iteration is well-defined]
 \else
-\begin{theorem}\label{listiter}
-\fi
+\begin{theorem}[Iteration is well-defined]
+\fi\else
+\begin{theorem}
+\fi\label{listiter}
 For $X$-list algebra $\ell$ on $Z$, there is a unique arrow
 $\IT(\ell) \in X\LIST \Lens Z$ such that the following diagram
 commutes:
@@ -3154,11 +3157,8 @@ Then we can create
 & & \bij_g
 }
 
-A suitable weight function for $\ell$ is 
-% $w \in X_1\LIST \times X_2\LIST \rightarrow \NAT$
-given by 
-$w((xs_1,xs_2))=\length(xs_1)+\length(xs_2)$.
-%
+A suitable weight function for $\ell$ is given by
+\dissdis w((xs_1,xs_2))=\length(xs_1)+\length(xs_2). \dissdis
 The lens $\IT(\ell) \in (X_1+X_2)\LIST \Lens X_1\LIST \times X_2\LIST$ that
 we obtain from iteration partitions the input list in one direction and uses
 a stream of booleans from the state to put them back in the right order in
@@ -3293,7 +3293,7 @@ cases and by induction on $w(z)$ in the $\putl$ cases.
 \underline{Case for $\putr$ of empty list}: 
 By definition,
 %
-$\IT(\ell).\putr(\NIL,c{\CONS}cs) = (z,c'{\CONS}cs)$, where $(z,c') =
+\dissdis\IT(\ell).\putr(\NIL,c{\CONS}cs) = (z,c'{\CONS}cs),\dissdis where $(z,c') =
 \ell.\putr(\mlinl\unit,c)$.
 %        
 Let $(z_1,d_1) = k.\putr(\NIL,d)$. 
@@ -3799,9 +3799,11 @@ to a function $F_{I,B}(u) \in F_{I,B}(X) \arrow F_{I,B}(Y)$ given by $(i,f)
 Now, we would like to find a way to view a container as a functor on the
 category of lenses.  In order to do this, we need a little extra structure.
 
-\iffull
+\iffull\ifcomplement
 \begin{defn}[Container with ordered shapes]
 \else
+\begin{defn}
+\fi\else
 \begin{defn}
 \fi
 A {\em container with ordered shapes} is a pair $(I,B)$ satisfying these
@@ -4370,8 +4372,10 @@ Then we can define the relation
 \[R = \{(g(f),(f,\mltag(f))) \mid f \in (k\sym \oplus^f \ell\sym).C\}.\]
 It is tedious but straightforward to verify that this witnesses the
 equivalence.
-\item $(\ell^*)\sym.C$ comprises functions $f:Y^*\to X^*$ such that 
-$f([y_1,\dots,y_n])=[x_1,\dots,x_m]$ implies $m=n$ and $\ell.\aget(x_i)=y_i$. 
+\item $(\ell^*)\sym.C$ comprises functions $f:Y^*\to X^*$ such that
+\ifdissertation whenever \fi $f([y_1,\dots,y_n])=[x_1,\dots,x_m]$
+\ifdissertation we can conclude \else implies \fi $m=n$ and
+$\ell.\aget(x_i)=y_i$.
 
 The complement $\map^f(\ell\sym).C$ on the other hand comprises lists
 of functions $[f_1,\dots,f_n]$ where $f_i:Y\to X$ and
