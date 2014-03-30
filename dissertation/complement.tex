@@ -1029,8 +1029,13 @@ $\EQCLASS{\id_X}$. Composition is $\EQCLASS{k};\EQCLASS{\ell} =
     \putl(y, \unit) &=& (f^{-1}(y), \unit)
 }
 \end{prop}
+\ifdissertation
+(If we were implementing a bidirectional language, we might not want to
+expose $\bij$ in its syntax, since we would then need to offer
+\else
 (If we were designing {\em syntax} for a bidirectional language, we
 might not want to include $\bij$, since we would then need to offer
+\fi
 programmers some notation for writing down bijections in such a way that we
 can verify that they {\em are} bijections and derive their inverses.
 However, even if it doesn't appear in the surface syntax, we will see
@@ -1043,7 +1048,7 @@ of symmetric lenses.)
     that \rn{PutLR} holds is symmetric. Observe that
     $\bij_f.\putr(x,\unit)=(f(x),\unit)$. We can therefore compute that
     $\bij_f.\putl(f(x),\unit)=(f^{-1}(f(x)),\unit)=(x,\unit)$. Thus, after a
-    round-trip, we return to the same $x$ we started from -- and the same
+    round-trip, we return to the same $x$ we started from---and the same
     complement, $\unit$, validating the law.
 \end{goodlens}
 
