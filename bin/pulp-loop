@@ -2,4 +2,4 @@
 [ -n "$1" ] && LOG="$1" || LOG=paper.log
 export LOG
 (sleep 1; touch "$LOG") &
-watch 'inotifywait -qqe close_write "$LOG" && pulp "$LOG"'
+watch 'inotifywait -qqe close_write "'"$LOG"'" && pulp "'"$LOG"'"'
