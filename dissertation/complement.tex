@@ -1315,11 +1315,44 @@ We sketch the proofs in that order.
 \end{enumerate}
 \end{proof}
 
-% TODO: have we defined ``dual'', ``opposite'', and ``equivalent''?
+\ifdissertation
+The existence of $(-)\op$ is one of the two canonical constructions that
+motivate the name ``symmetric lenses'' (the other being $\disconnect$, which
+we discuss below). Before we formalize this intuition, we review two
+standard constructions from category theory.
+\begin{definition}
+    The \emph{opposite} of a category $\catC$, denoted $\catC\op$, has
+    backwards composition compared to $\catC$. That is, whenever $f;g=h$ in
+    $\catC$, we have $g;f=h$ in $\catC\op$. This induces the remaining
+    components of $\catC\op$:
+    \begin{description}
+        \item[Objects] The objects of $\catC\op$ are exactly the objects of
+            $\catC$.
+        \item[Arrows] The arrows $f : X \to Y$ of $\catC\op$ are the arrows
+            $f : Y \to X$ of $\catC$.
+        \item[Identities] The identities of $\catC\op$ are exactly the
+            identities of $\catC$.
+    \end{description}
+\end{definition}
+That is, forming the opposite of a category means formally reversing the
+``direction'' of each arrow. In general, a category and its opposite can
+have very different structure. What we want to show is that the
+directionality of arrows in \LENS is not important; we can formalize this by
+saying that \LENS and \LENSop have the same structure, provided we can
+formalize what it means for two categories have the same structure. There
+are many ways to define equivalence between categories; we give a
+particularly strong one here.
+\begin{definition}
+    Categories \catC and \catD are isomorphic if there are functors $F :
+    \catC \to \catD$ and $G : \catD \to \catC$ for which $F;G$ is the
+    identity on \catC and $G;F$ is the identity on \catD.
+\end{definition}
+\fi%dissertation
+
 \begin{corollary}\label{self_duality}
-The category \LENS{} is self dual, i.e., equivalent to its own opposite. 
- (Note that this does not mean that
-each arrow is its own inverse!)
+The category \LENS is self dual, i.e., \ifdissertation isomorphic to
+\LENSop. \else equivalent to its own opposite. \fi (Note that this does not
+mean that each arrow is its own inverse!)
 \end{corollary}
 \begin{pf}
 The arrow part of $(-)\op$ is bijective.
@@ -4421,7 +4454,9 @@ terms of asymmetric ones in a slightly more elaborate way.
   Given any arrow $\ell$ of \LENS{}, there are asymmetric lenses
   $k_1,k_2$ such that \displayifspace{ (k_1\sym)\op; k_2\sym \equiv \ell.
   } \iffull This suggests that the category \LENS{} could be
-  constructed from spans in \ALENS. We choose not to try this because
+  constructed from spans in \ALENS.
+  \ifcomplement
+  We choose not to try this because
   it makes many things more awkward. While it is possible to define
   composition of spans with a pullback construction, it would---as in
   our account---not be associative unless some equivalence would be
@@ -4429,8 +4464,16 @@ terms of asymmetric ones in a slightly more elaborate way.
   a natural and easy-to-use candidate for such an equivalence. Of
   course, going back-and-forth via symmetric lenses does induce such
   an equivalence.
-  % TODO: discuss or reference the ``spans of lenses'' paper here?
-  \fi
+  \else
+  A full account of the machinery necessary to realize this approach is
+  given by Johnson and Rosebrugh~\cite{johnson2014spans}. It is quite
+  involved for two reasons: first, composition of spans is typically given
+  via a pullback construction, but pullbacks in the appropriate category do
+  not always exist, and second, development of a span-based analog for our
+  lens equivalence (critical for the associativity of composition) requires
+  considerable extra effort.
+  \fi%complement
+  \fi%full
 % \iftext \PENDING{Coq proof} \fi
 \end{theorem}
 
