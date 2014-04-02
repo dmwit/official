@@ -1,1 +1,1 @@
-not (boring | info | under | (package 'xparse/redefine-command' & warning & "\\\\footnote(mark)?"))
+not (boring | info | under | (package 'xparse/redefine-command' & warning & "\\\\footnote(mark)?") | (package 'variant generation' & warning & "^Variant \\\\tl_put_right:NV"))
