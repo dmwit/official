@@ -650,7 +650,6 @@ its equivalence class.
 Lens equivalence is an equivalence relation.
 \end{lemma}
 \begin{proof}
-\dmwit{review}
 Reflexivity and symmetry are obvious. We briefly sketch transitivity.
 % (reflexivity) Choose an arbitrary lens $\ell \in X \lens Y$; we then must
 % show $\ell\equiv\ell$. Take $R$ to be equality. It's clear that
@@ -683,7 +682,7 @@ Reflexivity and symmetry are obvious. We briefly sketch transitivity.
 Suppose $k \equiv \ell$ (as witnessed by $R_{k\ell}$) and
 $\ell \equiv m$ (as witnessed by $R_{\ell m}$). We show that the
 relation
-\[R_{km} = R_{k\ell}\circ R_{\ell m} = \{(c_k,c_m) \mid \exists c_\ell. c_k \relRx{k\ell} c_\ell
+\[R_{km} = R_{k\ell}\circ R_{\ell m} = \{(c_k,c_m) \mid \exists c_\ell.\ c_k \relRx{k\ell} c_\ell
 \land c_\ell \relRx{\ell m} c_m\}\]
 witnesses the equivalence $k \equiv m$. It is clear that
 \[(k.\missing,m.\missing) \in R_{km},\]
@@ -928,14 +927,11 @@ the same lens because their complements are structured differently.)
 
 \iffull
 \begin{proof}
-\dmwit{review}
 We define a witnessing simulation relation $R$ by
 \[
 \relR = \{((c_1,(c_2,c_3)), ((c_1,c_2),c_3))\mid  c_1\in j.C, c_2\in k.C, c_3\in \ell.C\}.
 \]
-The verification is then straightforward. 
-% \]
-% whenever The verification is then straightforward. 
+The verification is then straightforward.
 % \begin{align*}
 %     (j;(k;\ell)).\missing &= (j.\missing,(k.\missing,\ell.\missing)) \\
 %     &\relR ((j.\missing,k.\missing),\ell.\missing) \\
@@ -944,7 +940,7 @@ The verification is then straightforward.
 % To complete the proof, we must show that $(j;(k;\ell)).\putr \sim_R
 % ((j;k);\ell).\putr$ and that $(j;(k;\ell)).\putl \sim_R ((j;k);\ell).\putl$.
 % The proofs of these are similar enough that we will show only the former.
-
+%
 % Choose arbitrary $x,c_j,c_k,c_\ell$ and define:
 % \begin{align*}
 %     (y,c_j') &= j.\putr(x,c_j) \\
@@ -974,7 +970,6 @@ The verification is then straightforward.
 
 \iffull
 \begin{proof}
-\dmwit{review}
 For left identity we use the simulation relation $R$ given by $(\unit,c)
 \relR c$ whenever $c\in \ell.C$. The verification is direct. 
 % It's clear that
@@ -1118,7 +1113,6 @@ $\bij_{\id_X} = \id_X$ and $\bij_f;\bij_g = \bij_{f; g}$.
 
 \iffull
 \begin{proof}
-\dmwit{review}
 Showing that $\bij_{\id_X}=\id_X$ is a straightforward application of
 Corollary~\ref{singleton_id}. Now consider $\bij_f;\bij_g$.  Since its
 complement is a singleton set, Lemma~\ref{trivial_complement_bijection}
@@ -1254,7 +1248,6 @@ $g_{k,c_k}^{-1}=g_{\ell,c_\ell}$.
 
 \iffull
 \begin{goodlens}
-\dmwit{review}
 We observe that saying $\ell\op$ satisfies \rn{PutRL} is an identical
 condition to saying $\ell$ satisfies \rn{PutLR}, and likewise having
 $\ell\op$ satisfy \rn{PutLR} is identical to having $\ell$ satisfy
@@ -1274,7 +1267,6 @@ $\EQCLASS{\ell}$ to $\EQCLASS{\ell\op}$.
 \end{lemma}
 
 \begin{proof}
-\dmwit{review}
 We must show three things:
 \begin{enumerate}
     \item The mapping $\EQCLASS\ell \mapsto \EQCLASS{\ell\op}$ is
@@ -1295,10 +1287,10 @@ We sketch the proofs in that order.
 %         \ell\op.\missing\]
 %         \[k\op.\putr = k.\putl \sim_R \ell.\putl = \ell\op.\putr\]
 %         \[k\op.\putl = k.\putr \sim_R \ell.\putr = \ell\op.\putl\]
-    \item In fact, $\id\op = \id$; %  so $\id\op \equiv \id$ by reflexivity of
-        % $\equiv$.
+    \item In fact, $\id\op = \id$; \ifdissertation and \fi
     \item The relation $(c_k,c_\ell) \relR (c_\ell,c_k)$ whenever $c_k \in
-        k.C$ and $c_\ell \in \ell.C$ witnesses the equivalence. 
+        k.C$ and $c_\ell \in \ell.C$ witnesses the equivalence.
+        \ifdissertation\endofpf\fi
 
 
 % We observe
@@ -1323,6 +1315,7 @@ We sketch the proofs in that order.
 \end{enumerate}
 \end{proof}
 
+% TODO: have we defined ``dual'', ``opposite'', and ``equivalent''?
 \begin{corollary}\label{self_duality}
 The category \LENS{} is self dual, i.e., equivalent to its own opposite. 
  (Note that this does not mean that
@@ -1353,7 +1346,6 @@ direction of the lens can restore it.
 
 \iffull
 \begin{goodlens}
-\dmwit{review}
 The \rn{PutLR} law is trivially true, since
 \[\putr(\putl(\unit,c))=\putr(c,c)=(\unit,c)\]
 and in particular since $c$ does not change at all in this round trip. We
@@ -1636,23 +1628,25 @@ satisfying law \ref{beta_3}), none of them
 \iffull
 
 \begin{goodlens}
-\dmwit{review}
-We will show that \rn{PutRL} holds; the proof that \rn{PutLR} holds is very
-similar. Suppose
-\[k.\putr(x,c_k)=(z,c_k')\]
-\[\ell.\putr(y,c_\ell)=(w,c_\ell')\]
+We will show that \rn{PutRL} holds; a similar argument shows that \rn{PutLR}
+holds. Suppose
+\begin{align*}
+k.\putr(x,c_k)&=(z,c_k') \\
+\ell.\putr(y,c_\ell)&=(w,c_\ell')
+\end{align*}
 so that:
 \[(k \otimes \ell).\putr((x,y),(c_k,c_\ell))=((z,w),(c_k',c_\ell'))\]
 Applying \rn{PutRL} to the lenses $k$ and $\ell$, we learn that
-\[k.\putl(z,c_k')=(x,c_k')\]
-\[\ell.\putl(w,c_\ell')=(y,c_\ell')\]
+\begin{align*}
+k.\putl(z,c_k')&=(x,c_k') \\
+\ell.\putl(w,c_\ell')&=(y,c_\ell')
+\end{align*}
 so that:
 \[(k \otimes \ell).\putl((z,w),(c_k',c_\ell')) = ((x,y),(c_k',c_\ell'))\]
 But this is exactly what we need to show for rule \rn{PutRL}.
 \end{goodlens}
 
 \begin{lenseqv}
-\dmwit{review}
 If $R_k$ is a witness that $k \equiv k'$ and $R_\ell$ is a witness that
 $\ell \equiv \ell'$, then $R = R_k \swizzle R_\ell$ witnesses $k \otimes
 \ell \equiv k' \otimes \ell'$.
@@ -1798,7 +1792,7 @@ discuss in \S\ref{sec:future}).
 We know $\alpha^\otimes$, $\lambda^\otimes$, $\rho^\otimes$, and
 $\gamma^\otimes$ are all isomorphisms because every bijection lens is an
 isomorphism. Showing that they are natural is a straightforward
-calculation.\footnote{\dmwit{review}For example, showing that $\gamma^\otimes$ is natural
+calculation\footnote{For example, showing that $\gamma^\otimes$ is natural
 requires showing that for any two lenses $k : X \lens Z$ and $\ell : Y \lens
 W$,
 \[(k \otimes \ell);\gamma^\otimes_{Z,W} \equiv \gamma^\otimes_{X,Y};(\ell
@@ -1806,7 +1800,7 @@ W$,
 The complements for these two lenses are $(k.C \times \ell.C) \times \Unit$
 and $\Unit \times (\ell.C \times k.C)$; the isomorphism that simply
 rearranges the parts of the complement is a witness to the lenses'
-equivalence.  The story is similar for the other naturality properties.}
+equivalence.  The story is similar for the other naturality properties.}.
 The five coherence conditions follow from coherence in \SET, functoriality of
 $\bij$, and Lemma~\ref{lemma:bij_product}.
 \end{proof}
@@ -2069,7 +2063,6 @@ forgetful sum can be found in the long version.
 
 \iffull
 \begin{goodlens}
-\dmwit{review}
 We show that \rn{PutRL} holds; the proof that \rn{PutLR} holds is similar.
 Choose arbitrary $c_k \in k.C$ and $c_\ell \in \ell.C$. There are two cases
 to consider for the starting value: it will be either $\mlinl x$ for some $x
@@ -2090,7 +2083,6 @@ $\ell.\putl(w,c_\ell')=(y,c_\ell')$. Computation then shows that:
 \end{goodlens}
 
 \begin{lenseqv}
-\dmwit{review}
 Suppose $k \equiv k'$ and $\ell \equiv \ell'$, as witnessed by relations
 $R_k$ and $R_\ell$, respectively. Then $R = R_k \swizzle R_\ell$
 witnesses the equivalence $k \oplus \ell \equiv k' \oplus \ell'$. Since
@@ -2130,9 +2122,17 @@ The tensor sum operation on lenses induces a bifunctor on \LENS{}.
 \end{lemma}
 
 \begin{functoriality}
-\dmwit{review}
 Corollary~\ref{singleton_id} gives us $\id_X \oplus \id_Y \equiv \id_{X+Y}$
-with fairly minor computation. For composition, the obvious
+with fairly minor computation. \ifdissertation We must also show that
+composition is preserved. Suppose we have four lenses:
+\begin{align*}
+    k &\in X \lens Y & k' &\in X' \lens Y' \\
+    \ell &\in Y \lens Z & \ell' &\in Y' \lens Z'
+\end{align*}
+The obvious
+\else
+For composition, the obvious
+\fi
 isomorphism between complements witnesses the equivalence
 $(k;\ell)\oplus(k';\ell') \equiv (k \oplus k');(\ell \oplus \ell')$, namely:
 \[((c_k,c_\ell),(c_k',c_\ell'))\relR((c_k,c_k'),(c_\ell,c_\ell'))\]
@@ -2155,27 +2155,29 @@ so $a.\missing \relR b.\missing$. We must also show $a.\putr \sim_R b.\putr$
 and $a.\putl \sim_R b.\putl$. We will show only the former; the proof of the
 latter is similar.
 
-Choose arbitrary $v \in X_0+X_1,c_a \in a.C,c_b \in b.C$ such that $c_a
+Choose arbitrary $v \in X+X',c_a \in a.C,c_b \in b.C$ such that $c_a
 \relR c_b$. This means there are $c_k \in k.C,c_{k'} \in k'.C,c_\ell \in
 \ell.C,c_{\ell'} \in \ell'.C$ such that $c_a =
 ((c_k,c_\ell),(c_{k'},c_{\ell'}))$ and $c_b =
 ((c_k,c_{k'}),(c_\ell,c_{\ell'}))$. There are two cases to consider: either
-$v=\mlinl x_0$ or $v=\mlinr x_1$. In the first case, we can define
+$v=\mlinl x$ or $v=\mlinr x'$. In the first case, we can define
 \begin{align*}
-    (y_0,c_k') &= k.\putr(x_0,c_k) \\
-    (z_0,c_\ell') &= \ell.\putr(y_0,c_\ell),
+    (y,c_k') &= k.\putr(x,c_k) \\
+    (z,c_\ell') &= \ell.\putr(y,c_\ell),
 \end{align*}
 and compute:
 \begin{align*}
-    a.\putr(\mlinl x_0,((c_k,c_\ell),(c_{k'},c_{\ell'}))) &= (\mlinl
-    z_0,((c_k',c_\ell'),(c_{k'},c_{\ell'}))) \\
-    b.\putr(\mlinl x_0,((c_k,c_{k'}),(c_\ell,c_{\ell'}))) &= (\mlinl
-    z_0,((c_k',c_{k'}),(c_\ell',c_{\ell'})))
+    a.\putr(\mlinl x,((c_k,c_\ell),(c_{k'},c_{\ell'}))) &= (\mlinl
+    z,((c_k',c_\ell'),(c_{k'},c_{\ell'}))) \\
+    b.\putr(\mlinl x,((c_k,c_{k'}),(c_\ell,c_{\ell'}))) &= (\mlinl
+    z,((c_k',c_{k'}),(c_\ell',c_{\ell'})))
 \end{align*}
-Since $\mlinl z_0 = \mlinl z_0$ and
-\[((c_k',c_\ell'),(c_{k'},c_{\ell'})) \relR
-((c_k',c_{k'}),(c_\ell',c_{\ell'})),\]
-we have finished the first case. The second case, where $v=\mlinr x_1$, is
+Since $\mlinl z = \mlinl z$ and
+\ifcomplement\[\else$\fi
+((c_k',c_\ell'),(c_{k'},c_{\ell'})) \relR
+((c_k',c_{k'}),(c_\ell',c_{\ell'})),
+\ifcomplement\]\else$\ \fi
+we have finished the first case. The second case, where $v=\mlinr x'$, is
 nearly identical, and we conclude that $a.\putr \sim_R b.\putr$.
 \end{functoriality}
 \fi
@@ -2211,7 +2213,6 @@ nearly identical, and we conclude that $a.\putr \sim_R b.\putr$.
 
 \iffull
 \begin{goodlens}
-\dmwit{review}
 As for the retentive sum, the round-trip laws for $k$ and $\ell$ guarantee
 that $k \oplus^f \ell$ round-trips. The only difference is that there are
 additional cases to consider when the tag on the value and the tag on the
@@ -2220,7 +2221,6 @@ real difficulty, as the tags \emph{will} match after the first put.
 \end{goodlens}
 
 \begin{lenseqv}
-\dmwit{review}
 Let $a=k \oplus^f \ell$ and $b=k' \oplus^f \ell'$.  If $R_k$ witnesses
 $k\equiv k'$ and $R_\ell$ witnesses $\ell\equiv \ell'$ then
 $a \equiv b$ may be witnessed by
@@ -2262,7 +2262,6 @@ $c_a' \relRk c_b'$.
 \end{lenseqv}
 
 \begin{functoriality}
-\dmwit{review}
 There are two things to show:
 \[\id_X \oplus^f \id_Y \equiv \id_{X+Y}\]
 \[(k \oplus^f k');(\ell \oplus^f \ell') \equiv (k;\ell)\oplus^f(k';\ell')\]
@@ -2467,7 +2466,6 @@ We also define $\inr_y = \inl_y;\gamma^\oplus_{Y,X}$.
 
 \iffull
 \begin{goodlens}
-\dmwit{review}
 For \rn{PutRL}, we consider two cases: either the complement has the form
 $(x_c, \mlinl \unit)$ or the form $(x_c,\mlinr y)$.
 \begin{align*}
@@ -4183,7 +4181,6 @@ definition.\fi
 \end{theorem}
 
 \iffull
-\dmwit{review}
 \begin{proof} Throughout the proofs, we will use $a$ to refer to the
 left-hand side of the equivalence, and $b$ to refer to the right-hand side.
 
@@ -4407,9 +4404,7 @@ related again.
 We suspect that there might be an asymmetric $\aIT$ construction
 similar to our iteration lens above satisfying an equivalence like
 \[\aIT(\ell)\sym \equiv \IT(\ell\sym),\]
-but have not explored this carefully.\finish{perhaps only include this
-sentence in the full version? or consider it carefully, and include the
-correct definition of $\aIT$, etc.}
+but have not explored this carefully.
 
 The $(-)\sym$ functor is not {\em full}---that is,
 there are some symmetric lenses which are not the image of any asymmetric
@@ -4424,7 +4419,7 @@ terms of asymmetric ones in a slightly more elaborate way.
 \begin{theorem}\label{asymmetrization_of_lenses}
 \fi
   Given any arrow $\ell$ of \LENS{}, there are asymmetric lenses
-  $k_1,k_2$ such that \displayifspace{ (k_1\sym)\op; k_2\sym = \ell.
+  $k_1,k_2$ such that \displayifspace{ (k_1\sym)\op; k_2\sym \equiv \ell.
   } \iffull This suggests that the category \LENS{} could be
   constructed from spans in \ALENS. We choose not to try this because
   it makes many things more awkward. While it is possible to define
@@ -4434,6 +4429,7 @@ terms of asymmetric ones in a slightly more elaborate way.
   a natural and easy-to-use candidate for such an equivalence. Of
   course, going back-and-forth via symmetric lenses does induce such
   an equivalence.
+  % TODO: discuss or reference the ``spans of lenses'' paper here?
   \fi
 % \iftext \PENDING{Coq proof} \fi
 \end{theorem}

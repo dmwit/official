@@ -31,14 +31,14 @@ Before diving into technicalities, let's take a brief tour of the main
 ideas via some examples.
 %
 Figure~\ref{fig:example-simple} demonstrates a simple use of {\edit} lenses
-to synchronize two replicas.\footnote{We use the word ``synchronize''
+to synchronize two replicas\footnote{We use the word ``synchronize''
   informally to mean simply ``maintain a correspondence between two replicas
   by propagating edits in both directions.''  A full-blown synchronization
   tool would also include, at a minimum, some mechanism for dealing with
   conflicts between disconnected edits to the two structures, which is
   outside the scope of this paper.  \iffull Note, though, that we go beyond most
   synchronization tools in allowing the replicas to be structured
-  differently and to share only a part of their information.\fi}  In part (a),
+  differently and to share only a part of their information.\fi}.  In part (a),
 we see the initial replicas, which are in a synchronized state.  On the
 left, the replica is a list of records describing composers' birth and death
 years; on the right,  a list of records describing the same
@@ -3963,10 +3963,10 @@ X \otimes Y = \left<|X| \times |Y|,(\init_X,\init_Y),\partial X \otimes
 
 One might wonder whether the standard definition has any connection to the
 definition we give earlier. One way to bridge the gap is to add equational
-laws to the free monoid.\footnote{To make this formal, treat the
+laws to the free monoid\footnote{To make this formal, treat the
 equations as a relation between words in the free monoid; take the
 reflexive, symmetric, transitive, congruence closure of this relation; and
-quotient by the resulting equivalence relation.} The equations below demand
+quotient by the resulting equivalence relation.}. The equations below demand
 that $\ml{left}$ and $\ml{right}$ be monoid homomorphisms, and that they
 commute:
 \begin{align*}
