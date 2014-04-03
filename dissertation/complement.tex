@@ -168,7 +168,7 @@ $\GET \in X \times C \arrow Y \times C$ and
 $\PUT \in Y \times C \arrow X \times C$.
 \fi
 %
-Intuitively, we can think of the combined complement $C$ as $C_X \times
+We can think of the combined complement $C$ as $C_X \times
 C_Y$---that is, each complement contains some ``private information from
 $X$'' and some ``private information from $Y$''; by convention, the \GET{}
 function reads the $C_Y$ part and writes the $C_X$ part, while the \PUT{}
@@ -593,9 +593,10 @@ on the complement, may be more interesting:
 
 \paragraph*{Alignment}\label{firstalign}
 
-One important {\em non}-goal of the present paper is dealing with the
-(important) 
-issue of {\em alignment}~\cite{Boomerang07,Matching10}.  We consider 
+One important {\em non}-goal of the present \ifdissertation chapter \else
+paper \fi is dealing with the \ifcomplement (important) \fi issue of
+\ifdissertation alignment. \else {\em alignment}~%
+\cite{Boomerang07,Matching10}. \fi We consider
 only the simple case of lenses 
 that work ``positionally.''  For example, the lens $e\LIST$ in the example
 will always use $e$ to propagate
@@ -605,14 +606,17 @@ amounts to assuming that the lists are edited either by editing individual
 elements in place or by adding or deleting elements at the end of the list;
 if an actual edit inserts an element at the head of one of the lists,
 positional alignment will produce surprising (and probably distressing)
-results.  We see two avenues for incorporating richer notions of alignment:
+results.
+\ifdissertation
+We will incorporate a richer notion of alignment in
+Chapter~\ref{chap:delta}.
+\else
+We see two avenues for incorporating richer notions of alignment:
 either we can generalize the mechanisms of {\em matching
   lenses}~\cite{Matching10} to the setting of symmetric lenses, or we can
 refine the whole framework of symmetric lenses with a notion of {\em delta
-propagation}; see
-\ifdissertation Chapter~\ref{chap:delta}%
-\else \S\ref{future}%
-\fi.
+propagation}; see \S\ref{future}.
+\fi%dissertation
 
 \section{Equivalence}\label{equiv}
 
