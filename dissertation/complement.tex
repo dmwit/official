@@ -1,3 +1,25 @@
+\ifdissertation
+In this chapter, we address the problem of symmetry without regard for
+alignment or performance issues. We will begin from asymmetric, state-based
+lenses and build a theory of symmetric, state-based lenses from them, and
+show how to recover the rich asymmetric syntax in symmetric form. In
+particular, we will show how to implement lens composition---the process of
+running two bidirectional transformations, one after the other---long
+thought to be an operation fundamentally in conflict with symmetric
+bidirectional presentations. In order to support this operation with the
+usual algebraic properties like associativity, we will need to develop a
+theory of behavioral equivalence. Unlike asymmetric theories, where ordinary
+equality suffices, our symmetric lenses have hidden state whose importance
+should be discounted when checking whether two lenses compute the same
+transformation. We will also discuss a collection of bidirectional
+operations which correspond to common transformations of container-based
+data types as well as inductive data types built up from products, sums, and
+type-level recursion. Finally, we will give an account of the connection
+between asymmetric and symmetric lenses: asymmetric lenses can be lifted to
+symmetric lenses, and symmetric lenses can be represented as a span of
+asymmetric lenses.
+\fi%dissertation
+
 \section{Fundamental Definitions} \label{symm}
 
 \ifcomplement
