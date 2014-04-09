@@ -200,17 +200,18 @@ Z)\LIST \to \partial(X \times Y)\LIST$.
 %% %% in the next section.\bcp{where? refer to it by number?}
 
 \begin{figure}
+    \ifdissertation\newcommand\lw{0.9\linewidth}\else\newcommand\lw\linewidth\fi
     \begin{tabular}{c}
         \includegraphics[width=75mm]{images/ex2-0.pdf} \\[.9ex]
-        \parbox \linewidth{(a) the initial replicas: a tagged list of composers and authors on
+        \parbox \lw{(a) the initial replicas: a tagged list of composers and authors on
         the left; a pair of lists on the right; a complement storing just
         the tags}
         \\[3ex]
         \includegraphics[width=75mm]{images/ex2-1.pdf} \\
-        \parbox \linewidth{\begin{center}(b) an element is added to one of
+        \parbox \lw{\begin{center}(b) an element is added to one of
             the partitions\end{center}} \\[2ex]
         \includegraphics[width=75mm]{images/ex2-2.pdf} \\
-        \parbox \linewidth{\begin{center}(c) the complement tells how to translate the
+        \parbox \lw{\begin{center}(c) the complement tells how to translate the
             index\end{center}} \\[.7ex]
     \end{tabular}
     \caption{A lens with complement.}
@@ -1137,7 +1138,8 @@ to the trivial $\Unit$ module by throwing away all edits.
 \begin{proof}
     Immediate, by observing $\const_X=\disconnect_{X\Unit}$.
 \end{proof}
-\begin{lemma} The $\disconnect$ and $\const$ lenses are closely related:
+\begin{lemma} The $\disconnect$ and $\const$ lenses are closely
+    related\ifdissertation\ by the two equations \else: \fi
 $\const_X \equiv \disconnect_{X\Unit}$ and
 $\disconnect_{XY} \equiv \const_X;\const_Y\op$.
 \end{lemma}
@@ -1171,9 +1173,6 @@ f(\dx\, x)=h(\dx)\,f(x)
 There is an identity $(\lambda x.\,x ,\, \lambda \dx.\,\dx)$ for every module,
 and the point-wise composition of module 
 homomorphisms is also a homomorphism, so modules form a category.
-\iffull
-    
-\fi
 If module homomorphisms $(e,g) \in X \to Y$ and $(f,h) \in Y \to X$ satisfy
 $(e,g);(f,h)=\id_X$ and $(f,h);(e,g)=\id_Y$, then $(e,g)$ is an
 \emph{isomorphism} and $(f,h)$ is \emph{inverse} to $(e,g)$.
@@ -1388,11 +1387,9 @@ functions are defined via stateful monoid homomorphism specifications.
 \exists (x',y'). \; (x,c,x')\in k.K \wedge (x',c',x'')\in k'.K \\ \hspace*{5.2em} 
                  \mathrel{\wedge} (y,d,y')\in \ell.K\wedge (y',d',y'')\in \ell'.K \}
 .
-%
-\hbox to 0pt{\hspace{\ifdissertation6.2em\else1.2em\fi} \endofpfmarker}
 \end{array}
 \]
-\noendofpf
+\vskip -1.35\baselineskip
 \end{pf}
 
 \iffull
@@ -2362,8 +2359,8 @@ to the partition lens as it runs: its other input is just an edit.
 
 As a warm-up, consider a simple edit: changing Dvorak's name to Dvo\v
 r\'ak (with correct diacritics) in the left repository. The edit describing
-this has the form 
-$\mlmod5{\mlstayl{\d n}}$, where $\d n$ describes the string edit to the
+this has the form \dissdis\mlmod5{\mlstayl{\d n}},\dissdis where $\d n$
+describes the string edit to the
 name. To translate this edit, we first need to 
 translate the index $5$ to an index into the list of composers in the
 right-hand repository (line \markref{rmodstay} in
@@ -2470,8 +2467,11 @@ this. In our example, the resulting isomorphism looks like this:
 \end{tabular}
 \end{center}
 
-We can use $f(3)$ as a permutation on the $\mlinlx$ elements, defining
-$g(\mlinl p)=\mlinl{f(3)(p)}$ and $g(\mlinr p)=\mlinr p$. Then, to find out
+We can use $f(3)$ as a permutation on the $\mlinlx$ elements, defining%
+\ifdissertation:
+\[g(p) = \cond{\mlinr{p'} & p = \mlinr{p'} \\
+               \mlinl{f(3)(p')} & p = \mlinl{p'}}\]
+\else\ $g(\mlinl p)=\mlinl{f(3)(p)}$ and $g(\mlinr p)=\mlinr p$. \fi Then, to find out
 where position $p$ in the left repository should come from, we can simply
 translate $p$ into an index into the right repository using $\mliso$, apply
 $g$ to find out where that index came from, and translate back into the left
@@ -3581,18 +3581,19 @@ explicitly that it is indeed a lens.
   right states agree with the shape of the complement and that
   matching entries are consistent in the sense of $\ell$.
 
-  An $\mlmod p\dx$ edit is transported by sending $\dx$ through
+  % TODO: explain the \Defined notation, plus use it a bit more pervasively
+  A $\mlmod p\dx$ edit is transported by sending $\dx$ through
   $\ell$ using the appropriate $\ell$-complements contained in the
   complement $(i,f)$ of the mapping lens. When no such $\ell$-complement is
   available, the lens returns
   $\fail$. If $((i,f), (j,g), (i',f'))\in K$ and $\mlmod p\dx
-  (i,f)$ succeeds, then $p\in\live(i)$, hence $p\in\live(j)$ and
+  (i,f)\Defined$, then $p\in\live(i)$, hence $p\in\live(j)$ and
   $p\in\live(i')$. So the
   result of propagating $\mlmod p\dx$ will be $\mlmod p\dy$
   where $(\dy,c')=\ell.\dputr(\dx,g(p))$. Now since
-  $(f(p),g(p),f'(p))\in\ell.K$, we know that $\dy\ f'(p)$ succeeds and
+  $(f(p),g(p),f'(p))\in\ell.K$, we know that $\dy\ f'(p)\Defined$ and
   $(\dx\ f(p), c', \dy\ f'(p))\in\ell.K$. It follows that
-  $\mlmod p\dy\ (i',f')$ succeeds and the new triple is again in
+  $\mlmod p\dy\ (i',f')\Defined$ and the new triple is again in
   $K$.
 
   As success or failure of the other edit operations only depends on
@@ -3808,7 +3809,7 @@ and decrement operations; the monoid $\partial I'$ has operations for
 adding and removing nodes in leaf positions and also for rotating tree
 shapes. 
 
-\ifdissertation\begin{wrapfigure}{r}{1.6in}
+\ifdissertation\begin{wrapfigure}{r}{1.7in}
 \else          \begin{wrapfigure}[7]{r}{1.3in}\hspace*{-3em}
 \fi
 \includegraphics[scale=.32]{images/restruct1.pdf}
@@ -4064,7 +4065,11 @@ We may now compute:
         \dputr(\blist\mlleft{\dx\dx'}\elist,(c_k,c_\ell))
 \end{array}\]
 
+\ifdissertation
+The final equation to preserve is
+\else
 Finally, we show that $\dputr$ respects the law
+\fi
 $\blist\mlleft\dx\mlist\mlright\dy\elist=\blist\mlright\dy\mlist\mlleft\dx\elist$.
 As before, we choose a $c_k$ and $c_\ell$ and name a few intermediate
 computations:
@@ -4470,11 +4475,13 @@ form a tuple in $\partial_{xy}S$. We proceed by induction on $\dx$.
 
 In case $\dx=\NIL$, we are done: after computing $\dputr$, we still
 have $x_0$, $y_0$, $c_k$, and $c_\ell$. Otherwise, $\dx = x_1\CONS\dx'$ and
-the induction hypothesis tells us that if
-$(\partial_{xy}k).\dputr(\dx',c_k)=(\dy_k,c_k')$ and
-$(\partial_{xy}\ell).\dputr(\dx',c_\ell)=(\dy_\ell,c_\ell')$ then
-$(c_k',c_\ell') \in S$ and $\dy_k=\dy_\ell$. We can then conclude that if
-$k.\putr(x_1,c_k')=(y_k,c_k'')$ and
+the induction hypothesis tells us that if the two equations
+\begin{align*}
+(\partial_{xy}k).\dputr(\dx',c_k)&=(\dy_k,c_k')\\
+(\partial_{xy}\ell).\dputr(\dx',c_\ell)&=(\dy_\ell,c_\ell')
+\end{align*}
+hold then $(c_k',c_\ell') \in S$ and $\dy_k=\dy_\ell$. We can then conclude
+that if $k.\putr(x_1,c_k')=(y_k,c_k'')$ and
 $\ell.\putr(x_1,c_\ell')=(y_\ell,c_\ell'')$ then $y_k=y_\ell$ and
 $(c_k'',c_\ell'') \in S$ because $S$ is a witness that $k \equiv \ell$.
 We now compute with these definitions that
