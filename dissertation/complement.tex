@@ -585,7 +585,7 @@ on the complement, may be more interesting:
 %
   We do not choose to adopt these laws here because they are not satisfied
   by the ``forgetful'' variants of our summing and list mapping lenses.
-  However, the forgetful variants are only mainly interesting because of
+  However, the forgetful variants are mainly interesting because of
   their close connection to analogous asymmetric lenses; in practice, the
   ``retentive'' variants seem more useful, and these do satisfy the weak
   \rn{PutPut} laws.  
@@ -2960,12 +2960,21 @@ list of $x$'s.
 }
 \end{defn}
 
+\ifdissertation
+The $\map$ lens gives us the machinery we need to complete the first example
+in the introduction: simply define $e\LIST = \map(e)$. Additionally, as we
+saw in \S\ref{symm}, there is also a forgetful variant of the list mapping
+lens. Indeed, this is the one that corresponds to the known list mapping
+operator on asymmetric, state-based lenses~\cite{Focal2005-shortcite,%
+Boomerang07}.
+\else
 As we saw in \S\ref{symm}, there is also a forgetful variant of the
 list mapping lens.  Indeed, this is the one that corresponds to the known
 list mapping operator on asymmetric lenses~\cite{Focal2005-shortcite,%
 Boomerang07}. Additionally, the $\map$ lens gives us the machinery we
 need to complete the first example in the introduction: simply define
 $e\LIST = \map(e)$.
+\fi
 
 \iffull
 \breakifnearbottom
@@ -2995,19 +3004,19 @@ commute:
 
 \begin{center}
 \tikz \draw
-    node                        (rfoldedY)   {$Y\LIST$}
-    node[above of=rfoldedY]     (rfoldedX)   {$X\LIST$}
-    node[left=3em of rfoldedY]  (runfoldedY) {$\Unit + Y \times Y\LIST$}
-    node[above of=runfoldedY]   (runfoldedX) {$\Unit + X \times X\LIST$}
+    node                        (rfoldedY)   {$Y\LIST$\strut}
+    node[above=of rfoldedY]     (rfoldedX)   {$X\LIST$\strut}
+    node[left=3em of rfoldedY]  (runfoldedY) {$\Unit + Y \times Y\LIST$\strut}
+    node[above=of runfoldedY]   (runfoldedX) {$\Unit + X \times X\LIST$\strut}
     (runfoldedX) edge[->] node[above] {$\bij$}                                       (rfoldedX)
     (runfoldedX) edge[->] node[left]  {$\id_\Unit\oplus(\ell\otimes\map(\ell))$}     (runfoldedY)
     (rfoldedX)   edge[->] node[right] {$\map(\ell)$}                                 (rfoldedY)
     (runfoldedY) edge[->] node[above] {$\bij$}                                       (rfoldedY)
 %
-    node[below=5em of rfoldedY] (ffoldedY)   {$Y\LIST$}
-    node[above of=ffoldedY]     (ffoldedX)   {$X\LIST$}
-    node[left=3em of ffoldedY]  (funfoldedY) {$\Unit + Y \times Y\LIST$}
-    node[above of=funfoldedY]   (funfoldedX) {$\Unit + X \times X\LIST$}
+    node[below=6em of rfoldedY] (ffoldedY)   {$Y\LIST$\strut}
+    node[above=of ffoldedY]     (ffoldedX)   {$X\LIST$\strut}
+    node[left=3em of ffoldedY]  (funfoldedY) {$\Unit + Y \times Y\LIST$\strut}
+    node[above=of funfoldedY]   (funfoldedX) {$\Unit + X \times X\LIST$\strut}
     (funfoldedX) edge[->] node[above] {$\bij$}                                       (ffoldedX)
     (funfoldedX) edge[->] node[left]  {$\id_\Unit\oplus^f(\ell\otimes\map^f(\ell))$} (funfoldedY)
     (ffoldedX)   edge[->] node[right] {$\map^f(\ell)$}                               (ffoldedY)
@@ -3065,7 +3074,6 @@ An {\em $X$-list algebra} on a set $Z$ is an arrow $\ell \in \Unit + (X
 \mathord{\times} Z) \Lens Z$ and a \ifdissertation weight \fi function $w \in Z \rightarrow \NAT$ such
 that $\ell.\putl(z,c)=(\mlinr(x,z'),c')$ implies $w(z') < w(z)$.
 %
-\finish{is $T\LIST_X$ a good name for this functor?}
 We write $T\LIST_X$ for the functor that sends any lens $k$ to $\id_\Unit
 \oplus (\id_X \otimes k)$.
 \end{defn}
@@ -3268,8 +3276,8 @@ Note that the first element of the complement list holds {\em both} the
 complement that is used when we do a $\putr$ of an empty list {\em and} the
 complement that is used for the first element when we do a $\putr$ of a
 non-empty list.  Similarly, the second element of the complement list holds
-both the complement that is used at the end when we do a $\putr$ of a
-one-element empty list {and} the complement that is used for the second
+both the complement that is used at the end of the $\putr$ of a
+one-element list {and} the complement that is used for the second
 element when we do a $\putr$ of a two or more element list.
 
 The recursive definition of $\IT(\ell).\putr$ is clearly terminating because
@@ -3881,9 +3889,9 @@ In other words, every diagram of the following form is a pullback:
 \begin{center}
 \tikz \draw[node distance=5em]
   node              (ul) {$B(i\wedge i')$}
-  node[below of=ul] (ll) {$B(i')$}
+  node[below=2em of ul] (ll) {$B(i')$}
   node[right=8em of ul] (ur) {$B(i)$}
-  node[below of=ur] (lr) {$B(j)$}
+  node[below=2em of ur] (lr) {$B(j)$}
   (ul) edge[->] node[above] {$B(i\wedge i'\leq i)$} (ur)
   (ul) edge[->] node[left]  {$B(i\wedge i'\leq i')$} (ll)
   (ur) edge[->] node[right] {$B(i\leq j)$} (lr)
@@ -4395,6 +4403,8 @@ $f_{k\ell}(y,w)=(f_k(y),f_\ell(w))$. Then we can define a few things:
     ={}
     & ((f_k(y),f_\ell(w)), \\
     & (y',w') \mapsto (k.\aput(y',f_k(y)),\ell.\aput(w',f_\ell(w)))) \\
+\end{align*}
+\begin{align*}
     (v_b,f_b) ={}
     & b.\putl((y,w),(f_k,f_\ell)) \\
     ={}
