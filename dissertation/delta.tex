@@ -2649,26 +2649,15 @@ $n<n'$.
 \end{lemma}
 
 \begin{proof}
-    We will first show a similar property of the $\mlcount$ function, namely
-    that if $1 \le p \le p'$ then $\mlcount(p,w)\le\mlcount(p',w)$ using the
-    ordering on pairs for which $(n_L,n_R)\le(n_L',n_R')$ whenever $n_L\le
-    n_L'$ and $n_R\le n_R'$. Each of the four properties we want to prove
-    will then be a straightforward application of this fact to an unrolling
-    of the definition of $\mliso$.
-
-    We proceed by induction on $w$. In the base case, $\mlcount(p,\NIL) =
-    \mlcount(p',\NIL) = (1,1)$, hence the inequality is satisfied. Now
-    suppose $w=c \CONS w'$. There are two cases of interest: either $p=1$
-    (in which case $\mlcount(p,w) = (1,1)$ is the minimum value that
-    $\mlcount$ can return, hence the inequality is satisfied) or else $p>1$.
-    Letting $(n_L,n_R)=\mlcount(p-1,w')$ and $(n_L',n_R') =
-    \mlcount(p'-1,w')$, we may appeal to the induction hypothesis to
-    conclude that $(n_L,n_R) \le (n_L',n_R')$. But now we are finished,
-    since if $c=L$ then
-    \[\mlcount(p,w) = (n_L+1,n_R) \le (n_L'+1,n_R') = \mlcount(p',w)\]
-    and similarly for the other possibility $c=R$.
-
-    \dmwit{proofneeded}
+    As shown in the proof of Lemma~\ref{lemma:iso-coherent}, we have
+    $\mliso(c)(m)=\mlinl n$ exactly when $c_m=L$ and there are $n$ copies of
+    $L$ in $\blist c_1 \clist c_m\elist$. A similar statement relates $m'$
+    and $n'$. Since $\blist c_1 \clist c_m \elist$ and $\blist c_1 \clist
+    c_{m'} \elist$ share a common prefix, if one has more copies of $L$ than
+    the other then it must be longer---that is, $n'>n$ implies $m'>m$. On
+    the other hand, since $c_m=c_{m'}=L$, if one is longer than the other
+    than it definitely has more copies of $L$---that is, $m'>m$ implies
+    $n'>n$.
 \end{proof}
 
 \begin{theorem}
