@@ -3452,7 +3452,7 @@ rearrangement edit does not have to be large.
         $\mlmod p\dx \  (i,f) = (i,f[p\mapsto\dx\ f(p)])$ when $p\in\live(i)$ \\
         $\mlins\di \ (i,f) = (\di\ i,f')$ \\
         \qquad where $f'(p)=\text{if }p\in\live(i)\text{ then }f(p)\text{ else }\init_X$\\[1.5ex]
-        $\mldel\di \ (i,f) = (\di\ i,f{\upharpoonright}\live(\di\ i))$ \\
+        $\mldel\di \ (i,f) = (\di\ i,f\restrictedto\live(\di\ i))$ \\
         $\mlrearrange(\di,f) \ (i,g) = (\di\ i,g')$ \\
         \qquad where $g'(p) = g(f(i)(p))$
     \end{tabular}
@@ -3461,12 +3461,13 @@ The $\mlmod p\dx$ edit modifies the contents of position $p$
 according to $\dx$. If that position is absent the edit fails.  The
 shape of the resulting container is unchanged.
 %
-The $\mlinsert(\di)$ edit alters the shape by $\di$, growing the set of
+The $\mlins\di$ edit alters the shape by $\di$, growing the set of
 positions in the process (since $\di\ i\geq i$).  The new positions are
 filled with $\init_X$.
 %
-The $\mldelete(\di)$ edit works similarly, but the set of positions may
-shrink; the contents of deleted positions are discarded.
+The $\mldel\di$ edit works similarly, but the set of positions may
+shrink; the contents of deleted positions are discarded. (The notation
+$f\restrictedto S$ stands for the restriction of $f$ to domain $S$.)
 %
 The $\fail$ edit never applies and will be returned \emph{pro forma}
 by some container lenses if the input edit does not match the current
@@ -3529,7 +3530,7 @@ complement (after $\partition$).
 &&(\di\ i,g[p{\mapsto}\ell.\missing]))\\
 &&\mbox{ when }\di\ i\mbox{ is defined }\\
            \dputr_g(\mldelete(\di),(i,g)) &=& (\mldelete(\di), (\di\
-           i,g{\upharpoonright} \live(\di\ i)))\\
+           i,g\restrictedto \live(\di\ i)))\\
 &&\mbox{ when }\di\ i\mbox{ is defined }\\
            \dputr_g(\mlrearrange(\di,h),(i,g)) &=& (\mlrearrange(\di,h),\\
 &&           (\di\ i,\lambda p.g(h(i)(p))))\\
@@ -3681,7 +3682,7 @@ well-defined on equivalence classes of lenses.
   \colspan{K = \{ ((i,f),(i,c,i'),(i',f'))} \\
   \colspan{\qquad \;|\; (i,c,i')\in \ell.K \wedge \,\forall p{\in}\live'(i'). f(f_{i,c,i'}(p))=f'(p) \} } \\[1ex]
   \dputr_g(\fail,x) &=& (\fail,x)\\
-  \dputr_g(\mlmod p\dx,(i,c,i')) &=& (\mlmod{f^{-1}_{i,c,i'}(p)}\dx, (i,c,i') \\
+  \dputr_g(\mlmod p\dx,(i,c,i')) &=& (\mlmod{f^{-1}_{i,c,i'}(p)}\dx, (i,c,i')) \\
   && \text{when }p\in\live(i)\\
   \dputr_g(\mlinsert(\di),(i,c,i')) &=& (\mlrearrange(\ONE,f_i)\mlinsert(\di'),\\
 && (\di\ i, c',  \di'\ i'))\\
@@ -3724,24 +3725,30 @@ f_d(\di'\ i')(p) = f^{-1}_{i,c,i'}(f_{\di\ i,c',\di'\ i'}(p))\\
 f_r(\di'\ i')(p) = f_{i,c,i'}^{-1}(f(i)(f_{\di\ i,c',\di'\ i'}(p)))
 \end{array}\]
 
-The propagated edits are supposed to be applied to a container of the
-current shape $i'$, so these arbitrary decisions do not really matter;
+These conditions do not completely determine $f_i$, $f_d$, and $f_r$. In
+each case, these families are completely unconstrained on shapes other than
+$\di'\;i'$. The propagated edits are supposed to be applied to a container
+of the current shape $i'$, so the arbitrary decisions about other shapes do
+not really matter;
 nevertheless it would be nice if we could be a bit more uniform. This
 is indeed possible in the case where $\ell$ is an isomorphism lens, but we
 refrain from formulating details.
+% TODO: understand this sentence well enough to decide whether to formulate
+% some details here-ish
 
 The bijection $f_i$ contains a little more choice, namely the
 behavior on the $T'$ positions in $f_{\di\ i,c',\di'\
   i'}^{-1}(\live(\di\ i)\setminus\live(i))$. Fortunately, they all
 contain $\init_X$ so that the choice does not affect the resulting
-state after application of the edit.
+state after application of the edit, and the alignment is decided not by
+$f_i$ but by the family of bijections $f_{i,c',i'}$ that parameterize the
+lens.
 
 \iffull
 \begin{theorem}
 The restructuring lens is indeed a lens.
 \end{theorem}
 \begin{pf}
-\mxh{No need to discuss preservation of equivalence!}
   As the edit monoid is free, we only need to show that successful
   edits to consistent states get transported to successful edits
   resulting in consistent states. Thus suppose that
@@ -3756,14 +3763,13 @@ The restructuring lens is indeed a lens.
   Case $\mlins \di$. Writing $(\di',c')=\ell.\dputr(\di,c)$ the new
   complement is $(\di\ i,c',\di'\ i')$. The resulting new states are
   $(\di\ i,f_1)$ and $(\di'\ i', f_1')$ where 
-  \[\begin{array}{l}
-    f_1(p)=\text{if }p{\in}\live(i)\text{ then }f(p)\text{ else }\init_X\\
-    f_1'(p)=\text{if }p{\in}\live(i')\text{ then }f'(f_i(i')(p))\text{ else }\init_X 
-  \end{array}
-  \]
+  \begin{align*}
+    f_1(p)&=\text{if }p\in\live(i)\text{ then }f(p)\text{ else }\init_X\\
+    f_1'(p)&=\text{if }f_i(\di'\;i')(p)\in\live(i')\text{ then }f'(f_i(\di'\;i')(p))\text{ else }\init_X
+  \end{align*}
 and the bijection $f_i(\di'\ i')\in\live'(\di'\ i')\simeq \live'(\di'\ i')$ satisfies
 \[
-f_{\di\ i,c',\di'\ i'}(p)\in\live(i)\Rightarrow f_i(\di'\ i')(p)= f^{-1}_{i,c,i'}(f_{\di\ i,c',\di'\ i'}(p))
+f_{\di\ i,c',\di'\ i'}(p)\in\live(i)\Rightarrow f_i(\di'\ i')(p)= f^{-1}_{i,c,i'}(f_{\di\ i,c',\di'\ i'}(p)).
 \]
 Let $p\in\live'(\di'\ i')$. We must show that $f_1(f_{\di\ i,c',\di'\
   i'}(p))=f_1'(p)$. If $f_{\di\ i,c',\di'\ i'}(p)\in\live(i)$ then
