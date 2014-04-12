@@ -1,5 +1,5 @@
 not
-    ( boring | info | under
+    ( boring | info | (under & hbox)
     | (package 'xparse/redefine-command' & warning & "\\footnote(mark)?")
     | (package 'variant generation' & warning & "^Variant \\tl_put_right:NV")
     )
