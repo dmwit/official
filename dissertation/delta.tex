@@ -3493,6 +3493,8 @@ Setting $\init_{T(X)}=(\init_I, \lambda p.\init_X)$ when
 $T=\left<I,P,\live\right>$
 completes the definition of the module $T(X)$.
 \iffull
+Figure~\ref{fig:definition-genericmap} gives the definition of a mapping
+lens for arbitrary container types.
 \else
 
 \begin{example}
@@ -3511,9 +3513,9 @@ In Figure~\ref{fig:definition-genericmap} we define the
 mapping lens turning $T(-)$ into an endofunctor on the category of
 lenses. We note that this is only the second lens to have a nontrivial
 complement (after $\partition$).
-\fi
 
-\iffull \begin{defn}\ \else \begin{figure} \fi
+\fi
+\begin{figure}
 \lensdef{w_container}
         {\infruleplain{\ell \in X \lens Y \andalso
                        T=\left<I,P,\live\right>\mbox{ a container type}}
@@ -3540,7 +3542,6 @@ complement (after $\partition$).
             K &=& \{ ((i,f),(i,g),(i,f')) \;|\; i\in I \\
 && \wedge \, (f(p),g(p),f'(p))\in \ell.K \}
         }
-\iffull \else 
 \makeatletter\refstepcounter{\@captype}\makeatother
 \label{fig:definition-genericmap}
 \vspace*{-3ex}
@@ -3550,9 +3551,7 @@ complement (after $\partition$).
 \vspace*{-3ex}
 % \caption{Generic container-mapping lens}
 % \label{fig:definition-genericmap}
-\end{figure} \fi
-\iffull \end{defn} \fi
-
+\end{figure}
 Given that this definition looks complex at first we state and prove
 explicitly that it is indeed a lens.  
 \begin{theorem}\label{goodlens:containermap}
