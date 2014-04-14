@@ -3686,7 +3686,7 @@ well-defined on equivalence classes of lenses.
   && \text{when }p\in\live(i)\\
   \dputr_g(\mlinsert(\di),(i,c,i')) &=& (\mlrearrange(\ONE,f_i)\mlinsert(\di'),\\
 && (\di\ i, c',  \di'\ i'))\\
-  \dputr_g(\mldelete(\di),(i,c,i')) &=& (\mlrearrange(\ONE,f_d)\mldelete(\di'), \\
+  \dputr_g(\mldelete(\di),(i,c,i')) &=& (\mldelete(\di')\mlrearrange(\ONE,f_d), \\
 && (\di\ i, c', \di'\ i'))\\
   \dputr_g(\mlrearrange(\di,f),(i,c,i')) &=& (\mlrearrange(\di',f_r),\\
 &&(\di\ i,c',\di'\ i'))\\[.8ex]
@@ -3715,15 +3715,15 @@ way that the container edits in which they appear are well-formed
 (this is possible since $\di'$ is an insertion, deletion, or
 restructuring as appropriate) and such that the following three constraints are
 satisfied: in each case $i,i'$, etc.,  refer to the current values from above and $p\in \live'(\di'\ i')$ is an arbitrary position. 
-\[\begin{array}{@{}l@{}}
-f_i(\di'\ i')(p) = 
+\begin{align*}
+f_i(\di'\ i')(p) &=
 \begin{array}[t]{@{}l}
 f^{-1}_{i,c,i'}(f_{\di\ i,c',\di'\ i'}(p))\\ 
 \quad \text{ when $f_{\di\ i,c',\di'\ i'}(p)\in\live(i)$}
 \end{array}\\
-f_d(\di'\ i')(p) = f^{-1}_{i,c,i'}(f_{\di\ i,c',\di'\ i'}(p))\\
-f_r(\di'\ i')(p) = f_{i,c,i'}^{-1}(f(i)(f_{\di\ i,c',\di'\ i'}(p)))
-\end{array}\]
+f_d(i')(p) &= f^{-1}_{i,c,i'}(f_{\di\ i,c',\di'\ i'}(p))\\
+f_r(\di'\ i')(p) &= f_{i,c,i'}^{-1}(f(i)(f_{\di\ i,c',\di'\ i'}(p)))
+\end{align*}
 
 These conditions do not completely determine $f_i$, $f_d$, and $f_r$. In
 each case, these families are completely unconstrained on shapes other than
