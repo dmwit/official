@@ -3761,35 +3761,54 @@ The restructuring lens is indeed a lens.
   $\dx$ is applied to the same elements.
 
   Case $\mlins \di$. Writing $(\di',c')=\ell.\dputr(\di,c)$ the new
-  complement is $(\di\ i,c',\di'\ i')$. The resulting new states are
-  $(\di\ i,f_1)$ and $(\di'\ i', f_1')$ where 
+  complement is $(\di\ i,c',\di'\ i')$. Let us abbreviate the two bijections
+  $f_{i,c,i'}$ and $f_{\di\;i,c',\di'\;i'}$ to $f_{pre}$ and $f_{post}$,
+  respectively. The resulting new repository states are $(\di\ i,f_1)$ and
+  $(\di'\ i', f_1')$ where
   \begin{align*}
     f_1(p)&=\text{if }p\in\live(i)\text{ then }f(p)\text{ else }\init_X\\
     f_1'(p)&=\text{if }f_i(\di'\;i')(p)\in\live(i')\text{ then }f'(f_i(\di'\;i')(p))\text{ else }\init_X
   \end{align*}
 and the bijection $f_i(\di'\ i')\in\live'(\di'\ i')\simeq \live'(\di'\ i')$ satisfies
 \[
-f_{\di\ i,c',\di'\ i'}(p)\in\live(i)\Rightarrow f_i(\di'\ i')(p)= f^{-1}_{i,c,i'}(f_{\di\ i,c',\di'\ i'}(p)).
+f_{post}(p)\in\live(i)\Rightarrow f_i(\di'\ i')(p)= f^{-1}_{pre}(f_{post}(p)).
 \]
-Let $p\in\live'(\di'\ i')$. We must show that $f_1(f_{\di\ i,c',\di'\
-  i'}(p))=f_1'(p)$. If $f_{\di\ i,c',\di'\ i'}(p)\in\live(i)$ then
-$f_1(f_{\di\ i,c',\di'\ i'}(p))=$ $f(f_{\di\ i,c',\di'\ i'}(p)) = $
-$f'(f_{i,c,i'}^{-1}(f_{\di\ i,c',\di'\ i'}(p)))= $ $f_1'(p)$ where the
-first equation uses the above characterization of $f_1$; the second
-one uses consistency of $f$ and $f'$, and the third one uses the
-characterizations of $f_1'$ and $f_i$.
 
-Now  suppose that $f_{\di\ i,c',\di'\ i'}(p)\notin\live(i)$. In this case 
-$f_i(\di'\ i')(p)\not\in \live'(i')$, since $f_i(\di'\ i')$ is a bijection. More precisely, 
-if (for the sake of a contradiction) $q:=f_i(\di'\ i')(p)\in\live'(i')$ then 
-$f_{i,c,i'}(q)\in\live(i)$ and $q=f_i(\di'\ i')(f_{\di\ i,c',\di'\ i'}^{-1}(f_{i,c,i'}(q)))$ so that 
-$p = f_{\di\ i,c',\di'\ i'}^{-1}(f_{i,c,i'}(q))$ by injectivity and so
-$f_{\di\ i,c',\di'\ i'}(p) = f_{i,c,i'}(q)\in\live(i)$.
+Our current assumptions let us conclude that $f_{post}(p) \in \live(i)$ if
+and only if $f_i(\di'\;i')(p) \in \live'(i')$. In the forward direction, we
+argue:
+\begin{align*}
+    f_{post}(p) &\in \live(i) &&\mbox{assumption} \\
+    f_{pre}^{-1}(f_{post}(p)) &\in \live'(i') &&f_{pre} \in \live(i) \simeq
+    \live'(i') \\
+    f_i(\di'\;i')(p) &\in \live'(i') &&\mbox{assumed condition of }f_i
+\end{align*}
+In the backward direction, define $q=f_i(\di'\;i')(p)$. Then:
+\begin{align*}
+    f_i(\di'\;i')(p) &\in \live'(i') &&\mbox{assumption} \\
+    q &\in \live'(i') &&\mbox{definition of }q \\
+    f_{pre}(q) &\in \live(i) &&f_{pre} \in \live(i) \simeq \live'(i') \\
+    f_{post}(f_{post}^{-1}(f_{pre}(q))) &\in \live(i) &&f_{post}\mbox{ is a bijection} \\
+    f_{pre}^{-1}(f_{post}(f_{post}^{-1}(f_{pre}(q)))) &= q
+        &&f_{post}\mbox{ and }f_{pre}\mbox{ are bijections} \\
+    f_i(\di'\;i')(f_{post}^{-1}(f_{pre}(q))) &= q
+        &&\mbox{assumed condition of }f_i \\
+    f_{post}^{-1}(f_{pre}(q)) &= p
+        &&f_i(\di'\;i')\mbox{ is a bijection and} \\
+       &&&\mbox{definition of }q \\
+    f_{post}(p) &\in \live(i) &&f_{pre}(q)\in\live(i)
+\end{align*}
 
-If, as we have seen, $f_i(\di'\ i')(p)\not\in \live'(i')$ then
-$f_1'(p)=\init_X$, but then \dissdis f_1(f_{\di\ i,c',\di'\
-i'}(p))=\init_X,\dissdis
-too, by the characterization of $f_1$.
+To conclude the case, we must show that arbitrary $p \in \live'(\di'\;i')$
+have $f_1'(p)=f_1(f_{post}(p))$. We consider two cases: either $f_{post}(p)
+\in \live(i)$ or not. If so then $f_1(f_{post}(p))=$ $f(f_{post}(p)) = $
+$f'(f_{pre}^{-1}(f_{post}(p)))= $ $f_1'(p)$ where the first equation uses
+the above characterization of $f_1$; the second one uses consistency of $f$
+and $f'$, and the third one uses the characterizations of $f_1'$ and $f_i$
+(noting that $f_{post}(p) \in \live(i)$ implies $f_i(\di'\;i')(p) \in
+\live'(i')$). In the other case, $f_{post}(p) \notin \live(i)$, hence
+$f_i(\di'\;i')(p) \notin \live'(i')$. Then $f_1'(p)=\init_X$, and
+$f_1(f_{post}(p))=\init_X$, too, by the characterization of $f_1$.
 
 We omit the other cases. 
 \dmwit{proofneeded} % maybe the journal version should not omit the other cases
