@@ -3349,7 +3349,8 @@ type in the original sense by putting $P(i)=\{p\mid
 p\in\live(i)\}$. Conversely, given a container type in the sense of
 \cite{1195941}, we can define $P=\{(i,p)\mid p\in P(i)\}$ and
 $\live(i)=\{(i,p)\mid p\in P\}$. Furthermore, as we already did in
-\cite{HofmannPierceWagner10}, we require a \emph{partially-ordered}
+\ifdissertation Chapter~\ref{chap:complement}\else
+\cite{HofmannPierceWagner10}\fi, we require a \emph{partially-ordered}
 set of shapes $I$ and ask that $\live$ be monotone. Formulating
 this in the original setting would require a coherent family of
 transition functions $P(i)\rightarrow P(i')$ when $i\leq i'$, which is
