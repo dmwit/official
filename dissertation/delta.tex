@@ -3848,17 +3848,21 @@ left.
     \end{wrapfigure}
     correspondence;
 \fi
-thus, for example if $i=4$ and $i'=\{\NIL,0,1,11\}$ the bijection
+thus, for example if $i=4$ and $i'=\{\NIL, \blist0\elist, \blist1\elist,
+\blist1\mlist1\elist\}$ the bijection
 would be as shown above. (For illustration we also indicate possible
 $X$-contents of the positions.)
 %
-Formally, we have $f_{i,c,i'} = \{(0,0), (1,\NIL), (2,1), (3,11)\}$. 
+Formally, we have $f_{i,c,i'} = \{(0,\blist0\elist), (1,\NIL),
+(2,\blist1\elist), (3,\blist1\mlist1\elist)\}$.
 
 Now suppose that $\di\, i = i+2$ and that $\di'$ (the result of $\di$ propagated
 through $\ell$) installs two children at the leftmost node. 
 %
 In our in-order application we then have $f_{\di\, i, c', \di'\, i'} =
-\{(0,00)$, $(1,0)$, $(2,01)$, $(3,\NIL)$, $(4,1)$, $(5,11)\}$ and
+\{(0,\blist0\mlist0\elist)$, $(1,\blist0\elist)$,
+$(2,\blist0\mlist1\elist)$, $(3,\NIL)$, $(4,\blist1\elist)$,
+$(5,\blist1\mlist1\elist)\}$ and
 after applying both $\mlinsert(\di)$ and $\mlinsert(\di')$ we are in the
 as-yet-inconsistent situation depicted above.
 %% \begin{verbatim}
@@ -3877,14 +3881,16 @@ as-yet-inconsistent situation depicted above.
 \fi
 \includegraphics[scale=.32]{images/restruct3.pdf}
 \end{wrapfigure}
-To restore consistency we also  apply $\mlrearrange(1,f_r)$ where 
-$f_r(i')=\{(00,0)$, $(0,\NIL)$, $(01,1)$, $(\NIL,11)$,
-$(1,00)$, $(11,01)\}$. 
-We could also have chosen $f_r(i')= \{\dots, (1,01)$, $(11,01)\}$; this is
-precisely the 
-additional freedom of choice. Of course  $f_r(i'')$ for $i''\neq i'$ is also 
-completely unconstrained. After applying $\mlrearrange(1,f_r)$ we end
-up with the desired consistent state.
+To restore consistency we also apply $\mlrearrange(\ONE,f_i)$ where
+$f_i(i')=\{(\blist0\mlist0\elist,\blist0\elist)$, $(\blist0\elist,\NIL)$,
+$(\blist0\mlist1\elist,\blist1\elist)$, $(\NIL,\blist1\mlist1\elist)$,
+$(\blist1\elist,\blist0\mlist0\elist)$,
+$(\blist1\mlist1\elist,\blist0\mlist1\elist)\}$. We could also have chosen
+$f_i(i')= \{\dots, (\blist1\elist,\blist0\mlist1\elist)$,
+$(\blist1\mlist1\elist,\blist0\mlist1\elist)\}$; this is precisely the
+additional freedom of choice. Of course  $f_i(i'')$ for $i''\neq i'$ is also
+completely unconstrained. After applying $\mlrearrange(\ONE,f_i)$ we end up
+with the desired consistent state.
 %% \begin{verbatim}
 %% 0:be              eps:na
 %% 1:da            /       \
