@@ -3408,8 +3408,8 @@ edits.
 \begin{defn}
 If $\langle I,P,\live \rangle$ is a container type, $\di \in \partial I$,
 and $f \in I \to P \to P$, then we say $f$ is \emph{consistent} with $\di$
-if, whenever $\di\ i$ is defined, $f(i)$ restricted to $\live(i)$ is a
-bijection to $\live(\di\,i)$.
+if, whenever $\di\;i$ is defined, $f(i)$ restricted to $\live(\di\;i)$ is a
+bijection to $\live(i)$.
 \end{defn}
 A typical insertion could be the addition of a node to a binary tree,
 a typical deletion the removal of some node, and a typical
@@ -3694,7 +3694,7 @@ well-defined on equivalence classes of lenses.
   \dputr_g(\mldelete(\di),(i,c,i')) &=&
     (\mldelete(\di')\mlrearrange(\ONE,f_d), \wideeqbreak
     (\di\;i, c', \di'\;i'))\\
-  \dputr_g(\mlrearrange(\di,f),(i,c,i')) &=&
+  \dputr_g(\mlrearrange(\di,g),(i,c,i')) &=&
     (\mlrearrange(\di',f_r), \wideeqbreak
     (\di\;i,c',\di'\;i'))\\[.8ex]
   && \text{see below for $f_i,f_d,f_r$}\\
@@ -3729,7 +3729,7 @@ f^{-1}_{i,c,i'}(f_{\di\ i,c',\di'\ i'}(p))\\
 \quad \text{ when $f_{\di\ i,c',\di'\ i'}(p)\in\live(i)$}
 \end{array}\\
 f_d(i')(p) &= f^{-1}_{i,c,i'}(f_{\di\ i,c',\di'\ i'}(p))\\
-f_r(\di'\ i')(p) &= f_{i,c,i'}^{-1}(f(i)(f_{\di\ i,c',\di'\ i'}(p)))
+f_r(i')(p) &= f_{i,c,i'}^{-1}(g(i)(f_{\di\ i,c',\di'\ i'}(p)))
 \end{align*}
 
 These conditions do not completely determine $f_i$, $f_d$, and $f_r$. In
@@ -3760,10 +3760,12 @@ The restructuring lens is indeed a lens.
   edits to consistent states get transported to successful edits
   resulting in consistent states. Thus suppose that
   $(i,c,i')\in\ell.K$ and $f(f_{i,c,i'}(p))=f'(p)$ holds for all
-  $p\in\live'(i')$ so that $((i,f),(i,c,i'),(i',f'))$ are consistent. In
-  the cases below where there is an edit named $\di$, we will write
-  $(\di',c')=\ell.\dputr(\di,c)$ and abbreviate the bijections $f_{i,c,i'}$
-  and $f_{\di\;i,c',\di'\;i'}$ to $f_{pre}$ and $f_{post}$, respectively.
+  $p\in\live'(i')$ so that $((i,f),(i,c,i'),(i',f'))$ are consistent. We
+  will show below that $\dputr$ is correct; the proof about $\dputl$ is very
+  similar. In the cases below where there is an edit named $\di$, we will
+  write $(\di',c')=\ell.\dputr(\di,c)$ and abbreviate the bijections
+  $f_{i,c,i'}$ and $f_{\di\;i,c',\di'\;i'}$ to $f_{pre}$ and $f_{post}$,
+  respectively.
 
   Case $\fail$ is obvious. 
 
@@ -3827,8 +3829,20 @@ $f_1(f_{post}(p))=\init_X$, too, by the characterization of $f_1$.
       &= f'(f_d(i')(p)) &&\mbox{assumed condition of }f_d
   \end{align*}
 
-We omit the other cases. 
-\dmwit{proofneeded} % maybe the journal version should not omit the other cases
+  Case $\mlrearrange(\di,g)$. The new repository states that we must show
+  are consistent are $(\di\;i,g(i);f)$ and $(\di'\;i',f_r(i');f')$. Consider
+  arbitrary $p \in \live'(\di'\;i')$. Since $f_{post};g(i) \in
+  \live'(\di'\;i') \simeq \live(i)$, we know $g(i)(f_{post}(p)) \in
+  \live(i)$; this justifies the first equation below.
+    \begin{align*}
+        f(g(i)(f_{post}(p))) &= f'(f_{pre}^{-1}(g(i)(f_{post}(p))))
+            &&\mbox{consistency of }f\mbox{ and }f' \\
+        &= f'(f_r(i')(p))
+            &&\mbox{condition of }f_r
+    \end{align*}
+    \dmwit{rearrangements were the ``wrong way around'' in this case. are
+        the other consistency conditions the right way around compared to
+        their definitions?}
 \end{pf}
 \fi
 
