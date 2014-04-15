@@ -3670,6 +3670,10 @@ to deletions, and rearrangements to rearrangements. Note that this is
 well-defined on equivalence classes of lenses.
 
 \begin{figure}
+% http://tex.stackexchange.com/q/121925/16779
+\newtoggle{wide-equation}
+\ifdissertation\settoggle{wide-equation}{true}\else\settoggle{wide-equation}{false}\fi
+\newcommand{\wideeqbreak}{\iftoggle{wide-equation}{}{\\ &&}}
 % \vspace*{-2.5ex}
 \lensdef{w_restructuring}
 {\infruleplain{T = \left<I,P,\live\right>\mbox{ a container type} \\
@@ -3684,12 +3688,15 @@ well-defined on equivalence classes of lenses.
   \dputr_g(\fail,x) &=& (\fail,x)\\
   \dputr_g(\mlmod p\dx,(i,c,i')) &=& (\mlmod{f^{-1}_{i,c,i'}(p)}\dx, (i,c,i')) \\
   && \text{when }p\in\live(i)\\
-  \dputr_g(\mlinsert(\di),(i,c,i')) &=& (\mlrearrange(\ONE,f_i)\mlinsert(\di'),\\
-&& (\di\ i, c',  \di'\ i'))\\
-  \dputr_g(\mldelete(\di),(i,c,i')) &=& (\mldelete(\di')\mlrearrange(\ONE,f_d), \\
-&& (\di\ i, c', \di'\ i'))\\
-  \dputr_g(\mlrearrange(\di,f),(i,c,i')) &=& (\mlrearrange(\di',f_r),\\
-&&(\di\ i,c',\di'\ i'))\\[.8ex]
+  \dputr_g(\mlinsert(\di),(i,c,i')) &=&
+      (\mlrearrange(\ONE,f_i)\mlinsert(\di'), \wideeqbreak
+      (\di\;i, c', \di'\;i'))\\
+  \dputr_g(\mldelete(\di),(i,c,i')) &=&
+    (\mldelete(\di')\mlrearrange(\ONE,f_d), \wideeqbreak
+    (\di\;i, c', \di'\;i'))\\
+  \dputr_g(\mlrearrange(\di,f),(i,c,i')) &=&
+    (\mlrearrange(\di',f_r), \wideeqbreak
+    (\di\;i,c',\di'\;i'))\\[.8ex]
   && \text{see below for $f_i,f_d,f_r$}\\
   \text{in the last three clauses:} && (\di',c')=\ell.\dputr(\di,c)\\
   \dputr_g(\text{d}c,(i,c,i')) &=& \fail\text{ in all other cases}\\
