@@ -3611,14 +3611,13 @@ explicitly that it is indeed a lens.
   complement of this lens is $T(k.C)\times T(\ell.C)$.  On the other
   hand, the complement of $T(k;\ell)$ is $T(k.C\times \ell.C)$. An
   appropriate simulation relation is defined by \dissdis
-  \{(((i_k,g_k),(i_\ell,g_\ell)), (i_{k;\ell},g_{k;\ell}))\mid
-  i_k=i_\ell=i_{k;\ell}\wedge \forall
-  p. g_{k;\ell}(p)=(g_k(p),g_\ell(p))\} \dissdis.  We omit the
+  \{(((i,g_k),(i,g_\ell)), (i,g_{k;\ell}))\mid \forall
+  p. g_{k;\ell}(p)=(g_k(p),g_\ell(p))\}.\dissdis We omit the
   straightforward verification.
 %
   \iffull 
-    We also have to show that $T(--)$ is well-defined on
-    equivalence classes, so assume that $\ell\equiv k : X\lens Y$ and let
+    We also have to show that $T(-)$ is well-defined on
+    equivalence classes, so assume that $\ell\equiv k \in X\lens Y$ and let
 $S\subseteq X \times \ell.C\times k.C\times Y$ be a witnessing simulation relation, cf.\ Thm.~\ref{thm:bisim}.
 
 The following relation $T(S)$ then witnesses $T(\ell)\equiv T(k)$. 
@@ -3663,11 +3662,101 @@ reversal---no fixed edit that, say, a ``modify the second position''
 edit is mapped to. Indeed, the restructuring lens we are about to
 construct can be seen as a kind of state-indexed isomorphism, but the
 full scaffolding of edit lenses is needed to make such a notion
-precise.
+precise. Before proceeding to the details, let us take a quick tour of this
+lens' behavior by examining the special case of maintaining a tree and its
+in-order traversal as a list.
 
-We also require that $\ell$ maps insertions to insertions, deletions
-to deletions, and rearrangements to rearrangements. Note that this is
-well-defined on equivalence classes of lenses.
+To model a list, we take $I=\mathbb{N}$; $P=\mathbb{N}$; $\live(i)=\{p\mid
+p<i\}$; and for trees, $I'$ comprises prefix closed subsets of $\{0,1\}\LIST$;
+$P'=\{0,1\}\LIST$; $\live'(i')=i'$. The monoid $\partial I$ has increment
+and decrement operations; the monoid $\partial I'$ has operations for
+adding and removing nodes in leaf positions and also for rotating tree
+shapes. We illustrate the propagation of an $\mlins\di$ edit---which is one
+of the more complex cases.
+
+\ifdissertation\begin{wrapfigure}{r}{1.7in}
+\else          \begin{wrapfigure}[7]{r}{1.3in}\hspace*{-3em}
+\fi
+\includegraphics[scale=.32]{images/restruct1.pdf}
+\end{wrapfigure}
+The lens $\ell\in I\lens I'$ does not know anything about the intended
+application; it has a trivial complement $\Unit$ and
+merely maintains the constraint that the list shape and the tree shape
+have the same number of positions. It has some freedom how it
+translates list edits; e.g., it might add and remove tree nodes at the
+left.
+
+\ifdissertation
+    \begin{wrapfigure}{r}{2in}
+    \includegraphics[scale=.32]{images/restruct2.pdf}
+    \end{wrapfigure}
+    The family of bijections $f_{i,c,i'}$ models the in-order correspondence;
+\else
+    The family of bijections $f_{i,c,i'}$ models the in-order
+    \begin{wrapfigure}[9]{r}{1.3in}
+    \hspace*{-4.3em}\includegraphics[scale=.32]{images/restruct2.pdf}
+    \end{wrapfigure}
+    correspondence;
+\fi
+thus, for example if $i=4$ and $i'=\{\NIL, \blist0\elist, \blist1\elist,
+\blist1\mlist1\elist\}$ the bijection
+would be as shown above. (For illustration we also indicate possible
+$X$-contents of the positions.)
+%
+Formally, we have $f_{i,c,i'} = \{(0,\blist0\elist), (1,\NIL),
+(2,\blist1\elist), (3,\blist1\mlist1\elist)\}$.
+
+Now suppose that $\di\, i = i+2$ and that $\di'$ (the result of $\di$ propagated
+through $\ell$) installs two children at the leftmost node. 
+%
+In our in-order application we then have $f_{\di\, i, c', \di'\, i'} =
+\{(0,\blist0\mlist0\elist)$, $(1,\blist0\elist)$,
+$(2,\blist0\mlist1\elist)$, $(3,\NIL)$, $(4,\blist1\elist)$,
+$(5,\blist1\mlist1\elist)\}$ and
+after applying both $\mlinsert(\di)$ and $\mlinsert(\di')$ we are in the
+as-yet-inconsistent situation depicted above.
+%% \begin{verbatim}
+%% 0:be              eps:da
+%% 1:da            /       \
+%% 2:ma           0:be     1:ma
+%% 3:na         /   \          \
+%% 4:?        00:?  01:?        11:na
+%% 5:?
+
+%% Include the f-links, this time they go wild, eg 0 ----- 00 
+%% \end{verbatim}
+
+\ifdissertation\begin{wrapfigure}{r}{2in}
+\else          \begin{wrapfigure}[9]{r}{1.3in}\hspace*{-4.3em}
+\fi
+\includegraphics[scale=.32]{images/restruct3.pdf}
+\end{wrapfigure}
+Since the newly inserted elements in the list come at the end, we can
+restore consistency by moving the newly inserted tree elements to positions
+that come at the end of the in-order walk. This can be done essentially
+automatically just using the in-order walk position bijections: to decide
+where a position $p$ in the old tree should reappear in the new tree, we can
+simply follow the position through its journey of being flattened and
+unflattened using $f_{i,c,i'}$ and $f_{\di\;i,c',\di'\;i'}^{-1}$,
+respectively. Thus to restore consistency we apply $\mlrearrange(\ONE,f_i)$ where
+$f_i(i')=\{(\blist0\mlist0\elist,\blist0\elist)$, $(\blist0\elist,\NIL)$,
+$(\blist0\mlist1\elist,\blist1\elist)$, $(\NIL,\blist1\mlist1\elist)$,
+$(\blist1\elist,\blist0\mlist0\elist)$,
+$(\blist1\mlist1\elist,\blist0\mlist1\elist)\}$. We could also have chosen
+$f_i(i')= \{\dots, (\blist1\elist,\blist0\mlist1\elist)$,
+$(\blist1\mlist1\elist,\blist0\mlist1\elist)\}$; since in any case the new
+positions are uninitialized, this free choice has little impact.
+Of course $f_i(i'')$ for $i''\neq i'$ is also
+completely unconstrained. After applying $\mlrearrange(\ONE,f_i)$ we end up
+with the desired consistent state.
+%% \begin{verbatim}
+%% 0:be              eps:na
+%% 1:da            /       \
+%% 2:ma          0:da     1:?
+%% 3:na         /   \        \
+%% 4:?        00:be  01:ma    11:?
+%% 5:?
+%% \end{verbatim}
 
 \begin{figure}
 % http://tex.stackexchange.com/q/121925/16779
@@ -3713,11 +3802,17 @@ well-defined on equivalence classes of lenses.
 %  \caption{A lens for restructuring containers.}
 \end{figure}
 
+With this intuition in hand, we are ready to see the details of the
+restructuring lens. As discussed above, we must have containers $T$ and
+$T'$, an edit lens $\ell$ between their shapes, and a family of bijections
+between live sets. We also require that $\ell$ maps insertions to
+insertions, deletions to deletions, and rearrangements to rearrangements.
+(This is well-defined on equivalence classes of lenses.)
 Given these data, we define the restructuring lens in
 Figure~\ref{fig:restructuring-definition}, with a few supplementary
 definitions below.
 %
-The families of bijections $f_i, f_d, f_r$ must be chosen in such a
+The additional families of bijections $f_i, f_d, f_r$ must be chosen in such a
 way that the container edits in which they appear are well-formed
 (this is possible since $\di'$ is an insertion, deletion, or
 restructuring as appropriate) and such that the following three constraints are
@@ -3743,9 +3838,9 @@ refrain from formulating details.
 % TODO: understand this sentence well enough to decide whether to formulate
 % some details here-ish
 
-The bijection $f_i$ contains a little more choice, namely the
-behavior on the $T'$ positions in $f_{\di\ i,c',\di'\
-  i'}^{-1}(\live(\di\ i)\setminus\live(i))$. Fortunately, they all
+As discussed in the example above, the bijection $f_i$ contains a little
+more choice, namely the behavior on the $T'$ positions in $f_{\di\
+i,c',\di'\ i'}^{-1}(\live(\di\ i)\setminus\live(i))$. Fortunately, they all
 contain $\init_X$ so that the choice does not affect the resulting
 state after application of the edit, and the alignment is decided not by
 $f_i$ but by the family of bijections $f_{i,c',i'}$ that parameterize the
@@ -3844,92 +3939,6 @@ $f_1(f_{post}(p))=\init_X$, too, by the characterization of $f_1$.
 \end{pf}
 \fi
 
-We illustrate the propagation of an $\mlinsert(\di)$ edit in the
-particular case where we are synchronizing a tree with the list formed by its
-in-order traversal. Thus, $I=\mathbb{N}$; $P=\mathbb{N}$; $\live(i)=\{p\mid
-p<i\}$ and $I'$ comprises prefix closed subsets of $\{0,1\}\LIST$;
-$P'=\{0,1\}\LIST$; $\live'(i')=i'$. The monoid $\partial I$ has increment
-and decrement operations; the monoid $\partial I'$ has operations for
-adding and removing nodes in leaf positions and also for rotating tree
-shapes. 
-
-\ifdissertation\begin{wrapfigure}{r}{1.7in}
-\else          \begin{wrapfigure}[7]{r}{1.3in}\hspace*{-3em}
-\fi
-\includegraphics[scale=.32]{images/restruct1.pdf}
-\end{wrapfigure}
-The lens $\ell\in I\lens I'$ does not know anything about the intended
-application; it has a trivial complement $\Unit$ and
-merely maintains the constraint that the list shape and the tree shape
-have the same number of positions. It has some freedom how it
-translates list edits; e.g., it might add and remove tree nodes at the
-left.
-
-\ifdissertation
-    \begin{wrapfigure}{r}{2in}
-    \includegraphics[scale=.32]{images/restruct2.pdf}
-    \end{wrapfigure}
-    The family of bijections $f_{i,c,i'}$ models the in-order correspondence;
-\else
-    The family of bijections $f_{i,c,i'}$ models the in-order
-    \begin{wrapfigure}[9]{r}{1.3in}
-    \hspace*{-4.3em}\includegraphics[scale=.32]{images/restruct2.pdf}
-    \end{wrapfigure}
-    correspondence;
-\fi
-thus, for example if $i=4$ and $i'=\{\NIL, \blist0\elist, \blist1\elist,
-\blist1\mlist1\elist\}$ the bijection
-would be as shown above. (For illustration we also indicate possible
-$X$-contents of the positions.)
-%
-Formally, we have $f_{i,c,i'} = \{(0,\blist0\elist), (1,\NIL),
-(2,\blist1\elist), (3,\blist1\mlist1\elist)\}$.
-
-Now suppose that $\di\, i = i+2$ and that $\di'$ (the result of $\di$ propagated
-through $\ell$) installs two children at the leftmost node. 
-%
-In our in-order application we then have $f_{\di\, i, c', \di'\, i'} =
-\{(0,\blist0\mlist0\elist)$, $(1,\blist0\elist)$,
-$(2,\blist0\mlist1\elist)$, $(3,\NIL)$, $(4,\blist1\elist)$,
-$(5,\blist1\mlist1\elist)\}$ and
-after applying both $\mlinsert(\di)$ and $\mlinsert(\di')$ we are in the
-as-yet-inconsistent situation depicted above.
-%% \begin{verbatim}
-%% 0:be              eps:da
-%% 1:da            /       \
-%% 2:ma           0:be     1:ma
-%% 3:na         /   \          \
-%% 4:?        00:?  01:?        11:na
-%% 5:?
-
-%% Include the f-links, this time they go wild, eg 0 ----- 00 
-%% \end{verbatim}
-
-\ifdissertation\begin{wrapfigure}{r}{2in}
-\else          \begin{wrapfigure}[9]{r}{1.3in}\hspace*{-4.3em}
-\fi
-\includegraphics[scale=.32]{images/restruct3.pdf}
-\end{wrapfigure}
-To restore consistency we also apply $\mlrearrange(\ONE,f_i)$ where
-$f_i(i')=\{(\blist0\mlist0\elist,\blist0\elist)$, $(\blist0\elist,\NIL)$,
-$(\blist0\mlist1\elist,\blist1\elist)$, $(\NIL,\blist1\mlist1\elist)$,
-$(\blist1\elist,\blist0\mlist0\elist)$,
-$(\blist1\mlist1\elist,\blist0\mlist1\elist)\}$. We could also have chosen
-$f_i(i')= \{\dots, (\blist1\elist,\blist0\mlist1\elist)$,
-$(\blist1\mlist1\elist,\blist0\mlist1\elist)\}$; this is precisely the
-additional freedom of choice. Of course  $f_i(i'')$ for $i''\neq i'$ is also
-completely unconstrained. After applying $\mlrearrange(\ONE,f_i)$ we end up
-with the desired consistent state.
-%% \begin{verbatim}
-%% 0:be              eps:na
-%% 1:da            /       \
-%% 2:ma          0:da     1:?
-%% 3:na         /   \        \
-%% 4:?        00:be  01:ma    11:?
-%% 5:?
-%% \end{verbatim}
-
-
 \iffull Using the container lens combinators, the
 partition lens and
 lens mediating between ``built-in'' lists and ``list containers'' we
@@ -3939,7 +3948,6 @@ $\inr$s and then presents the two resulting containers again as trees
 over $X$ and $Y$. If one wants one can then use a mapping lens to
 change the representation of the $Y$'s in some way.
 \fi
-
 
 \sect{Adding Monoid Laws}
 \label{sec:monoid-laws}
