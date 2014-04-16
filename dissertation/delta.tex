@@ -4492,28 +4492,45 @@ $x(xy)=x=xy$. If, in addition, we have a distinguished element $x\in
 X$, we thus obtain a module denoted $X_x$ where $|X_x|=X$ and
 $\init_X=x$ and $\partial X_x = O_X$.
 
+\iffull
+We are now ready to give the definition of the lifting operation that turns
+any symmetric, state-based lens between inhabited types into a symmetric
+edit lens\footnote{The unique state-based lens between uninhabited types can
+be lifted to the unique edit lens between degenerate modules.}.
+\lensdef{editize}
+{\infruleplain
+    {\ell \in X \lens Y \qquad x \in X\\
+     \ell.\putr(x,\ell.\smissing) = (y,c_0)
+    }
+    {\partial_x\ell \in X_x \lens Y_y}
+}
+{
+    C &=& \ell.C \\
+    \missing &=& c_0 \\
+    K &=& \{(x,c,y) \mid \ell.\putr(x,c)=(y,c)\} \\
+    \dputr_g &=& \ell.\putr \\
+    \dputl_g &=& \ell.\putl
+}
+\else
 Let  $\ell$ be  a state-based symmetric lens between $X$
-and $Y$ along with elements $x\in X$ and $y\in Y$ satisfying
-$\ell.\putr(x,\ell.\smissing)=(y,\ell.\smissing)$. 
-%
-We then define a symmetric edit lens $\partial_{xy} \ell$ between the
+and $Y$ along with element $x\in X$. Defining
+$(y,c_0)=\ell.\putr(x,\ell.\smissing)$,
+we then construct a symmetric edit lens $\partial_x \ell$ between the
 modules $X_x$ and $Y_y$ 
 as follows: 
-\iffull \begin{itemize} \fi
-\iffull \item \else (1) \fi $(\partial_{xy}\ell).C = \ell.C$;
-\iffull \item \else (2) \fi $(\partial_{xy}\ell).\missing = \ell.\smissing$;
-\iffull \item \else (3) \fi $(\partial_{xy}
-\ell).\dputr(\NIL,c)=(\NIL,c)$; 
-\iffull \item \else (4) \fi $(\partial_{xy} \ell).\dputr(x\CONS w,c)=(y\CONS v,c'')$ where
-  $(\partial_{xy}\ell).\dputr(w,c)=(v,c')$ and $\ell.\putr(x,c')=(y,c'')$;
-\iffull \item \else (5) \fi analogous definitions for $\dputl$; and
-\iffull \item \else (6) \fi $K = \{(x,c,y) \mid \ell.\putr(x,c)=(y,c)\}$%
-\iffull \end{itemize} \else. \fi
-$\partial_{xy} \ell$ is a symmetric edit lens and the passage from $\ell$
-to $\partial \ell$ is compatible with the equivalences on symmetric
-lenses and symmetric edit lenses. The definition for $\dputr$ is
-well-defined because the round-trip law for symmetric lenses guarantees that
-putting the same value twice in a row results in the same output both times,
+(1) $(\partial_x\ell).C = \ell.C$;
+(2) $(\partial_x\ell).\missing = c_0$;
+(3) $(\partial_x\ell).\dputr_g = \ell.\putr$;
+(4) $(\partial_x\ell).\dputl_g = \ell.\putl$; and
+(5) $(\partial_x\ell).K = \{(x,c,y) \mid \ell.\putr(x,c)=(y,c)\}$.
+\fi
+$\partial_x \ell$ is a symmetric edit lens and the passage from $\ell$
+to $\partial_x \ell$ is compatible with the equivalences on symmetric
+lenses and symmetric edit lenses. The equations for $\dputr$ and $\dputl$
+are well-defined because the round-trip law for symmetric lenses guarantees
+that putting the same value twice in a row results in the same output both
+times (hence if edits will be coalesced in $X_x$, they will be translated to
+edits that get coalesced in $Y_y$),
 and the consistency relation is likewise preserved because the roundtrip
 laws for symmetric lenses guarantee that any given $\putr$ or $\putl$
 results in a ``stable state''.
@@ -4521,14 +4538,20 @@ results in a ``stable state''.
 \iffull
 \begin{theorem}
     If $k$ and $\ell$ are state-based lenses and $k\equiv\ell$, then
-    $\partial_{xy}k\equiv\partial_{xy}\ell$.
+    $\partial_xk\equiv\partial_x\ell$.
 \end{theorem}
 
 \begin{proof}
 Suppose $S$ is a witness that $k\equiv\ell$. Then we define
-$\partial_{xy}S$ as follows:
-\[\partial_{xy}S = \{(x,(x,c_k,y),(x,c_\ell,y),y) \mid (c_k,c_\ell) \in S
+$\partial_xS$ as follows:
+\[\partial_xS = \{(x,c_k,c_\ell,y) \mid (c_k,c_\ell) \in S
 \land x \in X \land y \in Y\}\]
+
+Let us write $(y_k,c_{0k})=k.\putr(x,k.\smissing)$ and
+$(y_\ell,c_{0\ell})=\ell.\putr(x,\ell.\smissing)$. Since
+$(k.\smissing,\ell.\smissing)\in S$, we know $y_k=y_\ell$ and
+$(c_{0k},c_{0\ell})\in S$.
+\dmwit{proofneeded}
 
 Since $(k.\smissing,\ell.\smissing)\in S$ and $k.\putr(x,k.\smissing)=(y,\_)$,
 we know that:
