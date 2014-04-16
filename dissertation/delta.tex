@@ -4444,23 +4444,29 @@ deletions with other edits so that insertions and deletions
 always come first. This would also give rise to a compact normal
 form of container edits. Again, we leave this to future work. 
 
-% TODO: reference chapter instead of paper; possibly delete some of this
-% review of chapter-2 material
 \sect{From State-Based to Edit Lenses and Back} 
 \label{stateb}
 
+\ifdissertation
+Recall from Chapter~\ref{chap:complement}
+\else
 In \cite{HofmannPierceWagner10}, we introduced a
 state-based framework for bidirectional transformations called
 \emph{symmetric lenses}.  We refer to them here as \emph{state-based symmetric
   lenses}.
 %
-Recall from \cite{HofmannPierceWagner10} that a state-based symmetric lens $\ell$
+Recall from \cite{HofmannPierceWagner10}
+\fi
+that a state-based symmetric lens $\ell$
 between \emph{sets} $X$ and $Y$ comprises a set of complements $C$, a
 distinguished element $\smissing \in C$, and two functions
 \begin{eqnarray*}
     \putr &\in& X \times C \to Y \times C\\
     \putl &\in& Y \times C \to X \times C
 \end{eqnarray*}
+\ifdissertation
+satisfying some round-tripping laws.
+\else
 satisfying the following round-tripping laws:
 \infrule[PutRL]{\putr(x,c) = (y,c')}{\putl(y,c') = (x,c')}
 \infrule[PutLR]{\putl(y,c) = (x,c')}{\putr(x,c') = (y,c')} 
@@ -4473,13 +4479,14 @@ State-based symmetric lenses modulo equivalence form a category (they
 compose) and support a variety of constructions, in particular tensor
 product, sum, lists, trees, and container types.
 
-Now, for any set $X$ we have the monoid $\partial X$ whose elements (edits)
-are lists of elements of $X$ modulo the equality $xx=x$. An action of
-$\partial X$ on $X$ is defined by $\NIL x=x$ and $(xw)y=x$
+\fi
+Now, for any set $X$ we have the monoid $O_X$ whose elements (edits)
+are lists of overwriting elements of $X$ modulo the equality $xx=x$. An
+action of $O_X$ on $X$ is defined by $\NIL x=x$ and $\blist x\mlist w\elist\;y=x$
 where $x\in X, w\in X\LIST$. Note that this is well defined as
 $x(xy)=x=xy$. If, in addition, we have a distinguished element $x\in
 X$, we thus obtain a module denoted $X_x$ where $|X_x|=X$ and
-$\init_X=x$ and $\partial X_x = \partial X$.
+$\init_X=x$ and $\partial X_x = O_X$.
 
 Let  $\ell$ be  a state-based symmetric lens between $X$
 and $Y$ along with elements $x\in X$ and $y\in Y$ satisfying
