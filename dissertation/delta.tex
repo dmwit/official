@@ -3738,16 +3738,16 @@ automatically just using the in-order walk position bijections: to decide
 where a position $p$ in the old tree should reappear in the new tree, we can
 simply follow the position through its journey of being flattened and
 unflattened using $f_{i,c,i'}$ and $f_{\di\;i,c',\di'\;i'}^{-1}$,
-respectively. Thus to restore consistency we apply $\mlrearrange(\ONE,f_i)$ where
-$f_i(i')=\{(\blist0\mlist0\elist,\blist0\elist)$, $(\blist0\elist,\NIL)$,
+respectively. Thus to restore consistency we apply $\mlrearrange(\ONE,f_\mli)$ where
+$f_\mli(i')=\{(\blist0\mlist0\elist,\blist0\elist)$, $(\blist0\elist,\NIL)$,
 $(\blist0\mlist1\elist,\blist1\elist)$, $(\NIL,\blist1\mlist1\elist)$,
 $(\blist1\elist,\blist0\mlist0\elist)$,
 $(\blist1\mlist1\elist,\blist0\mlist1\elist)\}$. We could also have chosen
-$f_i(i')= \{\dots, (\blist1\elist,\blist0\mlist1\elist)$,
+$f_\mli(i')= \{\dots, (\blist1\elist,\blist0\mlist1\elist)$,
 $(\blist1\mlist1\elist,\blist0\mlist1\elist)\}$; since in any case the new
 positions are uninitialized, this free choice has little impact.
-Of course $f_i(i'')$ for $i''\neq i'$ is also
-completely unconstrained. After applying $\mlrearrange(\ONE,f_i)$ we end up
+Of course $f_\mli(i'')$ for $i''\neq i'$ is also
+completely unconstrained. After applying $\mlrearrange(\ONE,f_\mli)$ we end up
 with the desired consistent state.
 %% \begin{verbatim}
 %% 0:be              eps:na
@@ -3778,15 +3778,15 @@ with the desired consistent state.
   \dputr_g(\mlmod p\dx,(i,c,i')) &=& (\mlmod{f^{-1}_{i,c,i'}(p)}\dx, (i,c,i')) \\
   && \text{when }p\in\live(i)\\
   \dputr_g(\mlinsert(\di),(i,c,i')) &=&
-      (\mlrearrange(\ONE,f_i)\mlinsert(\di'), \wideeqbreak
+      (\mlrearrange(\ONE,f_\mli)\mlinsert(\di'), \wideeqbreak
       (\di\;i, c', \di'\;i'))\\
   \dputr_g(\mldelete(\di),(i,c,i')) &=&
-    (\mldelete(\di')\mlrearrange(\ONE,f_d), \wideeqbreak
+    (\mldelete(\di')\mlrearrange(\ONE,f_\mld), \wideeqbreak
     (\di\;i, c', \di'\;i'))\\
   \dputr_g(\mlrearrange(\di,g),(i,c,i')) &=&
-    (\mlrearrange(\di',f_r), \wideeqbreak
+    (\mlrearrange(\di',f_\mlr), \wideeqbreak
     (\di\;i,c',\di'\;i'))\\[.8ex]
-  && \text{see below for $f_i,f_d,f_r$}\\
+  && \text{see below for $f_\mli,f_\mld,f_\mlr$}\\
   \text{in the last three clauses:} && (\di',c')=\ell.\dputr(\di,c)\\
   \dputr_g(\text{d}c,(i,c,i')) &=& \fail\text{ in all other cases}\\
   \dputl_g(-,-) &=& \text{analogous}
@@ -3812,22 +3812,22 @@ Given these data, we define the restructuring lens in
 Figure~\ref{fig:restructuring-definition}, with a few supplementary
 definitions below.
 %
-The additional families of bijections $f_i, f_d, f_r$ must be chosen in such a
+The additional families of bijections $f_\mli, f_\mld, f_\mlr$ must be chosen in such a
 way that the container edits in which they appear are well-formed
 (this is possible since $\di'$ is an insertion, deletion, or
 restructuring as appropriate) and such that the following three constraints are
 satisfied: in each case $i,i'$, etc.,  refer to the current values from above and $p\in \live'(\di'\ i')$ is an arbitrary position. 
 \begin{align*}
-f_i(\di'\ i')(p) &=
+f_\mli(\di'\ i')(p) &=
 \begin{array}[t]{@{}l}
 f^{-1}_{i,c,i'}(f_{\di\ i,c',\di'\ i'}(p))\\ 
 \quad \text{ when $f_{\di\ i,c',\di'\ i'}(p)\in\live(i)$}
 \end{array}\\
-f_d(i')(p) &= f^{-1}_{i,c,i'}(f_{\di\ i,c',\di'\ i'}(p))\\
-f_r(i')(p) &= f_{i,c,i'}^{-1}(g(i)(f_{\di\ i,c',\di'\ i'}(p)))
+f_\mld(i')(p) &= f^{-1}_{i,c,i'}(f_{\di\ i,c',\di'\ i'}(p))\\
+f_\mlr(i')(p) &= f_{i,c,i'}^{-1}(g(i)(f_{\di\ i,c',\di'\ i'}(p)))
 \end{align*}
 
-These conditions do not completely determine $f_i$, $f_d$, and $f_r$. In
+These conditions do not completely determine $f_\mli$, $f_\mld$, and $f_\mlr$. In
 each case, these families are completely unconstrained on shapes other than
 $\di'\;i'$. The propagated edits are supposed to be applied to a container
 of the current shape $i'$, so the arbitrary decisions about other shapes do
@@ -3838,12 +3838,12 @@ refrain from formulating details.
 % TODO: understand this sentence well enough to decide whether to formulate
 % some details here-ish
 
-As discussed in the example above, the bijection $f_i$ contains a little
+As discussed in the example above, the bijection $f_\mli$ contains a little
 more choice, namely the behavior on the $T'$ positions in $f_{\di\
 i,c',\di'\ i'}^{-1}(\live(\di\ i)\setminus\live(i))$. Fortunately, they all
 contain $\init_X$ so that the choice does not affect the resulting
 state after application of the edit, and the alignment is decided not by
-$f_i$ but by the family of bijections $f_{i,c',i'}$ that parameterize the
+$f_\mli$ but by the family of bijections $f_{i,c',i'}$ that parameterize the
 lens.
 
 \iffull
@@ -3871,32 +3871,32 @@ The restructuring lens is indeed a lens.
   and $(\di'\;i', f_1')$:
   \begin{align*}
     f_1(p)&=\text{if }p\in\live(i)\text{ then }f(p)\text{ else }\init_X\\
-    f_1'(p)&=\text{if }f_i(\di'\;i')(p)\in\live(i')\text{ then }f'(f_i(\di'\;i')(p))\text{ else }\init_X
+    f_1'(p)&=\text{if }f_\mli(\di'\;i')(p)\in\live(i')\text{ then }f'(f_\mli(\di'\;i')(p))\text{ else }\init_X
   \end{align*}
-Also, the bijection $f_i(\di'\ i')\in\live'(\di'\ i')\simeq \live'(\di'\ i')$ satisfies
+Also, the bijection $f_\mli(\di'\ i')\in\live'(\di'\ i')\simeq \live'(\di'\ i')$ satisfies
 \[
-f_{post}(p)\in\live(i)\Rightarrow f_i(\di'\ i')(p)= f^{-1}_{pre}(f_{post}(p)).
+f_{post}(p)\in\live(i)\Rightarrow f_\mli(\di'\ i')(p)= f^{-1}_{pre}(f_{post}(p)).
 \]
 This assumption lets us conclude that $f_{post}(p) \in \live(i)$ if and only
-if $f_i(\di'\;i')(p) \in \live'(i')$. In the forward direction, we argue:
+if $f_\mli(\di'\;i')(p) \in \live'(i')$. In the forward direction, we argue:
 \begin{align*}
     f_{post}(p) &\in \live(i) &&\mbox{assumption} \\
     f_{pre}^{-1}(f_{post}(p)) &\in \live'(i') &&f_{pre} \in \live(i) \simeq
     \live'(i') \\
-    f_i(\di'\;i')(p) &\in \live'(i') &&\mbox{assumed condition of }f_i
+    f_\mli(\di'\;i')(p) &\in \live'(i') &&\mbox{assumed condition of }f_\mli
 \end{align*}
-In the backward direction, define $q=f_i(\di'\;i')(p)$. Then:
+In the backward direction, define $q=f_\mli(\di'\;i')(p)$. Then:
 \begin{align*}
-    f_i(\di'\;i')(p) &\in \live'(i') &&\mbox{assumption} \\
+    f_\mli(\di'\;i')(p) &\in \live'(i') &&\mbox{assumption} \\
     q &\in \live'(i') &&\mbox{definition of }q \\
     f_{pre}(q) &\in \live(i) &&f_{pre} \in \live(i) \simeq \live'(i') \\
     f_{post}(f_{post}^{-1}(f_{pre}(q))) &\in \live(i) &&f_{post}\mbox{ is a bijection} \\
     f_{pre}^{-1}(f_{post}(f_{post}^{-1}(f_{pre}(q)))) &= q
         &&f_{post}\mbox{ and }f_{pre}\mbox{ are bijections} \\
-    f_i(\di'\;i')(f_{post}^{-1}(f_{pre}(q))) &= q
-        &&\mbox{assumed condition of }f_i \\
+    f_\mli(\di'\;i')(f_{post}^{-1}(f_{pre}(q))) &= q
+        &&\mbox{assumed condition of }f_\mli \\
     f_{post}^{-1}(f_{pre}(q)) &= p
-        &&f_i(\di'\;i')\mbox{ is a bijection and} \\
+        &&f_\mli(\di'\;i')\mbox{ is a bijection and} \\
        &&&\mbox{definition of }q \\
     f_{post}(p) &\in \live(i) &&f_{pre}(q)\in\live(i)
 \end{align*}
@@ -3906,34 +3906,34 @@ have $f_1'(p)=f_1(f_{post}(p))$. We consider two cases: either $f_{post}(p)
 \in \live(i)$ or not. If so then $f_1(f_{post}(p))=$ $f(f_{post}(p)) = $
 $f'(f_{pre}^{-1}(f_{post}(p)))= $ $f_1'(p)$ where the first equation uses
 the above characterization of $f_1$; the second one uses consistency of $f$
-and $f'$, and the third one uses the characterizations of $f_1'$ and $f_i$
-(noting that $f_{post}(p) \in \live(i)$ implies $f_i(\di'\;i')(p) \in
+and $f'$, and the third one uses the characterizations of $f_1'$ and $f_\mli$
+(noting that $f_{post}(p) \in \live(i)$ implies $f_\mli(\di'\;i')(p) \in
 \live'(i')$). In the other case, $f_{post}(p) \notin \live(i)$, so
-$f_i(\di'\;i')(p) \notin \live'(i')$. Then $f_1'(p)=\init_X$, but
+$f_\mli(\di'\;i')(p) \notin \live'(i')$. Then $f_1'(p)=\init_X$, but
 $f_1(f_{post}(p))=\init_X$, too, by the characterization of $f_1$.
 
   Case $\mldel \di$. Ignoring domain restrictions, the new repository states
-  are $(\di\;i,f)$ and $(\di'\;i',f_d(i');f')$. For these to be consistent,
-  we must show that $f(f_{post}(p)) = f'(f_d(i')(p))$ whenever $p \in
+  are $(\di\;i,f)$ and $(\di'\;i',f_\mld(i');f')$. For these to be consistent,
+  we must show that $f(f_{post}(p)) = f'(f_\mld(i')(p))$ whenever $p \in
   \live'(\di'\;i')$. Since $\di$ is a deletion, we know $\di\;i \subset i$,
   so that $f_{post} \in \live(\di\;i) \simeq \live'(\di'\;i')$ implies
   $f_{post}(p) \in \live(i)$. Hence we can equate:
   \begin{align*}
       f(f_{post}(p)) &= f'(f_{pre}^{-1}(f_{post}(p)))
           &&\mbox{consistency of }f\mbox{ and }f'\\
-      &= f'(f_d(i')(p)) &&\mbox{assumed condition of }f_d
+      &= f'(f_\mld(i')(p)) &&\mbox{assumed condition of }f_\mld
   \end{align*}
 
   Case $\mlrearrange(\di,g)$. The new repository states that we must show
-  are consistent are $(\di\;i,g(i);f)$ and $(\di'\;i',f_r(i');f')$. Consider
+  are consistent are $(\di\;i,g(i);f)$ and $(\di'\;i',f_\mlr(i');f')$. Consider
   arbitrary $p \in \live'(\di'\;i')$. Since $f_{post};g(i) \in
   \live'(\di'\;i') \simeq \live(i)$, we know $g(i)(f_{post}(p)) \in
   \live(i)$; this justifies the first equation below.
     \begin{align*}
         f(g(i)(f_{post}(p))) &= f'(f_{pre}^{-1}(g(i)(f_{post}(p))))
             &&\mbox{consistency of }f\mbox{ and }f' \\
-        &= f'(f_r(i')(p))
-            &&\mbox{condition of }f_r
+        &= f'(f_\mlr(i')(p))
+            &&\mbox{condition of }f_\mlr
     \end{align*}
 \vskip -1.8\baselineskip
 \end{pf}
