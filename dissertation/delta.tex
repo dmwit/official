@@ -4594,43 +4594,55 @@ the module $X_x$ for set $X$ and $x\in X$ admits the \emph{canonical
 $\dif(x,x)=\ONE$, otherwise.
 
 Given an edit lens $\ell$ between modules $X$ and $Y$,
-both equipped with differs, we define 
-a symmetric lens $|\ell|$ between $|X|$ and $|Y|$ by 
-\iffull \begin{itemize} \fi
-\iffull \item \else (1) \fi $|\ell|.C = |X|\times \ell.C\times |Y|$;
-\iffull \item \else (2) \fi $|\ell|.\missing = (\init_X,\ell.\missing,\init_Y)$;
-\iffull \item \else (3) \fi $|\ell|.\putr(x,(x_0,c,y_0))= (\dy\ y_0,\, (x,
+both equipped with differs, we define a symmetric lens $|\ell|$%
+\iffull
+. The passage $\ell\mapsto|\ell|$ is compatible with lens equivalence.
+\lensdef{uneditize}
+{\infruleplain{\ell \in X \lens Y}
+              {|\ell|\mbox{ a symmetric lens between }|X|\mbox{ and }|Y|}
+}
+{
+    C &=& |X| \times \ell.C \times |Y| \\
+    \smissing &=& (\init_X,\ell.\missing,\init_Y) \\
+    putr(x,(x_0,c,y_0)) &=& (\dy\;y_0,(x,c',\dy\;y_0)) \\
+    && \mbox{where }(dy,c')=\ell.\dputr(\dif(x_0,x),c) \\
+    putl(y,(x_0,c,y_0)) &&\mbox{analogous}
+}
+\end{itemize}
+\else
+\ between $|X|$ and $|Y|$ by
+(1) $|\ell|.C = |X|\times \ell.C\times |Y|$;
+(2) $|\ell|.\missing = (\init_X,\ell.\missing,\init_Y)$;
+(3) $|\ell|.\putr(x,(x_0,c,y_0))= (\dy\ y_0,\, (x,
 c',\dy\ y_0))$ where $(\dy,c')=\ell.\dputr(\dx,c)$ and $\dx=\dif(x_0,x)$;
 and 
-\iffull \item \else (4) \fi an analogous definition of $|\ell|.\putl$
-\iffull \end{itemize} \fi
+(4) an analogous definition of $|\ell|.\putl$
 This defines a symmetric lens $|\ell|$ between $|X|$ and $|Y|$,
 and the passage $\ell\mapsto|\ell|$ is compatible with lens
 equivalence.
+\fi
 \begin{theorem}\label{eqchar}
   Let $X,Y$ be sets with distinguished elements $x$ and $y$ and equip
   the associated modules $X_x$ and $Y_y$ with their canonical differs.
  %
-  The constructions $|-|$ and $\partial_{xy}$ then establish a
+  The constructions $|-|$ and $\D_x$ then establish a
   one-to-one correspondence between equivalence classes of edit lenses
   between $X_x$ and $Y_y$, on the one hand, and state-based lenses
-  between $X$ and $Y$, on the other.
+  between $X$ and $Y$ for which $x$ and $y$ are already consistent, on the other.
 \end{theorem}
 
 \iffull
 \begin{pf}
 Let $\ell$ be a state-based lens between sets $X$ and $Y$ 
-and let $\hat x\in X$, $\hat y\in Y$ satisfy
- $\ell.\putr(\hat x,\ell.\smissing)=(\hat y,\ell.\smissing)$. 
-To show that $|\partial_{\hat x\hat y}(\ell)|\equiv \ell$ we use the 
-simulation $R=\{((x,c,y),c')\mid \ell.\putr(x,c)=(y,c)\wedge c=c'\}$. 
-
-Conversely, if $X$ and $Y$ are the modules $|X|_{\init_X}$ and
-$|Y|_{\init_Y}$, respectively, and $\ell\in X\lens Y$ then $\ell\equiv
-\partial_{\init_X,\init_Y}(|\ell|)$. To see this, we use the simulation 
-$S=\{(x,c,(x',c',y'),y)\mid x=x',y=y',c=c'\}$. We omit the verification 
+and let $x\in X$, $y\in Y$ satisfy
+ $\ell.\putr(x,\ell.\smissing)=(y,\ell.\smissing)$.
+To show that $|\D_x(\ell)|\equiv \ell$ we use the
+simulation $R=\{((x,c,y),c)\mid \ell.\putr(x,c)=(y,c)\}$.
+%
+Conversely, if $\ell\in X_x\lens Y_y$ then $\ell\equiv
+\D_{\init_X}|\ell|$. To see this, we use the simulation
+$S=\{(x,c,(x,c,y),y)\mid x\in X,y\in Y,c\in\ell.C\}$. We omit the verification
 of both simulations.%
-\dmwit{proofneeded}
 \end{pf}
 \fi
 
