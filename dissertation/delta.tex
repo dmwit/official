@@ -4490,7 +4490,7 @@ action of $O_X$ on $X$ is defined by $\NIL x=x$ and $\blist x\mlist w\elist\;y=x
 where $x\in X, w\in X\LIST$. Note that this is well defined as
 $x(xy)=x=xy$. If, in addition, we have a distinguished element $x\in
 X$, we thus obtain a module denoted $X_x$ where $|X_x|=X$ and
-$\init_X=x$ and $\partial X_x = O_X$.
+$\init_X=x$ and $\DX_x = O_X$.
 
 \iffull
 We are now ready to give the definition of the lifting operation that turns
@@ -4502,7 +4502,7 @@ be lifted to the unique edit lens between degenerate modules.}.
     {\ell \in X \lens Y \qquad x \in X\\
      \ell.\putr(x,\ell.\smissing) = (y,c_0)
     }
-    {\partial_x\ell \in X_x \lens Y_y}
+    {\D_x\ell \in X_x \lens Y_y}
 }
 {
     C &=& \ell.C \\
@@ -4515,17 +4515,17 @@ be lifted to the unique edit lens between degenerate modules.}.
 Let  $\ell$ be  a state-based symmetric lens between $X$
 and $Y$ along with element $x\in X$. Defining
 $(y,c_0)=\ell.\putr(x,\ell.\smissing)$,
-we then construct a symmetric edit lens $\partial_x \ell$ between the
+we then construct a symmetric edit lens $\D_x \ell$ between the
 modules $X_x$ and $Y_y$ 
 as follows: 
-(1) $(\partial_x\ell).C = \ell.C$;
-(2) $(\partial_x\ell).\missing = c_0$;
-(3) $(\partial_x\ell).\dputr_g = \ell.\putr$;
-(4) $(\partial_x\ell).\dputl_g = \ell.\putl$; and
-(5) $(\partial_x\ell).K = \{(x,c,y) \mid \ell.\putr(x,c)=(y,c)\}$.
+(1) $(\D_x\ell).C = \ell.C$;
+(2) $(\D_x\ell).\missing = c_0$;
+(3) $(\D_x\ell).\dputr_g = \ell.\putr$;
+(4) $(\D_x\ell).\dputl_g = \ell.\putl$; and
+(5) $(\D_x\ell).K = \{(x,c,y) \mid \ell.\putr(x,c)=(y,c)\}$.
 \fi
-$\partial_x \ell$ is a symmetric edit lens and the passage from $\ell$
-to $\partial_x \ell$ is compatible with the equivalences on symmetric
+$\D_x \ell$ is a symmetric edit lens and the passage from $\ell$
+to $\D_x \ell$ is compatible with the equivalences on symmetric
 lenses and symmetric edit lenses. The equations for $\dputr$ and $\dputl$
 are well-defined because the round-trip law for symmetric lenses guarantees
 that putting the same value twice in a row results in the same output both
@@ -4538,50 +4538,46 @@ results in a ``stable state''.
 \iffull
 \begin{theorem}
     If $k$ and $\ell$ are state-based lenses and $k\equiv\ell$, then
-    $\partial_xk\equiv\partial_x\ell$.
+    $\D_xk\equiv\D_x\ell$.
 \end{theorem}
 
 \begin{proof}
 Suppose $S$ is a witness that $k\equiv\ell$. Then we define
-$\partial_xS$ as follows:
-\[\partial_xS = \{(x,c_k,c_\ell,y) \mid (c_k,c_\ell) \in S
+$\D_xS$ as follows:
+\[\D_xS = \{(x,c_k,c_\ell,y) \mid (c_k,c_\ell) \in S
 \land x \in X \land y \in Y\}\]
 
 Let us write $(y_k,c_{0k})=k.\putr(x,k.\smissing)$ and
 $(y_\ell,c_{0\ell})=\ell.\putr(x,\ell.\smissing)$. Since
 $(k.\smissing,\ell.\smissing)\in S$, we know $y_k=y_\ell$ and
-$(c_{0k},c_{0\ell})\in S$.
-\dmwit{proofneeded}
+$(c_{0k},c_{0\ell})\in S$. The former equality tells us that at least the
+two lenses have the same type---that is, $Y_{y_k}=Y_{y_\ell}$ as
+modules---while the latter inclusion lets us observe that
+\[(\init_{X_x},(\D_xk).\missing,(\D_x\ell).\missing,\init_{Y_y})=(x,k.\smissing,\ell.\smissing,y)\in\D_xS\]
+where we abbreviate $y_k$ and $y_\ell$ by the name $y$.
 
-Since $(k.\smissing,\ell.\smissing)\in S$ and $k.\putr(x,k.\smissing)=(y,\_)$,
-we know that:
-\[\begin{array}{l}
-    (\init_{X_x},(\partial_{xy}k).\missing,(\partial_{xy}\ell).\missing,\init_{Y_y}) \\
-    \qquad= (x,k.\smissing,\ell.\smissing,y) \\
-    \qquad\in \partial_{xy}S
-\end{array}\]
-
-It remains to show that $\partial_{xy}S$ is preserved by $\dputr$ and
-$\dputl$; these arguments are very similar, so we focus on the one for
+It remains to show that $\D_xS$ is preserved by $\dputr$ and
+$\dputl$ (definedness is not in question since the modules in question have
+no partial edits); these arguments are very similar, so we focus on the one for
 $\dputr$. We have $x_0 \in X,y_0 \in Y,(c_k,c_\ell) \in S,\dx \in X_x$. We
 must show that computing $\dputr$ with these values produces values that
-form a tuple in $\partial_{xy}S$. We proceed by induction on $\dx$.
+form a tuple in $\D_xS$. We proceed by induction on $\dx$.
 
 In case $\dx=\NIL$, we are done: after computing $\dputr$, we still
 have $x_0$, $y_0$, $c_k$, and $c_\ell$. Otherwise, $\dx = x_1\CONS\dx'$ and
 the induction hypothesis tells us that if the two equations
 \begin{align*}
-(\partial_{xy}k).\dputr(\dx',c_k)&=(\dy_k,c_k')\\
-(\partial_{xy}\ell).\dputr(\dx',c_\ell)&=(\dy_\ell,c_\ell')
+(\D_xk).\dputr(\dx',c_k)&=(\dy_k,c_k')\\
+(\D_x\ell).\dputr(\dx',c_\ell)&=(\dy_\ell,c_\ell')
 \end{align*}
 hold then $(c_k',c_\ell') \in S$ and $\dy_k=\dy_\ell$. We can then conclude
 that if $k.\putr(x_1,c_k')=(y_k,c_k'')$ and
 $\ell.\putr(x_1,c_\ell')=(y_\ell,c_\ell'')$ then $y_k=y_\ell$ and
 $(c_k'',c_\ell'') \in S$ because $S$ is a witness that $k \equiv \ell$.
 We now compute with these definitions that
-$(\partial_{xy}k).\dputr(\dx,c_k)=(y_k\CONS\dy_k,c_k'')$ and
-$(\partial_{xy}\ell).\dputr(\dx,c_\ell)=(x_\ell\CONS\dx_\ell,c_\ell'')$. But we
-have already seen that $y_k\CONS\dy_k=x_\ell\CONS\dx_\ell$ and $(c_k'',c_\ell'') \in
+$(\D_xk).\dputr(\dx,c_k)=(y_k\CONS\dy_k,c_k'')$ and
+$(\D_x\ell).\dputr(\dx,c_\ell)=(y_\ell\CONS\dy_\ell,c_\ell'')$. But we
+have already seen that $y_k\CONS\dy_k=y_\ell\CONS\dy_\ell$ and $(c_k'',c_\ell'') \in
 S$, so we are done.
 \end{proof}
 \fi
