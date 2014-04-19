@@ -55,6 +55,9 @@
 \ifdelta\newcommand{\missing}{\mathit{init}}
 \else\newcommand{\missing}{\mathit{missing}}
 \fi
+\ifdissertation\newcommand{\gen}{_\ml g}
+\else          \newcommand{\gen}{_g}
+\fi
 \newcommand{\mlinjargs}{
     \renewcommand{\mlinl}[1]{\ml{inl}(##1)}
     \renewcommand{\mlinr}[1]{\ml{inr}(##1)}

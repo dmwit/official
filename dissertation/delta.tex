@@ -1,7 +1,5 @@
 % TODO: notation (perhaps overload stuff?)
 % TODO: explain the \Defined notation, plus use it a bit more pervasively
-% TODO: brainstorm for the bad \dputr_g notation: could use the same trick
-%       we used for the restructuring lens and make it \dputr_{\ml{g}}
 % TODO: intro/conclusion paragraphs
 \newif \iffailed \failedfalse % to remove some bits we think we don't need
 \ifdissertation\newcommand{\symmlenses}{ Chapter~\ref{chap:complement}\xspace}
@@ -1249,6 +1247,7 @@ category of module isomorphisms to the category of edit lenses.  \iffull
         \item By the first and second equivalences in the theorem,
     \[\bij_{(f,h)};\bij_{(f^{-1},h^{-1})}\equiv\bij_{(f,h);(f^{-1},h^{-1})}=\bij_{(\id,\id)}\equiv\id.\]
     \end{itemize}
+    \ifdissertation\vskip -5.7ex\fi
 \end{proof}
 \fi
 
@@ -1280,34 +1279,38 @@ notation $|g|$ means the length of a sequence: $|g_1 \cdots g_n|=n$. It
 is easy to show that $G\LIST$ together with sequence concatenation and
 $\NIL$ forms a monoid.
 
-% TODO: this f_g notation is awful and really, really needs to be fixed
 % TODO: clean up the presentation of all this by observing that stateful
 % monoid morphisms are monoid morphisms into the state monoid and monoid
 % actions are monoid morphisms into the partial function monoid
 It is often convenient to specify the behavior of a monoid
 homomorphism by giving its output on each generator.
 \fi
-Given a function $f_g \in G \to M$ on generators, the monoid homomorphism $f
+Given a function $f\gen \in G \to M$ on
+generators\ifdissertation\footnote{We use a different typeface in the
+    subscript of $f\gen$ so that it is clear that it is not intended to be
+    an index; thus the notation $f_g$ is for the $g$th element of a family
+    of functions, while $f\gen$ is for a particular function which we are
+    thinking of as specifying a homomorphism.}\fi, the monoid homomorphism $f
 \in G\LIST \to M$ is defined by $f(\NIL)=\ONE$ and
 \ifdissertation
-$f(g \CONS gs)=f_g(g)f(gs)$%
+$f(g \CONS gs)=f\gen(g)f(gs)$%
 \else
-$f(g_1 \cdots g_n)=f_g(g_1)f(g_2 \cdots g_n)$%
+$f(g_1 \cdots g_n)=f\gen(g_1)f(g_2 \cdots g_n)$%
 \fi. Similarly, given a
-stateful function $f_g \in G \times C \to M \times C$, we can define a
+stateful function $f\gen \in G \times C \to M \times C$, we can define a
 stateful monoid homomorphism $f \in G\LIST \times C \to M \times C$ by setting
 $f(\NIL,c) = (\ONE,c)$ and
 \ifdissertation
 \begin{align*}
     f(g \CONS gs,c) ={}& \mllet (m',c') = f(gs,c) \mline \\
-    & \mllet (m'',c'') = f_g(g,c') \mline \\
+    & \mllet (m'',c'') = f\gen(g,c') \mline \\
     & (m''m',c'')
 .
 \end{align*}
 \else
 \begin{align*}
     f(g_1 \cdots g_n,c) ={}& \mllet (m',c') = f(g_2 \cdots g_n,c) \mline \\
-    & \mllet (m'',c'') = f_g(g_1,c') \mline \\
+    & \mllet (m'',c'') = f\gen(g_1,c') \mline \\
     & (m''m',c'')
 .
 \end{align*}
@@ -1322,8 +1325,8 @@ is either an edit to the $X$ part or an edit to the $Y$ part.
 We can turn these generators into a module by specifying a monoid
 action for the free monoid $(G^\otimes_{X,Y})\LIST$:
 \begin{align*}
-    \mlleft\dx \odot_g (x,y) &= (\dx\;x,y) \\
-    \mlright\dy \odot_g (x,y) &= (x,\dy\;y)
+    \mlleft\dx \odot\gen (x,y) &= (\dx\;x,y) \\
+    \mlright\dy \odot\gen (x,y) &= (x,\dy\;y)
 \end{align*}
 The full module is then given by
 \[X \otimes Y =
@@ -1344,13 +1347,13 @@ functions are defined via stateful monoid homomorphism specifications.
            && \qquad \hspace{.7em} \, (x,c_k,y) \in k.K \\
            && \qquad \wedge \,
                (z,c_\ell,w) \in \ell.K \; \} \\
-    \dputr_g(\mlleft\dx,(c_k,c_\ell))
+    \dputr\gen(\mlleft\dx,(c_k,c_\ell))
         &=& \mllet (\dz,c_k') = k.\dputr(\dx,c_k) \mline \\
         & & (\mlleft\dz,(c_k',c_\ell)) \\
-    \dputr_g(\mlright\dy,(c_k,c_\ell))
+    \dputr\gen(\mlright\dy,(c_k,c_\ell))
         &=& \mllet (\dw,c_\ell') = \ell.\dputr(\dy,c_\ell) \mline \\
         & & (\mlright\dw,(c_k,c_\ell')) \\
-    \dputl_g \mbox{ similarly}
+    \dputl\gen \mbox{ similarly}
 }
 \iffull \end{defn} \fi
 
@@ -1428,31 +1431,31 @@ more detail on this alteration.
     &\cup& \{(\mlinr z,\mlinr c,\mlinr w) \mid (z,c,w) \in \ell.K\} \\[1ex]
     c_k &=& k.\missing \\
     c_\ell &=& \ell.\missing \\
-    \dputr_g(\mlswitchll\dx, \mlinl c)
+    \dputr\gen(\mlswitchll\dx, \mlinl c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c_k)
           \ \ml{in}\ (\mlswitchll\dy, \mlinl{c'}) \\
-    \dputr_g(\mlswitchrl\dx, \mlinr c)
+    \dputr\gen(\mlswitchrl\dx, \mlinr c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c_k)
           \ \ml{in}\ (\mlswitchrl\dy, \mlinl{c'}) \\
-    \dputr_g(\mlswitchlr\dz, \mlinl c)
+    \dputr\gen(\mlswitchlr\dz, \mlinl c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c_\ell)
           \ \ml{in}\ (\mlswitchlr\dw, \mlinr{c'}) \\
-    \dputr_g(\mlswitchrr\dz, \mlinr c)
+    \dputr\gen(\mlswitchrr\dz, \mlinr c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c_\ell)
           \ \ml{in}\ (\mlswitchrr\dw, \mlinr{c'}) \\
-    \dputr_g(\mlstayl\dx,\mlinl c)
+    \dputr\gen(\mlstayl\dx,\mlinl c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c)
           \ \ml{in}\ (\mlstayl\dy, \mlinl{c'}) \\
-    \dputr_g(\mlstayr\dz,\mlinr c)
+    \dputr\gen(\mlstayr\dz,\mlinr c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c)
           \ \ml{in}\ (\mlstayr\dw, \mlinr{c'}) \\
     \iffailed
-    \dputr_g(e,\mlfailed )
+    \dputr\gen(e,\mlfailed )
         &=& \mllet (e',c) = \dputr(e,\missing) \\
         & & \ml{in}\ (e',\mlfailed) \\
     \fi
-    \dputr_g(e,c) &=& (\fail,\iffailed \mlfailed \else c \fi)\mbox{ in all other cases} \\[1.2ex]
-    \dputl_g&& \mbox{is analogous}
+    \dputr\gen(e,c) &=& (\fail,\iffailed \mlfailed \else c \fi)\mbox{ in all other cases} \\[1.2ex]
+    \dputl\gen&& \mbox{is analogous}
 }
 \else
 \lensdef{tensor_sum}
@@ -1467,31 +1470,31 @@ more detail on this alteration.
     && \quad \mid (z,c,w) \in \ell.K\} \\[1ex]
     c_k &=& k.\missing \\
     c_\ell &=& \ell.\missing \\
-    \dputr_g(\mlswitchll\dx, \mlinl c)
+    \dputr\gen(\mlswitchll\dx, \mlinl c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c_k) \\
         & & \ml{in}\ (\mlswitchll\dy, \mlinl{c'}) \\
-    \dputr_g(\mlswitchrl\dx, \mlinr c)
+    \dputr\gen(\mlswitchrl\dx, \mlinr c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c_k) \\
         & & \ml{in}\ (\mlswitchrl\dy, \mlinl{c'}) \\
-    \dputr_g(\mlswitchlr\dz, \mlinl c)
+    \dputr\gen(\mlswitchlr\dz, \mlinl c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c_\ell) \\
         & & \ml{in}\ (\mlswitchlr\dw, \mlinr{c'}) \\
-    \dputr_g(\mlswitchrr\dz, \mlinr c)
+    \dputr\gen(\mlswitchrr\dz, \mlinr c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c_\ell) \\
         & & \ml{in}\ (\mlswitchrr\dw, \mlinr{c'}) \\
-    \dputr_g(\mlstayl\dx,\mlinl c)
+    \dputr\gen(\mlstayl\dx,\mlinl c)
         &=& \mllet (\dy,c') = k.\dputr(\dx,c) \\
         & & \ml{in}\ (\mlstayl\dy, \mlinl{c'}) \\
-    \dputr_g(\mlstayr\dz,\mlinr c)
+    \dputr\gen(\mlstayr\dz,\mlinr c)
         &=& \mllet (\dw,c') = \ell.\dputr(\dz,c) \\
         & & \ml{in}\ (\mlstayr\dw, \mlinr{c'}) \\
     \iffailed
-    \dputr_g(e,\mlfailed )
+    \dputr\gen(e,\mlfailed )
         &=& \mllet (e',c) = \dputr(e,\missing) \\
         & & \ml{in}\ (e',\mlfailed) \\
     \fi
-    \dputr_g(e,c) &=& (\fail,\iffailed \mlfailed \else c \fi)\mbox{ in all other cases} \\[1.2ex]
-    \dputl_g&& \mbox{is analogous}
+    \dputr\gen(e,c) &=& (\fail,\iffailed \mlfailed \else c \fi)\mbox{ in all other cases} \\[1.2ex]
+    \dputl\gen&& \mbox{is analogous}
 }
 \fi
 \makeatletter\refstepcounter{\@captype}\makeatother
@@ -1558,13 +1561,13 @@ that are internally inconsistent---e.g., a switch to the left side followed
 by an attempt to apply an edit which stays on the right
 side. These intuitions are formalized in the application function:
 \begin{eqnarray*}
-    \mlswitchll\dx\odot_g\mlinl x &=& \mlinl{\dx\,\init_X} \\
-    \mlswitchlr\dy\odot_g\mlinl x &=& \mlinr{\dy\,\init_Y} \\
-    \mlswitchrl\dx\odot_g\mlinr y &=& \mlinl{\dx\,\init_X} \\
-    \mlswitchrr\dy\odot_g\mlinr y &=& \mlinr{\dy\,\init_Y} \\
-    \mlstayl\dx\odot_g\mlinl x &=& \mlinl{\dx\,x} \\
-    \mlstayr\dy\odot_g\mlinr y &=& \mlinr{\dy\,y} \\
-    e \odot_g v && \mbox{undefined in all other cases}
+    \mlswitchll\dx\odot\gen\mlinl x &=& \mlinl{\dx\,\init_X} \\
+    \mlswitchlr\dy\odot\gen\mlinl x &=& \mlinr{\dy\,\init_Y} \\
+    \mlswitchrl\dx\odot\gen\mlinr y &=& \mlinl{\dx\,\init_X} \\
+    \mlswitchrr\dy\odot\gen\mlinr y &=& \mlinr{\dy\,\init_Y} \\
+    \mlstayl\dx\odot\gen\mlinl x &=& \mlinl{\dx\,x} \\
+    \mlstayr\dy\odot\gen\mlinr y &=& \mlinr{\dy\,y} \\
+    e \odot\gen v && \mbox{undefined in all other cases}
 \end{eqnarray*}
 We then define the sum of modules $X$ and $Y$ as
 \[X \oplus Y =
@@ -1699,10 +1702,10 @@ most interesting case:\fi
 
             To show that $S$ is preserved by $\dputr$ and $\dputl$, it is
             sufficient to consider only the generator edits (since $\dputr$
-            and $\dputl$ are homomorphisms). We show here that $\dputr_g$
+            and $\dputl$ are homomorphisms). We show here that $\dputr\gen$
             preserves $S$ when starting from $(\mlinl
             x,\mlinl{c_k},\mlinl{c_{k'}},\mlinl y)$; the arguments for
-            $\dputl_g$ and for starting quadruples with $\mlinrx$s are
+            $\dputl\gen$ and for starting quadruples with $\mlinrx$s are
             nearly identical. Choose arbitrary $\dv$ for which $\dv\;\mlinl
             x$ is defined. There are three cases to consider.
 
@@ -1806,14 +1809,14 @@ and $(k\oplus\ell);(k'\oplus\ell')\equiv(k;k')\oplus(\ell;\ell')$.\fi
     \missing &=& \NIL \\
     K &=& \{(x,c,y) \mid |x| = |c| = |y| \ \land \\
     &&\qquad \forall 1 \mathord{\le} p \mathord{\le} |x|. \;(x_p,c_p,y_p) \in \ell.K\} \\[.8ex]
-    \dputr_g(\mlmod p\dx,c)
+    \dputr\gen(\mlmod p\dx,c)
         &=& \mllet (\dy,c_p') = \ell.\dputr(\dx,c_p) \mline \\
         & & (\mlmod p\dy,c[p \mapsto c_p'])) \\
         & & \mbox{ when } p \le n \\
-    \dputr_g(\mlmod p\dx,c)
+    \dputr\gen(\mlmod p\dx,c)
         &=& (\fail,c) \mbox{ when } p > n \\
-    \dputr_g(\fail,c) &=& (\fail,c) \\
-    \dputr_g(\dx,c)
+    \dputr\gen(\fail,c) &=& (\fail,c) \\
+    \dputr\gen(\dx,c)
     &=& (\dx,\dx\,c) \mbox{ in all other cases} \\
     \dputl&& \mbox{similar}
 }
@@ -1849,33 +1852,33 @@ delete.
 \iflater\discuss{How about enclosing lists in some kind of brackets?}\fi
 \ifdissertation
 \begin{align*}
-    \mlmod p\dx \odot_g x
+    \mlmod p\dx \odot\gen x
     &= x[p\mapsto\dx\,x_p] \\
-    \mlins i \odot_g x
+    \mlins i \odot\gen x
     &= x \cdot \underbrace{\blist\init_{X}, \ldots, \init_{X}\elist}_{i\ \mbox{\tiny times}}\\
-    \mldel i \odot_g x
+    \mldel i \odot\gen x
     &= \blist x_1, \ldots, x_{n-i} \elist \\
-    \mlreorder f \odot_g x
+    \mlreorder f \odot\gen x
     &= \blist x_{f(n)(1)}, \ldots, x_{f(n)(n)} \elist \\
-    \fail \odot_g x
+    \fail \odot\gen x
     &{\phantom{{}={}}} \mbox{undefined}
 \end{align*}
 \else
 \begin{align*}
-    \mlmod p\dx \odot_g x_1 \cdots x_n
+    \mlmod p\dx \odot\gen x_1 \cdots x_n
     &= x_1 \cdots x_{p-1}\; (\dx\,x_p) \; x_{p+1} \cdots x_n \\
-    \mlins i \odot_g x_1 \cdots x_n
+    \mlins i \odot\gen x_1 \cdots x_n
     &= x_1 \cdots x_n \underbrace{\init_{X} \cdots \init_{X}}_{i\ \mbox{\tiny times}}\\
-    \mldel i \odot_g x_1 \cdots x_n
+    \mldel i \odot\gen x_1 \cdots x_n
     &= x_1 \cdots x_{n-i} \\
-    \mlreorder f \odot_g x_1 \cdots x_n
+    \mlreorder f \odot\gen x_1 \cdots x_n
     &= x_{f(n)(1)} \cdots x_{f(n)(n)} \\
-    \fail \odot_g x_1 \cdots x_n
+    \fail \odot\gen x_1 \cdots x_n
     &{\phantom{{}={}}} \mbox{undefined}
 \end{align*}
 \fi%dissertation
-We take $\mlmod p\dx \odot_g x$ to be undefined when $p > |x|$,
-and similarly take $\mldel i \odot_g x$ to be undefined when $i >
+We take $\mlmod p\dx \odot\gen x$ to be undefined when $p > |x|$,
+and similarly take $\mldel i \odot\gen x$ to be undefined when $i >
 |x|$. The list module is then $X\LIST =
 \left<|X|\LIST,\NIL,(G^{\mathrm{list}}_X)\LIST,\odot\right>$.
 
@@ -1925,24 +1928,24 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             same length, and the pointwise-consistent constraint is
             degenerate. To prove that consistent triples are mapped to
             consistent triples, we argue that because the generating
-            function $\dputr_g$ preserves consistency, the resulting
+            function $\dputr\gen$ preserves consistency, the resulting
             function $\dputr$ also preserves consistency.
 
-            To show that $\dputr_g$ maintains consistency, choose an
+            To show that $\dputr\gen$ maintains consistency, choose an
             arbitrary consistent triple $(x,c,y)$ and applicable basic edit
             $\dx$; these two conditions mean that $|x| = |c| = |y|$, that
-            $(x_p,c_p,y_p) \in \ell.K$ for all $p$, and that $\dx \odot_g x$
+            $(x_p,c_p,y_p) \in \ell.K$ for all $p$, and that $\dx \odot\gen x$
             is defined. We now consider each of the cases for $\dx$.
 
             If $\dx = \mlmod p{\dv_x}$, then we know that $1 \le p \le |x|$ and
-            $x_p'=\dv \odot x_p$ is defined (because $\dx \odot_g x$ is).
+            $x_p'=\dv \odot x_p$ is defined (because $\dx \odot\gen x$ is).
             Defining $(\dv_y,c_p') = \ell.\dputr(\dv_x,c_p)$ and
             $y_p'=\dv_y \odot y_p$, we observe that since $\ell$ is a lens, we
             must have $(x_p',c_p',y_p') \in \ell.K$. Hence we know that
             $(x[p \mapsto x_p'],c[p \mapsto c_p'],y[p \mapsto y_p']) \in
-            \map(\ell).K$, and, by definition of $\odot_g$, that:
-            \[(\mlmod p{\dv_x} \odot_g x,c[p \mapsto c_p'],\mlmod p{\dv_y}
-            \odot_g y) \in \map(\ell).K\]
+            \map(\ell).K$, and, by definition of $\odot\gen$, that:
+            \[(\mlmod p{\dv_x} \odot\gen x,c[p \mapsto c_p'],\mlmod p{\dv_y}
+            \odot\gen y) \in \map(\ell).K\]
             This is what we needed to show for this case.
 
             If $\dx = \mlins i$, then we need merely show that the
@@ -1951,8 +1954,8 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             \ell.K$, so this is trivially true.
 
             Suppose $\dx = \mldel i$ (and hence $i\le|x|$), and let
-            $n=|x|-i$. We observe that $|\dx \odot_g x| = |\dx \odot_g c| =
-            |\dx \odot_g y| = n$. Moreover, the pointwise-consistent part of
+            $n=|x|-i$. We observe that $|\dx \odot\gen x| = |\dx \odot\gen c| =
+            |\dx \odot\gen y| = n$. Moreover, the pointwise-consistent part of
             the condition is clearly satisfied: we must show that $\forall 1
             \le p \le n.\;(x_p,c_p,y_p) \in \ell.K$, but we know the
             stronger condition that $\forall 1 \le p \le |x|.\;(x_p,c_p,y_p)
@@ -1966,7 +1969,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             desired.
 
             Finally, we need not consider the case where $\dx = \fail$
-            because this contradicts the assumption that $\dx \odot_g x$ is
+            because this contradicts the assumption that $\dx \odot\gen x$ is
             defined.
 
             The argument that $\dputl$ maintains consistency is similar.
@@ -2044,28 +2047,28 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
     \mid z \in (|X|+|Y|)\LIST\}
 }
 \newcommand{\partitiondputrgdef}{
-    \dputr_g(\mlmod p\dv,c) &=& (\mlleft\fail,c)\mbox{ when }p > |c|
+    \dputr\gen(\mlmod p\dv,c) &=& (\mlleft\fail,c)\mbox{ when }p > |c|
     \markeqn{rmodbigp}%
  \\
-    \dputr_g(\mlmod p\NIL,c) &=& (\NIL,c)\mbox{ when }1 \le p \le |c|
+    \dputr\gen(\mlmod p\NIL,c) &=& (\NIL,c)\mbox{ when }1 \le p \le |c|
     \markeqn{rmodempty}%
  \\
-    \dputr_g(\mlmod p{\dv\CONS\dv s},c)
+    \dputr\gen(\mlmod p{\dv\CONS\dv s},c)
         &=& \partitionarray{(d'\,d,c'')}{
             &&
             1 < n
             &
             (d,c') &=&
-            \dputr_g(\mlmod p{\dv s},c)
+            \dputr\gen(\mlmod p{\dv s},c)
             \\
             &&
             1 \le p \le |c|
             &
             (d',c'') &=&
-            \dputr_g(\mlmod p\dv,c')
+            \dputr\gen(\mlmod p\dv,c')
         }{rmodcons}
  \\
-    \dputr_g(\mlmod p{\mlswitch_{jk}(\dv)},c)
+    \dputr\gen(\mlmod p{\mlswitch_{jk}(\dv)},c)
         &=& \partitionarray{(d_2d_1d_0,c[p \mapsto k])}{
             (p_L,p_R) &=& \mlcount(p,c) &
             d_0 &=& \map_{\lambda d.\,\mltag(j,d)}(\mldelete'(p_j)) \\
@@ -2074,18 +2077,18 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
         }
         {rmodswitch}%
  \\
-    \dputr_g(\mlmod p{\mlstay_j(\dv)},c)
+    \dputr\gen(\mlmod p{\mlstay_j(\dv)},c)
         &=& \partitionarray{(\mltag(j,\mlmod{p_j}\dv),c)}{
             (p_L,p_R) &=& \mlcount(p,c)
         } 
         {rmodstay}\\
-    \dputr_g(\mlmod p\fail,c) &=& (\mlleft\fail,c)
+    \dputr\gen(\mlmod p\fail,c) &=& (\mlleft\fail,c)
        \markeqn{rmodfail} 
 \\
-    \dputr_g(\mlins i,c) &=& (\mlonl{\mlins i},\mlins i\,c)
+    \dputr\gen(\mlins i,c) &=& (\mlonl{\mlins i},\mlins i\,c)
         \markeqn{rins}%
 \\
-    \dputr_g(\mldel i,c)
+    \dputr\gen(\mldel i,c)
         &=& \partitionarray{(d_1d_0,\mldel i\,c)}{
             c'        &=& \mlreverse(c) &
             d_0       &=& \mlonl{\mldel{n_L\mathord{-}1}} \\
@@ -2093,7 +2096,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             d_1       &=& \mlonr{\mldel{n_R\mathord{-}1}}
         }
         {rdel}\\
-    \dputr_g(\mlreorder f,c)
+    \dputr\gen(\mlreorder f,c)
         &=& \partitionarray{(d_Ld_R,c')}{
             h &=& \mliso(c) &
             c' &=& \mlreorder f\,c \\
@@ -2107,16 +2110,16 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             f_R(n_R) &=& \ml{inr};h'';\mluntag
         }
         {rreorder}\\
-    \dputr_g(\fail,c) &=& (\mlleft\fail,c)
+    \dputr\gen(\fail,c) &=& (\mlleft\fail,c)
       \markeqn{rfail}
 }
 \newcommand{\partitiondputlgdef}{
-    \dputl_g(\mlonl{\mlmod p\dx},c)
+    \dputl\gen(\mlonl{\mlmod p\dx},c)
         &=& \partitionarray{(\mlmod{p'}{\mlstayl\dx},c)}{
             p' &=& \mliso(c)^{-1}(\mlinl p)
         }
         {lmod}\\
-    \dputl_g(\mlonl{\mlreorder f},c)
+    \dputl\gen(\mlonl{\mlreorder f},c)
         &=& \partitionarray{(\mlreorder{f'},c)}{
             g(\mlinr p) &=& \mlinr p &
             f'(n \ne |c|) &=& \lambda p.\,p \\
@@ -2126,31 +2129,31 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
             h &=& \mliso(c)
         }
         {lreorder}\\
-    \dputl_g(\mlonl{\mlins i},c) &=& (\mlins i,\mlins i\;c)
+    \dputl\gen(\mlonl{\mlins i},c) &=& (\mlins i,\mlins i\;c)
       \markeqn{lins}
 \\
-    \dputl_g(\mlonl{\mldel 0},c) &=& (\NIL,c)
+    \dputl\gen(\mlonl{\mldel 0},c) &=& (\NIL,c)
       \markeqn{ldel0}
 \\
-    \dputl_g(\mlonl{\mldel i},c)
+    \dputl\gen(\mlonl{\mldel i},c)
         &=& \partitionarray{(d''\;\mldelete'(p),c'')}{
             h &=& \mliso(c) &
             (n_L+1,n_R+1) &=& \mlcount(|c|+1,c) \\
             p &=& h^{-1}(\mlinl{n_L}) &
-            (d'',c'') &=& \dputl_g(d',c') \\
+            (d'',c'') &=& \dputl\gen(d',c') \\
             c' &=& \mldelete'(p)\;c &
             d' &=& \mlonl{\mldel{i\mathord{-}1}}}
         {ldeli} \\
             && % \hspace{6.7em} 
             \mbox{when }1 \le i \le n_L
 \\
-    \dputl_g(\mlonl{\mldel i},c) &=& (\fail,c)\mbox{ otherwise}
+    \dputl\gen(\mlonl{\mldel i},c) &=& (\fail,c)\mbox{ otherwise}
       \markeqn{ldelfail}
 \\
-    \dputl_g(\mlonl\fail,c) &=& (\fail,c)
+    \dputl\gen(\mlonl\fail,c) &=& (\fail,c)
       \markeqn{lfail}
 \\[1ex]
-    \dputl_g(\mlonr\dy,c) &&\mbox{similar}
+    \dputl\gen(\mlonr\dy,c) &&\mbox{similar}
 }
 
 \ifdissertation
@@ -2679,13 +2682,13 @@ this is immediate.  Second, the initial state \[(\init_{(X \oplus
 this is easily verified from the definitions of the initial elements of the
 list and product modules.  And third, the $\dputr$ and $\dputl$ operations
 must preserve consistent states; this is where some work is required.  We
-show that $\dputr_g$ and $\dputl_g$ respect $K$; since $\dputr$ and $\dputl$
+show that $\dputr\gen$ and $\dputl\gen$ respect $K$; since $\dputr$ and $\dputl$
 are defined by specification from these, the fact that they respect $K$
 follows by induction on the number of atomic edits they are handed.
 
 \newcommand{\partitiondputrproof}{
 We are given some $\dz \in G^{\mathrm{list}}_{X \oplus Y}$ such that
-$\dz\;z$ is defined. We can define $(\dz',c')=\dputr_g(\dz,c)$; then we
+$\dz\;z$ is defined. We can define $(\dz',c')=\dputr\gen(\dz,c)$; then we
 must show that $\dz'(x,y)$ is defined and that $(\dz\;z,c',\dz'(x,y)) \in
 K$. We proceed by induction on the size of $\dz$.
 \begin{trivlist}
@@ -2718,8 +2721,8 @@ K$. We proceed by induction on the size of $\dz$.
         \dz &= \mlmod p{\dv\CONS\dv s} \\
         1 &\le p \le |c| \\
         1 &< n \\
-        (d,c'') &= \dputr_g(\mlmod p{\dv s},c) \label{eq:IH-1} \\
-        (d',c') &= \dputr_g(\mlmod p\dv,c'') \label{eq:IH-2} \\
+        (d,c'') &= \dputr\gen(\mlmod p{\dv s},c) \label{eq:IH-1} \\
+        (d',c') &= \dputr\gen(\mlmod p\dv,c'') \label{eq:IH-2} \\
         \dz' &= d'\;d
     \end{align}
     By Lemma~\ref{lemma:unfold-mod-once} and the assumption that $\mlmod
@@ -2766,8 +2769,8 @@ K$. We proceed by induction on the size of $\dz$.
             &= c'
     \end{align*}
     The second line follows from the first because \map is a list
-    homomorphism.  Hence $\dputr_g$ maintains consistency of $c$ in this
-    case; it remains to show that $\dputr_g$ maintains consistency of the
+    homomorphism.  Hence $\dputr\gen$ maintains consistency of $c$ in this
+    case; it remains to show that $\dputr\gen$ maintains consistency of the
     output. We calculate the effects of $\dz$ and $\dz'$, starting with
     $\dz'$:
     \begin{align*}
@@ -2886,7 +2889,7 @@ K$. We proceed by induction on the size of $\dz$.
     These latter two computations amount to showing that
     \dissdis\dz'(x,y)=(\ml{lefts}(\dz\;z),\ml{right}(\dz\;z))\dissdis which, together with
     the observation above that $\map_\ml{tagof}(\dz\;z)=c'$, shows that
-    $\dputr_g$ preserves consistency in this case.
+    $\dputr\gen$ preserves consistency in this case.
 
 \item {\bf Case \markref{rdel}:}
     \begin{align*}
@@ -3022,7 +3025,7 @@ K$. We proceed by induction on the size of $\dz$.
 We will give the proofs for atomic edits of the form $\mlonl\dx$; the proofs
 for edits of the form $\mlonr\dy$ are similar. Choose $\dx \in
 G^{\mathrm{list}}_X$ such that $\dx\;x$ is defined. We define
-$(\dz,c')=\dputl_g(\mlonl\dx,c)$ and must show that $\dz\;z$ is defined and
+$(\dz,c')=\dputl\gen(\mlonl\dx,c)$ and must show that $\dz\;z$ is defined and
 that $(\dz\;z,c',(\dx\;x,y)) \in K$. We proceed by induction on the size of
 $\dx$.
 
@@ -3143,10 +3146,10 @@ $\dx$.
             &= c'
     \end{align*}
     There's a slight left-bias here; in the right- version of this proof, we
-    find that $\dputl_g$ would have to produce a $c'$ with many replicated
+    find that $\dputl\gen$ would have to produce a $c'$ with many replicated
     $R$s instead of $L$s, and so would not have quite as compact a syntax
     for this output.
-    % TODO: does this mean we should explicitly give \dputl_g(\mlonr{\mlins
+    % TODO: does this mean we should explicitly give \dputl\gen(\mlonr{\mlins
     % i}) when defining the partition lens above?
 
     \begin{align*}
@@ -3158,8 +3161,8 @@ $\dx$.
             &= \dx\;x
     \end{align*}
     Again, the left-bias means the right- version of this proof relies on
-    $\dputl_g$ being slightly more complicated for the right- analog. In
-    particular, $\dputl_g$ would need to output an edit which did the
+    $\dputl\gen$ being slightly more complicated for the right- analog. In
+    particular, $\dputl\gen$ would need to output an edit which did the
     insertion above followed by a series of modifications that turned the
     $i$ final copies of $\mlinl{\init_X}$ into $i$ copies of
     $\mlinr{\init_Y}$.
@@ -3181,7 +3184,7 @@ $\dx$.
     \begin{align*}
         \dx &= \mldel i \\
         \dz &= d'd \\
-        (d',c') &= \dputl_g(d'',c'') \\
+        (d',c') &= \dputl\gen(d'',c'') \\
         d'' &= \mlonl{\mldel{i-1}} \\
         c'' &= d\;c \\
         d &= \mldelete'(\mliso(c)^{-1}(\mlinl{n_L}))
@@ -3279,7 +3282,7 @@ definition of $K$, we know
     x &= \ml{lefts}(z) \\
     y &= \ml{rights}(z).
 \end{align*}
-In many of the cases below, the definition of $\dputr_g$ or $\dputl_g$ has
+In many of the cases below, the definition of $\dputr\gen$ or $\dputl\gen$ has
 its own bindings for $n_L$ and $n_R$ using the idiom
 \[(n_L+1,n_R+1)=\mlcount(|c|+1,c).\]
 At first blush, these definitions conflict with the convention we are
@@ -3290,10 +3293,10 @@ further in the cases where they occur.
 % TODO: in partitiondputrproof, we clearly label what equations we learn at
 % the beginning of each case, but partitiondputlproof deosn't follow this
 % very nice structure; make it do so
-First we show that $\ifdissertation\dputl\else\dputr\fi_g$ respects $K$.%
+First we show that $\ifdissertation\dputl\else\dputr\fi\gen$ respects $K$.%
 \ifdissertation\partitiondputlproof\else\partitiondputrproof\fi
 
-We  now  show that $\ifdissertation\dputr\else\dputl\fi_g$ respects $K$.%
+We  now  show that $\ifdissertation\dputr\else\dputl\fi\gen$ respects $K$.%
 \ifdissertation\partitiondputrproof\else\partitiondputlproof\fi
 \end{proof}
 
@@ -3527,22 +3530,22 @@ complement (after $\partition$).
         {
             C &=& T(\ell.C) \\[.8ex]
             \missing &=& (\init_I, \lambda p.\ \ell.\missing) \\[.8ex]
-            \dputr_g(\mlmod p\dx,(i,f)) &=& (\mlmod p\dy, (i,f')) \\
+            \dputr\gen(\mlmod p\dx,(i,f)) &=& (\mlmod p\dy, (i,f')) \\
                 \colspan{\qquad\qquad\text{when }p\in\live(i)\text{ and where }}\\
                 \colspan{\qquad\qquad f' = f[p{\mapsto}c'], (\dy,c')=\ell.\dputr(\dx,f(p))}\\
-           \dputr_g(\mlmod p\dx,(i,f)) &=& (\fail,(i,f))\text{ if $p\not\in\live(i)$}
+           \dputr\gen(\mlmod p\dx,(i,f)) &=& (\fail,(i,f))\text{ if $p\not\in\live(i)$}
      \\
-           \dputr_g(\mlinsert(\di),(i,g)) &=& (\mlinsert(\di), \\
+           \dputr\gen(\mlinsert(\di),(i,g)) &=& (\mlinsert(\di), \\
 &&(\di\ i,g[p{\mapsto}\ell.\missing]))\\
 &&\mbox{ when }\di\ i\mbox{ is defined }\\
-           \dputr_g(\mldelete(\di),(i,g)) &=& (\mldelete(\di), (\di\
+           \dputr\gen(\mldelete(\di),(i,g)) &=& (\mldelete(\di), (\di\
            i,g\restrictedto \live(\di\ i)))\\
 &&\mbox{ when }\di\ i\mbox{ is defined }\\
-           \dputr_g(\mlrearrange(\di,h),(i,g)) &=& (\mlrearrange(\di,h),\\
+           \dputr\gen(\mlrearrange(\di,h),(i,g)) &=& (\mlrearrange(\di,h),\\
 &&           (\di\ i,\lambda p.g(h(i)(p))))\\
 &&\mbox{ when }\di\ i\mbox{ is defined }\\
-           \dputr_g(\dz,c) &=& (\fail,c)\mbox{ in all other cases} \\[0.8ex]
-           \dputl_g(-,-) &=& \text{analogous}\\[.8ex]
+           \dputr\gen(\dz,c) &=& (\fail,c)\mbox{ in all other cases} \\[0.8ex]
+           \dputl\gen(-,-) &=& \text{analogous}\\[.8ex]
             K &=& \{ ((i,f),(i,g),(i,f')) \;|\; i\in I \\
 && \wedge \, (f(p),g(p),f'(p))\in \ell.K \}
         }
@@ -3777,22 +3780,22 @@ with the desired consistent state.
   \missing &=& (\init_I,\ell.\missing,\init_{I'}) \\[.8ex]
   \colspan{K = \{ ((i,f),(i,c,i'),(i',f'))} \\
   \colspan{\qquad \;|\; (i,c,i')\in \ell.K \wedge \,\forall p{\in}\live'(i'). f(f_{i,c,i'}(p))=f'(p) \} } \\[1ex]
-  \dputr_g(\fail,x) &=& (\fail,x)\\
-  \dputr_g(\mlmod p\dx,(i,c,i')) &=& (\mlmod{f^{-1}_{i,c,i'}(p)}\dx, (i,c,i')) \\
+  \dputr\gen(\fail,x) &=& (\fail,x)\\
+  \dputr\gen(\mlmod p\dx,(i,c,i')) &=& (\mlmod{f^{-1}_{i,c,i'}(p)}\dx, (i,c,i')) \\
   && \text{when }p\in\live(i)\\
-  \dputr_g(\mlinsert(\di),(i,c,i')) &=&
+  \dputr\gen(\mlinsert(\di),(i,c,i')) &=&
       (\mlrearrange(\ONE,f_\mli)\mlinsert(\di'), \wideeqbreak
       (\di\;i, c', \di'\;i'))\\
-  \dputr_g(\mldelete(\di),(i,c,i')) &=&
+  \dputr\gen(\mldelete(\di),(i,c,i')) &=&
     (\mldelete(\di')\mlrearrange(\ONE,f_\mld), \wideeqbreak
     (\di\;i, c', \di'\;i'))\\
-  \dputr_g(\mlrearrange(\di,g),(i,c,i')) &=&
+  \dputr\gen(\mlrearrange(\di,g),(i,c,i')) &=&
     (\mlrearrange(\di',f_\mlr), \wideeqbreak
     (\di\;i,c',\di'\;i'))\\[.8ex]
   && \text{see below for $f_\mli,f_\mld,f_\mlr$}\\
   \text{in the last three clauses:} && (\di',c')=\ell.\dputr(\di,c)\\
-  \dputr_g(\text{d}c,(i,c,i')) &=& \fail\text{ in all other cases}\\
-  \dputl_g(-,-) &=& \text{analogous}
+  \dputr\gen(\text{d}c,(i,c,i')) &=& \fail\text{ in all other cases}\\
+  \dputl\gen(-,-) &=& \text{analogous}
   }
 %
 \makeatletter\refstepcounter{\@captype}\makeatother
@@ -4045,14 +4048,14 @@ However, it is not obvious that the definitions relying on the free monoid
 product remain well defined after imposing the above equations. In
 particular, we must check that any monoid homomorphisms we defined respect
 these laws. For homomorphisms $f$ specified via specification
-of $f_g$, it is enough to prove that, for each equational law $g=g'$, the
+of $f\gen$, it is enough to prove that, for each equational law $g=g'$, the
 specification respects the law---i.e., $f(g)=f(g')$.
 
 For example, to check that we can create a well-defined tensor product
-module that includes the above equations, we must show that $\odot_g$
+module that includes the above equations, we must show that $\odot\gen$
 respects the equations. For the commutativity equation, we must show 
-\[\mlleft\dx\odot_g\mlright\dy\odot_g(x,y) =
-\mlright\dy\odot_g\mlleft\dx\odot_g(x,y).\]
+\[\mlleft\dx\odot\gen\mlright\dy\odot\gen(x,y) =
+\mlright\dy\odot\gen\mlleft\dx\odot\gen(x,y).\]
 Simple calculation shows that both sides are equal to $(\dx\;x,\dy\;y)$, so
 this law is respected; the rest follow similar lines.
 
@@ -4077,7 +4080,7 @@ those two edits are treated independently by the lens.
 \begin{proof}
 We will show that $\dputr$ treats $\ml{left}$ as a monoid homomorphism and
 lets $\ml{left}$ and $\ml{right}$ commute; the proofs that $\dputr$ treats
-$\ml{right}$ as a monoid homomorphism and that $\dputl_g$ respects all these
+$\ml{right}$ as a monoid homomorphism and that $\dputl\gen$ respects all these
 laws are similar.
 
 To show that $\dputr$ respects the law $\blist\mlleft\ONE\elist=\NIL$:
@@ -4107,13 +4110,13 @@ We may now compute:
 \[\begin{array}{l}
     \dputr(\blist\mlleft\dx\mlist\mlleft{\dx'}\elist,(c_k,c_\ell)) \\
     \qquad=
-        \mllet (\dy',(c_k',c_\ell')) = \dputr_g(\mlleft{\dx'},(c_k,c_\ell)) \mline \\
+        \mllet (\dy',(c_k',c_\ell')) = \dputr\gen(\mlleft{\dx'},(c_k,c_\ell)) \mline \\
     \qquad{\phantom{={}}}
-        \mllet (\dy'',(c_k'',c_\ell'')) = \dputr_g(\mlleft\dx,(c_k',c_\ell')) \mline \\
+        \mllet (\dy'',(c_k'',c_\ell'')) = \dputr\gen(\mlleft\dx,(c_k',c_\ell')) \mline \\
     \qquad{\phantom{={}}}
         (\blist\dy''\mlist\dy'\elist,(c_k'',c_\ell'')) \\
     \qquad=
-        \mllet (\dy'',(c_k'',c_\ell'')) = \dputr_g(\mlleft\dx,(c_k',c_\ell)) \mline \\
+        \mllet (\dy'',(c_k'',c_\ell'')) = \dputr\gen(\mlleft\dx,(c_k',c_\ell)) \mline \\
     \qquad{\phantom{={}}}
         (\blist\dy''\mlist\mlleft{\dy'}\elist,(c_k'',c_\ell'')) \\
     \qquad=
@@ -4121,7 +4124,7 @@ We may now compute:
     \qquad=
         (\blist\mlleft{\dy\dy'}\elist,(c_k'',c_\ell)) \\
     \qquad=
-        \dputr_g(\mlleft{\dx\dx'},(c_k,c_\ell)) \\
+        \dputr\gen(\mlleft{\dx\dx'},(c_k,c_\ell)) \\
     \qquad=
         \dputr(\blist\mlleft{\dx\dx'}\elist,(c_k,c_\ell))
 \end{array}\]
@@ -4142,13 +4145,13 @@ Now we may compute:
 \[\begin{array}{l}
 \dputr(\blist\mlleft\dx\mlist\mlright\dy\elist,(c_k,c_\ell)) \\
     \qquad=
-        \mllet (\dy',(c_k',c_\ell')) = \dputr_g(\mlright\dy,(c_k,c_\ell)) \mline \\
+        \mllet (\dy',(c_k',c_\ell')) = \dputr\gen(\mlright\dy,(c_k,c_\ell)) \mline \\
     \qquad{\phantom{={}}}
-        \mllet (\dx',(c_k'',c_\ell'')) = \dputr_g(\mlleft\dx,(c_k',c_\ell')) \mline \\
+        \mllet (\dx',(c_k'',c_\ell'')) = \dputr\gen(\mlleft\dx,(c_k',c_\ell')) \mline \\
     \qquad{\phantom{={}}}
         (\blist\dx'\mlist\dy'\elist,(c_k'',c_\ell'')) \\
     \qquad=
-        \mllet (\dx',(c_k'',c_\ell'')) = \dputr_g(\mlleft\dx,(c_k,c_\ell')) \mline \\
+        \mllet (\dx',(c_k'',c_\ell'')) = \dputr\gen(\mlleft\dx,(c_k,c_\ell')) \mline \\
     \qquad{\phantom{={}}}
         (\blist\dx'\mlist\mlright{\dy'}\elist,(c_k'',c_\ell'')) \\
     \qquad=
@@ -4238,9 +4241,9 @@ with $\mlinrx$.
 
 As with products, we must check that the remaining
 definitions are well-formed.  \iffull\else In particular, it can be shown that,
-in the module defined above for sums, $\odot_g$ respects the above
+in the module defined above for sums, $\odot\gen$ respects the above
 equations, and that, if $k$ and $\ell$ are lenses, then
-$(k\oplus\ell).\dputr_g$ and $(k\oplus\ell).\dputl_g$ respect the above
+$(k\oplus\ell).\dputr\gen$ and $(k\oplus\ell).\dputl\gen$ respect the above
 equations.  \fi
 
 % TODO: \ml{inl} -> \mlinlx ?
@@ -4293,15 +4296,15 @@ equations.  \fi
 \end{proof}
 
 \begin{lemma}
-    If $k$ and $\ell$ are lenses, then $(k\oplus\ell).\dputr_g$ and
-    $(k\oplus\ell).\dputl_g$ respect the above equations.
+    If $k$ and $\ell$ are lenses, then $(k\oplus\ell).\dputr\gen$ and
+    $(k\oplus\ell).\dputl\gen$ respect the above equations.
 \end{lemma}
 \fi
 
 \iffull
 \begin{pf}
-    We will show only that $\dputr_g$ respects the equations; the argument
-    for $\dputl_g$ is similar.
+    We will show only that $\dputr\gen$ respects the equations; the argument
+    for $\dputl\gen$ is similar.
 
     Choose arbitrary sum edits $e_1,e_2$ and initial complement $c_0 \in C$
     and define:
@@ -4503,8 +4506,8 @@ be lifted to the unique edit lens between degenerate modules.}.
     C &=& \ell.C \\
     \missing &=& c_0 \\
     K &=& \{(x,c,y) \mid \ell.\putr(x,c)=(y,c)\} \\
-    \dputr_g &=& \ell.\putr \\
-    \dputl_g &=& \ell.\putl
+    \dputr\gen &=& \ell.\putr \\
+    \dputl\gen &=& \ell.\putl
 }
 \else
 Let  $\ell$ be  a state-based symmetric lens between $X$
@@ -4515,8 +4518,8 @@ modules $X_x$ and $Y_y$
 as follows: 
 (1) $(\D_x\ell).C = \ell.C$;
 (2) $(\D_x\ell).\missing = c_0$;
-(3) $(\D_x\ell).\dputr_g = \ell.\putr$;
-(4) $(\D_x\ell).\dputl_g = \ell.\putl$; and
+(3) $(\D_x\ell).\dputr\gen = \ell.\putr$;
+(4) $(\D_x\ell).\dputl\gen = \ell.\putl$; and
 (5) $(\D_x\ell).K = \{(x,c,y) \mid \ell.\putr(x,c)=(y,c)\}$.
 \fi
 $\D_x \ell$ is a symmetric edit lens and the passage from $\ell$
