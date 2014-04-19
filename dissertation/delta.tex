@@ -2,9 +2,10 @@
 % TODO: explain the \Defined notation, plus use it a bit more pervasively
 % TODO: brainstorm for the bad \dputr_g notation: could use the same trick
 %       we used for the restructuring lens and make it \dputr_{\ml{g}}
-% TODO: grep for HofmannPierceWagner10 and replace with a reference to
-%       chapter 2
 \newif \iffailed \failedfalse % to remove some bits we think we don't need
+\ifdissertation\newcommand{\symmlenses}{ Chapter~\ref{chap:complement}\xspace}
+\else          \newcommand{\symmlenses}{~\cite{HofmannPierceWagner10}\xspace}
+\fi
 \sect{Overview}
 \label{sec:delta-examples}
 
@@ -156,7 +157,7 @@ from the left side to the right, written $(\ell\LIST).\dputr \in \partial(X
 \times Y)\LIST \to \partial(X \times Z)\LIST$,\footnote{The symbol $\dputr$ is
   pronounced ``put an edit through the lens from left to right,'' or just
   ``put right.''  It is the {\edit}-analog of the $\putr$ function of the
-  state-based symmetric lenses in~\cite{HofmannPierceWagner10} and the
+  state-based symmetric lenses in\symmlenses and the
   $\PUT$ function of the state-based asymmetric lenses
   in~\cite{Focal2005,Boomerang07}.} and another for transporting
 edits from right to left, written $(\ell\LIST).\dputl \in \partial(X \times
@@ -480,7 +481,7 @@ need to know something more about how the two structures correspond. The
 exact nature of the extra information needed varies according to the lens.
 %
 To give lenses a place to store such auxiliary information, we
-follow~\cite{HofmannPierceWagner10} and allow the edit-transforming
+follow\symmlenses and allow the edit-transforming
 components of a lens (the $\dputr$ and $\dputl$ functions) to take a {\em
   complement} as an extra input and return an updated complement as an extra
 output.
@@ -591,7 +592,7 @@ Since symmetric edit lenses are the main topic of this paper, we will
 generally write ``edit lens'' or just ``lens'' for these,
 deploying additional adjectives to talk about other variants such
 as \iflater\finish{the asymmetric variant or} \fi the state-based
-symmetric lenses of~\cite{HofmannPierceWagner10}.  
+symmetric lenses of\symmlenses.
 
 The intuition about $K$'s role in guaranteeing totality can be formalized as
 follows.
@@ -652,7 +653,8 @@ $\dputl$.
 One technical issue arising from the definition of edit lenses is that the
 hidden complements cause many important laws---like associativity of
 composition---to hold only up to {\em behavioral equivalence}.  This phenomenon
-was also observed in \cite[\S 3]{HofmannPierceWagner10} for the case of
+was also observed in \ifdissertation\S\ref{equiv}\else\cite[\S
+3]{HofmannPierceWagner10}\fi\ for the case of
 symmetric state-based lenses, and the appropriate behavioral equivalence
 for edit lenses is a natural refinement of the one used there (taking the
 consistency relations into account).
@@ -1501,7 +1503,7 @@ more detail on this alteration.
 % \caption{The sum lens}
 \end{figure} 
 
-As in~\cite{HofmannPierceWagner10}, the tensor construction is not quite a full
+As in\symmlenses, the tensor construction is not quite a full
 categorical product, because duplicating information does not give rise to a
 well-behaved lens---there is no lens with type $X \lens X \otimes X$ that
 satisfies all the equivalences a lens programmer would want.
@@ -1571,11 +1573,7 @@ We now wish to give a lens combinator $k\oplus\ell$ that runs lens $k$ on
 the parts of edits that apply to $\ml{inl}$ values and $\ell$ on
 the parts of edits that apply to $\ml{inr}$ values.%
 \footnote{\label{footnoteseven}%
-\ifdissertation
-In Chapter~\ref{chap:complement}, there is some discussion regarding
-\else
-In \cite{HofmannPierceWagner10}, there is some discussion regarding
-\fi
+In\symmlenses, there is some discussion regarding
 ``forgetful'' and ``retentive'' sum lenses, with the distinction revolving
 around what to do with the complement when an edit switches between sides of
 the sum. For state-based lenses, lenses on recursive structures like lists
@@ -3335,7 +3333,7 @@ of positions, modification of particular entries, and
 reorganizations such as tree rotations. We can then define lenses for
 containers that propagate these general edit operations.
 
-In the case of state-based symmetric lenses \cite{HofmannPierceWagner10}, it
+In the case of the state-based symmetric lenses of\symmlenses, it
 has been observed that lens iterators akin to ``fold left'' for inductive
 data structures also permit the definition of powerful (state-based) lenses.
 In the edit-based framework iterators are less convenient because it is
@@ -3345,16 +3343,16 @@ meaningfully exploited. (Of course, it is possible to propagate everything to
 a ``rebuild from scratch'' edit, thus aping the state-based case.)
 
 In the following we slightly deviate from the presentation of
-containers from \cite{1195941,HofmannPierceWagner10} in that we do not
+containers from \ifdissertation\S\ref{contain}
+and~\cite{1195941}\else\cite{1195941,HofmannPierceWagner10}\fi\ in that we do not
 allow the set of positions to vary with the shapes. We rather have a
 universal set of positions $P$ and a predicate $\live$ that delineates
 a subset of $P$ for each shape $i$. We can then obtain a container
 type in the original sense by putting $P(i)=\{p\mid
 p\in\live(i)\}$. Conversely, given a container type in the sense of
 \cite{1195941}, we can define $P=\{(i,p)\mid p\in P(i)\}$ and
-$\live(i)=\{(i,p)\mid p\in P\}$. Furthermore, as we already did in
-\ifdissertation Chapter~\ref{chap:complement}\else
-\cite{HofmannPierceWagner10}\fi, we require a \emph{partially-ordered}
+$\live(i)=\{(i,p)\mid p\in P\}$. Furthermore, as we already did
+in\symmlenses, we require a \emph{partially-ordered}
 set of shapes $I$ and ask that $\live$ be monotone. Formulating
 this in the original setting would require a coherent family of
 transition functions $P(i)\rightarrow P(i')$ when $i\leq i'$, which is
@@ -4451,17 +4449,13 @@ form of container edits. Again, we leave this to future work.
 \sect{From State-Based to Edit Lenses and Back} 
 \label{stateb}
 
-\ifdissertation
-Recall from Chapter~\ref{chap:complement}
-\else
+\ifcomplement
 In \cite{HofmannPierceWagner10}, we introduced a
 state-based framework for bidirectional transformations called
 \emph{symmetric lenses}.  We refer to them here as \emph{state-based symmetric
   lenses}.
-%
-Recall from \cite{HofmannPierceWagner10}
 \fi
-that a state-based symmetric lens $\ell$
+Recall from\symmlenses that a state-based symmetric lens $\ell$
 between \emph{sets} $X$ and $Y$ comprises a set of complements $C$, a
 distinguished element $\smissing \in C$, and two functions
 \begin{eqnarray*}
