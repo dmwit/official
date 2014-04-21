@@ -438,12 +438,10 @@
   \fi\fi
   }
 
-\newif\iftmp\tmptrue
-\ifcomplement\iffull\tmpfalse\fi\fi
-\iftmp
+\ifboolexpr{bool{complement} and bool{full}}{}{
 \newenvironment{longenum}{\begin{enumerate}}{\end{enumerate}}
 \newenvironment{longitem}{\begin{itemize}}{\end{itemize}}
-\fi
+}
 
 \newcount\lastcolumn
 \tikzstyle{hline}=[
