@@ -30,10 +30,18 @@ provide evidence that the transformations are correct, for example, by
 guaranteeing that any transformation that can be constructed within the
 language will restore synchrony on each run, will not discard too much
 information, will not disrupt synchrony unnecessarily, or similar behavioral
-guarantees. Designing a language is also a more modular approach to solving
-the bidirectional transformation problem, as the design of bidirectional
-building blocks can be separated from the process of gluing the blocks
-together into particular useful transformations.
+guarantees\footnote{We will use ``synchronize'' and related words informally
+to mean simply ``maintain a correspondence between two repositories by
+propagating edits in both directions''. A full-blown synchronization tool
+would also include, at a minimum, some mechanism for dealing with conflicts
+between disconnected edits to the two structures, which is outside the scope
+of this document. Note, though, that we will go beyond most existing
+synchronization tools in allowing the repositories to be structured
+differently and to share only a part of their information.}. Designing a
+language is also a more modular approach to solving the bidirectional
+transformation problem, as the design of bidirectional building blocks can
+be separated from the process of gluing the blocks together into particular
+useful transformations.
 
 The term ``lens'' is a broad term encompassing a large family of related
 language-based approaches to the bidirectional transformation problem.

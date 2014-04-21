@@ -13,11 +13,11 @@
     \begin{center}
         \vspace*{-2ex}
         \includegraphics[width=75mm]{images/ex1-init.pdf} \\
-        (a) initial replicas \\[1.5ex]
+        (a) initial \replicas \\[1.5ex]
         \includegraphics[width=75mm]{images/ex1-1.pdf} \\
-        (b) a new composer is added to one replica \\[2ex]
+        (b) a new composer is added to one \replica \\[2ex]
         \includegraphics[width=75mm]{images/ex1-2.pdf} \\
-        (c) the lens adds the new composer to the other replica \\[1.5ex]
+        (c) the lens adds the new composer to the other \replica \\[1.5ex]
         \includegraphics[width=75mm]{images/ex1-3.pdf} \\
         (d) the curator makes some corrections \\[.8ex]
         \includegraphics[width=75mm]{images/ex1-4.pdf} \\[-3ex]
@@ -37,19 +37,19 @@ Before diving into technicalities, let's take a brief tour of the main
 ideas via some examples.
 %
 Figure~\ref{fig:example-simple} demonstrates a simple use of {\edit} lenses
-to synchronize two replicas\footnote{We use the word ``synchronize''
+to synchronize two \replicas\ifdelta\footnote{We use the word ``synchronize''
   informally to mean simply ``maintain a correspondence between two replicas
   by propagating edits in both directions.''  A full-blown synchronization
   tool would also include, at a minimum, some mechanism for dealing with
   conflicts between disconnected edits to the two structures, which is
   outside the scope of this paper.  \iffull Note, though, that we go beyond most
   synchronization tools in allowing the replicas to be structured
-  differently and to share only a part of their information.\fi}.  In part (a),
-we see the initial replicas, which are in a synchronized state.  On the
-left, the replica is a list of records describing composers' birth and death
+  differently and to share only a part of their information.\fi}\fi.  In part (a),
+we see the initial \replicas, which are in a synchronized state.  On the
+left, the \replica is a list of records describing composers' birth and death
 years; on the right,  a list of records describing the same
 composers' countries of origin.  In part (b), the user interacting with the
-left-hand replica decides to add a new composer, {\sf Monteverdi}, at the
+left-hand \replica decides to add a new composer, {\sf Monteverdi}, at the
 end of the list.  This change is described by the edit script
 {\sf
 ins(3); mod(3, (``Monteverdi'', ``1567-1643''))}.
@@ -60,15 +60,15 @@ right field with ``{\sf 1567-1643}''.  (One could of course imagine other edit
 languages where the insertion would be done in one step.  We represent it
 this way because this is closer to how our generic ``container mapping''
 combinator in \S \ref{sec:containers} will do things.)  The
-lens connecting the two replicas now converts this edit script into a
+lens connecting the two \replicas now converts this edit script into a
 corresponding edit 
-script that adds {\sf Monteverdi} to the right-hand replica, shown in part (c):
+script that adds {\sf Monteverdi} to the right-hand \replica, shown in part (c):
 {\sf
 ins(3); mod(3, (``Monteverdi'', \ONE))}.
 Note that the translated {\sf mod} command overwrites the name component but
 leaves the country component with its default value, ``{\sf
   ?country?}.''  This is the best it can do, since the edit was in
-the left-hand replica, which doesn't mention countries.  
+the left-hand \replica, which doesn't mention countries.  
 %
 Later, an eagle-eyed editor notices the missing country information and
 fills it in, at the same time correcting a spelling error in {\sf
@@ -77,11 +77,11 @@ discards the country information when
 translating the edit from right to left, but propagates the spelling
 correction. 
 
-Of course, a particular new replica state can potentially be
+Of course, a particular new \replica state can potentially be
 achieved by many different edits, and these edits may be translated differently.
 %
 Consider part (f) of Figure~\ref{fig:example-simple}, where the left-hand
-replica ends up with a row for {\sf Monteverdi} at the beginning of the
+\replica ends up with a row for {\sf Monteverdi} at the beginning of the
 list, instead of at the end. Two edit scripts that achieve this
 effect are shown. The upper script deletes
 the old {\sf Monteverdi} record and inserts a brand new one (which happens
@@ -99,7 +99,7 @@ tend to be intertwined with the specifics of particular editing and/or
 diffing tools and will tend to be messy, heuristic, and
 domain-specific---unpromising material for a foundational theory.  Rather,
 our aim is to construct a theory that shows how edits, however
-generated, can be translated between replicas of different shapes.
+generated, can be translated between \replicas of different shapes.
 
 \iflater\finish{A lot of people got lost at this point.  We need to go much more
   gently.  (In particular, start with a roadmap.)  It would help to rename
@@ -209,7 +209,7 @@ Z)\LIST \to \partial(X \times Y)\LIST$.
     \ifdissertation\newcommand\lw{0.9\linewidth}\else\newcommand\lw\linewidth\fi
     \begin{tabular}{c}
         \includegraphics[width=75mm]{images/ex2-0.pdf} \\[.9ex]
-        \parbox \lw{(a) the initial replicas: a tagged list of composers and authors on
+        \parbox \lw{(a) the initial \replicas: a tagged list of composers and authors on
         the left; a pair of lists on the right; a complement storing just
         the tags}
         \\[3ex]
@@ -230,12 +230,12 @@ To see why, consider defining a {\em partitioning} lens $p$ between
 the sets $\partial((X+Y)\LIST)$ and $\partial(X\LIST \times Y\LIST)$.
 Figure~\ref{fig:example-partition} demonstrates the behavior of this lens.
 %
-In part (a), we show the original replicas: on the left, a single list that
+In part (a), we show the original \replicas: on the left, a single list that
 intermingles authors and composers (with {\sf inl/inr} tags showing which is
 which), and on the right a pair of homogeneous (untagged) lists, one for
 authors and one for composers. Now consider an edit, as in (b), that inserts
 a new element somewhere in the author list on the right. It is clear that we
-should transport this into an insertion on the left replica, but where, exactly,
+should transport this into an insertion on the left \replica, but where, exactly,
 should we insert it?  If the $\dputl$ function is given just an
 insertion edit for the homogeneous author list and nothing else, there is no
 way it can translate this edit into a sensible position in the combined list
@@ -269,11 +269,11 @@ Note that the complement stores just the {\sf inl/inr} tags, not the actual
 names of the authors and composers in the left-hand list.  \iflater\finish{This next
 statement made people suspicious---we need to go into more detail.}\fi In general, the
 information stored in $C$ will be much smaller than the
-information in the replicas; indeed, our earlier example illustrates the
+information in the \replicas; indeed, our earlier example illustrates the
 common
 case in which $C$ is the trivial single-element set $\Unit$.  The
 translation functions manipulate just the complements and the edits, which
-are also small compared to the size of the replicas.
+are also small compared to the size of the \replicas.
 
 %% \finish{Someplace, we need to talk about what happens to edits that don't
 %%   make sense on the current state.  There are three possibilities, with a
@@ -443,7 +443,7 @@ wrong.%
 
 However, although the framework allows for the possibility of edits failing,
 we still want to know that the edits produced by our lenses will never
-actually fail when applied to replica states arising in practice.  This
+actually fail when applied to \replica states arising in practice.  This
 requirement, corresponding to the {\em totality} property of previous
 presentations of lenses~\cite{Focal2005}, is formalized in Theorem
 \ref{nofail}.  In general, we adopt the design principle that partiality
@@ -517,20 +517,20 @@ in two pieces.
 
 The intended usage of an edit lens is as follows. There are two users,
 one holding an element of $X$ the other one an element of $Y$, both
-referred to hereafter as {\em replicas}.  Initially, they hold $\init_X$ and
+referred to hereafter as {\em \replicas}.  Initially, they hold $\init_X$ and
 $\init_Y$, respectively, and the lens is initialized with complement
 $\ell.\missing$. The users then perform actions and propagate them across
 the lens. An action consists of producing an edit $\dx$ (or $\dy$), applying
-it to one's current replica $x$ (resp.\ $y$), putting the edit through the lens
+it to one's current \replica $x$ (resp.\ $y$), putting the edit through the lens
 to obtain an edit $\dy$ (resp.\ $\dx$), and asking the user on the other
-side to apply $\dy$ ($\dx$) to their replica.  In the process, the internal
+side to apply $\dy$ ($\dx$) to their \replica.  In the process, the internal
 state $c$ of the lens is updated to reflect the new correspondence between
-the two replicas.
+the two \replicas.
 \iffull
 
 \fi%
 We further assume there is some {\em consistency} relation $K$ between $X$,
-$Y$, and $C$, which describes the ``synchronized states'' of the replicas
+$Y$, and $C$, which describes the ``synchronized states'' of the \replicas
 and complement.  This gives us a natural way to state the totality
 requirement discussed above: if we start in a consistent state, make a
 successful edit (one that does not fail at the initiating side), and put it
@@ -646,7 +646,7 @@ Beyond its role in guaranteeing totality, the consistency relation in a lens
 plays two important roles.  First, it is a sanity check on the behavior of
 $\dputr$ and $\dputl$.  Second, if we project away the middle component, we
 can present it to programmers as documentation of the synchronized states of
-the two replicas---i.e., as a partial {\em specification} of $\dputr$ and
+the two \replicas---i.e., as a partial {\em specification} of $\dputr$ and
 $\dputl$.
 
 One technical issue arising from the definition of edit lenses is that the
@@ -1597,7 +1597,7 @@ $\{\mlfailed\}+S$, writing just $\mlfailed$ when we mean $\mlinl\mlfailed$
 and just $s$ to mean $\mlinr s$. The existence of the $\mlfailed$ complement
 gives us an explicit escape hatch should the user provide the lens with an
 edit that does not match up with the current complement (and, therefore,
-does not apply to the current state of his replica). 
+does not apply to the current state of his \replica). 
 \fi
 \iffull
 \begin{defn}[Sum]
@@ -1896,7 +1896,7 @@ $c[p \mapsto c_p']$ in the rule for $\ml{mod}$ edits means ``the list that is
 just like $c$ except that the element in position $p$ is replaced by $c_p'$.''
 \fi
 When translating non-modification edits, we update the complement in a way
-almost identical to the way the two replicas are updated; to reflect this
+almost identical to the way the two \replicas are updated; to reflect this
 similarity, we use edit application from the $\Unit_{\ell.\missing \in
 \ell.C}\LIST$ module to define the new complement.
 
@@ -2407,7 +2407,7 @@ new element into the right list, re-tag $\d n$ so that it changes the new
 element to Plato, and finally fix up the complement to match the new
 interleaving. As before, we can use $\mlcount$ to translate the position $2$
 in the interleaved list into a position in the left list in the right
-replica. But then we hit a minor snag: deletions only occur at the end of a
+\replica. But then we hit a minor snag: deletions only occur at the end of a
 list. The solution is to first reorder the list, so that Beethoven appears
 at the end, then delete one element.
 Figure~\ref{fig:definition-partition-supplementary} defines the $\ml{cycle}$

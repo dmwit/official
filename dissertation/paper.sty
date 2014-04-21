@@ -352,6 +352,14 @@
 \newcommand{\relR}{\relRx{}}
 \newcommand{\relRx}[1]{\mathrel{R_{#1}}}
 \newcommand{\Rename}{\mathit{rename}}
+\newcommand{\replica}[1][]{%
+    \ifdissertation%
+    \ifstrequal{#1}{s}{repositories}{repository}%
+    \else%
+    replica#1%
+    \fi\xspace%
+}
+\newcommand{\replicas}{\replica[s]}
 \newcommand{\replicate}[2]{%
     \hspace{\blistlen}%
     \underbrace{\hspace{-\blistlen}\blist#2 \clist #2\elist\hspace{-\blistlen}}%
