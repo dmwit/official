@@ -49,21 +49,17 @@ left, the \replica is a list of records describing composers' birth and death
 years; on the right,  a list of records describing the same
 composers' countries of origin.  In part (b), the user interacting with the
 left-hand \replica decides to add a new composer, {\sf Monteverdi}, at the
-end of the list.  This change is described by the edit script
-{\sf
-ins(3); mod(3, (``Monteverdi'', ``1567-1643''))}.
-The script says to first
+end of the list. This change is described by the edit script {\sf ins(3);
+mod(3, (``Monteverdi'', ``1567-1643''))}. The script says to first
 \emph{insert} a dummy record at index three, then \emph{modify} this record by
 replacing the left field with ``{\sf Monteverdi}'' and replacing the 
 right field with ``{\sf 1567-1643}''.  (One could of course imagine other edit
 languages where the insertion would be done in one step.  We represent it
 this way because this is closer to how our generic ``container mapping''
-combinator in \S \ref{sec:containers} will do things.)  The
-lens connecting the two \replicas now converts this edit script into a
-corresponding edit 
-script that adds {\sf Monteverdi} to the right-hand \replica, shown in part (c):
-{\sf
-ins(3); mod(3, (``Monteverdi'', \ONE))}.
+combinator in \S \ref{sec:containers} will do things.) The lens connecting
+the two \replicas now converts this edit script into a corresponding edit
+script that adds {\sf Monteverdi} to the right-hand \replica, shown in part
+(c): {\sf ins(3); mod(3, (``Monteverdi'', \ONE))}.
 Note that the translated {\sf mod} command overwrites the name component but
 leaves the country component with its default value, ``{\sf
   ?country?}.''  This is the best it can do, since the edit was in
