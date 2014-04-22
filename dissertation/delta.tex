@@ -375,9 +375,9 @@ recover state-based lenses as a special case of edit lenses). \iflater\bcp{Would
   lens on this module over $X$?  What, exactly, are we saying?}\fi
 %
 The monoid framework can also accommodate more abstract notions of edit.  For
-example, the set of all total \ifdissertation(respectively, partial) \fi
+example, the set of all total \iffull(respectively, partial) \fi
 functions from a set $X$ to itself forms a monoid, where the multiplication
-operation is function composition\ifdissertation\ (and the unit is the
+operation is function composition\iffull\ (and the unit is the
 identity function)\fi. This is essentially the form of edits considered by
 Stevens~\cite{stevens2008tat}\iflater\finish{Not just Stevens---we should
   find a few more citations for this idea.}\fi.  \iflater\bcp{Same question for this one.  At a minimum, we should say that we are not dealing with these examples in detail in the rest of the paper.}\fi
@@ -387,7 +387,7 @@ We mostly focus on the simple case where edit languages are free monoids.
 product and sum lens constructions\iffull\ (laws for lists and general
 containers are left for future work)\fi.
 
-\ifdissertation
+\iffull
 \begin{defn}
     Given monoids $M$ and $N$, a \emph{monoid homomorphism} is a function $h
     \in M \to N$ that satisfies two laws:
@@ -527,7 +527,7 @@ output.
   complement in the old database sense.}  \soon{complement becomes correspondence}
 \fi
 
-\ifdissertation
+\iffull
 \begin{defn}
     Given a monoid $M$ and a {\em complement set} $C$, one can define the
     \emph{stateful monoid} $\mathit{State}_C(M)$ whose elements are
