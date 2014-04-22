@@ -1,7 +1,3 @@
-% TODO: review homomorphism specification section and possibly the ``adding
-%       laws'' section now that we have normalized on using specializations
-%       of ``monoid homomorphism'' as the definition for actions, stateful
-%       homomorphisms, etc.
 % TODO: explain the \Defined notation, plus use it a bit more pervasively
 % TODO: intro/conclusion paragraphs
 \newif \iffailed \failedfalse % to remove some bits we think we don't need
@@ -1346,9 +1342,6 @@ notation $|g|$ means the length of a sequence: $|g_1 \cdots g_n|=n$. It
 is easy to show that $G\LIST$ together with sequence concatenation and
 $\NIL$ forms a monoid.
 
-% TODO: clean up the presentation of all this by observing that stateful
-% monoid morphisms are monoid morphisms into the state monoid and monoid
-% actions are monoid morphisms into the partial function monoid
 It is often convenient to specify the behavior of a monoid
 homomorphism by giving its output on each generator.
 \fi
@@ -1360,21 +1353,16 @@ generators\ifdissertation\footnote{We use a different typeface in the
     thinking of as specifying a homomorphism.}\fi, the monoid homomorphism $f
 \in G\LIST \to M$ is defined by $f(\NIL)=\ONE$ and
 \ifdissertation
-$f(g \CONS gs)=f\gen(g)f(gs)$%
+$f(g \CONS gs)=f\gen(g)f(gs)$. Since this is generic over the codomain
+monoid, we can specialize this to give specifications of monoid actions and
+stateful monoid homomorphisms. As before, we will often treat the
+specification function as if it were a function of two arguments rather than
+a function whose codomain space contains functions.
 \else
-$f(g_1 \cdots g_n)=f\gen(g_1)f(g_2 \cdots g_n)$%
-\fi. Similarly, given a
+$f(g_1 \cdots g_n)=f\gen(g_1)f(g_2 \cdots g_n)$. Similarly, given a
 stateful function $f\gen \in G \times C \to M \times C$, we can define a
 stateful monoid homomorphism $f \in G\LIST \times C \to M \times C$ by setting
 $f(\NIL,c) = (\ONE,c)$ and
-\ifdissertation
-\begin{align*}
-    f(g \CONS gs,c) ={}& \mllet (m',c') = f(gs,c) \mline \\
-    & \mllet (m'',c'') = f\gen(g,c') \mline \\
-    & (m''m',c'')
-.
-\end{align*}
-\else
 \begin{align*}
     f(g_1 \cdots g_n,c) ={}& \mllet (m',c') = f(g_2 \cdots g_n,c) \mline \\
     & \mllet (m'',c'') = f\gen(g_1,c') \mline \\
@@ -4103,9 +4091,9 @@ that $\ml{left}$ and $\ml{right}$ be monoid homomorphisms, and that they
 commute:
 \begin{align*}
     \blist\mlleft\ONE\elist &= \NIL \\
-    \blist\mlleft\dx\mlist\mlleft{\dx'}\elist &= \blist\mlleft{\dx\dx'}\elist \\
+    \blist\mlleft\dx\mlist\mlleft{\dx'}\elist &= \blist\mlleft{\dx\;\dx'}\elist \\
     \blist\mlright\ONE\elist &= \NIL \\
-    \blist\mlright\dy\mlist\mlright{\dy'}\elist &= \blist\mlright{\dy\dy'}\elist \\
+    \blist\mlright\dy\mlist\mlright{\dy'}\elist &= \blist\mlright{\dy\;\dy'}\elist \\
     \blist\mlleft\dx\mlist\mlright\dy\elist &= \blist\mlright\dy\mlist\mlleft\dx\elist
 \end{align*}
 It is not hard to show that the free monoid subject to the above
