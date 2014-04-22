@@ -1,4 +1,7 @@
-% TODO: notation (perhaps overload stuff?)
+% TODO: review homomorphism specification section and possibly the ``adding
+%       laws'' section now that we have normalized on using specializations
+%       of ``monoid homomorphism'' as the definition for actions, stateful
+%       homomorphisms, etc.
 % TODO: explain the \Defined notation, plus use it a bit more pervasively
 % TODO: intro/conclusion paragraphs
 \newif \iffailed \failedfalse % to remove some bits we think we don't need
@@ -372,16 +375,46 @@ recover state-based lenses as a special case of edit lenses). \iflater\bcp{Would
   lens on this module over $X$?  What, exactly, are we saying?}\fi
 %
 The monoid framework can also accommodate more abstract notions of edit.  For
-example, the set of all total functions from a set $X$ to itself forms a
-monoid, where the multiplication operation is function composition.  This is
-essentially the form of edits considered by
+example, the set of all total \ifdissertation(respectively, partial) \fi
+functions from a set $X$ to itself forms a monoid, where the multiplication
+operation is function composition\ifdissertation\ (and the unit is the
+identity function)\fi. This is essentially the form of edits considered by
 Stevens~\cite{stevens2008tat}\iflater\finish{Not just Stevens---we should
   find a few more citations for this idea.}\fi.  \iflater\bcp{Same question for this one.  At a minimum, we should say that we are not dealing with these examples in detail in the rest of the paper.}\fi
 %
 We mostly focus on the simple case where edit languages are free monoids.
 \S \ref{sec:monoid-laws} considers how additional laws can be added to the
-product and sum lens constructions\iffull (laws for lists and general
+product and sum lens constructions\iffull\ (laws for lists and general
 containers are left for future work)\fi.
+
+\ifdissertation
+\begin{defn}
+    Given monoids $M$ and $N$, a \emph{monoid homomorphism} is a function $h
+    \in M \to N$ that satisfies two laws:
+    \begin{align*}
+        h(\ONE_M) &= \ONE_N \\
+        h(m \cdot_M m') &= h(m) \cdot_N h(m')
+    \end{align*}
+\end{defn}
+Monoid homomorphisms are structure-preserving maps, and we will see many
+specializations of this definition below. An example of a homomorphism in
+the case where the two monoids $M$ and $N$ are both free monoids is any
+operation that acts pointwise on the elements of the lists. Having defined
+monoids, which model descriptions of edits, we will now model the operation
+that performs an edit on a particular object.
+
+\begin{defn}
+    Given a  monoid $M$ and a set $X$, a \emph{monoid action} of $M$ on $X$
+    is a monoid homomorphism from $M$ to the monoid of partial functions $X
+    \partialto X$. Unrolling this definition, this means an action is a
+    partial function $\odot \in M \to (X \partialto X)$, or equivalently,
+    $\odot \in M \times X \partialto X$, satisfying two laws:
+    \begin{align*}
+        \ONE \odot x &= x \\
+        (m \cdot n) \odot x &= m \odot (n \odot x)
+    \end{align*}
+\end{defn}
+\else
 
 \begin{defn}
     Given a  monoid $M$ and a set $X$, a \emph{monoid action} on $M$ and $X$
@@ -393,6 +426,7 @@ containers are left for future work)\fi.
 $\ONE \odot x = x$ and $(m \cdot n) \odot x = m \odot (n \odot x)$.
 \fi
 \end{defn}
+\fi
 %
 As with monoid multiplication, we often elide the monoid action symbol,
 writing $mx$ for $m \odot x$.  In standard mathematical terminology, a
@@ -493,6 +527,33 @@ output.
   complement in the old database sense.}  \soon{complement becomes correspondence}
 \fi
 
+\ifdissertation
+\begin{defn}
+    Given a monoid $M$ and a {\em complement set} $C$, one can define the
+    \emph{stateful monoid} $\mathit{State}_C(M)$ whose elements are
+    functions $C \to M \times C$. The unit and multiplication are given by
+    \begin{align*}
+        \ONE(c) ={}& (\ONE,c) \\
+        (m \cdot n)(c) ={}& \mllet (m',c') = m(c) \\
+        & \phantom{\mllet} (n',c'') = n(c') \\
+        & \mlinb (m' \cdot n',c'')
+    \end{align*}
+\end{defn}
+Functional programmers will recognize this monoid's multiplication as a
+lifting of the underlying monoid's multiplication into the state monad (and
+likewise the unit is a lifting of the underlying unit).
+
+\begin{defn}
+    Given monoids $M$ and $N$ and a complement set $C$, a \emph{stateful
+    monoid homomorphism} from $M$ to $N$ over $C$ is a monoid
+    homomorphism $h \in M \to \mathit{State}_C(N)$. In the following, we
+    will typically treat $h$ as if it were a two-argument function; so,
+    unrolling the definition of homomorphism, $h$ satisfies two laws:
+    \infax{h(\ONE_M,c) = (\ONE_N,c)}
+    \infrule{h(m,c) = (n,c') \andalso h(m',c') = (n',c'')}
+            {h(m' \cdot m,c) = (n' \cdot n,c'')}
+\end{defn}
+\else
 \begin{defn}
 Given monoids $M$ and $N$ and a {\em complement set} $C$, a \emph{stateful monoid
   homomorphism} from $M$ to $N$ over $C$ is a function $h \in M \times C \to
@@ -514,10 +575,11 @@ demand that both the result and the effect on the state should be the same
 whether we send a composite element $m' \cdot m$ through $h$ all at once or
 in two pieces.
 \end{defn}
+\fi
 
 The intended usage of an edit lens is as follows. There are two users,
-one holding an element of $X$ the other one an element of $Y$, both
-referred to hereafter as {\em \replicas}.  Initially, they hold $\init_X$ and
+one holding an element of $X$ the other one an element of $Y$\ifdelta, both
+referred to hereafter as {\em \replicas}\fi. Initially, they hold $\init_X$ and
 $\init_Y$, respectively, and the lens is initialized with complement
 $\ell.\missing$. The users then perform actions and propagate them across
 the lens. An action consists of producing an edit $\dx$ (or $\dy$), applying
@@ -587,11 +649,16 @@ $K\subseteq |X|\times C\times |Y|$ such that
 \end{itemize}
 % \discuss{BCP will add a note about binary consistency relations.  Dual role: Important sanity check on dputs, but also a part of the external specification of the lens.}
 \end{defn}
-Since symmetric edit lenses are the main topic of this paper, we will
+Since symmetric edit lenses are the main topic of this \ifdissertation
+chapter\else paper\fi, we will
 generally write ``edit lens'' or just ``lens'' for these,
 deploying additional adjectives to talk about other variants such
 as \iflater\finish{the asymmetric variant or} \fi the state-based
-symmetric lenses of\symmlenses.
+symmetric lenses of\symmlenses.\ifdissertation\ Similarly, we will co-opt
+the notation of the previous chapter, reusing many component names, $\lens$
+for the type of edit lenses, $\equiv$ for lens equivalence, and so on. When
+it is important to differentiate, we will use a subscript $s$ for
+state-based concepts, as in $\sslens$ or $\equiv_s$.\fi
 
 The intuition about $K$'s role in guaranteeing totality can be formalized as
 follows.
@@ -4497,7 +4564,7 @@ edit lens\footnote{The unique state-based lens between uninhabited types can
 be lifted to the unique edit lens between degenerate modules.}.
 \lensdef{editize}
 {\infruleplain
-    {\ell \in X \lens Y \qquad x \in X\\
+    {\ell \in X \sslens Y \qquad x \in X\\
      \ell.\putr(x,\ell.\smissing) = (y,c_0)
     }
     {\D_x\ell \in X_x \lens Y_y}
@@ -4597,7 +4664,7 @@ both equipped with differs, we define a symmetric lens $|\ell|$%
 . The passage $\ell\mapsto|\ell|$ is compatible with lens equivalence.
 \lensdef{uneditize}
 {\infruleplain{\ell \in X \lens Y}
-              {|\ell|\mbox{ a symmetric lens between }|X|\mbox{ and }|Y|}
+              {|\ell|\in|X|\sslens|Y|}
 }
 {
     C &=& |X| \times \ell.C \times |Y| \\
