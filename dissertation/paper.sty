@@ -25,20 +25,12 @@
 \usetikzlibrary{calc,chains,fit,shadows,scopes,matrix,positioning}
 
 % conditional definitions {{{
-\ifdelta
+\ifboolexpr{bool{delta} or (bool{complement} and not bool{full})}{
 \renewenvironment{abstract}{%
   \OLDsection*{Abstract}%
   \normalsize}{%
   }
-\else\ifcomplement
-\iffull\else
-\renewenvironment{abstract}{%
-  \OLDsection*{Abstract}%
-  \normalsize}{%
-  }
-\fi%full
-\fi%complement
-\fi%delta
+}{}
 \ifcomplement
     \newcommand{\aconst}{\mathit{const}}
     \newcommand{\colspan}[1]{\multicolumn{3}{l}{#1}}
