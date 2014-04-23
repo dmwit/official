@@ -1,5 +1,6 @@
 % TODO: use the \Defined notation a bit more pervasively
 % TODO: intro paragraph?
+% TODO: some proofneeded's are left
 \newif \iffailed \failedfalse % to remove some bits we think we don't need
 \ifdissertation\newcommand{\symmlenses}{ Chapter~\ref{chap:complement}\xspace}
 \else          \newcommand{\symmlenses}{~\cite{HofmannPierceWagner10}\xspace}
@@ -1826,21 +1827,20 @@ most interesting case:\fi
 
         \item $\id\oplus\id\equiv\id$
 
-            \dmwit{has a paper proof}
+            \dmwit{proofneeded}
 
         \item $(k\oplus\ell);(k'\oplus\ell')\equiv(k;k')\oplus(\ell;\ell')$
 
-            \dmwit{has a paper proof}
+            \dmwit{proofneeded}
 
-        \item $((k\oplus\ell)\oplus m);\bij_{\assoc}\equiv
+        \item $((k\oplus\ell)\oplus m);\bij_\assoc\equiv
             k\oplus(\ell\oplus m)$
 
-            \finish{dunno what $\bij_{\assoc}$ is, so no proof of this one
-            -- it may even be wrong}
+            \dmwit{proofneeded}\finish{and what is $\bij_\assoc$?}
 
         \item $(k\oplus\ell);\bij_{\swap}\equiv\ell\oplus k$
 
-            \dmwit{has a paper proof}
+            \dmwit{proofneeded}
     \end{itemize}
 \end{pf}
 \else
