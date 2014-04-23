@@ -73,20 +73,17 @@ discards the country information when
 translating the edit from right to left, but propagates the spelling
 correction. 
 
-Of course, a particular new \replica state can potentially be
-achieved by many different edits, and these edits may be translated differently.
-%
+Of course, a particular new \replica state can potentially be achieved by
+many different edits, and these edits may be translated differently.
 Consider part (f) of Figure~\ref{fig:example-simple}, where the left-hand
 \replica ends up with a row for {\sf Monteverdi} at the beginning of the
-list, instead of at the end. Two edit scripts that achieve this
-effect are shown. The upper script deletes
-the old {\sf Monteverdi} record and inserts a brand new one (which happens
-to have 
-the same data) at the top; the lower script rearranges the order of the
-list.  The translation of the upper edit leaves {\sf Monteverdi} with a
-default country, while the lower edit is translated to a
-rearrangement, preserving all the information associated with {\sf
-  Monteverdi}.% 
+list, instead of at the end. Two edit scripts that achieve this effect are
+shown. The upper script deletes the old {\sf Monteverdi} record and inserts
+a brand new one (which happens to have the same data) at the top; the lower
+script rearranges the order of the list. The translation of the upper edit
+leaves {\sf Monteverdi} with a default country, while the lower edit is
+translated to a rearrangement, preserving all the information associated
+with {\sf Monteverdi}.
 
 We do not address the question of where these edits come from or who
 decides, in cases like part (f), which of several possible edits is
