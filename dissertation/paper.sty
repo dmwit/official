@@ -83,6 +83,9 @@
     \newcommand{\ilist}{,\ldots\right>}
     \setlength{\blistlen}{0.5em}
 \fi
+\ifdissertation\newcommand{\dotquote}{''.\xspace}\newcommand{\commaquote}{'',\xspace}
+\else          \newcommand{\dotquote}{.''\xspace}\newcommand{\commaquote}{,''\xspace}
+\fi
 % }}}
 \definecolor{bluegray}{rgb}{0.3,0.3,.6}
 \definecolor{blue}{rgb}{0,0,1}

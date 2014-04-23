@@ -32,8 +32,9 @@
     \label{fig:example-simple}
 \end{figure}
 
-Before diving into technicalities, let's take a brief tour of the main
-ideas via some examples.
+Before diving into \ifdissertation the technicalities of edit lenses, \else
+technicalities, \fi let's take a brief tour of the main ideas via some
+examples.
 %
 Figure~\ref{fig:example-simple} demonstrates a simple use of {\edit} lenses
 to synchronize two \replicas\ifdelta\footnote{We use the word ``synchronize''
@@ -62,7 +63,7 @@ script that adds {\sf Monteverdi} to the right-hand \replica, shown in part
 (c): {\sf ins(3); mod(3, (``Monteverdi'', \ONE))}.
 Note that the translated {\sf mod} command overwrites the name component but
 leaves the country component with its default value, ``{\sf
-  ?country?}.''  This is the best it can do, since the edit was in
+  ?country?}\dotquote This is the best it can do, since the edit was in
 the left-hand \replica, which doesn't mention countries.  
 %
 Later, an eagle-eyed editor notices the missing country information and
@@ -149,8 +150,8 @@ $\ONE = \mlinl\unit$) and similarly for $Y$ and $Z$.
 Our lens $\ell\LIST$ will consist of two components---one for transporting edits
 from the left side to the right, written $(\ell\LIST).\dputr \in \partial(X
 \times Y)\LIST \to \partial(X \times Z)\LIST$,\footnote{The symbol $\dputr$ is
-  pronounced ``put an edit through the lens from left to right,'' or just
-  ``put right.''  It is the {\edit}-analog of the $\putr$ function of the
+  pronounced ``put an edit through the lens from left to right\commaquote or just
+  ``put right\dotquote It is the {\edit}-analog of the $\putr$ function of the
   state-based symmetric lenses in\symmlenses and the
   $\PUT$ function of the state-based asymmetric lenses
   in~\cite{Focal2005,Boomerang07}.} and another for transporting
@@ -421,7 +422,7 @@ mean that $f$ is defined at $x$.
 As with monoid multiplication, we often elide the monoid action symbol,
 writing $mx$ for $m \odot x$.  In standard mathematical terminology, a
 monoid action in our sense might instead be called a ``partial monoid
-action,'' but since we always work with partial actions we find it
+action\commaquote but since we always work with partial actions we find it
 convenient to drop the qualifier.
 
 A bit of discussion of partiality is in order.  
@@ -2556,7 +2557,7 @@ two repositories. There is one subtlety here: a reordering of the list
 in the left repository may shuffle which positions are $\mlinlx$'s and which
 are $\mlinrx$'s. As a result, we must take care to construct \emph{two}
 separate position isomorphisms: one for ``before'' the reordering, and one
-for ``after.''
+for ``after\dotquote
 
 % TODO: Somewhere in the above discussion we should probably try to give
 % some intuition for what \mlcount does, since it's got such odd base cases.
@@ -4281,7 +4282,7 @@ equations:
 This explains why we did not originally choose to have just two combinators,
 $\mlswitch_L$ and $\mlswitch_R$, which would be interpreted as ``switch to
 the left (respectively, right) side and reinitialize, no matter which side
-we are currently on.'' The idea of the above equations is that they allow
+we are currently on\dotquote The idea of the above equations is that they allow
 us to collapse any sequence of edits down into a single one; if we only
 allowed ourselves $\mlswitch_L$ and $\mlswitch_R$ forms, this would not be
 possible. In particular, we need to represent the fact that a $\mlstay_L$

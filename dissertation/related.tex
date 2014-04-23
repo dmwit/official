@@ -563,7 +563,7 @@ some notation.
     \end{diagram}
     We will say \emph{around} to mean the third element of a sequence, as
     in, ``$\blist i \mlist k \mlist f \mlist s \elist$ is a short exact
-    sequence around $f$.''
+    sequence around $f$.''.
 \end{definition}
 
 Before we define what split and lens-like mean, let us consider when an
@@ -633,11 +633,11 @@ motivated by this rephrasing of the state-based asymmetric lens framework's
 \infrule[GetPutAlt]
     {\aget(s)=v}
     {\aput(v,s)=s}
-Rule \rn{GetPutAlt} says, roughly, ``if the view $v$ has not changed since
-the last synchronization, then the source $s$ should not change, either.''
-Similarly, \rn{LL2} says, roughly, ``if the edit we are about to translate
+Rule \rn{GetPutAlt} says, roughly, ``If the view $v$ has not changed since
+the last synchronization, then the source $s$ should not change, either.''.
+Similarly, \rn{LL2} says, roughly, ``If the edit we are about to translate
 does not change the view $f(\ds)\;\init_V$, then the edit we output should
-not change the source $\ds\;\init_S$.''
+not change the source $\ds\;\init_S$.''.
 
 That work goes on to explore the properties of this kind of delta lens. One
 can take a lens-like sequence around $f\in\DS\to\DV$ equipped with a diffing
