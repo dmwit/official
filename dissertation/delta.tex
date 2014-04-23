@@ -1651,10 +1651,8 @@ does not apply to the current state of his \replica).
 Figure~\ref{fig:definition-sum} defines the sum of two lenses. 
 \end{defn}
 \else
-Figure~\ref{fig:definition-sum} shows the full definition\iffull{} of the
-lens.\fi
-
-% TODO: WTF is going on here? why doesn't this theorem appear in the paper??
+Figure~\ref{fig:definition-sum} shows the full definition of the lens.
+\fi%full
 
 \begin{theorem}
     When $k$ and $\ell$ are lenses, so is $k \oplus \ell$.
@@ -1685,9 +1683,19 @@ most interesting case:\fi
     Since $k$ is a lens, we know $(\init_X,k.\missing,\init_Y) \in k.K$ and
     therefore that $(x',c',y') \in k.K$. This means
     $(\mlinl{x'},\mlinl{c'},\mlinl{y'}) \in K$. Since
+    \iffull
+    we now know the three equations
+    \begin{align*}
+        (k\oplus\ell).\dputr(\dv,\mlinl c) &= (\mlswitchll\dy,\mlinl{c'}) \\
+        \dv\,\mlinl x &= \mlinl{x'} \\
+        \mlswitchll\dy\,\mlinl y &= \mlinl{y'},
+    \end{align*}
+    \else
     $(k\oplus\ell).\dputr(\dv,\mlinl c)=(\mlswitchll\dy,\mlinl{c'})$ and
     $\dv\,\mlinl x = \mlinl{x'}$ and $\mlswitchll\dy\,\mlinl y =
-    \mlinl{y'}$, this shows that $K$ is preserved in this case.
+    \mlinl{y'}$,
+    \fi
+    this shows that $K$ is preserved in this case.
 \iffull
 
 \nextcase{$\dv=\mlswitchlr\dz$} Nearly identical to the previous one, but
@@ -1697,7 +1705,7 @@ most interesting case:\fi
     similar reasoning to the above cases to observe that then
     $(\mlinl{\dx\,x},\mlinl{c'},\mlinl{\dy\,y}) \in K$ is both what we want
     to show and true because $k.K$ is preserved by $k.\dputr$.
-\fi
+\fi%full
     \endofpf
 \end{trivlist}
 \end{pf}
@@ -1835,13 +1843,11 @@ most interesting case:\fi
             \dmwit{has a paper proof}
     \end{itemize}
 \end{pf}
-\fi
-
-\iffull\else
-Like
-the tensor product, this lens combinator is a bifunctor: $\id\oplus\id\equiv\id$
-and $(k\oplus\ell);(k'\oplus\ell')\equiv(k;k')\oplus(\ell;\ell')$.\fi
-\fi
+\else
+Like the tensor product, this lens combinator is a bifunctor:
+$\id\oplus\id\equiv\id$ and
+$(k\oplus\ell);(k'\oplus\ell')\equiv(k;k')\oplus(\ell;\ell')$.
+\fi%full
 
 \iflater\discuss{Add injections!}\fi
 
