@@ -1,4 +1,4 @@
-% TODO: explain the \Defined notation, plus use it a bit more pervasively
+% TODO: use the \Defined notation a bit more pervasively
 % TODO: intro/conclusion paragraphs
 \newif \iffailed \failedfalse % to remove some bits we think we don't need
 \ifdissertation\newcommand{\symmlenses}{ Chapter~\ref{chap:complement}\xspace}
@@ -406,19 +406,17 @@ that performs an edit on a particular object.
         (m \cdot n) \odot x &= m \odot (n \odot x)
     \end{align*}
 \end{defn}
+We use $X \partialto Y$ for the space of partial functions with domain $X$
+and codomain $Y$. If $f \in X \partialto Y$, we will write $f(x)\Defined$ to
+mean that $f$ is defined at $x$.
 \else
 
 \begin{defn}
     Given a  monoid $M$ and a set $X$, a \emph{monoid action} on $M$ and $X$
     is a partial function $\odot \in M \times X \partialto X$ satisfying two laws:
-\iffull
-    \infax{\ONE \odot x = x}
-    \infax{(m \cdot n) \odot x = m \odot (n \odot x)}
-\else
-$\ONE \odot x = x$ and $(m \cdot n) \odot x = m \odot (n \odot x)$.
-\fi
+    $\ONE \odot x = x$ and $(m \cdot n) \odot x = m \odot (n \odot x)$.
 \end{defn}
-\fi
+\fi%full
 %
 As with monoid multiplication, we often elide the monoid action symbol,
 writing $mx$ for $m \odot x$.  In standard mathematical terminology, a
