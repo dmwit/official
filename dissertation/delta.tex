@@ -1,5 +1,5 @@
 % TODO: use the \Defined notation a bit more pervasively
-% TODO: intro/conclusion paragraphs
+% TODO: intro paragraph?
 \newif \iffailed \failedfalse % to remove some bits we think we don't need
 \ifdissertation\newcommand{\symmlenses}{ Chapter~\ref{chap:complement}\xspace}
 \else          \newcommand{\symmlenses}{~\cite{HofmannPierceWagner10}\xspace}
@@ -4776,6 +4776,37 @@ in $\partial \Mod(\mathbf{C}_X)$, namely $\{(x,e,y)\mid ex=y\}$.
 
 \fi%full
 \fi%delta
+
+\ifdissertation
+\section{Conclusion}
+\label{sec:delta-conclusion}
+Recall from Chapter~\ref{chap:introduction} that there are four high-level
+challenges in the design of bidirectional programming languages: alignment,
+symmetry, performance, and syntax. The tools from
+Chapter~\ref{chap:complement}---existentially quantified complement sets and
+an equivalence relation to quotient out uninteresting differences between
+them---enabled a symmetric system that nevertheless supports a range of
+useful transformations. This chapter's approach retains those tools while
+tackling the remaining two challenge areas of alignment and performance. We
+identified an abstract model for edits and edit transformations---monoids
+and monoid homomorphisms, respectively---and investigated instantiations of
+these models to the standard basic data types and operations. In our
+investigation, we showed that the natural instantiations (in particular our
+list and container edit monoids) enable rich alignment information to be
+provided to, processed by, and received from our transformations. Moreover,
+our lens transformations traverse edits and complements, but not
+repositories. Because our instantiations of edit monoids contain
+significantly less data than the repositories (and complements are typically
+trivial or at most represent the spine of the data), traversals of these
+data should require less processing power, memory, and transmission
+bandwidth. (Viewing edits as a compression scheme for updated repositories,
+we have shown that edit lenses can compute on the compressed data directly
+without decompressing; this is a significant proof burden for other
+compression techniques.) We have shown that these techniques for alignment
+representation and processing efficiency are applicable within the realm of
+symmetric lenses and compatible with most of the transformations needed for
+a comprehensive syntax of edit lenses.
+\fi%dissertation
 
 % Consider a category $\CC$ and, by going back and forth, form the
 % category $\DD:=\text{Cat}(\text{Mod}(\CC))$. We have $|\CC|=|\DD|$ and
