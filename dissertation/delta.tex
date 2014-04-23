@@ -1,6 +1,8 @@
 % TODO: use the \Defined notation a bit more pervasively
 % TODO: intro paragraph?
 % TODO: some proofneeded's are left
+% TODO: search for ``paper'' everywhere and make sure it reads ``chapter''
+% in the dissertation
 \newif \iffailed \failedfalse % to remove some bits we think we don't need
 \ifdissertation\newcommand{\symmlenses}{ Chapter~\ref{chap:complement}\xspace}
 \else          \newcommand{\symmlenses}{~\cite{HofmannPierceWagner10}\xspace}
@@ -1632,7 +1634,8 @@ the sum. For state-based lenses, lenses on recursive structures like lists
 were given in terms of lenses on the non-recursive structure, and the
 retentive sum lens gave rise to a retentive list mapping lens whereas the
 forgetful sum lens gave rise to a forgetful list mapping lens. The poor
-alignment strategies given in that paper were mediated somewhat by the
+alignment strategies given in that \ifdissertation chapter \else paper \fi
+were mediated somewhat by the
 retentive map's ability to use complements from previous versions of a list,
 making retentive sums somewhat more attractive than forgetful ones. In this
 presentation, however, the mapping lens has much better alignment
