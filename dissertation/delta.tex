@@ -4355,36 +4355,27 @@ equations.  \fi
     For each of the four equations (instantiated to $L$ everywhere) $e=e'$,
     both $e\odot\mlinr y$ and $e'\odot\mlinr y$ are undefined, so we focus
     on $e\odot\mlinl x$ and $e'\odot\mlinl x$.
-
-    \[\begin{array}{l}
-        \blist\mlswitchll m\mlist\mlswitchll{m'}\elist \odot \mlinl x \\
-        \qquad= \blist\mlswitchll m\elist\odot \mlinl{m'\odot \init} \\
-        \qquad= \mlinl{m \odot \init} \\
-        \qquad= \blist\mlswitchll{m}\elist \odot \mlinl x
-    \end{array}\]
-
     \begin{align*}
+        \blist\mlswitchll m\mlist\mlswitchll{m'}\elist \odot \mlinl x
+            &= \blist\mlswitchll m\elist\odot \mlinl{m'\odot \init} \\
+            &= \mlinl{m \odot \init} \\
+            &= \blist\mlswitchll{m}\elist \odot \mlinl x \\
         \blist\mlswitchll m\mlist\mlstayl{m'}\elist \odot \mlinl x
             &= \blist\mlswitchll m\elist \odot \mlinl{m'\odot x} \\
             &= \mlinl{m \odot \init} \\
-            &= \blist\mlswitchll m\elist \odot \mlinl x
-    \end{align*}
-
-    \begin{align*}
+            &= \blist\mlswitchll m\elist \odot \mlinl x \\
         \blist\mlstayl m\mlist\mlswitchll{m'}\elist \odot \mlinl x
             &= \blist\mlstayl m\elist \odot \mlinl{m' \odot \init} \\
             &= \mlinl{m \odot m' \odot \init} \\
             &= \mlinl{mm' \odot \init} \\
-            &= \blist\mlswitchll{mm'}\elist \odot \mlinl x
-    \end{align*}
-
-    \begin{align*}
+            &= \blist\mlswitchll{mm'}\elist \odot \mlinl x \\
         \blist\mlstayl m\mlist\mlstayl{m'}\elist \odot \mlinl x
             &= \blist\mlstayl m\elist \odot \mlinl{m' \odot x} \\
             &= \mlinl{m \odot m' \odot x} \\
             &= \mlinl{mm' \odot x} \\
             &= \blist\mlstayl{mm'}\elist \odot \mlinl x
     \end{align*}
+    \vskip -5ex
 \end{proof}
 
 \begin{lemma}
@@ -4396,28 +4387,17 @@ equations.  \fi
 \iffull
 \begin{pf}
     We will show only that $\dputr\gen$ respects the equations; the argument
-    for $\dputl\gen$ is similar.
-
-    Choose arbitrary sum edits $e_1,e_2$ and initial complement $c_0 \in C$
-    and define:
-\iffull
+    for $\dputl\gen$ is similar. Choose arbitrary sum edits $e_1,e_2$ and
+    initial complement $c_0 \in C$ and define:
     \begin{align*}
         e_{12} &= e_2e_1 \\
         (f_1,c_1) &= \dputr(e_1,c_0) \\
         (f_2,c_2) &= \dputr(e_2,c_1) \\
         (f_{12},c_{12}) &= \dputr(e_2e_1,c_0)
     \end{align*}
-\else
-$e_{12} = e_2e_1$; 
-$(f_1,c_1) = \dputr(e_1,c_0)$;
-$(f_2,c_2) = \dputr(e_2,c_1)$; and
-$(f_{12},c_{12}) = \dputr(e_2e_1,c_0)$.
-\fi
     We must show that $f_{12}=f_2f_1$ and $c_{12}=c_2$. We will go by case
     analysis on $e_1$ and $e_2$; however we can first rule out a few broad
-    categories of such cases.
-    \iffull
-    When
+    categories of such cases. When
     $\dputr(e_1,c)=(\fail,\mlfailed)$ fails, there is very little to prove;
     we know that $\dputr(e_2,\mlfailed)=(f_2,\mlfailed)$ for some $f_2$, and
     hence that $f_2f_1=\fail$. Furthermore, it is not hard to see by
@@ -4430,34 +4410,22 @@ $(f_{12},c_{12}) = \dputr(e_2e_1,c_0)$.
     of the edit. Since the monoid multiplication inspects only the
     constructor, the required equation $f_2f_1=f_{12}$ will hold, and we
     will have $c_{12}=\mlfailed=c_2$.
-    \else
-    When the lens fails, the complement gets ``stuck'' in the
-    $\mlfailed$ state, reducing the problem to checking only the monoid
-    part of the function. Since $\fail\,e=e\,\fail=\fail$ these
-    equations are easy to check\iflater; the full version of the paper details this\fi.
-    \fi
 
     In the following, we therefore assume that no failure occurs.
     A few definitions will be convenient: \finish{the $s$ definition could
     have been used in the definition of the lens.} 
-\[
-\begin{array}{c}
-        s(L,\dx) = k.\dputr(\dx,k.\missing) \qquad
-        s(R,\dx) = \ell.\dputr(\dx,\ell.\missing) \\[1ex]
-        t(L,x) = \mlinl x \qquad 
-        t(R,y) = \mlinr y \\[1ex]
-        u(\mlinl x) = L \qquad
-        u(\mlinr y) = R \qquad
-        u(\mlfailed) = \mlfailed
-\end{array}
-\]
-    \iffull
+    \begin{align*}
+        s(L,\dx)     &= k.\dputr(\dx,k.\missing) &
+        t(L,x)       &= \mlinl x &
+        u(\mlinl x)  &= L \\
+        s(R,\dx)     &= \ell.\dputr(\dx,\ell.\missing) &
+        t(R,y)       &= \mlinr y &
+        u(\mlinr y)  &= R \\
+        &&&&
+        u(\mlfailed) &= \mlfailed
+    \end{align*}
     The cases now proceed as follows:
-    \else
-    We show only one case to give the flavor of the argument. \iflater The full proof
-    can be found in the technical report available online.\fi
-    \fi
-    \begin{trivlist} \item[] 
+    \begin{trivlist}
 
 \nextcase{$e_1=\mlswitch_{hi}(\dx'),e_2=\mlswitch_{ij}(\dx)$} We have
             $e_2e_1=\mlswitch_{hj}(\dx)$. Since we consider only non-failing
@@ -4475,17 +4443,15 @@ $(f_{12},c_{12}) = \dputr(e_2e_1,c_0)$.
             $(f_{12},c_{12}) = (\mlswitch_{hj}(\dy),t(j,c))$,
             which is equal to the previous tuple, as desired.
 
-\iffull
 \nextcase{$e_1=\mlstay_i(\dx),e_2=\mlswitch_{ij}(\dx')$} Since we know no
             failure occurs, we must have $u(c_0)=i$.
             Therefore, $e_2$ is a sensible edit to apply, and so
             \[\dputr(e_2,c_0) = (\mlswitch_{ij}(\dy'),t(j,c))\]
             where $(\dy',c)=s(j,\dx')$. Furthermore, $e_1$ is a sensible
-            edit to apply, so we know $u(c_1)=i$, and hence that:
-            \[(f_2,c_2) = (\mlswitch_{ij}(\dy'),t(j,c))\]
-            Furthermore, since
-            \[f_1 = \mlstay_i(\dy)\]
-            for some $\dy$, we know $f_2f_1=f_2$. But since $e_{12}=e_2$,
+            edit to apply, so we know $u(c_1)=i$, and hence that $(f_2,c_2)
+            = (\mlswitch_{ij}(\dy'),t(j,c))$. Furthermore, since $f_1 =
+            \mlstay_i(\dy)$ for some $\dy$, we know $f_2f_1=f_2$. But since
+            $e_{12}=e_2$,
             \begin{align*}
                 (f_{12},c_{12}) &= \dputr(e_{12},c_0) \\
                 &= \dputr(e_2,c_0) \\
@@ -4521,11 +4487,10 @@ $(f_{12},c_{12}) = \dputr(e_2e_1,c_0)$.
             homomorphism law for the underlying $\dputr$ operations; the
             only difference from the previous case is that we begin with a
             complement that may not be $k.\missing$ or $\ell.\missing$.
-\fi
     \endofpf
     \end{trivlist}
 \end{pf}
-\fi
+\fi%full
 
 Unfortunately, the $\partition$ lens as given does {\em not} respect the
 above equations.  It seems possible to enforce them by also imposing
