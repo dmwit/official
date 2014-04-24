@@ -1,34 +1,24 @@
 \section{Future Work}
 \label{sec:future}
 
-\begin{itemize}
-    \item associative sum
-    \item symmetric monoidal structure of tensor product edit lens
-    \item partially-ordered homsets: perhaps we can't get a product or sum
-        in our category, but could get a variant where the required
-        equations are replaced by inequalities
-    \item edit modules for more container shapes, esp. graphs (for
-        model-driven development) and relations (for databases)
-    \item monoid laws for the various edit monoids
-    \item typed edits/complements; some text moved here from the related
-        work section:
-
-        One can view the two approaches as two extremes, with on one end
-        graphs with a single node representing all possible repository
-        states and on the other end graphs with many nodes where each node
-        represents a single repository state. There may be a middle ground
-        in which graph nodes each represent many possible repository states;
-        the hope then would be that one could keep the benefit of a total
-        edit application function while reusing single edits on many
-        different states. For example, for list edits, one might consider a
-        graph with one node for each possible length of list. Then one would
-        have, for example, deletion edges $\mldelete : m \dedge n$ when
-        $m<n$; such an edge must store marginally more information than our
-        edit module did (the domain and codomain length rather than a single
-        number telling their difference), but the set of repositories to
-        which it applies is much more clearly delimited. Attempting to
-        recast the edit modules and lenses proposed above in this light
-        would be an interesting area for future work.
+\begin{enumerate}
+    \item hyperlenses
+    \item more syntax
+        \begin{itemize}
+            \item edit modules for recursive types, fold/unfold lens combinators,
+                investigate shape alignment
+            \item edit modules for more container shapes, esp. graphs (for
+                model-driven development) and relations (for databases)
+        \end{itemize}
+    \item algebraic properties
+        \begin{itemize}
+            \item associative sum
+            \item symmetric monoidal structure of tensor product edit lens
+            \item monoid laws for the various edit monoids
+            \item partially-ordered homsets: perhaps we can't get a product or sum
+                in our category, but could get a variant where the required
+                equations are replaced by inequalities
+        \end{itemize}
     \item wiring diagrams; some text copied here from the original
         complements paper:
 
@@ -57,13 +47,29 @@
         The interpretation of such a term in the category of lenses then
         takes care of the appropriate insertion of bijective lenses for
         regrouping and swapping tensor products.
+    \item typed edits/complements; some text moved here from the related
+        work section:
+
+        One can view the two approaches as two extremes, with on one end
+        graphs with a single node representing all possible repository
+        states and on the other end graphs with many nodes where each node
+        represents a single repository state. There may be a middle ground
+        in which graph nodes each represent many possible repository states;
+        the hope then would be that one could keep the benefit of a total
+        edit application function while reusing single edits on many
+        different states. For example, for list edits, one might consider a
+        graph with one node for each possible length of list. Then one would
+        have, for example, deletion edges $\mldelete : m \dedge n$ when
+        $m<n$; such an edge must store marginally more information than our
+        edit module did (the domain and codomain length rather than a single
+        number telling their difference), but the set of repositories to
+        which it applies is much more clearly delimited. Attempting to
+        recast the edit modules and lenses proposed above in this light
+        would be an interesting area for future work.
     \item parsing/unparsing string edits to structured edits
-    \item hyperlenses
-    \item laws about undo-able edits, and requiring that \emph{edits} ``roundtrip''
-    \item implementation
-    \item edit lenses for recursive types + investigate shape alignment
     \item automatically discover weight functions for symmetric lens
         iteration
+    \item laws about undo-able edits, and requiring that \emph{edits} ``roundtrip''
     \item how closely do symmetric lens and edit lens constructions like
         tensor product and sum correspond? (can we get a theorem like the
         one saying how asymmetric lens constructions lift to symmetric lens
@@ -71,4 +77,5 @@
     \item how closely do (symmetric) edit lenses and asymmetric delta lenses
         correspond? (can we get a theorem like the one saying how to
         factor a symmetric lens into two asymmetric ones?)
-\end{itemize}
+    \item implementation
+\end{enumerate}
