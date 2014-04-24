@@ -1752,9 +1752,6 @@ most interesting case:\fi
         \item $\id \oplus \id \equiv \id$.
         \item $(k \oplus \ell);(k' \oplus \ell') \equiv (k;k') \oplus
             (\ell;\ell')$.
-        \item $((k \oplus \ell)\oplus m);\bij_{\assoc} \equiv \ell \oplus (k\oplus m)$, where
-            $\assoc$ is the  isomorphism between $(X + Y)+ Z$ and $X+ (Y+ Z)$ for all
-                  $X,Y,Z$. 
         \item $(k \oplus \ell);\bij_{\swap} \equiv \ell \oplus k$, where
             $\swap$ is the  isomorphism between $X + Y$ and $Y
             + X$.
@@ -1876,16 +1873,19 @@ most interesting case:\fi
 
             \dmwit{proofneeded}
 
-        \item $((k\oplus\ell)\oplus m);\bij_\assoc\equiv
-            k\oplus(\ell\oplus m)$
-
-            \dmwit{proofneeded}\finish{and what is $\bij_\assoc$?}
-
         \item $(k\oplus\ell);\bij_{\swap}\equiv\ell\oplus k$
 
             \dmwit{proofneeded}
     \end{itemize}
 \end{pf}
+This theorem does not attempt to show that $\oplus$ is associative, that is,
+to connect $(k\oplus\ell)\oplus m$ and $k\oplus(\ell\oplus m)$ in any way.
+This is because the edits of the modules $(X\oplus Y)\oplus Z$ and
+$X\oplus(Y\oplus Z)$ as we have defined them are fundamentally different;
+for example, the former has an operation $\mlswitchlr\ONE$ which takes any
+$X$ or $Y$ value and turns it into $\init_Z$ which is not matched by any
+edit operation in the latter. Investigation into an associative sum module
+(and associative sum lens) is left for future work.
 \else
 Like the tensor product, this lens combinator is a bifunctor:
 $\id\oplus\id\equiv\id$ and
