@@ -142,20 +142,7 @@ to be in conflict with our goal of representing edits with objects
 significantly smaller than the repository states. Many of our edit modules
 exploit the ability to reuse edits as modifications to many different
 repository states. Nevertheless, totality of edit application is a nice
-feature. One can view the two approaches as two extremes, with on one end
-graphs with a single node representing all possible repository states and on
-the other end graphs with many nodes where each node represents a single
-repository state. There may be a middle ground in which graph nodes each
-represent many possible repository states; the hope then would be that one
-could keep the benefit of a total edit application function while reusing
-single edits on many different states. For example, for list edits, one
-might consider a graph with one node for each possible length of list. Then
-one would have, for example, deletion edges $\mldelete : m \dedge n$ when
-$m<n$; such an edge must store marginally more information than our edit
-module did (the domain and codomain length rather than a single number telling
-their difference), but the set of repositories to which it applies is much
-more clearly delimited. Attempting to recast the edit modules and lenses
-proposed above in this light would be an interesting area for future work.
+feature.
 
 The connection between modules and edit graphs can be made precise as
 follows. To pass from a module $X$ to a graph $\Gr(X)$, let $\Gr(X)_0=|X|$
