@@ -768,36 +768,6 @@ S$; and
 % \finish{Checked that
 %     this proof is good for the new notion of equivalence. }
 \end{pf}
-In fact, in many cases, no cleverness is needed in selecting the witness
-relation $S$: we can simply take the intersection of consistent triples from
-the two lenses we are trying to prove equivalent. The next theorem realizes
-this observation.
-
-\begin{theorem}
-    \label{thm:mechanical-bisim}
-    Suppose that whenever $(x,c,y) \in k.K$ and $(x,d,y) \in \ell.K$ and
-    $\dx\;x\Defined$ then $\pi_1(k.\dputr(\dx,c))=\pi_1(\ell.\dputr(\dx,d))$
-    (and similarly for $\dputl$). Then $k \equiv \ell$.
-\end{theorem}
-\begin{pf}
-    We build the witnessing relation:
-    \[S = \{(x,c,d,y) \mid (x,c,y) \in k.K \land (x,d,y) \in \ell.K\}\]
-    Since $k$ is a lens, we know $(\init_X,k.\missing,\init_Y) \in k.K$ (and
-    similarly for $\ell$), so we conclude
-    $(\init_X,k.\missing,\ell.\missing,\init_Y) \in S$.
-
-    To show that $\dputr$ preserves $S$, we suppose $(x,c,d,y) \in S$ and
-    $\dx\;x\Defined$. Defining $(\dy_k,c') = k.\dputr(\dx,c)$ and
-    $(\dy_\ell,d') = \ell.\dputr(\dx,d)$, we observe that our assumption
-    gives us $\dy_k=\dy_\ell$. Moreover, since $k$ and $\ell$ are lenses,
-    the behavioral law for consistency relations tells us that
-    $\dy_k\;y\Defined$, that $(\dx\;x,c',\dy_k\;y) \in k.K$, and that
-    $(\dx\;x,d',\dy_\ell\;y) \in \ell.K$. These last two tell us
-    $(\dx\;x,c',d',\dy_k\;y) \in S$ (since $\dy_k=\dy_\ell$), as needed.
-
-    The proof that $\dputl$ preserves $S$ is similar.
-\end{pf}
-% TODO: see if we can use this theorem to simplify some proofs
 
 \begin{theorem}
     Lens equivalence is an equivalence relation.
@@ -1745,6 +1715,31 @@ most interesting case:\fi
 \end{pf}
 
 \iffull
+\begin{lemma}
+    \label{lemma:mechanical-bisim}
+    Suppose that whenever $(x,c,y) \in k.K$ and $(x,d,y) \in \ell.K$ and
+    $\dx\;x\Defined$ then $\pi_1(k.\dputr(\dx,c))=\pi_1(\ell.\dputr(\dx,d))$
+    (and similarly for $\dputl$). Then $k \equiv \ell$.
+\end{lemma}
+\begin{pf}
+    We build the witnessing relation:
+    \[S = \{(x,c,d,y) \mid (x,c,y) \in k.K \land (x,d,y) \in \ell.K\}\]
+    Since $k$ is a lens, we know $(\init_X,k.\missing,\init_Y) \in k.K$ (and
+    similarly for $\ell$), so we conclude
+    $(\init_X,k.\missing,\ell.\missing,\init_Y) \in S$.
+
+    To show that $\dputr$ preserves $S$, we suppose $(x,c,d,y) \in S$ and
+    $\dx\;x\Defined$. Defining $(\dy_k,c') = k.\dputr(\dx,c)$ and
+    $(\dy_\ell,d') = \ell.\dputr(\dx,d)$, we observe that our assumption
+    gives us $\dy_k=\dy_\ell$. Moreover, since $k$ and $\ell$ are lenses,
+    the behavioral law for consistency relations tells us that
+    $\dy_k\;y\Defined$, that $(\dx\;x,c',\dy_k\;y) \in k.K$, and that
+    $(\dx\;x,d',\dy_\ell\;y) \in \ell.K$. These last two tell us
+    $(\dx\;x,c',d',\dy_k\;y) \in S$ (since $\dy_k=\dy_\ell$), as needed.
+
+    The proof that $\dputl$ preserves $S$ is similar.
+\end{pf}
+
 \begin{theorem}\ 
     \begin{itemize}
         \item If $k \equiv k'$ and $\ell \equiv \ell'$, then $k \oplus
@@ -1857,7 +1852,7 @@ most interesting case:\fi
 
         \item $\id\oplus\id\equiv\id$
 
-            We appeal to Theorem~\ref{thm:mechanical-bisim}. We will show
+            We appeal to Lemma~\ref{lemma:mechanical-bisim}. We will show
             the argument for $\dputr$ (applied to generators, because the
             monoid is free); the argument for $\dputl$ is symmetric. Hence
             we may assume we have consistent triples $(x,c,y) \in
