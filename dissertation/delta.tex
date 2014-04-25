@@ -1748,8 +1748,8 @@ most interesting case:\fi
         \item $(k \oplus \ell);(k' \oplus \ell') \equiv (k;k') \oplus
             (\ell;\ell')$.
         \item $(k \oplus \ell);\bij_{\swap} \equiv \ell \oplus k$, where
-            $\swap$ is the  isomorphism between $X + Y$ and $Y
-            + X$.
+            $\swap$ is the obvious module isomorphism between $X \oplus Y$
+            and $Y \oplus X$.
     \end{itemize}
 \end{theorem}
 
@@ -1852,6 +1852,8 @@ most interesting case:\fi
 
         \item $\id\oplus\id\equiv\id$
 
+            % TODO: take out lemma:mechanical-bisim and just prove this
+            % directly
             We appeal to Lemma~\ref{lemma:mechanical-bisim}. We will show
             the argument for $\dputr$ (applied to generators, because the
             monoid is free); the argument for $\dputl$ is symmetric. Hence
@@ -1866,10 +1868,25 @@ most interesting case:\fi
 
         \item $(k\oplus\ell);(k'\oplus\ell')\equiv(k;k')\oplus(\ell;\ell')$
 
+            We will refer to $(k\oplus\ell);(k'\oplus\ell')$ and
+            $(k;k')\oplus(\ell;\ell')$ as $a$ and $b$, respectively. The key
+            insight is that the two sum lenses being composed always agree
+            about which side of the sum they are on. This insight is
+            embodied in the $\ml{split}$ function:
+            \begin{align*}
+                \ml{split}(\mlinl{(c,c')}) &= (\mlinl c,\mlinl{c'}) \\
+                \ml{split}(\mlinr{(c,c')}) &= (\mlinr c,\mlinr{c'})
+            \end{align*}
+            Our witness relation uses this function.
+            \[S = \{(x,\ml{split}(c),c,y) \mid (x,c,y) \in b.K\}\]
             \dmwit{proofneeded}
 
         \item $(k\oplus\ell);\bij_{\swap}\equiv\ell\oplus k$
 
+            We give a witnessing relation that rearranges the bits of the
+            complements:
+            \[S = \{(x,(\swap(c),\unit),c,y) \mid (x,c,y) \in (\ell\oplus
+            k).K\}\]
             \dmwit{proofneeded}
             \endofpf
     \end{itemize}
@@ -1877,11 +1894,11 @@ most interesting case:\fi
 This theorem does not attempt to show that $\oplus$ is associative, that is,
 to connect $(k\oplus\ell)\oplus m$ and $k\oplus(\ell\oplus m)$ in any way.
 This is because the edits of the modules $(X\oplus Y)\oplus Z$ and
-$X\oplus(Y\oplus Z)$ as we have defined them are fundamentally different;
-for example, the former has an operation $\mlswitchlr\ONE$ which takes any
-$X$ or $Y$ value and turns it into $\init_Z$ which is not matched by any
-edit operation in the latter. Investigation into an associative sum module
-(and associative sum lens) is left for future work.
+$X\oplus(Y\oplus Z)$ as we have defined them are fundamentally different.
+For example, the former has an operation $\mlswitchlr\ONE$ which takes any
+$X$ or $Y$ value and turns it into $\init_Z$; this operation is not matched
+by any edit operation in the latter. Investigation into an associative sum
+module (and associative sum lens) is left for future work.
 \else
 Like the tensor product, this lens combinator is a bifunctor:
 $\id\oplus\id\equiv\id$ and
