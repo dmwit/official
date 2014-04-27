@@ -1872,14 +1872,96 @@ most interesting case:\fi
             $(k;k')\oplus(\ell;\ell')$ as $a$ and $b$, respectively. The key
             insight is that the two sum lenses being composed always agree
             about which side of the sum they are on. This insight is
-            embodied in the $\ml{split}$ function:
+            embodied in the $\mlsplit$ function:
             \begin{align*}
-                \ml{split}(\mlinl{(c,c')}) &= (\mlinl c,\mlinl{c'}) \\
-                \ml{split}(\mlinr{(c,c')}) &= (\mlinr c,\mlinr{c'})
+                \mlsplit(\mlinl{(c,c')}) &= (\mlinl c,\mlinl{c'}) \\
+                \mlsplit(\mlinr{(c,c')}) &= (\mlinr c,\mlinr{c'})
             \end{align*}
             Our witness relation uses this function.
-            \[S = \{(x,\ml{split}(c),c,y) \mid (x,c,y) \in b.K\}\]
-            \dmwit{proofneeded}
+            \[S = \{(x,\mlsplit(c),c,z) \mid (x,c,z) \in b.K\}\]
+            Supposing we have the types
+            \begin{align*}
+                k &\in X_k \lens Y_k & k' &\in Y_k \lens Z_k \\
+                \ell &\in X_\ell \lens Y_\ell & \ell' &\in Y_\ell \lens
+                Z_\ell
+            \end{align*}
+            we will first show that $(\init_{X_k\oplus
+            X_\ell},a.\missing,b.\missing,\init_{Z_k\oplus Z_\ell}) \in S$.
+            It suffices to show that $a.\missing=\mlsplit(b.\missing)$,
+            since $b.K$ is a correct consistency relation. But
+            $b.\missing=\mlinl{(k.\missing,k'.\missing)}$ and
+            $a.\missing=(\mlinl{k.\missing},\mlinl{\ell.\missing})$, so the
+            necessary equation holds.
+
+            We must also show that $\dputr$ and $\dputl$ preserve the
+            relation $S$. We will show the $\dputr$ cases for $\mlstay_L$
+            and $\mlswitch_{LR}$; the remaining cases are very similar or
+            mere induction. Since we may assume the supplied edit applies
+            cleanly, we know that we have $(\mlinl
+            x,\mlinl{(c_k,c_{k'})},\mlinl z) \in b.K$. A simple calculation
+            assures us that consequently $(\mlinl
+            x,(\mlinl{c_k},\mlinl{c_{k'}}),\mlinl z) \in a.K$. We will use
+            the abbreviations
+            \begin{align*}
+                c_a &= (\mlinl{c_k},\mlinl{c_{k'}}) & c_b &=
+                \mlinl{(c_k,c_{k'})}
+            \end{align*}
+            in the following, noting that $c_a=\mlsplit(c_b)$.
+
+            \begin{trivlist}
+                \nextcase{$\mlstayl\dx$} Defining
+                \begin{align*}
+                    (\dy,c_k') &= k.\dputr(\dx,c_k) &
+                    c_a' &= (\mlinl{c_k'},\mlinl{c_{k'}'}) \\
+                    (\dz,c_{k'}') &= k'.\dputr(\dy,c_{k'}) &
+                    c_b' &= \mlinl{(c_k',c_{k'}')}
+                \end{align*}
+                we may now compute:
+                \begin{align*}
+                    a.\dputr(\mlstayl\dx,c_a) &= (\mlstayl\dz,c_a') \\
+                    b.\dputr(\mlstayl\dx,c_b) &= (\mlstayl\dz,c_b')
+                \end{align*}
+                Since $k;k'$ is a lens, and we know (from the assumption that
+                $\mlstayl\dx\;\mlinl x\Defined$) that $\dx\;x\Defined$, we
+                can conclude that $\dz\;z\Defined$ (one of two facts we must
+                show to decide that $S$ is preserved in this case). Setting
+                \begin{align*}
+                    x' &= \mlinl{\dx\;x} & z' &= \mlinl{\dz\;z}
+                \end{align*}
+                we can conclude from $(\dx\;x,(c_k',c_{k'}'),\dz\;z) \in
+                (k;k').K$ that $(x',c_b',z') \in b.K$, hence that
+                $(x',c_a',c_b',z') = (x',\mlsplit(c_b'),c_b',z') \in S$, the
+                second necessary fact.
+
+                \nextcase{$\mlswitchlr\dx$} Defining some abbreviations,
+                \begin{align*}
+                    (\dy,c_\ell') &= \ell.\dputr(\dx,\ell.\missing) &
+                    c_a' &= (\mlinr{c_\ell'},\mlinr{c_{\ell'}'}) \\
+                    (\dz,c_{\ell'}') &= \ell'.\dputr(\dy,\ell'.\missing) &
+                    c_b' &= \mlinr{(c_\ell',c_{\ell'}')}
+                \end{align*}
+                we can then compute:
+                \begin{align*}
+                    a.\dputr(\mlswitchlr\dx,c_a) &= (\mlswitchlr\dz,c_a') \\
+                    b.\dputr(\mlswitchlr\dx,c_b) &= (\mlswitchlr\dz,c_b')
+                \end{align*}
+                We would like to show that $\mlswitchlr\dz\;\mlinl
+                z\Defined$, that is, that $\dz\;\init_{Z_\ell}\Defined$. On
+                the other hand, we know that $\mlswitchlr\dx\;\mlinl
+                x\Defined$, that is, that $\dx\;\init_{X_\ell}\Defined$.
+                Since $\ell;\ell'$ is a lens, it translates an applicable
+                edit to a consistent state to an applicable edit that
+                restores consistency, and $(\init_{X_\ell},
+                (\ell;\ell').\missing, \init_{Z_\ell}) \in (\ell;\ell').K$
+                is a consistent state. Hence we can conclude
+                $\dz\;\init_{Z_\ell}$ is defined as necessary, and
+                furthermore that $(\dx\;\init_{X_\ell}, (c_\ell',
+                c_{\ell'}'), \dz\;\init_{Z_\ell}) \in (\ell;\ell').K$. From
+                this we can conclude the second fact that we need, namely
+                that
+                \[(\mlinr{\dx\;\init_{X_\ell}}, c_a', c_b',
+                \mlinr{\dz\;\init_{Z_\ell}}) \in S.\]
+            \end{trivlist}
 
         \item $(k\oplus\ell);\bij_{\swap}\equiv\ell\oplus k$
 
