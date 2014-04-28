@@ -323,6 +323,11 @@
 \newcommand{\ONE}{\mbox{\bf{1}}}
 \newcommand{\Open}{\{\hspace{-2pt}|}
 \newcommand{\op}{^\mathit{op}}
+\newcommand{\oplusl}{\mathbin{\overshortleftarrow{\oplus}}}
+\newcommand{\oplusr}{\mathbin{\overshortrightarrow{\oplus}}}
+% cribbed from the definitions of \overleftarrow etc. in amsmath.sty
+\newcommand{\overshortleftarrow}{\mathpalette{\overarrow@\shortleftarrowfill@}}
+\newcommand{\overshortrightarrow}{\mathpalette{\overarrow@\shortrightarrowfill@}}
 \newcommand{\partialto}{\rightharpoonup}
 \newcommand{\partitionarray}[3]{%
     #1,\ \mbox{where}
@@ -369,6 +374,9 @@
 \newcommand{\sdlens}{\closeunder{s}{\dlens}}
 \newcommand{\Sed}{\mathsf{sed}}
 \newcommand{\SET}{{\sc set}}
+% cribbed from the definition of \leftarrowfill@, etc. in amsmath.sty
+\def\shortleftarrowfill@{\arrowfill@\shortleftarrow\relbar\relbar}
+\def\shortrightarrowfill@{\arrowfill@\relbar\relbar\shortrightarrow}
 \newcommand{\SMALLSECTIONHEADER}{\paragraph*}
 \newcommand{\smissing}{\mathit{missing}}
 \newcommand{\soon}[1]{\ifdraft{\color{bluegray}{\bf [Soon: #1]}} \fi}

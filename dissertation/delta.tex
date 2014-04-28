@@ -3,6 +3,8 @@
 % TODO: some proofneeded's are left
 % TODO: search for ``paper'' everywhere and make sure it reads ``chapter''
 % in the dissertation
+% TODO: search for ``lack of space'' and figure out what to do about each --
+% there's no lack of space in a dissertation!!
 \newif \iffailed \failedfalse % to remove some bits we think we don't need
 \ifdissertation\newcommand{\symmlenses}{ Chapter~\ref{chap:complement}\xspace}
 \else          \newcommand{\symmlenses}{~\cite{HofmannPierceWagner10}\xspace}
@@ -1562,8 +1564,10 @@ categorical product, because duplicating information does not give rise to a
 well-behaved lens---there is no lens with type $X \lens X \otimes X$ that
 satisfies all the equivalences a lens programmer would want.
 %
+\ifdissertation\else% TODO
 However, tensor product does yield various symmetric monoidal categories
 of edit lenses; for lack of space we omit the details. 
+\fi
 
 \paragraph*{Sum}
 
@@ -1620,8 +1624,19 @@ side. These intuitions are formalized in the application function:
     e \odot\gen v && \mbox{undefined in all other cases}
 \end{eqnarray*}
 We then define the sum of modules $X$ and $Y$ as
-\[X \oplus Y =
+\[X \iffull\oplusl\else\oplus\fi Y =
 \left<|X|+|Y|,\mlinl{\init_X},(G^\oplus_{X,Y})\LIST,\odot\right>.\]
+\iffull
+There is a free choice of initial element for this module; one could also
+quite naturally choose $\mlinr{\init_Y}$. We use $\oplusl$ to emphasize that
+this is the left-biased sum, and define a similar module, denoted $\oplusr$,
+whose only difference is that $\init_{X\oplusr Y}=\mlinr{\init_Y}$. We will
+use the left-biased sum almost exclusively in the remainder, writing simply
+$\oplus$ instead of $\oplusl$. This consideration extends to the lens
+definition below, where the tag of the $\missing$ state must match the tag
+of the module's $\init$, and we will use the same notational convention to
+differentiate between the two lenses when necessary.
+\fi%full
 
 We now wish to give a lens combinator $k\oplus\ell$ that runs lens $k$ on
 the parts of edits that apply to $\ml{inl}$ values and $\ell$ on
@@ -1747,9 +1762,9 @@ most interesting case:\fi
         \item $\id \oplus \id \equiv \id$.
         \item $(k \oplus \ell);(k' \oplus \ell') \equiv (k;k') \oplus
             (\ell;\ell')$.
-        \item $(k \oplus \ell);\bij_{\swap} \equiv \ell \oplus k$, where
-            $\swap$ is the obvious module isomorphism between $X \oplus Y$
-            and $Y \oplus X$.
+        \item $\big(k \oplusl \ell\big);\bij_{\swap} \equiv \ell \oplusr k$, where
+            $\swap$ is the obvious module isomorphism between $X \oplusl Y$
+            and $Y \oplusr X$.
     \end{itemize}
 \end{theorem}
 
@@ -1963,12 +1978,30 @@ most interesting case:\fi
                 \mlinr{\dz\;\init_{Z_\ell}}) \in S.\]
             \end{trivlist}
 
-        \item $(k\oplus\ell);\bij_{\swap}\equiv\ell\oplus k$
+        \item $\big(k\oplusl\ell\big);\bij_{\swap}\equiv\ell\oplusr k$
 
             We give a witnessing relation that rearranges the bits of the
             complements:
-            \[S = \{(x,(\swap(c),\unit),c,y) \mid (x,c,y) \in (\ell\oplus
+            \[S = \{(x,(\swap(c),\unit),c,y) \mid (x,c,y) \in (\ell\oplusr
             k).K\}\]
+            As in previous proofs, we will name the two lenses in question
+            $a=\big(k\oplusl\ell\big);\bij_\swap$ and $b=\ell\oplusr k$.
+            Supposing that the types are $k \in X_k \lens Y_k$ and $\ell \in
+            X_\ell \lens Y_\ell$, we first observe that
+            \begin{align*}
+                \multicolumn{2}{l}{$\left(\init_{X_\ell\oplusr X_k}, a.\missing,
+                b.\missing, \init_{Y_\ell\oplusr Y_k}\right)$} \\\qquad
+                &= \left(\mlinr{\init_{X_k}}, (\mlinl{k.\missing},\unit),
+                    \mlinr{k.\missing}, \mlinr{\init_{Y_k}}\right) \\
+                &= \left(\mlinr{\init_{X_k}},
+                    (\swap(\mlinr{k.\missing}),\unit), \mlinr{k.\missing},
+                    \mlinr{\init_{Y_k}}\right) \\
+                &\in S
+            \end{align*}
+            because $(\init_{X_k}, k.\missing, \init_{Y_k}) \in k.K$. It
+            only remains to show that $S$ is preserved by $\dputr$ and
+            $\dputl$ applied to applicable edits.
+
             \dmwit{proofneeded}
             \endofpf
     \end{itemize}
