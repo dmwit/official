@@ -1,26 +1,24 @@
+% TODO
 We've made foundational progress in two areas: symmetric lenses and edit
 lenses.
 
 \section{Future Work}
 \label{sec:future}
 
-\begin{enumerate}
-    \item hyperlenses
+\subsection{Hyperlenses}
+\label{sec:future-hyperlenses}
+% TODO
+
+\subsection{Additional Syntax}
+\label{sec:future-syntax}
+% TODO
+\begin{itemize}
     \item more syntax
         \begin{itemize}
             \item edit modules for recursive types, fold/unfold lens combinators,
                 investigate shape alignment
             \item edit modules for more container shapes, esp. graphs (for
                 model-driven development) and relations (for databases)
-        \end{itemize}
-    \item algebraic properties
-        \begin{itemize}
-            \item associative sum
-            \item symmetric monoidal structure of tensor product edit lens
-            \item monoid laws for the various edit monoids
-            \item partially-ordered homsets: perhaps we can't get a product or sum
-                in our category, but could get a variant where the required
-                equations are replaced by inequalities
         \end{itemize}
     \item wiring diagrams; some text copied here from the original
         complements paper:
@@ -50,6 +48,24 @@ lenses.
         The interpretation of such a term in the category of lenses then
         takes care of the appropriate insertion of bijective lenses for
         regrouping and swapping tensor products.
+\end{itemize}
+
+\subsection{Algebraic Properties}
+\label{sec:future-algebra}
+% TODO
+\begin{itemize}
+    \item associative sum
+    \item symmetric monoidal structure of tensor product edit lens
+    \item monoid laws for the various edit monoids
+    \item partially-ordered homsets: perhaps we can't get a product or sum
+        in our category, but could get a variant where the required
+        equations are replaced by inequalities
+\end{itemize}
+
+\subsection{Miscellaneous Extensions}
+\label{sec:future-misc}
+% TODO
+\begin{enumerate}
     \item typed edits/complements; some text moved here from the related
         work section:
 
@@ -81,10 +97,12 @@ lenses.
         correspond? (can we get a theorem like the one saying how to
         factor a symmetric lens into two asymmetric ones?)
     \item implementation
+\end{enumerate}
 
 \section{Closing Thoughts}
+\label{sec:closing}
+% TODO
 Nevertheless lenses are part of an ecosystem of bidirectional techniques
 aimed at the common task of maintaining replicated data and we expanded
 what's known about incrementalizing and symmetrizing them, an important step
 in the development of such techniques.
-\end{enumerate}
