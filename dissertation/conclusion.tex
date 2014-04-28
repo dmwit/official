@@ -8,6 +8,41 @@ lenses.
 \subsection{Hyperlenses}
 \label{sec:future-hyperlenses}
 % TODO
+Some text copied here from the proposal document:
+
+Finally, the lens framework focuses itself on the problem of synchronizing
+two (potentially large) replicas at a time. The main new work proposed in
+this document is to produce a generalization of lenses that can synchronize
+very many (potentially quite small and loosely-related) replicas. For
+concreteness, imagine a multi-directional spreadsheet: each cell is a
+replica. Some cells are computed from others; these computations are the
+transformations that we would like to bidirectionalize.
+Section~\ref{chap:spreadsheets} discusses the major goals of this work as
+well as some simple solutions that we have already explored and the major
+challenges we foresee.
+
+Lenses keep two similar pieces of data consistent; as either one evolves,
+the lens finds analogous evolutions for the other. However, current lenses
+don't generalize smoothly to more than two pieces of data. Spreadsheets
+manage many pieces (cells) of data that are related to each other, but they
+are generally unidirectional: some cells are special automatically-updated
+cells, and the values in these cells are always computed by the system and
+cannot be changed by the user. Constraint propagation systems generalize
+spreadsheets to be many-directional when possible. However, current systems
+do not use old states of the system to guide the computation of new states;
+any system state which satisfies the given constraints is allowed.
+
+The goal of the hyperlenses project is to merge the three systems, giving a
+way of maintaining constraints between many pieces of data that, when given
+an update to some part of the system, finds an ``analogous'' update to the
+rest of the system. Below we discuss criteria on which the success of the
+hyperlenses project can be judged.
+
+An idea about how to wrap this up: we have several ideas (acyclic topology,
+affine functions on reals only) about restricted environments that seem to
+admit partial solutions, but none are really satisfactory. Lots of
+connections to constraint propagation literature and (in the case of
+functions on reals) computer algebra literature.
 
 \subsection{Additional Syntax}
 \label{sec:future-syntax}
