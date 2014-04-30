@@ -944,18 +944,17 @@ The work on constraint maintainers is especially commendable for its wide
 coverage of bidirectional transformations. Many transformations on concrete
 data types not considered in other bodies of work---particularly arithmetic
 and set theoretic operations---are discussed and implemented here.
-Nevertheless, general maintainer
-composition is shown to be uncomputable. A restricted composition in the
-case where one of the two maintainers corresponds to an asymmetric lens is
-given, and Meertens proposes the use of maintainer chains when this is
-insufficient, but the properties of these chains are not considered. There
-is some exploration of how to deal with alignment issues; the main idea they
-propose is to lift relations on values to relations on the edit sequences
-used to build values. One can then define constraint maintainers which
-inspect such edit sequences. However, little consideration is given to
-desirable behavioral laws with respect to these more fine-grained
-structures; furthermore, the incremental capability we expose from our edit
-lenses to allow for small updates is not explored.
+Nevertheless, general maintainer composition is shown to be uncomputable. A
+restricted composition in the case where one of the two maintainers
+corresponds to an asymmetric lens is given, and Meertens proposes the use of
+maintainer chains when this is insufficient, but the properties of these
+chains are not considered. There is some exploration of how to deal with
+alignment issues; the main idea they propose is to lift relations on values
+to relations on the edit sequences used to build values. One can then define
+constraint maintainers which inspect such edit sequences. However, little
+consideration is given to desirable behavioral laws with respect to these
+more fine-grained structures; furthermore, the incremental capability we
+expose from our edit lenses to allow for small updates is not explored.
 
 %\section{Fibrations}
 %\label{sec:fibrations}
