@@ -18,6 +18,7 @@
 \usepackage{setspace}
 \usepackage{stmaryrd}
 \usepackage{subcaption}
+\usepackage{tabularx}
 \usepackage{tikz}
 \usepackage{verbatim}
 \usepackage{wrapfig}
@@ -316,7 +317,7 @@
 \newcommand{\Names}{\mathcal N}
 \newcommand{\NAT}{\mathbb{N}}
 \newcommand{\nextcase}[1]{\item[] {\bf Case} #1:}
-\newcommand{\N}{\cellcolor{red!80!black!80!yellow!30!white}}
+\newcommand{\N}[1][]{\cellcolor{red!80!black!80!yellow!30!white}#1}
 \newcommand{\Node}{\mathit{node}}
 \newcommand{\nondissenddis}{$\renewcommand{\dissdis}{\nondissstartdis}\xspace}
 \newcommand{\nondissstartdis}{\renewcommand{\dissdis}{\nondissenddis}$}
@@ -415,9 +416,8 @@
 \newcommand{\WBADLs}{wbad lenses\xspace}
 \newcommand{\x}{\mathbf x}
 \newcommand{\y}{\mathbf y}
-\newcommand{\Y}{\cellcolor{green!55!black!80!blue!40!white}\checkmark}
+\newcommand{\Y}[1][\checkmark]{\cellcolor{green!55!black!80!blue!40!white}#1}
 \newcommand{\zip}{\ensuremath{\ml{zip}}\xspace}
-\renewcommand{\d}{\textrm{d}}
 \newenvironment{diagram}[1][]{\begin{center}\begin{tikzpicture}[#1]}{\end{tikzpicture}\end{center}}
 \newenvironment{functoriality}{\begin{pflike}{Proof of functoriality}}{\end{pflike}}
 \newenvironment{goodlens}{\begin{pflike}{Proof of well-formedness}}{\end{pflike}}
@@ -428,6 +428,7 @@
 \pgfkeysdef{/bistable/pre}{\def\bistablepre{#1}}
 \renewcommand{\d}{\textrm{d}}
 \renewcommand{\P}{\mathcal{P}}
+\renewcommand{\tabularxcolumn}[1]{>{\centering\arraybackslash}m{#1}}
 \setlength{\afterruleskip}{\medskipamount}
 
 % Breaking if the page is too full when we're about to emit a header

@@ -1,6 +1,51 @@
 % TODO
 We've made foundational progress in two areas: symmetric lenses and edit
 lenses.
+\begin{table}
+    \begin{center}
+        \begin{tabularx}{\linewidth}{m{4.4em}|XXXX}
+        & \hfil Alignment \hfil & \hfil Symmetry \hfil & \hfil Performance \hfil & \hfil Syntax \hfil \\
+        \hline
+%        TGGs            &\N&\Y&\N&\Y&\\
+        symm. state     &\N[very bad]
+                        &\Y[yes; requires equivalence]
+                        &\N
+                        &\Y[mostly domain agnostic]
+        \\
+        asymm. $\delta$ &\Y
+                        &\N
+                        &\N
+                        &\Y
+        \\
+        symm. $\delta$  &\Y
+                        &\Y
+                        &\N
+                        &\N
+        \\
+        algebraic       &\Y
+                        &\N
+                        &\N[possibly, but unexplored]
+                        &\N[not a goal]
+        \\
+        matching        &\Y[mapping from holes to holes]
+                        &\N
+                        &\N
+                        &\Y
+        \\
+        annotated       &\Y[insertion, deletion, modification markers]
+                        &\N
+                        &\N
+                        &\Y
+        \\
+        const. maint.   &\Y
+                        &\Y
+                        &\N
+                        &\Y[many primitives, but no composition]
+    \end{tabularx}
+    \end{center}
+    \caption{Feature coverage for various alternatives to edit lenses}
+    \label{tab:related-commentary}
+\end{table}
 
 \section{Future Work}
 \label{sec:future}
