@@ -1,5 +1,10 @@
 \documentclass{article}
-\usepackage{pdfpages}
+\usepackage{hyperref}
 \begin{document}
-\includepdf[pages={7-23},noautoscale]{paper.pdf}
+Don't do this. Don't do it. Use pdftk instead. Here's an example command line.
+\begin{verbatim}
+pdftk paper.pdf cat 26-163 output chapters2-3.pdf
+\end{verbatim}
+You can thank this guy for the tip:
+\url{http://blog.nachtarbeiter.net/tag/pdf/}
 \end{document}
