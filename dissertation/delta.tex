@@ -13,7 +13,6 @@
 \label{sec:delta-examples}
 
 \begin{figure}
-    \ifdissertation\singlespacing\fi
     \begin{center}
         \vspace*{-2ex}
         \includegraphics[width=75mm]{images/ex1-init.pdf} \\
@@ -33,7 +32,6 @@
 \discuss{Change the font everywhere to sf}
 \fi
     \caption{A simple (complement-less) {\edit} lens in action.}
-    \ifdissertation\draftspaced\fi
     \label{fig:example-simple}
 \end{figure}
 
@@ -2389,27 +2387,23 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \\[1.5ex]
     \partitiondputlgdef
 }
-\singlespacing
 \begin{center}
 \makeatletter\refstepcounter{\@captype}\makeatother
 \label{fig:definition-partition}
 {\bf Figure \ref{fig:definition-partition}:} Part of the $\partition$ lens
 (see also Figure~\ref{fig:definition-partition-part-2})
 \end{center}
-\draftspaced
 \end{figure*}
 \begin{figure*}[t!]
 \lensdef{partition}
 {\partition \in (X \oplus Y)\LIST \lens X\LIST \otimes Y\LIST}
 {\partitiondputrgdef}
-\singlespacing
 \begin{center}
 \makeatletter\refstepcounter{\@captype}\makeatother
 \label{fig:definition-partition-part-2}
 {\bf Figure \ref{fig:definition-partition-part-2}:} Part of the $\partition$ lens
 (see also Figure~\ref{fig:definition-partition})
 \end{center}
-\draftspaced
 \end{figure*}
 \newcommand{\partitionfigures}{Figures~\ref{fig:definition-partition},~\ref{fig:definition-partition-part-2}, and~\ref{fig:definition-partition-supplementary}\xspace}
 \else
@@ -2433,7 +2427,6 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \fi%dissertation
 
 \begin{figure*}[!tp]
-\ifdissertation\singlespacing\fi
 \begin{framed}
 \vspace{-2.5ex}
 \ifdissertation\else
@@ -2518,7 +2511,6 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \begin{center}
 {\bf Figure \ref{fig:definition-partition-supplementary}:} Supplementary functions for $\partition$
 \end{center}
-\ifdissertation\draftspaced\fi
 \end{figure*}
 
 % TODO: in this section, call the repositories the ``sum'' and ``product''
