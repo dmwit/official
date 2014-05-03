@@ -9,37 +9,38 @@ lenses.
 %        TGGs            &\N&\Y&\N&\Y&\\
         symm. state     &\N[very bad]
                         &\Y[yes; requires equivalence]
-                        &\N
+                        &\N[no]
                         &\Y[mostly domain agnostic]
-        \\
-        asymm. $\delta$ &\Y
-                        &\N
-                        &\N
-                        &\Y
-        \\
-        symm. $\delta$  &\Y
-                        &\Y
-                        &\N
-                        &\N
-        \\
-        algebraic       &\Y
-                        &\N
+        \\\hline
+        asymm. $\delta$ &\Y[explicit alignments]
+                        &\N[not a goal]
+                        &\N[edits include repositories]
+                        &\Y[via alternate framework]
+        \\\hline
+        symm. $\delta$  &\Y[edits]
+                        &\Y[yes, but equiv. not explored]
+                        &\N[edits include repositories]
+                        &\N[alternate frameworks not instantiated]
+        \\\hline
+        algebraic       &\Y[edits]
+                        &\N[no]
                         &\N[possibly, but unexplored]
                         &\N[not a goal]
-        \\
+        \\\hline
         matching        &\Y[mapping from holes to holes]
-                        &\N
-                        &\N
-                        &\Y
-        \\
+                        &\N[no]
+                        &\N[repository and alignment information both
+                        processed]
+                        &\Y[variants of most AS-lens combinators]
+        \\\hline
         annotated       &\Y[insertion, deletion, modification markers]
-                        &\N
-                        &\N
-                        &\Y
-        \\
-        const. maint.   &\Y
-                        &\Y
-                        &\N
+                        &\N[no]
+                        &\N[alignment information includes repository]
+                        &\Y[includes $\diag \in X \lens X \times X$]
+        \\\hline
+        const. maint.   &\Y[uninterpreted edits]
+                        &\Y[yes; does not require equiv.]
+                        &\N[no; all edits relative to $\init$]
                         &\Y[many primitives, but no composition]
     \end{tabularx}
     \end{center}
