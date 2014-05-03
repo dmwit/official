@@ -1,6 +1,5 @@
 % TODO: use the \Defined notation a bit more pervasively
 % TODO: intro paragraph?
-% TODO: some proofneeded's are left
 % TODO: search for ``paper'' everywhere and make sure it reads ``chapter''
 % in the dissertation
 % TODO: search for ``lack of space'' and figure out what to do about each --
@@ -1760,9 +1759,9 @@ most interesting case:\fi
         \item $\id \oplus \id \equiv \id$.
         \item $(k \oplus \ell);(k' \oplus \ell') \equiv (k;k') \oplus
             (\ell;\ell')$.
-        \item $\big(k \oplusl \ell\big);\bij_{\swap} \equiv \ell \oplusr k$, where
-            $\swap$ is the obvious module isomorphism between $X \oplusl Y$
-            and $Y \oplusr X$.
+        \item $\big(k \oplusl \ell\big);\bij_{\swap} \equiv \bij_\swap;(\ell
+            \oplusr k)$, where $\swap$ is the obvious family of module
+            isomorphisms between $X \oplusl Y$ and $Y \oplusr X$.
     \end{itemize}
 \end{theorem}
 
@@ -1976,31 +1975,63 @@ most interesting case:\fi
                 \mlinr{\dz\;\init_{Z_\ell}}) \in S.\]
             \end{trivlist}
 
-        \item $\big(k\oplusl\ell\big);\bij_{\swap}\equiv\ell\oplusr k$
+        \item
+            $\big(k\oplusl\ell\big);\bij_{\swap}\equiv\bij_\swap;(\ell\oplusr
+            k)$
 
-            We give a witnessing relation that rearranges the bits of the
-            complements:
-            \[S = \{(x,(\swap(c),\unit),c,y) \mid (x,c,y) \in (\ell\oplusr
-            k).K\}\]
             As in previous proofs, we will name the two lenses in question
-            $a=\big(k\oplusl\ell\big);\bij_\swap$ and $b=\ell\oplusr k$.
+            $a=\big(k\oplusl\ell\big);\bij_\swap$ and
+            $b=\bij_\swap;(\ell\oplusr k)$. We give the witnessing relation
+            \[S = \{(x,c,\swap(c),y) \mid (x,c,y) \in a.K\},\]
+            eliding $\unit$ values for the $\bij$ complements to avoid
+            clutter. It is worth noting here that comparing the definitions
+            of the $\oplusl$ and $\oplusr$ combinators reveals that $(x,c,y)
+            \in a.K$ if and only if $(x,\swap(c),y) \in b.K$, so
+            \[S = \{(x,\swap(c),c,y) \mid (x,c,y) \in b.K\}.\]
             Supposing that the types are $k \in X_k \lens Y_k$ and $\ell \in
             X_\ell \lens Y_\ell$, we first observe that
             \begin{align*}
-                \multicolumn{2}{l}{$\left(\init_{X_\ell\oplusr X_k}, a.\missing,
-                b.\missing, \init_{Y_\ell\oplusr Y_k}\right)$} \\\qquad
-                &= \left(\mlinr{\init_{X_k}}, (\mlinl{k.\missing},\unit),
+                \makebox[0pt][l]{$\left(\init_{X_k\oplusl X_\ell}, a.\missing,
+                b.\missing, \init_{Y_\ell\oplusr Y_k}\right)$}\qquad& \\
+                &= \left(\mlinl{\init_{X_k}}, \mlinl{k.\missing},
                     \mlinr{k.\missing}, \mlinr{\init_{Y_k}}\right) \\
-                &= \left(\mlinr{\init_{X_k}},
-                    (\swap(\mlinr{k.\missing}),\unit), \mlinr{k.\missing},
-                    \mlinr{\init_{Y_k}}\right) \\
+                &= \left(\mlinl{\init_{X_k}}, \mlinl{k.\missing},
+                    \swap(\mlinl{k.\missing}),
+                    \swap(\mlinl{\init_{Y_k}})\right) \\
                 &\in S
             \end{align*}
             because $(\init_{X_k}, k.\missing, \init_{Y_k}) \in k.K$. It
             only remains to show that $S$ is preserved by $\dputr$ and
-            $\dputl$ applied to applicable edits.
+            $\dputl$ applied to applicable edits. The reasoning needed in
+            showing that $\dputr$ preserves $S$ when applied to
+            $\mlswitch_{LR}$ edits is representative of the reasoning needed
+            in the other cases, so we satisfy ourselves with the proof of
+            that case.
 
-            \dmwit{proofneeded}
+            So we assume that we have some $(x,c_a,c_b,y) \in S$ for which
+            $\mlswitchlr\dx\;x\Defined$. From our two characterizations of
+            $S$, we can conclude that $(x,c_a,y) \in a.K$, that $(x,c_b,y) \in
+            b.K$, and that $c_a = \swap(c_b)$. From the definedness
+            assumption, we conclude that $x = \mlinl{x_k}$ for some $x_k \in
+            X_k$ and that $\dx\;init_{X_\ell}\Defined$. Moreover, from
+            $(x,c_a,y) \in a.K$ and $x = \mlinl{x_k}$ we can conclude $y =
+            \mlinr{y_k}$ for some $y_k \in Y_k$. Defining $(\dy,c_\ell) =
+            \ell.\dputr(\dx, \ell.\missing)$, we may compute:
+            \begin{align*}
+                a.\dputr(\mlswitchlr\dx,c_a)
+                    &= (\mlswitchrl\dy,\mlinr{c_\ell}) \\
+                b.\dputr(\mlswitchlr\dx,c_b)
+                    &= (\mlswitchrl\dy,\mlinl{c_\ell})
+            \end{align*}
+            Since $\ell$ is a lens, we know $\dy\;\init_{Y_\ell}\Defined$;
+            together with the fact that $y = \mlinr{y_k}$ from above, this
+            means $\mlswitchrl\dy\;y\Defined$ and in fact $\mlswitchrl\dy\;y
+            = \mlinl{\dy\;\init_{Y_\ell}}$. Indeed,
+            $(\dx\;\init_{X_\ell},c_\ell,\dy\;\init_{Y_\ell}) \in \ell.K$,
+            so
+            \[(\mlswitchlr\dx\;x,\mlinr{c_\ell},\mlinl{c_\ell},\mlswitchrl\dy\;y)
+            \in S\]
+            which concludes the proof.
             \endofpf
     \end{itemize}
 \end{pf}
