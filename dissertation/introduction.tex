@@ -264,7 +264,7 @@ well; a simple example of the so-called \emph{alignment problem} is
 something like this, where we have an insertion in the middle of the word to
 correct the spelling of ``upper'':
 \[\map(\tolower).\aput(\mathtt{uppercasedword},\mathtt{UperCasedWord})
-    = \mathtt{uppeRcaseDword}\]
+    = \mathtt{UppeRcaseDword}\]
 Because $\map(\tolower).\aput$ only looks at a lower-cased element's
 position when deciding which mixed-case character to match it up with, we
 have incorrectly \emph{aligned} the new view with the old source this way:
@@ -376,7 +376,7 @@ a listing of all the teachers and their salaries. It transpires that the
 school secretary finds it useful to have access to this database; however,
 the secretary should not be privy to the confidential salary information.
 Consequently there is a secretarial view, shown in
-Part~\subref{fig:school-salaries-sec-pre}, with salaries redacted, and we
+part~\subref{fig:school-salaries-sec-pre}, with salaries redacted, and we
 would like to keep the database and view synchronized using a \map lens.
 Now, suppose one of two scenarios happens:
 \begin{itemize}
