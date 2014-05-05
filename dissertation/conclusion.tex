@@ -1,6 +1,31 @@
-% TODO
-We've made foundational progress in two areas: symmetric lenses and edit
-lenses.
+Our work has identified several areas for improvement in the foundations of
+existing bidirectional transformation tools. The development of symmetric
+lenses enables both repositories associated with a lens to store locally
+interesting information. % TODO: this is enabled by...
+This is an improvement on the asymmetric lens framework's need for a
+canonical, centralized repository, but the behavior of many of the actual
+lenses proposed in Chapter~\ref{chap:symmetric} remain undesirable in
+several ways. Most significantly, they employ a somewhat na\"ive strategy
+for divining the connection between original and updated repositories. This
+manifests itself as lenses which follow the letter of the law---produce
+synchronized repositories---but mangle the meaning of the repositories
+during synchronization by inappropriately mixing and matching data.
+
+Edit lenses address this problem by elevating the status of the data
+describing how original and updated repositories are connected. Treating
+edits as first-class means that the lenses need not guess about alignment
+information, and consequently will mangle the meaning of repositories less
+often. Indeed, as a side effect, promoting edits in this way allows the
+creation of stronger laws, so that the letter of the law and the spirit of
+the law are no longer quite so far from each other. We have also shown that
+one may realize performance benefits with this approach with careful design
+of the edit languages being manipulated by edit lenses.
+
+Related approaches to this problem are summarized in
+Table~\ref{tab:related-commentary}; edit lenses is the first approach to
+address all of the issues raised above.
+% TODO: discuss the table
+
 \begin{table}
     \begin{center}
         \begin{tabularx}{\linewidth}{m{4.4em}|XXXX}
@@ -47,6 +72,11 @@ lenses.
     \caption{Feature coverage for various alternatives to edit lenses}
     \label{tab:related-commentary}
 \end{table}
+
+Though the four issues identified above are important ones, there remain
+many other foundational issues that one might want to tackle to strengthen
+the practicality of bidirectional transformation frameworks. The following
+section surveys a few of the most pressing needs.
 
 \section{Future Work}
 \label{sec:future}
