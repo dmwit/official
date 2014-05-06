@@ -1,15 +1,18 @@
 Our work has identified several areas for improvement in the foundations of
 existing bidirectional transformation tools. The development of symmetric
 lenses enables both repositories associated with a lens to store locally
-interesting information. % TODO: this is enabled by...
-This is an improvement on the asymmetric lens framework's need for a
-canonical, centralized repository, but the behavior of many of the actual
-lenses proposed in Chapter~\ref{chap:symmetric} remain undesirable in
-several ways. Most significantly, they employ a somewhat na\"ive strategy
-for divining the connection between original and updated repositories. This
-manifests itself as lenses which follow the letter of the law---produce
-synchronized repositories---but mangle the meaning of the repositories
-during synchronization by inappropriately mixing and matching data.
+interesting information. Considering stateful, rather than pure,
+transformations enables the lens to store this local information on the
+side; though a theory of behavioral equivalence is needed to restore
+equational reasoning in the presence of this state. This is an improvement
+on the asymmetric lens framework's need for a canonical, centralized
+repository, but the behavior of many of the actual lenses proposed in
+Chapter~\ref{chap:symmetric} remain undesirable in several ways. Most
+significantly, they employ a somewhat na\"ive strategy for divining the
+connection between original and updated repositories. This manifests itself
+as lenses which follow the letter of the law---produce synchronized
+repositories---but mangle the meaning of the repositories during
+synchronization by inappropriately mixing and matching data.
 
 Edit lenses address this problem by elevating the status of the data
 describing how original and updated repositories are connected. Treating
@@ -22,9 +25,27 @@ one may realize performance benefits with this approach with careful design
 of the edit languages being manipulated by edit lenses.
 
 Related approaches to this problem are summarized in
-Table~\ref{tab:related-commentary}; edit lenses is the first approach to
-address all of the issues raised above.
-% TODO: discuss the table
+Table~\ref{tab:related-commentary}; the edit lens framework is the first
+approach to address all of the issues raised above. Asymmetric delta lenses
+seem like a promising approach for their ability to handle alignment well,
+but the formalism does not accomodate small edits well even if syntax could
+be designed that could operate on them. Symmetric delta lenses extend these
+to the symmetric setting, but the reasoning principles that require
+behavioral equivalence discussed in conjunction with our symmetric lenses
+are not considered, and the framework itself is not yet instantiated with a
+syntax. The algebraic study of asymmetric lenses exposes many surprising
+features of edits, but does not address many of the issues needed to create
+a practical system. Matching lenses and annotation-based lenses are very
+natural extensions of asymmetric, state-based lenses, but are also
+conservative in many ways. The more radical changes proposed in edit lenses
+allow for symmetric operation and eliminate the need to pass repositories to
+the lenses. Notably, annotation-based lenses extend a variant of the
+asymmetric, state-based lenses that allows for the construction of a lens
+that duplicates information, making it the only approach that takes a
+serious stab at alignment handling while enabling this lens. Finally,
+constraint maintainers tackle many practical issues, but do not fully
+explore the power of edits and lack the ability to perform sequential
+composition, a key piece of syntax.
 
 \begin{table}
     \begin{center}
@@ -73,7 +94,7 @@ address all of the issues raised above.
     \label{tab:related-commentary}
 \end{table}
 
-Though the four issues identified above are important ones, there remain
+Though the issues that edit lenses handle are important ones, there remain
 many other foundational issues that one might want to tackle to strengthen
 the practicality of bidirectional transformation frameworks. The following
 section surveys a few of the most pressing needs.
