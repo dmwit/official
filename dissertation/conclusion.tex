@@ -187,9 +187,23 @@ variant of the categorical product where the usual defining equations of a
 product are replaced by inequalities.
 
 \paragraph*{Implementation}
-% TODO
-The implementation could be used to explore a lot of stuff listed in the
-planning document.
+Effort spent on an implementation could be aimed at a variety of purposes.
+One might be interested in verifying whether the performance promises of
+edit lenses could be realized by running experiments. For example, one might
+imagine comparing the size of typical repository edits to the size of the
+repositories as the repository grows; comparing the runtime of edit
+translation to the runtime of a more traditionally designed lens; or
+analyzing any of half a dozen other metrics. Alternately, one could focus on
+breadth rather than depth, implementing a variety of transformations, to
+find out whether the syntax developed here is expressive enough. There are
+also many practical tools that may benefit from edit lenses: file
+synchronizers keeping two file systems synchronized, text editors keeping
+parse trees synchronized, database backends keeping queries synchronized
+with data, log summarizers keeping summaries and log files synchronized,
+software model transformations keeping architectural diagrams and code
+synchronized, perhaps even mobile phone applications keeping a client's
+display and server data synchronized may all benefit from bidirectional
+techniques.
 
 \paragraph*{Miscellaneous Extensions}
 Besides the broad categories discussed above, there are a handful of other
