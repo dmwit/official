@@ -129,47 +129,42 @@ spreadsheets) computer algebra systems.
 % https://github.com/dmwit/triple-threat/blob/master/spreadsheet_resources.txt
 
 \paragraph*{Additional Syntax}
-% TODO
-\begin{itemize}
-    \item more syntax
-        \begin{itemize}
-            \item edit modules for recursive types, fold/unfold lens combinators,
-                investigate shape alignment
-            \item edit modules for more container shapes, esp. graphs (for
-                model-driven development) and relations (for databases)
-        \end{itemize}
-    \item wiring diagrams; some text copied here from the original
-        complements paper:
-
-        More speculatively, it is a well-known folklore result that
-        symmetric monoidal categories are in 1-1 correspondence with wiring
-        diagrams and with first-order linear lambda calculus. We would like
-        to exploit this correspondence to design a lambda-calculus-like
-        syntax for symmetric lenses and perhaps also a diagrammatic
-        language. The linear lambda calculus has judgments of the form
-        $x_1{:}A_1,\dots,x_n{:}A_n\vdash t:A_0$, where $A_0,\dots,A_n$ are
-        sets or possibly syntactic type expressions and where $t$ is a
-        linear term made up from basic lenses, lens combinators, and the
-        variables $x_1,\dots,x_n$. This could be taken as denoting a
-        symmetric lens $A_1\otimes\dots\otimes A_n\lens A_0$. For example,
-        here is such a term for the lens $\mathit{concat}'$ from
-        \S\ref{concatprime}:
-        \[\begin{array}{@{}l}
-        z{:}\Unit \oplus A \otimes A\LIST\otimes A\LIST\vdash
-            \begin{array}[t]{@{}l}
-            \textit{match}\ z\ \textit{with} \\
-            \quad \mid\mlinl\unit \mapsto \const_{\NIL}\op\\
-            \quad\mid\mlinr(a,al,ar)\mapsto \mathit{concat}(a\CONS al,ar)
-            \end{array}
-        \end{array}
-        \]
-        The interpretation of such a term in the category of lenses then
-        takes care of the appropriate insertion of bijective lenses for
-        regrouping and swapping tensor products.
-
-        % TODO: possible citation: A survey of graphical languages for
-        % monoidal categories, by Peter Selinger
-\end{itemize}
+We have noted in our discussions above several places where one could wish
+for a more expressive collection of lens constructions. In particular, we
+were not able to recapitulate the symmetric lens' development of fold and
+unfold lens combinators for recursive types, in part because it is not clear
+how to build edit modules for recursive types in a compositional way. (Edits
+to ``roll'' and ``unroll'' one layer of the recursion are not enough: as
+with lists, one wants a way to shuffle data between depths and across pairs
+and sums; this is the part that seems tricky.) Even restricting our view to
+containers, it would be interesting to investigate edit modules for more
+container shapes, especially graphs---the basis of the data model usually
+used in model-driven development---and relations---the data model usually
+used in databases. More speculatively, it is well-known that symmetric
+monoidal categories are closely connected to wiring
+diagrams~\cite{selinger2011survey} and to first-order linear lambda
+calculus~\cite{seely1987linear}. Perhaps one could exploit this
+correspondence to design a lambda-calculus-like syntax or diagrammatic
+language for symmetric or edit lenses. The linear lambda calculus has
+judgments of the form $x_1{:}A_1,\dots,x_n{:}A_n\vdash t:A_0$, where
+$A_0,\dots,A_n$ are sets or possibly syntactic type expressions and where
+$t$ is a linear term made up from basic lenses, lens combinators, and the
+variables $x_1,\dots,x_n$. This could be taken as denoting a symmetric lens
+$A_1\otimes\dots\otimes A_n\lens A_0$. For example, here is such a term for
+the lens $\mathit{concat}'$ from \S\ref{concatprime}:
+\[\begin{array}{@{}l}
+z{:}\Unit \oplus A \otimes A\LIST\otimes A\LIST\vdash
+    \begin{array}[t]{@{}l}
+    \textit{match}\ z\ \textit{with} \\
+    \quad \mid\mlinl\unit \mapsto \const_{\NIL}\op\\
+    \quad\mid\mlinr(a,al,ar)\mapsto \mathit{concat}(a\CONS al,ar)
+    \end{array}
+\end{array}
+\]
+The interpretation of such a term in the category of lenses then takes care
+of the appropriate insertion of bijective lenses for regrouping and swapping
+tensor products.
+% TODO: fit conditionals in somewhere?
 
 \paragraph*{Algebraic Properties}
 % TODO
