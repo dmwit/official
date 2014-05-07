@@ -167,15 +167,24 @@ tensor products.
 % TODO: fit the lack of a conditional edit lens in somewhere?
 
 \paragraph*{Algebraic Properties}
-% TODO
-\begin{itemize}
-    \item associative sum
-    \item symmetric monoidal structure of tensor product edit lens
-    \item monoid laws for the various edit monoids
-    \item partially-ordered homsets: perhaps we can't get a product or sum
-        in our category, but could get a variant where the required
-        equations are replaced by inequalities
-\end{itemize}
+A number of algebraic oddities have cropped up during our development which
+it would be nice, as a matter of polish, to settle one way or another. The
+status of sums (and in particular injection lenses) has been somewhat in
+question for some time, so it is nice that in the symmetric lens case we
+have settled this question by elucidating the symmetric monoidal structure
+available. On the other hand, this makes the lack of associativity for
+tensor sum in the edit lens category all the more surprising; it may be
+interesting to pursue (or prove impossible) an associative tensor sum.
+Similarly, we have shown that our tensor product has many of the properties
+we expect of a symmetric monoidal category structure, but not quite all. We
+conjecture that adding appropriate monoid laws would resolve this problem;
+and anyway adding appropriate monoid laws in all the modules discussed is a
+serious undertaking of its own worth consideration. Finally, it has been
+suggested by a reviewer of one of our papers that, although we cannot have a
+categorical product or sum in the category of lenses, it may be worth
+considering placing a partial order on lenses. Perhaps this would enable a
+variant of the categorical product where the usual defining equations of a
+product are replaced by inequalities.
 
 \paragraph*{Implementation}
 % TODO
