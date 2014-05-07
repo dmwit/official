@@ -192,40 +192,59 @@ The implementation could be used to explore a lot of stuff listed in the
 planning document.
 
 \paragraph*{Miscellaneous Extensions}
-% TODO
-\begin{enumerate}
-    \item automatically discover weight functions for symmetric lens
-        iteration
-    \item how closely do symmetric lens and edit lens constructions like
-        tensor product and sum correspond? (can we get a theorem like the
-        one saying how asymmetric lens constructions lift to symmetric lens
-        constructions?)
-    \item how closely do (symmetric) edit lenses and asymmetric delta lenses
-        correspond? (can we get a theorem like the one saying how to
-        factor a symmetric lens into two asymmetric ones?)
-    \item laws about undo-able edits, and requiring that \emph{edits} ``roundtrip''
-    \item typed edits/complements; some text moved here from the related
-        work section:
+Besides the broad categories discussed above, there are a handful of other
+curiosities suggested throughout the development which we gather here.
+During the development of iterator symmetric lenses, it was observed that
+correctness of the lens depends on the existence of an appropriate weight
+function guaranteeing termination. We anticipate that this function will be
+simple in the majority of cases; automatically discovering it for a broad
+class of lenses seems plausible and would remove a significant annoyance
+from the lens programmer. Next, in the passage from asymmetric, state-based
+lenses to symmetric lenses, we gave a theorem connecting various asymmetric
+lens constructions to symmetric lens constructions. It would be nice to know
+whether this connection could be extended to edit lenses. For example, do
+edit lens constructions like tensor product correspond in some way to the
+lifting of symmetric lens tensor product? One similarly wonders whether
+there is an edit lens analog of the theorem showing how to split a symmetric
+lens into two asymmetric lenses. On a slightly different line of inquiry,
+one may wonder just how canonical our choices of edit structure and lens
+laws are. Several related lines of work have proposed more intricate
+structures---for example, a popular choice is to require that edits have
+some way of being undone, either with an inverse or something weaker---and
+stronger laws---for example, requiring that $\dputr$ and $\dputl$ produce
+minimal edits by adding a triple-trip law---without instantiating their
+frameworks. Perhaps enforcing stronger requirements would suggest ways to
+improve the behavior of our existing constructions, and on the other hand
+perhaps our constructions would reveal that some of the requirements are too
+strong.
 
-        One can view the two approaches as two extremes, with on one end
-        graphs with a single node representing all possible repository
-        states and on the other end graphs with many nodes where each node
-        represents a single repository state. There may be a middle ground
-        in which graph nodes each represent many possible repository states;
-        the hope then would be that one could keep the benefit of a total
-        edit application function while reusing single edits on many
-        different states. For example, for list edits, one might consider a
-        graph with one node for each possible length of list. Then one would
-        have, for example, deletion edges $\mldelete : m \dedge n$ when
-        $m<n$; such an edge must store marginally more information than our
-        edit module did (the domain and codomain length rather than a single
-        number telling their difference), but the set of repositories to
-        which it applies is much more clearly delimited. Attempting to
-        recast the edit modules and lenses proposed above in this light
-        would be an interesting area for future work.
-    \item perhaps most substantial of these: parsing/unparsing string edits
-        to structured edits
-\end{enumerate}
+Another idea suggested by related work is to consider typed edits. In our
+development of edit lenses, we allow partial edits so that we may represent
+edits that work on some, but not all, repositories in a uniform way. We then
+go to great lengths to assure that the partiality is purely formal: we have
+a theorem showing that lenses never introduce partiality where none was
+before. On the other hand, the symmetric delta lens approach has no such
+problem---each edit is applicable to one and only one repository---but pays
+the price of having to duplicate the modifications which can apply to many
+repositories~\cite{Diskin-Delta11}. Perhaps it would be possible to find a
+middle ground by designing a typed edit language, in which edits may apply
+to many repositories (that share a type), but where the types are specific
+enough that all edits are total. For example, for list edits, one might
+consider having one type for each possible length of list. Then one would
+have, for example, deletion edges $\mldelete : m \dedge n$ when $m<n$; such
+an edge must store marginally more information than our edit module did (the
+domain and codomain length rather than a single number telling their
+difference), but the set of repositories to which it applies is much more
+clearly delimited.
+
+Finally, many asymmetric lens frameworks ground their constructions by
+showing how to use them with a string-based data model. This significant
+task was not undertaken here\footnote{The use of ``significant'' in this
+sentence is true in both the ``important'' and ``difficult'' senses.}.
+Preliminary efforts suggest that this is an especially difficult task in the
+world of edit lenses: though we have several decades of experience parsing
+strings into more structured data, there is comparatively little effort
+expended on parsing string edits into edits on more structured data.
 
 \section{Closing Thoughts}
 \label{sec:closing}
