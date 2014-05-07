@@ -103,39 +103,25 @@ section surveys a few of the most pressing needs.
 \label{sec:future}
 
 \paragraph*{Hyperlenses}
-% TODO
-Some text copied here from the proposal document:
-
-Finally, the lens framework focuses itself on the problem of synchronizing
-two (potentially large) replicas at a time. The main new work proposed in
-this document is to produce a generalization of lenses that can synchronize
-very many (potentially quite small and loosely-related) replicas. For
-concreteness, imagine a multi-directional spreadsheet: each cell is a
-replica. Some cells are computed from others; these computations are the
-transformations that we would like to bidirectionalize.
-
-Lenses keep two similar pieces of data consistent; as either one evolves,
-the lens finds analogous evolutions for the other. However, current lenses
-don't generalize smoothly to more than two pieces of data. Spreadsheets
-manage many pieces (cells) of data that are related to each other, but they
-are generally unidirectional: some cells are special automatically-updated
-cells, and the values in these cells are always computed by the system and
-cannot be changed by the user. Constraint propagation systems generalize
-spreadsheets to be many-directional when possible. However, current systems
-do not use old states of the system to guide the computation of new states;
-any system state which satisfies the given constraints is allowed.
-
-The goal of the hyperlenses project is to merge the three systems, giving a
-way of maintaining constraints between many pieces of data that, when given
-an update to some part of the system, finds an ``analogous'' update to the
-rest of the system. Below we discuss criteria on which the success of the
-hyperlenses project can be judged.
-
-An idea about how to wrap this up: we have several ideas (acyclic topology,
-affine functions on reals only) about restricted environments that seem to
-admit partial solutions, but none are really satisfactory. Lots of
-connections to constraint propagation literature and (in the case of
-functions on reals) computer algebra literature.
+The lens framework focuses itself on the problem of synchronizing two
+repositories at a time. Consequently, current lenses do not generalize
+smoothly to more than two pieces of data, but many real-world scenarios
+involve synchronizing many (potentially quite small and loosely related)
+repositories. One example (which we are not the first to
+propose~\cite{macedotowards}) would be a multi-directional spreadsheet,
+where we treat each cell as a repository. Some cells are computed from
+others; these computations are the transformations that one might like to
+bidirectionalize. There seem to be a variety of additional challenges
+associated with generalizing from bi-directional to many-directional
+updating, chief among them being a significantly larger update space to
+search through on each synchronization action. We have explored a few
+restricted settings---for example, where no repository is connected to
+another in two different ways, or where all repositories are numbers and all
+connections are linear functions---that seem to admit partial solutions, but
+none are really satisfactory. There seem to be deep connections to the
+literature on constraint propagation and (in the special case of
+spreadsheets) computer algebra systems.
+% TODO: add a couple citations for constraint propagation and CAS
 
 % TODO: possible citation: Survey: Practical Applications of Constraint
 % Programming, Mark Wallace
