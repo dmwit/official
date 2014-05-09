@@ -893,10 +893,15 @@ descriptions of what has changed rather than on large repositories, which
 addresses some of the performance issues raised above.
 
 \ifimpl
-Chapter~\ref{chap:impl} will discuss a prototype implementation of edit
-lenses in the form of a Haskell program that synchronizes two databases in a
-very simple file format.
-% TODO
+We discuss a prototype implementation of the edit lens theory in
+Chapter~\ref{chap:impl}, which includes a Haskell library together with a
+small demo program that uses the library to synchronize two databases in a
+simple, text-based file format. This gives us a vehicle to validate the
+completeness of the edit lens theory. We will find that instantiating our
+theory to a particular data model---in our case, we will follow tradition
+and use strings as that model---has challenges of its own involving parsing
+user actions. We will give some preliminary thoughts on this challenge, and
+show that an elegant core library can be developed independent of parsing.
 \fi%impl
 
 We will explore related bidirectional frameworks in
