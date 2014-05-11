@@ -1,12 +1,30 @@
 \section{Introduction}
 \label{sec:impl-intro}
-synchronizes two simple, text-based databases according to a pre-determined lens by validating and extracting edits from user actions
+Having developed the theory of lenses and instantiating the framework with a
+syntax, we now give an exposition on preliminary efforts to instantiate the
+syntax as a concrete program. Our work on a prototype has two main purposes.
+% TODO: the wording of this first purpose needs some serious polish
+The edit lens framework is predicated on a relatively abstract, algebraic
+data model, whereas long-term data storage on computers typically employs a
+fairly low-level model of byte streams. When only the data is important,
+these two realms are typically connected by defining a parser that processes
+bytes and produces a more structured representation, as well as a formatter
+that produces a byte stream representation of a given structure. For edit
+lenses, however, not only the data is important; one also wants access to
+the edits made to the data. So the primary goal is to investigate what
+extensions are needed to describe the connection between edits to byte
+streams and edits to structured data. A secondary goal is to validate that
+the fundamental edit lens design is complete; producing a few example
+transformations gives an opportunity for any unforeseen infelicities to rear
+their head. In the pursuit of these goals, we discuss two artifacts: first,
+a core library which closely models the edit lens theory given in
+Chapter~\ref{chap:edits}; and second, a demonstration program that
+synchronizes two simple, text-based databases according to a predetermined
+lens. The latter task involves building a text-editing GUI, connecting the
+lens to the GUI, and validating and extracting edits from user actions,
+tasks that fall outside the realm of the edit lens theory.
+
 \begin{enumerate}
-    \item Purpose
-        \begin{enumerate}
-            \item validate that the fundamental design is complete enough to implement some examples
-            \item investigate the connection between strings as a data model and structured data models
-        \end{enumerate}
     \item Initial choices and assumptions
         \begin{enumerate}
             \item Haskell as the programming language -- and in particular not a mechanization of the theory
