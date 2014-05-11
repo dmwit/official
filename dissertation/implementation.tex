@@ -8,13 +8,13 @@ The edit lens framework is predicated on a relatively abstract, algebraic
 data model, whereas long-term data storage on computers typically employs a
 fairly low-level model based on strings. When only the data is important,
 these two realms are typically connected by defining a parser that processes
-strings and produces a more structured representation, as well as a formatter
-that produces a string representation of a given structure. For edit
-lenses, however, not only the data is important; one also wants access to
-the edits made to the data. So the primary goal is to investigate what
-extensions are needed to describe the connection between edits to
-strings and edits to structured data. A secondary goal is to validate that
-the fundamental edit lens design is complete; producing a few example
+strings and produces a more structured representation, as well as a
+formatter that produces a string representation of a given structure. For
+edit lenses, however, not only the data is important; one also wants access
+to the edits made to the data. So the primary goal is to investigate what
+extensions are needed to describe the connection between edits to strings
+and edits to structured data. A secondary goal is to validate that the
+fundamental edit lens design is complete; producing a few example
 transformations gives an opportunity for any unforeseen infelicities to rear
 their head. In the pursuit of these goals, we discuss two artifacts: first,
 a core library which closely models the edit lens theory given in
