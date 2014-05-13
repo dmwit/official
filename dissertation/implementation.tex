@@ -22,7 +22,7 @@ Chapter~\ref{chap:edits}; and second, a demonstration program that
 synchronizes two simple, text-based databases according to a predetermined
 lens. The latter task involves building a text-editing GUI, connecting the
 lens to the GUI, and validating and extracting edits from user actions,
-tasks that fall outside the realm of the edit lens theory.
+tasks that fall outside the realm of the existing edit lens theory.
 
 We have chosen to implement our demo in Haskell, a language which encourages
 high abstraction levels, supports rapid prototyping, and has good library
@@ -42,19 +42,22 @@ efforts; to avoid distractions, we chose to take a less feature-complete
 route. However, we retained Boomerang's choice of string-based data model
 since, as discussed above, this closely matches real-world scenarios.
 
-\begin{enumerate}
-    \item Challenges
-        \begin{enumerate}
-            \item representing the interrelations between `things'
-            \item `parsing' user actions (string edits) into structured edits
-        \end{enumerate}
-    \item Outcome
-        \begin{enumerate}
-            \item can't apply standard techniques (like incremental parsing) to parsing user actions
-            \item proposed some heuristics for the parsing, but they're special-purpose and don't adequately reflect all user actions (e.g. cut/paste is not translated to a reordering)
-            \item demonstrated a small, clean core library design
-        \end{enumerate}
-\end{enumerate}
+Our primary challenge, which we will discuss in detail below, can be broadly
+described as parsing. With edit lenses, there are always two domains of
+discourse: the collection of repositories and the collection of edits.
+Repositories store ordinary data, and the problem of connecting strings with
+structured data is well-studied under the umbrella of
+parsing\footnote{Turning structured data into a string---often called
+serialization---is typically a significantly simpler task.}. However,
+standard parsing techniques---even incremental techniques purportedly
+designed for making it easy to maintain a correct parse tree in the presence
+of ongoing updates---do not adequately describe the connection between
+string modifications and edits in the sense described in
+Chapter~\ref{chap:delta}. We have proposed a few heuristics that seem to
+behave acceptably in a number of standard cases; however, they are
+relatively special-purpose (tailored to the file format under consideration
+here) and do not adequately reflect all user actions as analogous edits.
+This seems like a promising area for future efforts.
 
 \section{Usage Example/Description of Functionality}
 \label{sec:impl-usage}
