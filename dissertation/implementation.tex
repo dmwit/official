@@ -47,8 +47,8 @@ described as parsing. With edit lenses, there are always two domains of
 discourse: the collection of repositories and the collection of edits.
 Repositories store ordinary data, and the problem of connecting strings with
 structured data is well-studied under the umbrella of
-parsing\footnote{Turning structured data into a string---often called
-serialization---is typically a significantly simpler task.}. However,
+parsing. (Turning structured data into a string---often called
+serialization---is typically a significantly simpler task.) However,
 standard parsing techniques---even incremental techniques purportedly
 designed for making it easy to maintain a correct parse tree in the presence
 of ongoing updates---do not adequately describe the connection between
@@ -59,7 +59,7 @@ relatively special-purpose (tailored to the file format under consideration
 here) and do not adequately reflect all user actions as analogous edits.
 This seems like a promising area for future efforts.
 
-\section{Usage Example/Description of Functionality}
+\section{Usage Example and Functionality}
 \label{sec:impl-usage}
 \begin{enumerate}
     \item describe database format + lens connecting them
