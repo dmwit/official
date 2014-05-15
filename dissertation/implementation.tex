@@ -31,10 +31,10 @@ retain a lightweight approach throughout; in particular we chose not to
 begin with a mechanization of the theory in a dependently-typed language.
 (In retrospect, while it still seems worthwhile to have avoided reproving
 all of our results in Coq from an experimentation point of view, it is not
-clear that avoiding dependent types entirely was beneficial. We will see in
-Section~\ref{sec:impl-details} that the way we used Haskell's typeclass
-mechanism would really have benefited from dependent types; for example, we
-will wish for the ability to define new types for each choice of $\init$
+clear that avoiding dependent types entirely was beneficial. For example,
+the way we used Haskell's typeclass mechanism to model modules would really
+have benefited from dependent types, as we often found ourselves wishing for
+the ability to define new types for different choices of $\init$
 value.) We also investigated extending Boomerang~\cite{Boomerang07}, an
 existing asymmetric, state-based string lens implementation. Boomerang is
 very complete, and consequently would have required many tangential coding
@@ -60,11 +60,67 @@ analogous edits. This seems like a promising area for future efforts.
 
 \section{Usage Example and Functionality}
 \label{sec:impl-usage}
-\begin{enumerate}
-    \item describe database format + lens connecting them
-    \item screenshots showing synchronized databases
-    \item a few simple edits that get reflected; and why we can't reflect before the edit is completed
-\end{enumerate}
+In order to ground the discussion, we give here a quick overview of the
+capabilities of the program we have built. When started, the program
+presents a GUI containing two text-editing panes in which the user can
+freely type. The two texts in the panes are connected by a lens, so that
+when the text in one pane has been suitably modified, the text in the other
+pane spontaneously changes to maintain synchrony. The particular lens we
+will demonstrate below is a variant of the lens in
+Figure~\ref{fig:span-lenses}, but instead of connecting teachers, salaries,
+and room assignments, we will connect composers, birth years, and birth
+countries. In one repository, we will have a list of newline-terminated
+records, where each record has a composer's name and birth year separated by
+a comma. In the other, each record has a composer's name and birth country
+separated by a semicolon. Figure~\ref{subfig:prototype-1} gives a pair of
+example synchronized repositories entered into our program's text panes. In
+the abstract notation of Chapter~\ref{chap:edits}, the lens connecting the
+two panes might be written as $(\id\otimes\disconnect)\LIST$. The concrete
+lens used here must include a bit more information---for example,
+instructions to change the comma separating parts of the record into a
+semicolon, or a check that dates consist of exactly four digits---but we
+will skip discussing these surface syntax issues for now.
+
+The remainder of Figure~\ref{fig:prototype-screenshots} demonstrates how the
+text panes would evolve under a few plausible edits to the repositories.
+Part~\subref{subfig:prototype-2} shows what happens when the user adds an
+extra line to the text pane on the right. As the right-hand repository now
+has an extra record for Mozart, the lens produces an insertion that adds a
+record for Mozart to the repository on the left, using a default birth year.
+Since the insertion is inferred by watching the typing commands performed by
+the user, the alignment for insertions of this kind can be exact: even if
+the user were to duplicate a record from elsewhere in the database, no
+confusion would arise, and a new record would appear with default data in
+the correct location in the other repository. Similarly, when the user
+deletes a line---in this case, the record for Haydn---on the right, the
+program maintains synchrony by deleting the record for Haydn from the left
+pane, as shown in part~\subref{subfig:prototype-3}. The left pane may also
+be edited by the user, as demonstrated in part~\subref{subfig:prototype-4},
+where Haydn has been re-inserted into the repository on the left, resulting
+in a computed insertion containing a default country on the right. In
+addition to the wholesale insertion and deletion of records, the user may
+modify parts of a single record, and the program will correctly maintain
+alignment of the edited records. Part~\subref{subfig:prototype-5} shows that
+modifications to data that appears in only one repository has no effect on
+the other, while in part~\subref{subfig:prototype-6} the user has corrected
+the name ``Hayn'' to ``Haydn'' in the right repository, and this is
+correctly reflected as an update to the left repository without losing
+Haydn's birth year. Because we have access to the actions performed by the
+user, we need not guess about whether the old ``Hayn'' record should be
+aligned with the new ``Haydn'' record in this case. On the other hand, there
+are certainly edits where the user intention is still not entirely clear;
+parts~\subref{subfig:prototype-7} and~\subref{subfig:prototype-8} show the
+user constructing a new record on the right that contains bits and pieces of
+several old records (by performing a deletion that crosses record
+boundaries). As pictured, our heuristics choose to treat this as a deletion
+of all the old records that contributed and the insertion of a completely
+fresh record, so a default birth year is used for the new record in the left
+repository.
+
+This final example begins to hint at some of the oddities that can arise
+when attempting to translate between edits to a serialized structure and
+edits to the abstract structure, which we will discuss in
+\S\ref{sec:parsing}.
 
 % TODO: this reverse highlighting experiment turned out a little strange
 % because of the document's white background; let's try more orthodox
@@ -99,8 +155,9 @@ analogous edits. This seems like a promising area for future efforts.
     \label{fig:prototype-screenshots}
 \end{figure}
 
-\section{Implementation Details}
-\label{sec:impl-details}
+\section{Parsing and edits}
+\label{sec:parsing}
+% TODO: redo the outline from here out based on committee feedback
 annotated code, may describe selected functions or maybe all functions (?)
 \begin{enumerate}
     \item edits + edit application: the Module type class
