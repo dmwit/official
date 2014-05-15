@@ -46,18 +46,17 @@ Our primary challenge, which we will discuss in detail below, can be broadly
 described as parsing. With edit lenses, there are always two domains of
 discourse: the collection of repositories and the collection of edits.
 Repositories store ordinary data, and the problem of connecting strings with
-structured data is well-studied under the umbrella of
-parsing. (Turning structured data into a string---often called
-serialization---is typically a significantly simpler task.) However,
-standard parsing techniques---even incremental techniques purportedly
-designed for making it easy to maintain a correct parse tree in the presence
-of ongoing updates---do not adequately describe the connection between
-string modifications and edits in the sense described in
-Chapter~\ref{chap:delta}. We have proposed a few heuristics that seem to
-behave acceptably in a number of standard cases; however, they are
-relatively special-purpose (tailored to the file format under consideration
-here) and do not adequately reflect all user actions as analogous edits.
-This seems like a promising area for future efforts.
+structured data is well-studied under the umbrella of parsing. (Turning
+structured data into a string---often called serialization---is typically a
+significantly simpler task.) However, standard parsing techniques---even
+incremental techniques purportedly designed for making it easy to maintain a
+correct parse tree in the presence of ongoing updates---do not adequately
+describe the connection between string modifications and edits in the sense
+described in Chapter~\ref{chap:delta}. We have proposed a few heuristics
+that seem to behave acceptably in a number of standard cases; however, they
+are relatively special-purpose (tailored to the file format under
+consideration here) and do not adequately reflect all user actions as
+analogous edits. This seems like a promising area for future efforts.
 
 \section{Usage Example and Functionality}
 \label{sec:impl-usage}
