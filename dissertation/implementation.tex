@@ -66,6 +66,39 @@ analogous edits. This seems like a promising area for future efforts.
     \item a few simple edits that get reflected; and why we can't reflect before the edit is completed
 \end{enumerate}
 
+% TODO: this reverse highlighting experiment turned out a little strange
+% because of the document's white background; let's try more orthodox
+% highlighting or a circle around the change or something like that instead
+\begin{figure}
+    \centering
+    \protofig1{An initial pair of databases in two text editing panes.}
+    \hfil
+    \protofig2{Insertion on the right introduces some default data on the
+    left.}
+    \vspace{4ex}
+
+    \protofig3{Deleting a row from either side is reflected to the other
+    automatically.}
+    \hfil
+    \protofig4{A default country is used for the new row on the right.}
+    \vspace{4ex}
+
+    \protofig5{Correcting the country has no effect\ldots}
+    \hfil
+    \protofig6{\ldots but correcting the spelling of either name corrects
+    both.}
+    \vspace{4ex}
+
+    \protofig7{More bizarre edits, like this deletion that spans
+    records\ldots}
+    \hfil
+    \protofig8{\ldots reset the alignment only for the affected region.}
+    \vspace{4ex}
+
+    \caption{A demonstration use of the prototype, using the composers lens}
+    \label{fig:prototype-screenshots}
+\end{figure}
+
 \section{Implementation Details}
 \label{sec:impl-details}
 annotated code, may describe selected functions or maybe all functions (?)
