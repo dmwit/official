@@ -52,11 +52,15 @@ significantly simpler task.) However, standard parsing techniques---even
 incremental techniques purportedly designed for making it easy to maintain a
 correct parse tree in the presence of ongoing updates---do not adequately
 describe the connection between string modifications and edits in the sense
-described in Chapter~\ref{chap:delta}. We have proposed a few heuristics
-that seem to behave acceptably in a number of standard cases; however, they
-are relatively special-purpose (tailored to the file format under
-consideration here) and do not adequately reflect all user actions as
-analogous edits. This seems like a promising area for future efforts.
+described in Chapter~\ref{chap:delta}. One could avoid the situation
+entirely by designing a structured editor. Historically, though, structured
+editors have failed to take---perhaps because their strictures are too
+confining for day-to-day editing tasks---so we chose to avoid this route. We
+have proposed a few heuristics that seem to behave acceptably in a number of
+standard cases; however, they are relatively special-purpose (tailored to
+the file format under consideration here) and do not adequately reflect all
+user actions as analogous edits. This seems like a promising area for future
+efforts.
 
 \section{Usage Example and Functionality}
 \label{sec:impl-usage}
