@@ -83,7 +83,13 @@ two panes might be written as $(\id\otimes\disconnect)\LIST$. The concrete
 lens used here must include a bit more information---for example,
 instructions to change the comma separating parts of the record into a
 semicolon, or a check that dates consist of exactly four digits---but we
-will skip discussing these surface syntax issues for now.
+will skip discussing these surface syntax issues for now. In any case, the
+typical chain of events begins with the user making an edit to one of the
+repositories. This user action is processed to produce alignment information
+between the old and new repositories, which is handed to the underlying edit
+lens' $\dputr$ or $\dputl$ function; the computed edit is then used to
+produce a ``user'' action which is automatically applied to the other
+repository.
 
 The remainder of Figure~\ref{fig:prototype-screenshots} demonstrates how the
 text panes would evolve under a few plausible edits to the repositories.
