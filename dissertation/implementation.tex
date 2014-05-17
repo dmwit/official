@@ -164,20 +164,33 @@ edits to the abstract structure, which we will discuss in
 % TODO: redo the outline from here out based on committee feedback
 annotated code, may describe selected functions or maybe all functions (?)
 \begin{enumerate}
-    \item edits + edit application: the Module type class
-    \item lenses, simple lenses, lens+module triples
-    \item basic lenses + maybe a few combinators
-    \item unparsing (needs more motivation and explanation, or less if you consider this as not being reusable code)
-    \item parsing (needs more motivation and explanation, or less if you consider this as not being reusable code)
-    \item connecting to a GUI + storing complements in ref cells
-    \item a `bad' choice - modules are based on type classes instead of being records
+    \item quick overview of the routine parts of the code
+        \begin{enumerate}
+            \item edits + edit application: the Module type class
+            \item lenses, simple lenses, lens+module triples
+            \item basic lenses + maybe a few combinators
+            \item connecting to a GUI + storing complements in ref cells
+            \item a `bad' choice - modules are based on type classes instead of being records
+            \item unparsing
+        \end{enumerate}
+    \item parsing: our theory doesn't cover the translation between user's editing actions and structured alignment information
+        \begin{enumerate}
+            \item Can not constrain the edits that a user wishes to make
+            \item There can be unallowable edit data when the edit is partially finished
+            \item Even small edits can have a large smallest containing subtree
+            \item incremental parsers are good at producing an updated tree, but doesn't produce alignment information between the old and updated tree
+            \item incremental parsers are typically imperative, and our framework is primarily functional
+            \item tree edit type-checking is complicated, and doesn't offer as much insight as we hoped on how to produce edit-lens edits
+            \item Small edits can radically change the parsed structure (what does that mean?)
+        \end{enumerate}
 \end{enumerate}
 
 \section{Conclusion}
 \label{sec:impl-conclusion}
 \begin{enumerate}
     \item Message: this is an existing library and an associated GUI that extracts alignment information from user actions
-    \item Message: the existence of a working library is an indication that nothing important was overlooked in the theoretical foundation
+    \item Message: the existence of a working library is an indication that the theoretical foundation can be realized
+    \item Message: practical use may require the foundation to be extended to cover parsing user edits into alignment information
     \item Message: this library could be used for further studies of edit lenses beyond the scope of the current work
         \begin{enumerate}
             \item original purpose: convert a string edit into a tree edit (resulted in a hard problem)
