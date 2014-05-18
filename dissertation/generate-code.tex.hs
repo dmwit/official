@@ -12,7 +12,7 @@ import System.Process
 sortFilePath = sortBy . comparing $ first ((init &&& last) . splitDirectories) . splitExtension
 
 process fp = do
-	putStrLn $ "\\subsection{\\texttt{" <> fp <> "}}"
+	putStrLn $ "\\section{\\texttt{" <> fp <> "}}"
 	case splitExtension fp of
 		(base, ".hs") -> do
 			putStrLn ("\\label{mod:" <> (intercalate "." . drop 1 . splitDirectories) base <> "}")
