@@ -165,9 +165,64 @@ edits to the abstract structure, which we will discuss in
     \label{fig:prototype-screenshots}
 \end{figure}
 
-\section{Parsing and edits}
+\section{Implementation Details}
+\label{sec:impl-details}
+\label{sec:impl-parsing}
 \label{sec:parsing}
-% TODO: redo the outline from here out based on committee feedback
+In this section, we will begin with a brief overview of the architecture of
+the program, with an eye toward guiding the interested reader towards the
+appropriate part of the full source in \S\ref{sec:impl-code}. (The
+explanatory material in this part will therefore be quite brief.) We will
+then discuss the heuristics used to convert user actions into edits in some
+detail. After describing the current transformation, we will consider some
+advantages and disadvantages of this approach as well as possible ways
+forward with this challenging area of the implementation.
+
+The program code broadly recapitulates the development of edit lenses in
+Chapter~\ref{chap:edits} (though behavioral equivalence does not make an
+appearance, since its primary use is in proofs). A typeclass for monoids
+already exists in the base libraries of Haskell; an extension of this
+typeclass to a class for modules, along with facilities for building modules
+in terms of free monoids, is given in \module{Data.Module.Class}. We chose
+to implement lenses as a typeclass as well; thus, to create a new lens, one
+typically declares a new type with a single constructor. One can view this
+as giving a way to overload the names \texttt{dputr} and
+\texttt{dputl}---the way we write $\dputr$ and $\dputl$ in the
+implementation---for many lenses. (Another approach would be to write lenses
+as a record; using a typeclass makes associating a complement type with the
+lens slightly less intrusive. Yet another way would be to give an explicit
+type representing the abstract syntax tree of edit lenses given in this
+paper; one advantage of typeclasses over algebraic types is that they are
+open, meaning programmers can add to the collection of lenses without
+modifying the core library.) This typeclass, along with facilities for
+defining $\dputr$ and $\dputl$ by monoid presentation, is available from
+\module{Data.Lens.Edit.Stateful}. The \texttt{Stateful} part of the name
+alludes to the existence of a complement; \module{Data.Lens.Edit.Stateless}
+contains an experimental typeclass for edit lenses which do not need a
+complement, and many of the lens types we define below will implement both
+the \texttt{Stateful} and \texttt{Stateless} versions of the \texttt{Lens}
+typeclass. These modules together cover the theoretical framework of edit
+lenses, but give no syntax.
+
+The basic lenses ($\id$, composition, $-\op$, and $\disconnect$) are
+implemented in the \module{Data.Lens.Edit.Primitive} module. The $\Unit$
+edit module is implemented in \module{Data.Module.Primitive}. The modules
+for tensor products and sums are given in \module{Data.Module.Product} and
+\module{Data.Module.Sum} (and are built on the product and sum types from
+Haskell's base library), and the lenses are given in
+\module{Data.Lens.Edit.Product} and \module{Data.Lens.Edit.Sum}. Similarly,
+the module for list editing is given in \module{Data.Module.List} (and is
+built on the list type from Haskell's base library), while the $\map$ and
+$\partition$ lenses are implemented in \module{Data.Lens.Edit.List}. There
+is no generic container type in Haskell's base library, so this is given in
+\module{Data.Container}, together with the module for editing list shapes
+from Example~\ref{ex:list-shapes} in \module{Data.Module.Shape}, a module
+for editing containers in \module{Data.Module.Container}, and the mapping
+lens in \module{Data.Lens.Edit.Container}.
+
+This completes the recapitulation of edit lenses; the program itself then
+includes a handful of modules that go beyond the theory.
+
 annotated code, may describe selected functions or maybe all functions (?)
 \begin{enumerate}
     \item quick overview of the routine parts of the code
@@ -179,9 +234,18 @@ annotated code, may describe selected functions or maybe all functions (?)
             \item a `bad' choice - modules are based on type classes instead of being records
             \item unparsing
         \end{enumerate}
+    % TODO: at section beginning, I suggested this outline, which I think
+    % would be a pretty good way to proceed; perhaps turn this into a real
+    % outline before trying to write:
+    % * what exactly the problem to solve is (i.e. carefully describe the
+    %   inputs and outputs of the function we need to write, why it's
+    %   important to get accurate results, etc.) [not in the introductory
+    %   section]
+    % * how we currently perform this transformation
+    % * advantages and disadvantages of this approach
+    % * possible ways forward
     \item parsing: our theory doesn't cover the translation between user's editing actions and structured alignment information
         \begin{enumerate}
-            \item Can not constrain the edits that a user wishes to make
             \item There can be unallowable edit data when the edit is partially finished
             \item Even small edits can have a large smallest containing subtree
             \item incremental parsers are good at producing an updated tree, but doesn't produce alignment information between the old and updated tree
