@@ -222,37 +222,91 @@ lens in \module{Data.Lens.Edit.Container}.
 
 This completes the recapitulation of edit lenses; the program itself then
 includes a handful of modules that go beyond the theory.
+\module{Data.Module.String} contains the most interesting extended
+functionality. It includes the \texttt{StringModule} typeclass which adds
+methods for parsing, serializing, and checking validity of repository
+strings---all fairly routine operations---as well as a method for
+translating string edits to \texttt{Module} edits. This typeclass is then
+instantiated for a handful of types, and some utilities are given for
+defining base modules with a particular $\init$ value. These utilities are
+wrapped up in \module{Data.Lens.Edit.String}, which offers some combinators
+for creating triples containing a value with a \texttt{StringModule}
+instance for each repository and a value with a \texttt{Lens} instance
+connecting the \texttt{Module}s associated with those
+\texttt{StringModule}s. Finally, the top-level program lies in
+\texttt{lens-editor.hs} (\S\ref{mod:lens-editor}), which defines a
+particular string lens, constructs a GUI with two text panes, allocates a
+reference cell for the complement, and connects the text panes' editing
+events to invocations of the appropriate \texttt{StringModule} functions.
+This discussion is summarized in Figure~\ref{fig:module-hierarchy}.
 
-annotated code, may describe selected functions or maybe all functions (?)
+\begin{figure}
+    \centering
+    \begin{description}
+        \item[Data.Container] a generic container type, with a typeclass for
+            container shapes
+        \item[Data.Iso] a data type for isomorphisms (primarily used internally)
+        \item[Data.Lens.Bidirectional] a typeclass for bidirectional
+            transformations, used to unify the source- and target-type
+            structure of isomorphisms and the two kinds of lenses
+        \item[Data.Lens.Edit] convenience module: re-exports some submodules
+
+            \begin{description}
+                \item[.Stateful] \texttt{Lens} typeclass for standard edit
+                    lenses
+                \item[.Stateless] \texttt{Lens} typeclass for edit lenses
+                    with no complement
+                \item[.Primitive] base lenses
+                \item[.Product] $\otimes$ lens combinator
+                \item[.Sum] $\oplus$ lens combinator
+                \item[.List] $\map$ and $\partition$ lenses
+                \item[.Container] container-mapping lens
+                \item[.String] lens combinators that also construct
+                    \texttt{StringModule}s
+            \end{description}
+        \item[Data.Module] convenience module: re-exports some submodules
+
+            \begin{description}
+                \item[.Class] \texttt{Module} typeclass, with instance for
+                    free monoid-based modules
+                \item[.Primitive] $\Unit$ module
+                \item[.Product] $\otimes$ module
+                \item[.Sum] $\oplus$ module
+                \item[.List] $-\LIST$ module
+                \item[.Shape] a module for editing the shape of lists
+                    construed as containers
+                \item[.Container] container-based module
+                \item[.String] \texttt{StringModule} typeclass and instances
+                    for the several modules
+            \end{description}
+        \item[Main] set up and execute a \texttt{StringModule}-powered GUI
+    \end{description}
+    \caption{Summary of the module hierarchy in the prototype
+    implementation}
+    \label{fig:module-hierarchy}
+\end{figure}
+
+Given this overview, let us discuss in more detail the process of turning
+the user's edit actions into \texttt{Module}-based edits.
+
+% TODO: at section beginning, I suggested this outline, which I think
+% would be a pretty good way to proceed; perhaps turn this into a real
+% outline before trying to write:
+% * what exactly the problem to solve is (i.e. carefully describe the
+%   inputs and outputs of the function we need to write, why it's
+%   important to get accurate results, etc.) [not in the introductory
+%   section]
+% * how we currently perform this transformation
+% * advantages and disadvantages of this approach
+% * possible ways forward
+parsing: our theory doesn't cover the translation between user's editing actions and structured alignment information
 \begin{enumerate}
-    \item quick overview of the routine parts of the code
-        \begin{enumerate}
-            \item edits + edit application: the Module type class
-            \item lenses, simple lenses, lens+module triples
-            \item basic lenses + maybe a few combinators
-            \item connecting to a GUI + storing complements in ref cells
-            \item a `bad' choice - modules are based on type classes instead of being records
-            \item unparsing
-        \end{enumerate}
-    % TODO: at section beginning, I suggested this outline, which I think
-    % would be a pretty good way to proceed; perhaps turn this into a real
-    % outline before trying to write:
-    % * what exactly the problem to solve is (i.e. carefully describe the
-    %   inputs and outputs of the function we need to write, why it's
-    %   important to get accurate results, etc.) [not in the introductory
-    %   section]
-    % * how we currently perform this transformation
-    % * advantages and disadvantages of this approach
-    % * possible ways forward
-    \item parsing: our theory doesn't cover the translation between user's editing actions and structured alignment information
-        \begin{enumerate}
-            \item There can be unallowable edit data when the edit is partially finished
-            \item Even small edits can have a large smallest containing subtree
-            \item incremental parsers are good at producing an updated tree, but doesn't produce alignment information between the old and updated tree
-            \item incremental parsers are typically imperative, and our framework is primarily functional
-            \item tree edit type-checking is complicated, and doesn't offer as much insight as we hoped on how to produce edit-lens edits
-            \item Small edits can radically change the parsed structure (what does that mean?)
-        \end{enumerate}
+    \item There can be unallowable edit data when the edit is partially finished
+    \item Even small edits can have a large smallest containing subtree
+    \item incremental parsers are good at producing an updated tree, but doesn't produce alignment information between the old and updated tree
+    \item incremental parsers are typically imperative, and our framework is primarily functional
+    \item tree edit type-checking is complicated, and doesn't offer as much insight as we hoped on how to produce edit-lens edits
+    \item Small edits can radically change the parsed structure (what does that mean?)
 \end{enumerate}
 
 \section{Conclusion}
