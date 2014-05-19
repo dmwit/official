@@ -19,7 +19,7 @@ process fp = do
 			putStrLn ("\\lstinputlisting{code/" <> fp <> "}")
 		_ -> do
 			putStrLn "\\begin{verbatim}"
-			readFile ("code/" <> fp) >>= putStrLn
+			readFile ("code/" <> fp) >>= putStr
 			putStrLn "\\end{verbatim}"
 	putStrLn ""
 
