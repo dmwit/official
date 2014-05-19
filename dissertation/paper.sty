@@ -19,6 +19,7 @@
 \usepackage{stmaryrd}
 \usepackage{subcaption}
 \usepackage{tabularx}
+\usepackage{textcomp} % for \texttildelow
 \usepackage{tikz}
 \usepackage{verbatim}
 \usepackage{wrapfig}
@@ -576,4 +577,4 @@
 \newcommand{\hstab}{\usebox{\tabb}}
 \newcommand{\conceal}[1]{}
 \let\amsmathtilde\tilde
-\renewcommand{\tilde}[1]{\ifblank{#1}{\textasciitilde}{\amsmathtilde{#1}}}
+\renewcommand{\tilde}[1]{\ifblank{#1}{\raisebox{0.5ex}{\texttildelow}}{\amsmathtilde{#1}}}
