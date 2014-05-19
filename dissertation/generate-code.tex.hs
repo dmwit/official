@@ -16,8 +16,7 @@ process fp = do
 	case splitExtension fp of
 		(base, ".hs") -> do
 			putStrLn ("\\label{mod:" <> (intercalate "." . drop 1 . splitDirectories) base <> "}")
-			system ("HsColour -latex -partial code/" <> fp)
-			return ()
+			putStrLn ("\\lstinputlisting{code/" <> fp <> "}")
 		_ -> do
 			putStrLn "\\begin{verbatim}"
 			readFile ("code/" <> fp) >>= putStrLn

@@ -12,6 +12,7 @@
 \usepackage{fnpct}
 \usepackage{ifpdf}
 \usepackage{latexsym}
+\usepackage{listings}
 \usepackage{mathtools}
 \usepackage{multirow}
 \usepackage{multicol}
@@ -568,13 +569,19 @@
     \raisebox {\dimen0}[\z@][\z@]{\box0}%
 }
 
-% for HsColour-generated files in code.tex
-\newsavebox{\spaceb}
-\newsavebox{\tabb}
-\savebox{\spaceb}[1ex]{~}
-\savebox{\tabb}[4ex]{~}
-\newcommand{\hsspace}{\usebox{\spaceb}}
-\newcommand{\hstab}{\usebox{\tabb}}
-\newcommand{\conceal}[1]{}
-\let\amsmathtilde\tilde
-\renewcommand{\tilde}[1]{\ifblank{#1}{\raisebox{0.5ex}{\texttildelow}}{\amsmathtilde{#1}}}
+\lstset{
+    language=Haskell,
+    columns=flexible,
+    showstringspaces=false,
+    literate=
+        {=>}{{$\Rightarrow{}$}}2
+        {->}{{$\to{}$}}2
+        {~}{\raisebox{0.5ex}{\texttildelow}}1
+        {<-}{{$\leftarrow{}$}}2
+        {==}{{$\equiv$}}2
+        {<=}{{$\le$}}2
+        {>=}{{$\ge$}}2
+        {>=>}{>=> }3
+        {<=<}{<=< }3
+        {>>=}{{>}{>}= }3
+}
