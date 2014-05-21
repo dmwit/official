@@ -286,8 +286,321 @@ This discussion is summarized in Figure~\ref{fig:module-hierarchy}.
     \label{fig:module-hierarchy}
 \end{figure}
 
+% TODO: typography choices are all over the place; need to change the
+% \texttt{}'s into \lstinline!!'s as appropriate above
 Given this overview, let us discuss in more detail the process of turning
-the user's edit actions into \texttt{Module}-based edits.
+the user's edit actions into \lstinline!Module!-based edits. The GUI glue code
+observes user actions and abstracts them into the \lstinline!Edit! type:
+\begin{lstlisting}
+data Edit = Insert Int String | Delete Int Int
+\end{lstlisting}
+Here, one should think of \lstinline!Insert n s! as being an insertion of
+string \lstinline!s! before index \lstinline!n! (with index 0 being the
+first character), and \lstinline!Delete m n! as deleting the range which
+begins before index \lstinline!m! and ends after index \lstinline!n!. In the
+typical case, an insertion contains just a single character corresponding to
+the key most recently tapped by the user, and the range described by a
+deletion is just one character wide, containing the character near the
+cursor when the user tapped the backspace or delete key. Often this
+granularity is too fine; for example, when modifying a year from 1234 to
+1357, the intermediate states 123, 12, 1, 13, and 135 are not (intended to
+be) valid years. To accommodate this, the GUI waits until the repository
+string is in a valid format, batching together edit actions\footnote{One
+could also consider batching together edit actions indefinitely until the
+user explicitly requests a run of the lens. Implementing a mode like this
+would be straightforward.}. The conglomerated \lstinline![Edit]! list, which
+represents an action that transforms a valid repository into another valid
+repository, is then handed off as one of the arguments to the string
+module's edit parser.
+
+The full type of the edit parser itself is specified in the
+\lstinline!StringModule! typeclass. We sketch the typeclass here, along with
+its superclass, \lstinline!Module!.
+\begin{lstlisting}
+class (Default (V dX), Monoid dX) => Module dX where
+	type V dX
+	apply :: dX -> V dX -> Maybe (V dX)
+
+class Module (M m) => StringModule m where
+	type M m
+	edit :: m -> V (M m) -> [Edit] -> M m
+	-- etc.
+\end{lstlisting}
+Recall that a module has two types, namely the type of repository values $X$
+and the type of edits $\DX$; the declaration of the \lstinline!Module!
+typeclass reflects these two types as \lstinline!V dX! and \lstinline!dX!,
+respectively (mnemonic: \lstinline!V dX! are the \emph{values} associated
+with edits \lstinline!dX!). Thus the type of the edit parsing function,
+named \lstinline!edit!, may be read: given some string-module specific
+information, a particular repository value, and a sequence of abstracted
+user actions, produce an edit for the associated module. This is the key
+method we wish to implement; and, since it is a typeclass method, we may
+implement it separately for each module. Note that values of type
+\lstinline!String! together with edits of type \lstinline![Edit]! do
+\emph{not} form a module\footnote{Conglomerated string edits often take the
+string from a parsing state to a non-parsing one and back. Representing this
+in our module framework would involve a prefix of the edit to have undefined
+edit application; but then no suffix can recover from a failed edit.}, hence
+it does not make sense to impose the same restrictions on this function as
+we do on edit lens put functions.
+
+For our basic string modules---the ones we use with $\id$ and $\disconnect$
+lenses---we have a free choice of repository value type and edit type, so
+there the implementation is easy: we can choose the values to be
+\lstinline!String!s and the edits to be values of type \lstinline![Edit]!,
+and let the \lstinline!edit! function simply return the string edits it is
+provided. However, the tensor product and list modules do not share this
+simplicity. The product module is simpler than the list module, but has most
+of the important complications, so we focus there.
+
+First we must choose a serialization. The natural choice is to serialize
+pairs via concatenation: when value \lstinline!a! is represented by string
+\lstinline!sa! and value \lstinline!b! is represented by string
+\lstinline!sb!, we will represent the pair \lstinline!(a,b)! by the string
+\lstinline!sa ++ sb!. For example, the comma-separated composer and date
+pairs in our example are actually the serialization of nested pairs
+\lstinline!(String,((),String))!, where the extra \lstinline!()! value is a
+placeholder for the comma separator. The Haskell value
+\lstinline!("Beethoven",((),"1770"))! would be serialized this way:
+\begin{center}
+    \begin{tabular}{|*{20}{c|}}
+        \hline
+        \multicolumn{9}{|c|}{Beethoven}&\lstinline!()!&\multicolumn{4}{|c|}{1770} \\
+        \hline
+        B&e&e&t&h&o&v&e&n&,&1&7&7&0 \\
+        \hline
+    \end{tabular}
+\end{center}
+Notionally, there are invisible boundaries in the text before and after the
+comma, delimiting the portions of the text that correspond to the three
+parts of the structured value. A natural idea for a heuristic is to try to
+track these boundaries as text is inserted and deleted and partition the
+string edits according to where they occur in relation to the chunk
+boundaries. For a simple example of where this heuristic works well,
+consider the edit which inserts \lstinline!"Ludwig van "! and changes
+\lstinline!1770! to \lstinline!1760!:
+\begin{center}
+    \begin{tabular}{l|r|c|l|}
+        \hhline{~*{3}{-}}
+        original & Beethoven & , & 1770 \\
+        \hhline{~*{3}{-}}
+        \lstinline!Delete 12 13! & Beethoven & , & 170 \\
+        \hhline{~*{3}{-}}
+        \lstinline!Insert 12 "6"! & Beethoven & , & 1760 \\
+        \hhline{~*{3}{-}}
+        \lstinline!Insert 0 "Ludwig van "! & Ludwig van Beethoven & , & 1760 \\
+        \hhline{~*{3}{-}}
+    \end{tabular}
+\end{center}
+It seems clear that the right way to split this up is to group together (and
+re-index) the edit \lstinline![Delete 2 3, Insert 2 "6"]! to the date, give
+an empty edit \lstinline![]! for the separator, and separate the final
+insertion \lstinline![Insert 0 "Ludwig van "]! to the composer.
+
+There are several tricky cases to consider, which we discuss in turn below:
+insertions may happen at the boundary, deletions may span a boundary,
+deletions may cause candidate boundaries to coincide, and the boundary may
+jump if an insertion or deletion significantly changes the parse tree. We
+will tackle the first two problems by nondeterministically guessing the
+right way to move the boundary at such edits; the third problem by choosing
+an arbitrary tie-breaking rule; and the fourth problem by having a ``nuclear
+option'' backup plan of doing a complete re-parse (losing all alignment
+information) if all else fails.
+
+Consider the difference between the following two insertions:
+\begin{center}
+    \begin{tabular}{l|l|c|r|}
+        \hhline{~*{3}{-}}
+        original & Beethoven & , & 1770 \\
+        \hhline{~*{3}{-}}
+        \lstinline!Insert 9 "x"! & Beethovenx & , & 1770 \\
+        \hhline{~*{3}{-}}
+        \multicolumn{2}{c}{} \\ % get rid of vertical bar
+        \hhline{~*{3}{-}}
+        original & Beethoven & , & 1770 \\
+        \hhline{~*{3}{-}}
+        \lstinline!Insert 10 "x"! & Beethoven & , & x1770 \\
+        \hhline{~*{3}{-}}
+    \end{tabular}
+\end{center}
+Hidden in the above illustration, we have made a subtle decision in our
+interpretation of the two insertions. In the former insertion, index 9 is
+between Beethoven and the separating comma, directly on the boundary, and
+after the insertion we have moved the boundary to the right to accommodate
+the new character; in the latter insertion, index 10 is between the
+separating comma and 1770, again on the boundary, but this time after the
+insertion we do not move the boundary to accommodate the new character,
+preferring instead to put the new character after the boundary. In both
+cases, the decision is made this way because we know the middle chunk must
+contain exactly the string \lstinline!","! so that if we wish the three
+chunks to successfully parse we \emph{must} put the boundaries as we did. So
+our parsing routine must inform our movement of boundaries during
+insertions; but in general the string that results from an insertion may not
+parse (for example, \lstinline!"x1770"! is not a valid date). The solution
+is to track multiple candidate boundary locations; once we have processed
+all edits and the string is back in a parsing state, we then inspect where
+the boundary ended up. If this corresponds to any of our candidates, we then
+guess that the appropriate candidate faithfully tracks the motion of the
+boundary through all the edits. Extending the above example, this might
+proceed as follows:
+\begin{diagram}
+    \path
+        node (start) {
+            \begin{tabular}{|l|c|r|}
+                \hline
+                Beethoven & , & 1770 \\
+                \hline
+            \end{tabular}
+            }
+        coordinate[below=6ex of start] (coord)
+        node[below=2ex of coord] (m) {
+            \begin{tabular}{|l|c|r|}
+                \hline
+                Beethovena & b, & 1770 \\
+                \hline
+            \end{tabular}
+            }
+        node[left=1em of coord] (l) {
+            \begin{tabular}{|l|c|r|}
+                \hline
+                Beethovenab & , & 1770 \\
+                \hline
+            \end{tabular}
+            }
+        node[right=1em of coord] (r) {
+            \begin{tabular}{|l|c|r|}
+                \hline
+                Beethoven & ab, & 1770 \\
+                \hline
+            \end{tabular}
+            }
+
+        node[left=1em of l] (edit) {\lstinline!Insert 9 "ab"!}
+        node[below=5ex of l] (parsed) {matches parse}
+        (edit |- start) node (original) {original}
+        (edit |- parsed) node (done) {done}
+
+        (start)    edge[-latex] (l)
+        (start)    edge[-latex] (m)
+        (start)    edge[-latex] (r)
+        (original) edge[-latex] (edit)
+        (edit)     edge[-latex] (done)
+        (l)        edge[-latex] (parsed)
+        ;
+\end{diagram}
+For this insertion, we guess all reasonable new boundary positions, track
+them through whatever additional edits there are (in this case, none), then
+prune away all the candidate boundary positions that do not match the actual
+parse of the final repository. This offers a very convenient way to handle a
+second problem, namely, that deletions may include a chunk boundary: we
+choose to simply prune any candidate boundaries which would lie entirely
+inside a deletion. On the other hand, this nondeterminism also opens us up
+to another kind of problem. Consider what happens if we subsequently delete
+the just-inserted \lstinline!"b"!:
+\begin{diagram}
+    \path
+        node (start) {
+            \begin{tabular}{|l|c|r|}
+                \hline
+                Beethoven & , & 1770 \\
+                \hline
+            \end{tabular}
+            }
+        coordinate[below=6ex of start] (coord)
+        node[below=2ex of coord] (m) {
+            \begin{tabular}{|l|c|r|}
+                \hline
+                Beethovena & b, & 1770 \\
+                \hline
+            \end{tabular}
+            }
+        node[left=1em of coord] (l) {
+            \begin{tabular}{|l|c|r|}
+                \hline
+                Beethovenab & , & 1770 \\
+                \hline
+            \end{tabular}
+            }
+        node[right=1em of coord] (r) {
+            \begin{tabular}{|l|c|r|}
+                \hline
+                Beethoven & ab, & 1770 \\
+                \hline
+            \end{tabular}
+            }
+
+        ($(l)!0.5!(m)$) coordinate (x-center)
+        (l) node[below=9ex] (merged) {
+            \begin{tabular}{|l|c|r|}
+                \hline
+                Beethovena & , & 1770 \\
+                \hline
+            \end{tabular}
+            }
+        (merged -| r) node (continued) {
+            \begin{tabular}{|l|c|r|}
+                \hline
+                Beethoven & a, & 1770 \\
+                \hline
+            \end{tabular}
+            }
+
+        node[left=1em of l] (edit) {\lstinline!Insert 9 "ab"!}
+        (edit |- merged) node (deletion) {\lstinline!Delete 10 11!}
+        (edit |- start)  node (original) {original}
+
+        (start)    edge[-latex] (l)
+        (start)    edge[-latex] (m)
+        (start)    edge[-latex] (r)
+        (l)        edge[-latex] (merged)
+        (m)        edge[-latex] (merged)
+        (r)        edge[-latex] (continued)
+        (original) edge[-latex] (edit)
+        (edit)     edge[-latex] (deletion)
+        ;
+\end{diagram}
+We can choose between different boundary locations by examining where the
+parser tells us chunk boundaries actually fall; but it is not clear that
+one path or the other from the starting boundary locations to a particular
+choice of final boundary locations is more canonical. (Choosing one path or
+the other, in this case, corresponds to choosing whether to pass the
+temporary insertion of a \lstinline!"b"! to the composer lens or the
+separator lens to handle.) When there are many paths, our current heuristic
+arbitrarily chooses one and discards the rest.
+
+A final subtlety is that insertions and deletions can make the boundary jump
+to a completely fresh place unrelated to the previous boundary
+location\footnote{In certain pathological cases, it seems possible to cause
+the boundary to jump not just far from its previous location, but also far
+from the insertion or deletion point.}. To see why, we will have to briefly
+step away from the running example used in the prototype implementation. In
+our new example, we will suppose that we have two fields, that the first
+field is terminated by the string \lstinline!"abc"!, and that the second
+field does not contain \lstinline!"c"! at all. For example,
+\lstinline!"foo abc bar baz abc field2"! would be a perfectly reasonable
+repository in this format, representing the pair
+\lstinline!("foo abc bar baz abc", "field2")!. Now a deletion like
+\lstinline!Delete 18 19! shows how boundaries can jump:
+\begin{center}
+    \begin{tabular}{l|r|l|}
+        \hhline{~*{2}{-}}
+        original & foo abc bar baz abc & field2 \\
+        \hhline{~*{2}{-}}
+        \lstinline!Delete 18 19! & foo abc & bar baz ab field2 \\
+        \hhline{~*{2}{-}}
+    \end{tabular}
+\end{center}
+Our existing heuristics would only generate candidate boundaries near the
+deletion point. Insertions can be similarly problematic; for example,
+re-inserting the deleted \lstinline!"c"! would cause the boundary to jump
+back, even though no boundary was near the insertion point. In case none of
+our boundary candidates match the actual final boundary location, we bail:
+instead of passing on alignment information derived from the user's actions,
+we pass on an edit which completely overwrites the repository. So for the
+above scenario, we would generate and pass on the edits
+\lstinline![Delete 0 19, Insert 0 "foo abc"]! to the edit processor for the
+first field and \lstinline![Delete 0 6, Insert 0 "bar baz ab field2"]! for
+the second field.
 
 % TODO: at section beginning, I suggested this outline, which I think
 % would be a pretty good way to proceed; perhaps turn this into a real
@@ -298,7 +611,15 @@ the user's edit actions into \texttt{Module}-based edits.
 %   section]
 % * how we currently perform this transformation
 % * advantages and disadvantages of this approach
+%   * can't be performant with current signature
+%   * ad-hoc, doesn't always work
+%   * is compositional, but matching lenses shows us that we don't always
+%     want compositional
 % * possible ways forward
+% TODO: possible way to explain why incremental parsers aren't it: they are
+% focused on improving efficiency, but do not attempt to track
+% provenance/alignment; so edits are used to find the smallest region that
+% needs to be reparsed but their meaning is otherwise ignored
 parsing: our theory doesn't cover the translation between user's editing actions and structured alignment information
 \begin{enumerate}
     \item There can be unallowable edit data when the edit is partially finished
