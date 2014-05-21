@@ -146,12 +146,10 @@ operations like mapping, filtering, and concatenation from first principles.
 An even more general technique provides mapping combinators, based on the
 theory of {\em containers} in the sense of Abbott, Altenkirch, and
 Ghani~\cite{1195941}. We show that many of these constructions can also be
-carried out in the framework of edit lenses. Finally, we show that edit
-lenses refine symmetric lenses, in the sense that every symmetric lens gives
-rise to an edit lens over structures with a simple overwrite-only edit
-language, and conversely every edit lens on such structures gives rise to a
-state-based lens.
-% TODO: something about the implementation
+carried out in the framework of edit lenses. Finally, a prototype
+implementation suggests that the core theory is sound but does not
+adequately address the translation between user gestures and the internal
+representation of edits.
 
 \vspace*{\fill}
 
