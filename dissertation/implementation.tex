@@ -645,16 +645,22 @@ newly parsed chunk of the tree and the old tree.
 
 \section{Conclusion}
 \label{sec:impl-conclusion}
-\begin{enumerate}
-    \item Message: this is an existing library and an associated GUI that extracts alignment information from user actions
-    \item Message: the existence of a working library is an indication that the theoretical foundation can be realized
-    \item Message: practical use may require the foundation to be extended to cover parsing user edits into alignment information
-    \item Message: this library could be used for further studies of edit lenses beyond the scope of the current work
-        \begin{enumerate}
-            \item original purpose: convert a string edit into a tree edit (resulted in a hard problem)
-            \item demonstrate usability of the syntax by generating some practical examples
-            \item show a performance advantage
-            \item demonstrate a practical application of lenses (we have a long list of ideas about this)
-        \end{enumerate}
-    \item Outcome: we need new techniques for some parts, but core library can be elegant
-\end{enumerate}
+The full source is given in Appendix~\ref{chap:source}. It includes an
+elegant core library, which is an indication that the theoretical
+foundations discussed in this dissertation can be realized as code, and an
+associated program which extends the foundations and shows one way to
+extract alignment information from observations of the actions taken to
+modify the repository. This observation process turned out to be
+surprisingly difficult; for the techniques discussed here to be practical,
+% TODO: what does robustness mean? I guess something about working well with
+% many different lenses, or possibly with many different user actions. think
+% about how to explain that better
+they will need to be refined to improve their robustness and to investigate
+their performance characteristics. Satisfactory progress may require a
+general theory for lifting parsing techniques to the domain of edits.
+Nevertheless, the framework built here could be used as the basis for a
+further studies in the usability of the syntax (by generating additional
+example lenses), performance, and the general practical applicability of
+edit lenses, including in applications such as file synchronization, text
+editing, database engines, client-server applications, system configuration,
+or software model transformations.
