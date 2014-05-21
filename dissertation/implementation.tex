@@ -602,33 +602,46 @@ above scenario, we would generate and pass on the edits
 first field and \lstinline![Delete 0 6, Insert 0 "bar baz ab field2"]! for
 the second field.
 
-% TODO: at section beginning, I suggested this outline, which I think
-% would be a pretty good way to proceed; perhaps turn this into a real
-% outline before trying to write:
-% * what exactly the problem to solve is (i.e. carefully describe the
-%   inputs and outputs of the function we need to write, why it's
-%   important to get accurate results, etc.) [not in the introductory
-%   section]
-% * how we currently perform this transformation
-% * advantages and disadvantages of this approach
-%   * can't be performant with current signature
-%   * ad-hoc, doesn't always work
-%   * is compositional, but matching lenses shows us that we don't always
-%     want compositional
-% * possible ways forward
-% TODO: possible way to explain why incremental parsers aren't it: they are
-% focused on improving efficiency, but do not attempt to track
-% provenance/alignment; so edits are used to find the smallest region that
-% needs to be reparsed but their meaning is otherwise ignored
-parsing: our theory doesn't cover the translation between user's editing actions and structured alignment information
-\begin{enumerate}
-    \item There can be unallowable edit data when the edit is partially finished
-    \item Even small edits can have a large smallest containing subtree
-    \item incremental parsers are good at producing an updated tree, but doesn't produce alignment information between the old and updated tree
-    \item incremental parsers are typically imperative, and our framework is primarily functional
-    \item tree edit type-checking is complicated, and doesn't offer as much insight as we hoped on how to produce edit-lens edits
-    \item Small edits can radically change the parsed structure (what does that mean?)
-\end{enumerate}
+When editing lists rather than pairs, we use essentially the same repertoire
+of tricks, with the exception that in case the correct boundary locations
+are not all among the candidates we resort to using the diff algorithm
+rather than emitting a complete rewrite edit. As noted in the source, there
+are many obvious opportunities for improvement here.
+
+Overall, the process described above succeeded in transforming string edits
+into structured edits correctly reasonably often during our limited
+experiments, but it is unsatisfactory in many ways. It is not clear that its
+effectiveness would scale well with the complexity of the format being
+parsed. Our example was particularly simple, so perhaps there are hidden
+difficulties that a larger-scale example would expose. Additionally, the
+current implementation does not make a serious attempt to realize the
+performance advantage that edit lenses are intended to enable. Entire
+repository strings are reparsed on every key stroke, and the edit
+translation functions walk at least the spine of the repository and in some
+cases do considerably more. Thirdly, the string modules are built up
+compositionally, like modules and lenses are. This is convenient from the
+perspective of an implementor, but one of the lessons of matching
+lenses~\cite{Matching10} is that a global analysis and optimization of
+changes can often make better decisions than a compositional one. A final
+consideration is that the heuristics here do not adequately reflect all user
+actions, and in particular copy-and-paste operations on lists do not get
+translated to reordering edits; however, unlike the previous considerations,
+it seems that the heuristics could be extended with some engineering effort
+to handle this transformation. A really satisfactory transformation between
+user actions and module edits seems to be a ripe area for serious research.
+Incremental parsing seems a promising area to look to for inspiration,
+though the problem being explored here seems to be slightly richer.
+Incremental parsers are very good at improving the efficiency of parsing
+when the string under consideration has not changed much; however, they do
+not make a serious attempt to track provenance or alignment. In particular,
+if there is editing information available, typical incremental parsers will
+use this to find the smallest region that needs to be reparsed but otherwise
+ignore all the rich semantic content available in the edit, and it is not
+clear how to recover this valuable alignment information just by looking at
+the (efficiently-produced) parse trees. It does seem possible to align the
+chunks of the parse tree that were not re-parsed; but an ideal algorithm
+would also be able to give some information about the connection between the
+newly parsed chunk of the tree and the old tree.
 
 \section{Conclusion}
 \label{sec:impl-conclusion}
