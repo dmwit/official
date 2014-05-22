@@ -87,71 +87,42 @@ Chaired by Steve Zdancewic (Associate Professor, CIS)
 %   TeX into doing what it should have done in the first place
 
 \newpage
-\vspace*{\fill}
 
 \begin{center}
   ABSTRACT\\
-\vspace{.5in}
-\thetitle\\
-\vspace{.5in}
+  \thetitle\\
   \theauthor\\
   \theadvisor
 \end{center}
 
-\doublespacing
 \noindent
-
-% TODO: 350 word-count limit
-{\em Lenses}---bidirectional transformations between pairs of connected
+{\em Lenses} are bidirectional transformations between pairs of connected
 structures capable of translating an edit on one structure into an edit on
-the other---have been extensively studied and are beginning to find their
-way into industrial practice. However, some aspects of their foundations
-remain poorly understood. Most previous work has focused on the special case
-of {\em asymmetric lenses}, where one of the structures is taken as primary
-and the other is thought of as a projection, or view. A few studies have
-considered symmetric variants, where each structure contains information not
+the other. Most of the extensive existing work has focused on the
+special case of {\em asymmetric lenses}, where one of the structures is
+taken as primary and the other is thought of as a projection or view. Some
+symmetric variants exist, where each structure contains information not
 present in the other, but these all lack the basic operation of {\em
-composition}. Additionally, there is not yet a satisfactory treatment of how
-edits are {\em represented}. Many foundational
-accounts~\cite{Focal2005,HofmannPierceWagner10} only consider edits of the
-form ``overwrite the whole structure,'' leading to poor behavior in many
-situations by failing to track the associations between corresponding parts
-of the structures when elements are inserted and deleted in ordered lists,
-for example. Other theories of lenses do maintain these associations, either
-by annotating the structures themselves with change
-information~\cite{HuModels07, Hidaka10} or using auxiliary data
-structures~\cite{Matching10, Diskin-Delta11}, but every extant theory
-assumes that the entire original source structure is part of the information
-passed to the lens. Moreover, while many domain-specific languages based on
-lenses have been designed, lenses have not been thoroughly explored from an
-algebraic perspective.
-
-First, we present a new symmetric formulation, based on {\em complements},
-an old idea from the database literature. This formulation generalizes the
-familiar structure of asymmetric lenses, and it admits a good notion of
-composition. We then generalize the symmetric formulation to work with
-descriptions of changes to structures, rather than with the structures
-themselves. We identify a simple notion of ``editable structure''---a set of
-states plus a monoid of edits with a partial monoid action on the
-states---and construct a semantic space of {\em edit lenses} between such
-structures, with natural laws governing their behavior. We instantiate these
-two formulations by presenting generalizations of a number of known
+composition}. Additionally, existing accounts do not {\em represent} edits
+carefully, making incremental operation difficult or producing
+unsatisfactory synchronization candidates. We present a new symmetric
+formulation which works with descriptions of changes to structures, rather
+than with the structures themselves. We construct a semantic space of {\em
+edit lenses} between ``editable structures''---monoids of edits with a
+partial monoid action for applying edits---with natural laws governing their
+behavior. We present generalizations of a number of known
 constructions on asymmetric lenses and settle some longstanding questions
 about their properties---in particular, we prove the existence of (symmetric
 monoidal) tensor products and sums and the {\em non-}existence of full
-categorical products and sums in the category of symmetric lenses. The
-methods of universal algebra can be applied to build symmetric {\em iterator
+categorical products and sums in a category of lenses. Universal algebra
+shows how to build {\em iterator
 lenses} for structured data such as lists and trees, yielding lenses for
 operations like mapping, filtering, and concatenation from first principles.
-An even more general technique provides mapping combinators, based on the
-theory of {\em containers} in the sense of Abbott, Altenkirch, and
-Ghani~\cite{1195941}. We show that many of these constructions can also be
-carried out in the framework of edit lenses. Finally, a prototype
+More generally, we provide mapping combinators based on the
+theory of {\em containers}~\cite{1195941}. Finally, a prototype
 implementation suggests that the core theory is sound but does not
 adequately address the translation between user gestures and the internal
 representation of edits.
-
-\vspace*{\fill}
 
 \newpage
 
