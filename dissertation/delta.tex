@@ -2282,7 +2282,8 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \newcommand{\markeqn}[1]{%
   \refstepcounter{mark}%
   \label{ref#1}
-  \hfill \hspace{1em} \mbox{\scriptsize (\arabic{mark})\!\!\!}%
+  \ifdissertation&\else\hfill\hspace{1em}\fi%
+  \mbox{\scriptsize (\arabic{mark})\!\!\!}%
 }
 \newcommand{\markref}[1]{\ref{ref#1}}
 \newcommand{\WHEN}{\mbox{ when }}
@@ -2294,6 +2295,7 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
     K &=& 
        \{(z, \map_\ml{tagof}(z), (\ml{lefts}(z),\ml{rights}(z)))
     \mid z \in (|X|+|Y|)\LIST\}
+    \ifdissertation\hspace*{-1em}\fi
 }
 \newcommand{\partitiondputrgdef}{
     \dputr\gen(\mlmod p\dv,c) &=& (\mlleft\fail,c)\mbox{ when }p > |c|
