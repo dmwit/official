@@ -2542,10 +2542,10 @@ Figure~\ref{fig:definition-map} defines the list mapping lens.
 \end{center}
 \end{figure*}
 
-% TODO: in this section, call the repositories the ``sum'' and ``product''
-% repositories (or something similarly unambiguous) rather than ``left'' and
-% ``right'', to avoid confusion with the left and right sides of the
-% sums/products
+\iffull\newcommand{\leftrep}{sum\xspace} \newcommand{\rightrep}{product\xspace}
+\else  \newcommand{\leftrep}{left\xspace}\newcommand{\rightrep}{right\xspace}
+\fi
+
 \paragraph*{Partition lens}
 \partitionfigures give the definition of a list partitioning lens that (as
 we saw in \S \ref{sec:delta-examples}) separates a list of tagged elements
@@ -2563,6 +2563,12 @@ illustrated in Figure~\ref{fig:triple-partition}.  \iflater\discuss{This
 %
 Note that only the middle part---the complement---is actually available
 to the partition lens as it runs: its other input is just an edit.
+\iffull
+In the following explanation, we will break the convention of referring to
+the repositories as ``left'' and ``right'', preferring the terms ``sum
+repository'' and ``product repository\commaquote to avoid confusion with the
+left and right sides of the contained sums and products.
+\fi
 
 \tikzstyle{rbox}=[draw,rounded corners]
 \begin{figure}
@@ -2611,12 +2617,12 @@ to the partition lens as it runs: its other input is just an edit.
 \end{figure}
 
 As a warm-up, consider a simple edit: changing Dvorak's name to Dvo\v
-r\'ak (with correct diacritics) in the left repository. The edit describing
+r\'ak (with correct diacritics) in the \leftrep repository. The edit describing
 this has the form \dissdis\mlmod5{\mlstayl{\d n}},\dissdis where $\d n$
 describes the string edit to the
 name. To translate this edit, we first need to 
 translate the index $5$ to an index into the list of composers in the
-right-hand repository (line \markref{rmodstay} in
+\iffull product \else right-hand \fi repository (line \markref{rmodstay} in
 Figure~\ifdissertation\ref{fig:definition-partition-part-2}\else\ref{fig:definition-partition}\fi).  We can do this by simply counting
 how many composers 
 appear up to and including Dvorak, that is, how many $L$ values appear in the
@@ -2630,8 +2636,9 @@ and $\mltag$ functions defined in
 Figure~\ref{fig:definition-partition-supplementary} implement these two
 steps.  
 
-The left-to-right translation of other in-place modifications, insertions, and
-deletions and the right-to-left translation of in-place modifications,
+The \iffull $\dputr$ \else left-to-right \fi translation of other in-place
+modifications, insertions, and deletions and the \iffull $\dputl$ \else
+right-to-left \fi translation of in-place modifications,
 insertions, and deletions to either list are built from the same primitives, using
 $\mlcount$ to translate indices and re-tagging edits with $\mltag$. 
 %
@@ -2640,9 +2647,8 @@ and deletions always happen at the end of a list, we write $\mldelete'$ and
 $\mlinsert'$ for edits that do some shuffling to ensure that the inserted or
 deleted element moves to the appropriate position.
 
-Perhaps the
-most interesting of these is an in-place modification to the left repository
-that switches sides of a sum (line~\markref{rmodswitch}).
+Perhaps the most interesting of these is an in-place modification to the
+\leftrep repository that switches sides of a sum (line~\markref{rmodswitch}).
 %
 For example, suppose we want to replace Beethoven with Plato. The edit to do
 this has the form $\mlmod2{\mlswitch_{LR}(\d n)}$---that is, at position
@@ -2651,7 +2657,7 @@ must do \emph{four} things: delete Beethoven from the left list, insert a
 new element into the right list, re-tag $\d n$ so that it changes the new
 element to Plato, and finally fix up the complement to match the new
 interleaving. As before, we can use $\mlcount$ to translate the position $2$
-in the interleaved list into a position in the left list in the right
+in the interleaved list into a position in the left list in the \rightrep
 \replica. But then we hit a minor snag: deletions only occur at the end of a
 list. The solution is to first reorder the list, so that Beethoven appears
 at the end, then delete one element.
@@ -2684,7 +2690,7 @@ should set $c_2=R$.
 % about where to insert on the left; discuss this?
 
 The most delicate cases involve translating reorderings.
-Consider an edit to the right repository that swaps Schumann and
+Consider an edit to the \rightrep repository that swaps Schumann and
 Dvorak.  One way to write this edit is in terms of
 a function that swaps 
 indices one and three for lists of size at least three (and does nothing on
@@ -2695,7 +2701,7 @@ lists of size smaller than three):
     }\]
 The edit itself is then $\mlleft{\mlreorder f}$. Our job is now to compute
 some $f'$ for which $\mlreorder{f'}$ swaps $\mlinl{\mbox{Schumann}}$ and
-$\mlinl{\mbox{Dvorak}}$ in the left repository
+$\mlinl{\mbox{Dvorak}}$ in the \leftrep repository
 (line~\markref{lreorder}). There is one wrinkle: $f$ 
 and $f'$ are parameterized by the length of the lists they permute.
 Translating $f$ naively would therefore seem to require a way for $f'$ to
@@ -2707,16 +2713,21 @@ composers there are is guaranteed to be accurate.  So
 we need only construct a single permutation (and use, say, the
 identity permutation for all inconsistent list lengths).
 %
-We use the $\mlcount$ function to construct this permutation.
-It is convenient to derive an isomorphism between positions in the left
-repository and positions tagged by which list they are indexing into in the
-right repository; the $\mliso$ function shows how to use $\mlcount$ to do
-this. In our example, the resulting isomorphism looks like this:
+We use the $\mlcount$ function to construct this permutation%
+\iffull\footnote{The base cases for $\mlcount$ are unusual, but very
+convenient for our purposes. The intuition for $\mlcount(p,c)$ is to imagine
+inserting an $L$ (respectively, $R$) before index $p$ in list $c$; then we
+output how many $L$s (resp. $R$s) there are up to this newly inserted
+item.}\fi. It is convenient to derive an isomorphism between positions in
+the \leftrep repository and positions tagged by which list they are indexing
+into in the \rightrep repository; the $\mliso$ function shows how to use
+$\mlcount$ to do this. In our example, the resulting isomorphism looks like
+this:
 \begin{center}
 \noindent \begin{tabular}{c|ccccc}
-    left  & $1$ & $2$ & $3$ & $4$ & $5$ \\
+    \leftrep  & $1$ & $2$ & $3$ & $4$ & $5$ \\
     \hline
-    right & $\mlinl 1$ & $\mlinl 2$ & $\mlinr 1$ & $\mlinr 2$ & $\mlinl 3$
+    \rightrep & $\mlinl 1$ & $\mlinl 2$ & $\mlinr 1$ & $\mlinr 2$ & $\mlinl 3$
 \end{tabular}
 \end{center}
 
@@ -2725,14 +2736,14 @@ We can use $f(3)$ as a permutation on the $\mlinlx$ elements, defining%
 \[g(p) = \cond{\mlinr{p'} & p = \mlinr{p'} \\
                \mlinl{f(3)(p')} & p = \mlinl{p'}}\]
 \else\ $g(\mlinl p)=\mlinl{f(3)(p)}$ and $g(\mlinr p)=\mlinr p$. \fi Then, to find out
-where position $p$ in the left repository should come from, we can simply
-translate $p$ into an index into the right repository using $\mliso$, apply
-$g$ to find out where that index came from, and translate back into the left
+where position $p$ in the \leftrep repository should come from, we can simply
+translate $p$ into an index into the \rightrep repository using $\mliso$, apply
+$g$ to find out where that index came from, and translate back into the \leftrep
 repository using $\mliso^{-1}$. Expanding the table above with these
 translations yields:
 \begin{center}
 \begin{tabular}{@{}c|ccccc@{}}
-    left & $1$ & $2$ & $3$ & $4$ & $5$ \\
+    \leftrep & $1$ & $2$ & $3$ & $4$ & $5$ \\
     \hline
     $\mliso$ & $\mlinl 1$ & $\mlinl 2$ & $\mlinr 1$ & $\mlinr 2$ & $\mlinl 3$ \\
     $\mliso;g$ & $\mlinl 3$ & $\mlinl 2$ & $\mlinr 1$ & $\mlinr 2$ & $\mlinl 1$ \\
@@ -2745,21 +2756,14 @@ This swaps indices $1$ and $5$, so our final $f'$ looks like:
     p & n \ne 5 \lor p \notin \{1,5\}
     }\]
 
-Translating a reordering of the left repository follows a similar path (line~\markref{rreorder}):
+Translating a reordering of the \leftrep repository follows a similar path (line~\markref{rreorder}):
 restrict the reordering to lists consistent with the current complement,
 then compose the permutation with isomorphisms between the indices in the
 two repositories. There is one subtlety here: a reordering of the list
-in the left repository may shuffle which positions are $\mlinlx$'s and which
+in the \leftrep repository may shuffle which positions are $\mlinlx$'s and which
 are $\mlinrx$'s. As a result, we must take care to construct \emph{two}
 separate position isomorphisms: one for ``before'' the reordering, and one
 for ``after\dotquote
-
-% TODO: Somewhere in the above discussion we should probably try to give
-% some intuition for what \mlcount does, since it's got such odd base cases.
-% An attempt at English might go like this: Suppose we were to insert an L
-% (respectively R) before index i in list c. How many Ls (respectively, Rs)
-% would there be, up to this newly inserted item? These two numbers are the
-% output of \mlcount(i,c).
 
 \iffull
 \begin{lemma}
