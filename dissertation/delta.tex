@@ -2,8 +2,6 @@
 % TODO: intro paragraph?
 % TODO: search for ``paper'' everywhere and make sure it reads ``chapter''
 % in the dissertation
-% TODO: search for ``lack of space'' and figure out what to do about each --
-% there's no lack of space in a dissertation!!
 \newif \iffailed \failedfalse % to remove some bits we think we don't need
 \ifdissertation\newcommand{\symmlenses}{ Chapter~\ref{chap:complement}\xspace}
 \else          \newcommand{\symmlenses}{~\cite{HofmannPierceWagner10}\xspace}
@@ -3672,10 +3670,6 @@ rearrangement the rotation of a binary tree about some node.
   Given container $T$ and module $X$ we define edits for $T(|X|)$ as
   follows (we give some intuition after
   Definition~\ref{def:containereditapplication}):
-% This was a space hack, and was ill-received by reviewers. Let's undo it
-% for now, since we're buying extra pages, and re-institute it only if it
-% turns out that we're still short on space.
-%\iffull
   \[
   \begin{array}{l@{\ }l@{\ }l}
   &\{ \fail \}\\
@@ -3685,14 +3679,6 @@ rearrangement the rotation of a binary tree about some node.
   \cup & \{ \mlrearrange(\di,f) & \mid f\text{ consistent with }\di\}
   \end{array}
   \]
-%\else
-%$
-%  \{ \fail \}
-%  \cup  \{ \mlmod p\dx \mid p\in P, \dx\in\partial X  \}
-%  \cup  \{ \mlinsert (\di) \mid \di\text{ an insertion} \}
-%  \cup  \{ \mldelete (\di) \mid \di\text{ a deletion} \}
-%  \cup  \{ \mlrearrange(\di,f) \mid f\text{ consistent with }\di\}$.
-%\fi
 \end{defn}
 In the last case, often either $\di$ will only be defined for very few
 $i$ or $f$ will have a generic definition, so the representation of a
