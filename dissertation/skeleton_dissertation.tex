@@ -98,31 +98,29 @@ Chaired by Steve Zdancewic (Associate Professor, CIS)
 \noindent
 {\em Lenses} are bidirectional transformations between pairs of connected
 structures capable of translating an edit on one structure into an edit on
-the other. Most of the extensive existing work has focused on the
-special case of {\em asymmetric lenses}, where one of the structures is
-taken as primary and the other is thought of as a projection or view. Some
-symmetric variants exist, where each structure contains information not
-present in the other, but these all lack the basic operation of {\em
-composition}. Additionally, existing accounts do not {\em represent} edits
-carefully, making incremental operation difficult or producing
-unsatisfactory synchronization candidates. We present a new symmetric
-formulation which works with descriptions of changes to structures, rather
-than with the structures themselves. We construct a semantic space of {\em
-edit lenses} between ``editable structures''---monoids of edits with a
-partial monoid action for applying edits---with natural laws governing their
-behavior. We present generalizations of a number of known
-constructions on asymmetric lenses and settle some longstanding questions
-about their properties---in particular, we prove the existence of (symmetric
-monoidal) tensor products and sums and the {\em non-}existence of full
-categorical products and sums in a category of lenses. Universal algebra
-shows how to build {\em iterator
+the other. Most of the extensive existing work has focused on the special
+case of {\em asymmetric lenses}, where one of the structures is taken as
+primary and the other is thought of as a projection or view. Some symmetric
+variants exist, where each structure contains information not present in the
+other, but these all lack the basic operation of {\em composition}.
+Additionally, existing accounts do not {\em represent} edits carefully,
+making incremental operation difficult or producing unsatisfactory
+synchronization candidates. We present a new symmetric formulation which
+works with descriptions of changes to structures, rather than with the
+structures themselves. We construct a semantic space of {\em edit lenses}
+between ``editable structures''---monoids of edits with a partial monoid
+action for applying edits---with natural laws governing their behavior. We
+present generalizations of a number of known constructions on asymmetric
+lenses and settle some longstanding questions about their properties---in
+particular, we prove the existence of (symmetric monoidal) tensor products
+and sums and the {\em non-}existence of full categorical products and sums
+in a category of lenses. Universal algebra shows how to build {\em iterator
 lenses} for structured data such as lists and trees, yielding lenses for
 operations like mapping, filtering, and concatenation from first principles.
-More generally, we provide mapping combinators based on the
-theory of {\em containers}~\cite{1195941}. Finally, a prototype
-implementation suggests that the core theory is sound but does not
-adequately address the translation between user gestures and the internal
-representation of edits.
+More generally, we provide mapping combinators based on the theory of {\em
+containers}~\cite{1195941}. Finally, a prototype implementation suggests
+that the core theory is sound but does not adequately address the
+translation between user gestures and the internal representation of edits.
 
 \newpage
 
