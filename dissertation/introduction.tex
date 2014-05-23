@@ -1,3 +1,7 @@
+% TODO with high priority:
+%   * review figure placement throughout
+%   * add a paragraph with real content about the last few chapters
+%   * use \map for \mapU and -\LIST for \map
 Recent years have seen increased interest in the area of bidirectional
 programming. Broadly speaking, the problem domain involves maintaining a
 connection between two different representations of otherwise very similar
@@ -21,7 +25,7 @@ its abstract syntax tree from above, these two programs might be a parser
 and a pretty-printer.) Programming in this style, however, quickly grows
 unmanageable. Recent developments in bidirectional transformations have
 suggested that a language-based approach---that is, the creation of a
-language where each term represents two transformations---may be more
+language where each program represents two transformations---may be more
 practical in many ways. Existing languages have a uniform interface across
 terms: different programs are run in the same manner. This means that such
 bidirectional programs are easy to extend to accommodate the evolution of
@@ -133,11 +137,13 @@ are modified. Three behavioral laws address this intuition:
 \end{align*}
 The \rn{PutGet} law formalizes the expectation that $\ell.\aput$ changes
 enough; the \rn{GetPut} law takes a step toward formalizing the expectation
-that $\ell.\aput$ does not change too much\footnote{To be precise, it
-actually only guarantees that unmodified views result in unmodified sources.
-It is very hard to come up with a better generic guarantee than this within
-the asymmetric, state-based lens framework, but Chapter~\ref{chap:delta}
-takes a step towards better guarantees.}. There is a third law,
+that $\ell.\aput$ does not change too much. In fact, the \rn{GetPut} law
+only guarantees that unmodified views result in unmodified sources, but any
+change to the view, no matter how tiny, voids all further guarantees; this
+has been viewed as a weakness of some previous approaches. It is very hard
+to come up with a better generic guarantee than this within the asymmetric,
+state-based lens framework, but Chapter~\ref{chap:delta} takes an unexpected
+step in refining this behavioral law. There is a third law,
 \rn{CreateGet}, which serves a similar purpose to the \rn{PutGet} law.
 Collectively, these behavioral laws are often also called \emph{roundtrip
 laws}: another way to read them is that in a given ``round trip'' through
@@ -151,10 +157,13 @@ the lens the repository returns to exactly the same state it started at.
 In the remainder, we will write $\ell \in S \alens V$ to assert that $\ell$
 is an asymmetric, state-based lens---that is, that it is a triple of
 functions whose types are as above that satisfy the three behavioral laws
-discussed.
+discussed. We will use record notation to refer to the three components;
+thus $\ell.\aget$ is the first field of the triple, $\ell.\aput$ the second,
+and $\ell.\acreate$ the third.
 
-In the remaining sections, we explore some scenarios which are challenges
-for the asymmetric, state-based lenses described here.
+In the remaining sections, we use asymmetric lenses as a vehicle to explore
+the importance of and challenges involved in supporting good alignment
+strategies, information symmetry, good performance, and a rich syntax.
 
 \section{Alignment}
 \label{sec:intro-alignment}
@@ -200,7 +209,8 @@ straightforward---direct analogues of the unidirectional version---but the
 \PUT operation is more delicate. Since \PUT takes one value from each
 repository, our $\map(\ell).\aput$ operation takes two lists, of types
 $S\LIST$ and $V\LIST$. When these lists are the same length we can just zip
-them together with $\ell.\aput$. When they are different lengths, there have
+them together, applying $\ell.\aput$ to pairs of elements in the same
+positions in the two lists. When they are different lengths, there have
 been insertions or deletions. Deletions can be reflected directly by
 deleting the last few elements of the $S\LIST$ list until the lengths match.
 For insertions, we recover elements of $S$ by treating the last few elements
@@ -757,7 +767,7 @@ guarantees one can expect!
     \label{fig:cats-composition}
 \end{figure}
 
-So an ideal a model would capture the behavior of ``sequencing'', retain a
+So an ideal model would capture the behavior of ``sequencing'', retain a
 symmetric presentation, and allow each repository to retain information not
 available in the other.
 
@@ -1001,9 +1011,8 @@ summarizes them.
         $A$ & ${}\partialto{}$ & $B$ & partial functions from $A$ to $B$ \\
         $S$ & ${}\alens    {}$ & $V$ & asymmetric, state-based lenses connecting $S$ and $V$ \\
         $X$ & ${}\cmaint   {}$ & $Y$ & constraint maintainers connecting $X$ and $Y$ \\
-        $X$ & ${}\lens     {}$ & $Y$ & symmetric, state-based lenses connecting $X$ and $Y$ \\
-        $X$ & ${}\dlens    {}$ & $Y$ & (symmetric) edit lenses connecting $X$ and $Y$
-        % TODO: switch out \lens for \dlens everywhere in delta.tex
+        $X$ & ${}\lens     {}$ & $Y$ & (Chapter~\ref{chap:symm}) symmetric, state-based lenses connecting $X$ and $Y$ \\
+            &                  &     & (Chapter~\ref{chap:edits}) symmetric, edit-based lenses connecting $X$ and $Y$
         % TODO: is this really all the kinds of arrows we have everywhere?
     \end{tabular}
     \caption{Function and lens types}
