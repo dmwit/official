@@ -204,19 +204,18 @@ difficult! To see why, let us implement $-\LIST$ in the most obvious way;
 then we can discuss the deficiencies of this approach.
 
 Like \map, which is parameterized by a unidirectional function to apply to
-list elements, $-\LIST$ will be
-parameterized by a bidirectional operation. That is, writing $S\LIST$ for
-the set of lists with elements drawn from $S$, when $\ell \in S \alens V$,
-we will have $\ell\LIST \in S\LIST \alens V\LIST$.
-Figure~\ref{fig:naive-asymmetric-map} defines the $-\LIST$ lens, relying on some
-auxiliary definitions given in Figure~\ref{fig:uni-map-zip-const}.
-The \GET and \CREATE operations are fairly
-straightforward---direct analogues of the unidirectional version---but the
-\PUT operation is more delicate. Since \PUT takes one value from each
-repository, our $\ell\LIST.\aput$ operation takes two lists, of types
-$S\LIST$ and $V\LIST$. When these lists are the same length we can just zip
-them together, applying $\ell.\aput$ to pairs of elements in the same
-positions in the two lists. When they are different lengths, there have
+list elements, $-\LIST$ will be parameterized by a bidirectional operation.
+That is, writing $S\LIST$ for the set of lists with elements drawn from $S$,
+when $\ell \in S \alens V$, we will have $\ell\LIST \in S\LIST \alens
+V\LIST$. Figure~\ref{fig:naive-asymmetric-map} defines the $-\LIST$ lens,
+relying on some auxiliary definitions given in
+Figure~\ref{fig:uni-map-zip-const}. The \GET and \CREATE operations are
+fairly straightforward---direct analogues of the unidirectional
+version---but the \PUT operation is more delicate. Since \PUT takes one
+value from each repository, our $\ell\LIST.\aput$ operation takes two lists,
+of types $S\LIST$ and $V\LIST$. When these lists are the same length we can
+just zip them together, applying $\ell.\aput$ to pairs of elements in the
+same positions in the two lists. When they are different lengths, there have
 been insertions or deletions. Deletions can be reflected directly by
 deleting the last few elements of the $S\LIST$ list until the lengths match.
 For insertions, we recover elements of $S$ by treating the last few elements
