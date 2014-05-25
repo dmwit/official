@@ -536,9 +536,9 @@
 \newcommand{\prettylensarchitectureoverview}{
 \draw[inner sep=1.5em]
     node               (A)  {} (A)  node {\strut$s$}
-    node[right=3 of A] (B)  {} (B)  node {\strut$t$}
-    node[below=3 of A] (A') {} (A') node {\strut$s'$}
-    node[below=3 of B] (B') {} (B') node {\strut$t'$}
+    node[right=1   of A] (B)  {} (B)  node {\strut$t$}
+    node[below=0.5 of A] (A') {} (A') node {\strut$s'$}
+    node[below=0.5 of B] (B') {} (B') node {\strut$t'$}
     ($(A'.east)!0.1!(B'.west)$) coordinate (near A')
     ($ (A.east)!0.9! (B.west)$) coordinate (near B)
     (A.center)  circle (0.5)
