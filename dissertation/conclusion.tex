@@ -1,13 +1,3 @@
-% TODO: Dad suggests:
-% This point [about ``satisfactory progress may require a general theory for
-% lifting parsing techniques''] should be repeated in your overall
-% Conclusions Chapter, and also in the future work section of that chapter.
-%
-% There seem to be two points:
-% 1. The theory does not include a formalism for parsing [ed: this should go
-%    near ``we cover all four objectives'']
-% 2. A good future work would be to extend the theory to include a
-%    formalism for parsing [ed: this should go in future work]
 Our work has identified several areas for improvement in the foundations of
 existing bidirectional transformation tools. The development of symmetric
 lenses enables both repositories associated with a lens to store locally
@@ -27,12 +17,15 @@ synchronization by inappropriately mixing and matching data.
 Edit lenses address this problem by elevating the status of the data
 describing how original and updated repositories are connected. Treating
 edits as first-class means that the lenses need not guess about alignment
-information, and consequently will mangle the meaning of repositories less
-often. Indeed, as a side effect, promoting edits in this way allows the
-creation of stronger laws, so that the letter of the law and the spirit of
-the law are no longer quite so far from each other. We have also shown that
-one may realize performance benefits with this approach with careful design
-of the edit languages being manipulated by edit lenses.
+information, and consequently the true meaning of the repositories is much
+more likely to be faithfully retained. Indeed, as a side effect, promoting
+edits in this way allows the creation of stronger laws, so that the letter
+of the law and the spirit of the law are no longer quite so far from each
+other. We have also shown that the theory can support the incremental
+operation that is a prerequisite to a performant implementation. Careful
+edit language design results in the ability to compose lenses that need not
+refer to the repositories themselves nor to large complements during
+transformation of the edits.
 
 Related approaches to this problem are summarized in
 Table~\ref{tab:related-commentary}; the edit lens framework is the first
@@ -47,7 +40,9 @@ syntax. The algebraic study of asymmetric lenses exposes many surprising
 features of edits, but does not address many of the issues needed to create
 a practical system. Matching lenses and annotation-based lenses are very
 natural extensions of asymmetric, state-based lenses, but are also
-conservative in many ways. The more radical changes proposed in edit lenses
+conservative, retaining the basic repository-passing architecture while
+adding alignment information as a separate input. The more radical changes
+proposed in edit lenses
 allow for symmetric operation and eliminate the need to pass repositories to
 the lenses. Notably, annotation-based lenses extend a variant of the
 asymmetric, state-based lenses that allows for the construction of a lens
@@ -63,11 +58,6 @@ composition, a key piece of syntax.
         & Alignment & Symmetry & Performance & Syntax
         \\\hline
 %        TGGs            &\N&\Y&\N&\Y&\\
-        symm. state     &\N[very bad]
-                        &\Y[yes; requires equivalence]
-                        &\N[no]
-                        &\Y[mostly domain agnostic]
-        \\\hline
         asymm. $\delta$ &\Y[explicit alignments]
                         &\N[not a goal]
                         &\N[edits include repositories]
@@ -98,10 +88,24 @@ composition, a key piece of syntax.
                         &\Y[yes; does not require equiv.]
                         &\N[no; all edits relative to $\init$]
                         &\Y[many primitives, but no composition]
+                         % TODO: make this yellow?
+        \\\hline
+        \multicolumn{2}{c}{}% drop the vertical bar
+        \\[-1.5ex]\hline
+        symm. state     &\N[very bad]
+                        &\Y[yes; requires equivalence]
+                        &\N[no]
+                        &\Y[mostly domain agnostic]
+        \\\hline
+        edit lenses     &\Y[edits]
+                        &\Y[yes; requires equivalence]
+                        &\Y[small edits support incremental operation]
+                        &\Y[most standard lenses, and container map]
     \end{tabularx}
     \end{center}
-    % TODO: BCP suggests adding a line for edit lenses
-    \caption{Feature coverage for various alternatives to edit lenses}
+    \caption{Feature coverage for various lens frameworks, including the two
+    proposed by our work}
+    % TODO: legend?
     \label{tab:related-commentary}
 \end{table}
 
@@ -192,8 +196,8 @@ interesting to pursue (or prove impossible) an associative tensor sum.
 Similarly, we have shown that our tensor product has many of the properties
 we expect of a symmetric monoidal category structure, but not quite all. We
 conjecture that adding appropriate monoid laws would resolve this problem;
-and anyway adding appropriate monoid laws in all the modules discussed is a
-serious undertaking of its own worth consideration. Finally, it has been
+and in any case adding appropriate monoid laws in all the modules discussed
+is its own serious undertaking worth consideration. Finally, it has been
 suggested by a reviewer of one of our papers that, although we cannot have a
 categorical product or sum in the category of lenses, it may be worth
 considering placing a partial order on lenses. Perhaps this would enable a
@@ -201,7 +205,7 @@ variant of the categorical product where the usual defining equations of a
 product are replaced by inequalities.
 
 \paragraph*{Application}
-Effort spent on an implementation could be aimed at a variety of purposes.
+Further implementation effort could be aimed at a variety of purposes.
 One might be interested in verifying whether the performance promises of
 edit lenses could be realized by running experiments. For example, one might
 imagine comparing the size of typical repository edits to the size of the
@@ -265,6 +269,18 @@ domain and codomain length rather than a single number telling their
 difference), but the set of repositories to which it applies is much more
 clearly delimited.
 
+% TODO: Dad suggests:
+% This point [about ``satisfactory progress may require a general theory for
+% lifting parsing techniques''] should be repeated in your overall
+% Conclusions Chapter, and also in the future work section of that chapter.
+%
+% There seem to be two points:
+% 1. The theory does not include a formalism for parsing [ed: this should go
+%    near ``we cover all four objectives'']
+% 2. A good future work would be to extend the theory to include a
+%    formalism for parsing [ed: this should go in future work]
+% TODO: this paragraph basically needs to be completely rewritten now that
+% we have a real implementation chapter
 Finally, many asymmetric lens frameworks ground their constructions by
 showing how to use them with a string-based data model. This significant
 task was not undertaken here\footnote{The use of ``significant'' in this
