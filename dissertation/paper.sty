@@ -91,6 +91,8 @@
 \else          \newcommand{\dotquote}{.''\xspace}\newcommand{\commaquote}{,''\xspace}
 \fi
 % }}}
+\colorlet{accessiblegreen}{green!55!black!70!blue!40!white}
+\colorlet{accessiblered}{red!80!black!80!yellow!30!white}
 \definecolor{bluegray}{rgb}{0.3,0.3,.6}
 \definecolor{blue}{rgb}{0,0,1}
 \definecolor{brown}{rgb}{.3,.3,.5}
@@ -321,7 +323,7 @@
 \newcommand{\Names}{\mathcal N}
 \newcommand{\NAT}{\mathbb{N}}
 \newcommand{\nextcase}[1]{\item[] {\bf Case} #1:}
-\newcommand{\N}[1][]{\cellcolor{red!80!black!80!yellow!30!white}#1}
+\newcommand{\N}[1][]{\cellcolor{accessiblered}#1}
 \newcommand{\Node}{\mathit{node}}
 \newcommand{\nondissenddis}{$\renewcommand{\dissdis}{\nondissstartdis}\xspace}
 \newcommand{\nondissstartdis}{\renewcommand{\dissdis}{\nondissenddis}$}
@@ -421,7 +423,7 @@
 \newcommand{\WBADLs}{wbad lenses\xspace}
 \newcommand{\x}{\mathbf x}
 \newcommand{\y}{\mathbf y}
-\newcommand{\Y}[1][\checkmark]{\cellcolor{green!55!black!80!blue!40!white}#1}
+\newcommand{\Y}[1][\checkmark]{\cellcolor{accessiblegreen}#1}
 \newcommand{\zip}{\ensuremath{\ml{zip}}\xspace}
 \newenvironment{diagram}[1][]{\begin{center}\begin{tikzpicture}[#1]}{\end{tikzpicture}\end{center}}
 \newenvironment{functoriality}{\begin{pflike}{Proof of functoriality}}{\end{pflike}}
