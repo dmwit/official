@@ -440,7 +440,7 @@ the boundary ended up. If this corresponds to any of our candidates, we then
 guess that the appropriate candidate faithfully tracks the motion of the
 boundary through all the edits. Extending the above example, this might
 proceed as follows:
-\begin{diagram}
+\begin{diagram}[>=latex]
     \path
         node (start) {
             \begin{tabular}{|l|c|r|}
@@ -477,12 +477,12 @@ proceed as follows:
         (edit |- start) node (original) {original}
         (edit |- parsed) node (done) {done}
 
-        (start)    edge[-latex] (l)
-        (start)    edge[-latex] (m)
-        (start)    edge[-latex] (r)
-        (original) edge[-latex] (edit)
-        (edit)     edge[-latex] (done)
-        (l)        edge[-latex] (parsed)
+        (start)    edge[->] (l)
+        (start)    edge[->] (m)
+        (start)    edge[->] (r)
+        (original) edge[->] (edit)
+        (edit)     edge[->] (done)
+        (l)        edge[->] (parsed)
         ;
 \end{diagram}
 For this insertion, we guess all reasonable new boundary positions, track
@@ -494,7 +494,7 @@ choose to simply prune any candidate boundaries which would lie entirely
 inside a deletion. On the other hand, this nondeterminism also opens us up
 to another kind of problem. Consider what happens if we subsequently delete
 the just-inserted \lstinline!"b"!:
-\begin{diagram}
+\begin{diagram}[>=latex]
     \path
         node (start) {
             \begin{tabular}{|l|c|r|}
@@ -546,14 +546,14 @@ the just-inserted \lstinline!"b"!:
         (edit |- merged) node (deletion) {\lstinline!Delete 10 11!}
         (edit |- start)  node (original) {original}
 
-        (start)    edge[-latex] (l)
-        (start)    edge[-latex] (m)
-        (start)    edge[-latex] (r)
-        (l)        edge[-latex] (merged)
-        (m)        edge[-latex] (merged)
-        (r)        edge[-latex] (continued)
-        (original) edge[-latex] (edit)
-        (edit)     edge[-latex] (deletion)
+        (start)    edge[->] (l)
+        (start)    edge[->] (m)
+        (start)    edge[->] (r)
+        (l)        edge[->] (merged)
+        (m)        edge[->] (merged)
+        (r)        edge[->] (continued)
+        (original) edge[->] (edit)
+        (edit)     edge[->] (deletion)
         ;
 \end{diagram}
 We can choose between different boundary locations by examining where the
