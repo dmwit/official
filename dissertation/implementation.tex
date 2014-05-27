@@ -3,11 +3,10 @@
 Having developed the theory of lenses and instantiating the framework with a
 syntax, we now give an exposition on preliminary efforts to instantiate the
 syntax as a concrete program. Our work on a prototype has two main purposes.
-% TODO: the wording of this first purpose needs some serious polish
 The edit lens framework is predicated on a relatively abstract, algebraic
 data model, whereas long-term data storage on computers typically employs a
 fairly low-level model based on strings. When only the data is important,
-these two realms are typically connected by defining a parser that processes
+these two realms are usually connected by defining a parser that processes
 strings and produces a more structured representation, as well as a
 formatter that produces a string representation of a given structure. For
 edit lenses, however, not only the data is important; one also wants access
@@ -15,26 +14,27 @@ to the edits made to the data. So the primary goal is to investigate what
 extensions are needed to describe the connection between edits to strings
 and edits to structured data. A secondary goal is to validate that the
 fundamental edit lens design is complete; producing a few example
-transformations gives an opportunity for any unforeseen infelicities to rear
-their head. In the pursuit of these goals, we discuss two artifacts: first,
+transformations gives an opportunity for any unforeseen infelicities to
+manifest. In the pursuit of these goals, we discuss two artifacts: first,
 a core library which closely models the edit lens theory given in
 Chapter~\ref{chap:edits}; and second, a demonstration program that
 synchronizes two simple, text-based databases according to a predetermined
-lens. The latter task involves building a text-editing GUI, connecting the
-lens to the GUI, and validating and extracting edits from user actions,
-tasks that fall outside the realm of the existing edit lens theory.
+lens. Creating the demonstration program involved building a text-editing
+GUI, connecting the lens to the GUI, and validating and extracting edits
+from user actions. All of these tasks fall outside the realm of the existing
+edit lens theory.
 
 We have chosen to implement our demo in Haskell, a language which encourages
 high abstraction levels, supports rapid prototyping, and has good library
 support. Because one of our primary goals was experimentation, we wanted to
 retain a lightweight approach throughout; in particular we chose not to
 begin with a mechanization of the theory in a dependently-typed language.
-(In retrospect, while it still seems worthwhile to have avoided reproving
+In retrospect, while it still seems worthwhile to have avoided reproving
 all of our results in Coq from an experimentation point of view, it is not
 clear that avoiding dependent types entirely was beneficial. For example,
 the way we used Haskell's typeclass mechanism to model modules would really
 have benefited from dependent types, as we often found ourselves wishing for
-the ability to define new types for different choices of $\init$ value.) We
+the ability to define new types for different choices of $\init$ value. We
 also investigated extending Boomerang~\cite{Boomerang07}, an existing
 asymmetric, state-based string lens implementation. Boomerang is very
 complete, and consequently would have required many tangential coding
@@ -42,8 +42,8 @@ efforts; to avoid distractions, we chose to take a less feature-complete
 route. However, we retained Boomerang's choice of string-based data model
 since, as discussed above, this closely matches real-world scenarios.
 
-Our primary challenge, which we will discuss in detail below, can be broadly
-described as parsing. With edit lenses, there are always two domains of
+Our primary challenge, which we will discuss in detail below, is analogous
+to the problem of parsing. With edit lenses, there are always two domains of
 discourse: the collection of repositories and the collection of edits.
 Repositories store ordinary data, and the problem of connecting strings with
 structured data is well-studied under the umbrella of parsing. (Turning
@@ -57,13 +57,44 @@ entirely by designing a structured editor. Historically, though, structured
 editors have failed to take---perhaps because their strictures are too
 confining for day-to-day editing tasks---so we chose to avoid this route. We
 have proposed a few heuristics that seem to behave acceptably in a number of
-standard cases; however, they are relatively special-purpose (tailored to
-the file format under consideration here) and do not adequately reflect all
-user actions as analogous edits. This seems like a promising area for future
-efforts.
+standard cases; however, they are relatively special-purpose, tailored to
+the file format under consideration here, and do not adequately reflect all
+user actions as analogous edits.
 
 \section{Usage Example and Functionality}
 \label{sec:impl-usage}
+
+\begin{figure}
+    \centering
+    \protofig1{An initial pair of databases in two text editing panes.}
+    \hfil
+    \protofig2{Inserting Mozart on the right introduces default data on the
+    left.}
+    \vspace{4ex}
+
+    \protofig3{Deleting Haydn from one side is reflected to the other
+    automatically.}
+    \hfil
+    \protofig4{A default country is used for the new row on the right.}
+    \vspace{4ex}
+
+    \protofig5{Correcting Haydn's country has no effect on the birth year
+    list\ldots}
+    \hfil
+    \protofig6{\ldots but correcting the spelling of Haydn in either list corrects
+    both.}
+    \vspace{4ex}
+
+    \protofig7{More bizarre edits, like this deletion that spans
+    records\ldots}
+    \hfil
+    \protofig8{\ldots reset the alignment, but only for the affected records.}
+    \vspace{4ex}
+
+    \caption{A demonstration use of the prototype, using the composers lens}
+    \label{fig:prototype-screenshots}
+\end{figure}
+
 In order to ground the discussion, we give here a quick overview of the
 capabilities of the program we have built. When started, the program
 presents a GUI containing two text-editing panes in which the user can
@@ -106,7 +137,8 @@ deletes a line---in this case, the record for Haydn---on the right, the
 program maintains synchrony by deleting the record for Haydn from the left
 pane, as shown in part~\subref{subfig:prototype-3}. The left pane may also
 be edited by the user, as demonstrated in part~\subref{subfig:prototype-4},
-where Haydn has been re-inserted into the repository on the left, resulting
+where Haydn (temporarily misspelled as ``Hayn'') has been re-inserted into
+the repository on the left, resulting
 in a computed insertion containing a default country on the right. In
 addition to the wholesale insertion and deletion of records, the user may
 modify parts of a single record, and the program will correctly maintain
@@ -127,40 +159,12 @@ of all the old records that contributed and the insertion of a completely
 fresh record, so a default birth year is used for the new record in the left
 repository.
 
-This final example begins to hint at some of the oddities that can arise
+The user gesture of parts~\subref{subfig:prototype-7}
+and~\subref{subfig:prototype-8} just discussed begins to hint at some of the
+oddities that can arise
 when attempting to translate between edits to a serialized structure and
 edits to the abstract structure, which we will discuss in
 \S\ref{sec:parsing}.
-
-\begin{figure}
-    \centering
-    \protofig1{An initial pair of databases in two text editing panes.}
-    \hfil
-    \protofig2{Insertion on the right introduces some default data on the
-    left.}
-    \vspace{4ex}
-
-    \protofig3{Deleting a row from either side is reflected to the other
-    automatically.}
-    \hfil
-    \protofig4{A default country is used for the new row on the right.}
-    \vspace{4ex}
-
-    \protofig5{Correcting the country has no effect\ldots}
-    \hfil
-    \protofig6{\ldots but correcting the spelling of either name corrects
-    both.}
-    \vspace{4ex}
-
-    \protofig7{More bizarre edits, like this deletion that spans
-    records\ldots}
-    \hfil
-    \protofig8{\ldots reset the alignment, but only for the affected region.}
-    \vspace{4ex}
-
-    \caption{A demonstration use of the prototype, using the composers lens}
-    \label{fig:prototype-screenshots}
-\end{figure}
 
 \section{Implementation Details}
 \label{sec:impl-details}
@@ -168,36 +172,37 @@ edits to the abstract structure, which we will discuss in
 \label{sec:parsing}
 In this section, we will begin with a brief overview of the architecture of
 the program, with an eye toward guiding the interested reader towards the
-appropriate part of the full source in \S\ref{app:code}. (The explanatory
-material in this part will therefore be quite brief.) We will then discuss
+appropriate part of the full source in \S\ref{app:code}. The explanatory
+material in this part will therefore be quite brief. We will then discuss
 the heuristics used to convert user actions into edits in some detail. After
 describing the current transformation, we will consider some advantages and
 disadvantages of this approach as well as possible ways forward with this
 challenging area of the implementation.
 
 The program code broadly recapitulates the development of edit lenses in
-Chapter~\ref{chap:edits} (though behavioral equivalence does not make an
-appearance, since its primary use is in proofs). A typeclass for monoids
+Chapter~\ref{chap:edits}, though behavioral equivalence does not make an
+appearance, since its primary use is in proofs. A typeclass for monoids
 already exists in the base libraries of Haskell; an extension of this
 typeclass to a class for modules, along with facilities for building modules
 in terms of free monoids, is given in \module{Data.Module.Class}. We chose
 to implement lenses as a typeclass as well; thus, to create a new lens, one
-typically declares a new type with a single constructor. One can view this
-as giving a way to overload the names \texttt{dputr} and
-\texttt{dputl}---the way we write $\dputr$ and $\dputl$ in the
-implementation---for many lenses. (Another approach would be to write lenses
+typically declares a new type with a single constructor\footnote{Another
+approach would be to write lenses
 as a record; using a typeclass makes associating a complement type with the
 lens slightly less intrusive. Yet another way would be to give an explicit
 type representing the abstract syntax tree of edit lenses given in this
 work; one advantage of typeclasses over algebraic types is that they are
 open, meaning programmers can add to the collection of lenses without
-modifying the core library.) This typeclass, along with facilities for
+modifying the core library.}. One can view this as giving a way to overload
+the names \lstinline!dputr! and \lstinline!dputl!---the way we write
+$\dputr$ and $\dputl$ in the implementation---for many lenses. This
+typeclass, along with facilities for
 defining $\dputr$ and $\dputl$ by monoid presentation, is available from
 \module{Data.Lens.Edit.Stateful}. The \texttt{Stateful} part of the name
 alludes to the existence of a complement; \module{Data.Lens.Edit.Stateless}
 contains an experimental typeclass for edit lenses which do not need a
 complement, and many of the lens types we define below will implement both
-the \texttt{Stateful} and \texttt{Stateless} versions of the \texttt{Lens}
+the \texttt{Stateful} and \texttt{Stateless} versions of the \lstinline!Lens!
 typeclass. These modules together cover the theoretical framework of edit
 lenses, but give no syntax.
 
@@ -220,21 +225,21 @@ lens in \module{Data.Lens.Edit.Container}.
 This completes the recapitulation of edit lenses; the program itself then
 includes a handful of modules that go beyond the theory.
 \module{Data.Module.String} contains the most interesting extended
-functionality. It includes the \texttt{StringModule} typeclass which adds
+functionality. It includes the \lstinline!StringModule! typeclass which adds
 methods for parsing, serializing, and checking validity of repository
 strings---all fairly routine operations---as well as a method for
-translating string edits to \texttt{Module} edits. This typeclass is then
+translating string edits to \lstinline!Module! edits. This typeclass is then
 instantiated for a handful of types, and some utilities are given for
 defining base modules with a particular $\init$ value. These utilities are
 wrapped up in \module{Data.Lens.Edit.String}, which offers some combinators
-for creating triples containing a value with a \texttt{StringModule}
-instance for each repository and a value with a \texttt{Lens} instance
-connecting the \texttt{Module}s associated with those
-\texttt{StringModule}s. Finally, the top-level program lies in
+for creating triples containing a value with a \lstinline!StringModule!
+instance for each repository and a value with a \lstinline!Lens! instance
+connecting the \lstinline!Module!s associated with those
+\lstinline!StringModule!s. Finally, the top-level program lies in
 \texttt{lens-editor.hs} (\S\ref{mod:lens-editor}), which defines a
 particular string lens, constructs a GUI with two text panes, allocates a
 reference cell for the complement, and connects the text panes' editing
-events to invocations of the appropriate \texttt{StringModule} functions.
+events to invocations of the appropriate \lstinline!StringModule! methods.
 This discussion is summarized in Figure~\ref{fig:module-hierarchy}.
 
 \begin{figure}
@@ -249,9 +254,9 @@ This discussion is summarized in Figure~\ref{fig:module-hierarchy}.
         \item[Data.Lens.Edit] convenience module: re-exports some submodules
 
             \begin{description}
-                \item[.Stateful] \texttt{Lens} typeclass for standard edit
+                \item[.Stateful] \lstinline!Lens! typeclass for standard edit
                     lenses
-                \item[.Stateless] \texttt{Lens} typeclass for edit lenses
+                \item[.Stateless] \lstinline!Lens! typeclass for edit lenses
                     with no complement
                 \item[.Primitive] base lenses
                 \item[.Product] $\otimes$ lens combinator
@@ -259,12 +264,12 @@ This discussion is summarized in Figure~\ref{fig:module-hierarchy}.
                 \item[.List] $\map$ and $\partition$ lenses
                 \item[.Container] container-mapping lens
                 \item[.String] lens combinators that also construct
-                    \texttt{StringModule}s
+                    \lstinline!StringModule!s
             \end{description}
         \item[Data.Module] convenience module: re-exports some submodules
 
             \begin{description}
-                \item[.Class] \texttt{Module} typeclass, with instance for
+                \item[.Class] \lstinline!Module! typeclass, with instance for
                     free monoid-based modules
                 \item[.Primitive] $\Unit$ module
                 \item[.Product] $\otimes$ module
@@ -273,18 +278,16 @@ This discussion is summarized in Figure~\ref{fig:module-hierarchy}.
                 \item[.Shape] a module for editing the shape of lists
                     construed as containers
                 \item[.Container] container-based module
-                \item[.String] \texttt{StringModule} typeclass and instances
+                \item[.String] \lstinline!StringModule! typeclass and instances
                     for the several modules
             \end{description}
-        \item[Main] set up and execute a \texttt{StringModule}-powered GUI
+        \item[Main] set up and execute a \lstinline!StringModule!-powered GUI
     \end{description}
     \caption{Summary of the module hierarchy in the prototype
     implementation}
     \label{fig:module-hierarchy}
 \end{figure}
 
-% TODO: typography choices are all over the place; need to change the
-% \texttt{}'s into \lstinline!!'s as appropriate above
 Given this overview, let us discuss in more detail the process of turning
 the user's edit actions into \lstinline!Module!-based edits. The GUI glue code
 observes user actions and abstracts them into the \lstinline!Edit! type:
@@ -543,8 +546,10 @@ the just-inserted \lstinline!"b"!:
             }
 
         node[left=1em of l] (edit) {\lstinline!Insert 9 "ab"!}
+        node[below=5ex of merged] (parsed) {matches parse}
         (edit |- merged) node (deletion) {\lstinline!Delete 10 11!}
         (edit |- start)  node (original) {original}
+        (edit |- parsed) node (done) {done}
 
         (start)    edge[->] (l)
         (start)    edge[->] (m)
@@ -552,8 +557,10 @@ the just-inserted \lstinline!"b"!:
         (l)        edge[->] (merged)
         (m)        edge[->] (merged)
         (r)        edge[->] (continued)
+        (merged)   edge[->] (parsed)
         (original) edge[->] (edit)
         (edit)     edge[->] (deletion)
+        (deletion) edge[->] (done)
         ;
 \end{diagram}
 We can choose between different boundary locations by examining where the
@@ -569,35 +576,34 @@ A final subtlety is that insertions and deletions can make the boundary jump
 to a completely fresh place unrelated to the previous boundary
 location\footnote{In certain pathological cases, it seems possible to cause
 the boundary to jump not just far from its previous location, but also far
-from the insertion or deletion point.}. To see why, we will have to briefly
-step away from the running example used in the prototype implementation. In
-our new example, we will suppose that we have two fields, that the first
-field is terminated by the string \lstinline!"abc"!, and that the second
-field does not contain \lstinline!"c"! at all. For example,
-\lstinline!"foo abc bar baz abc field2"! would be a perfectly reasonable
-repository in this format, representing the pair
-\lstinline!("foo abc bar baz abc", "field2")!. Now a deletion like
-\lstinline!Delete 18 19! shows how boundaries can jump:
+from the insertion or deletion point.}. To see why, we will briefly consider
+a slight variation on the running example we have been using so far. In this
+variation, we will have only two fields; the first field is terminated by a
+comma, and the second field has no commas at all, so that if there are
+multiple commas the final one appears before the boundary. For example,
+\lstinline!"foo,bar,baz"! is a repository in this format representing the
+pair \lstinline!("foo,bar,", "baz")!. Now deleting a terminator with an edit
+like \lstinline!Delete 11 12! shows how boundaries can jump:
 \begin{center}
     \begin{tabular}{l|r|l|}
         \hhline{~*{2}{-}}
-        original & foo abc bar baz abc & field2 \\
+        original & foo,bar, & baz \\
         \hhline{~*{2}{-}}
-        \lstinline!Delete 18 19! & foo abc & bar baz ab field2 \\
+        \lstinline!Delete 11 12! & foo, & barbaz \\
         \hhline{~*{2}{-}}
     \end{tabular}
 \end{center}
 Our existing heuristics would only generate candidate boundaries near the
 deletion point. Insertions can be similarly problematic; for example,
-re-inserting the deleted \lstinline!"c"! would cause the boundary to jump
+re-inserting the deleted \lstinline!","! would cause the boundary to jump
 back, even though no boundary was near the insertion point. In case none of
 our boundary candidates match the actual final boundary location, we bail:
 instead of passing on alignment information derived from the user's actions,
 we pass on an edit which completely overwrites the repository. So for the
 above scenario, we would generate and pass on the edits
-\lstinline![Delete 0 19, Insert 0 "foo abc"]! to the edit processor for the
-first field and \lstinline![Delete 0 6, Insert 0 "bar baz ab field2"]! for
-the second field.
+\lstinline![Delete 0 12, Insert 0 "foo,"]! to the edit processor for the
+first field and \lstinline![Delete 0 3, Insert 0 "barbaz"]! for the second
+field.
 
 When editing lists rather than pairs, we use essentially the same repertoire
 of tricks, with the exception that in case the correct boundary locations
@@ -624,7 +630,9 @@ consideration is that the heuristics here do not adequately reflect all user
 actions, and in particular copy-and-paste operations on lists do not get
 translated to reordering edits; however, unlike the previous considerations,
 it seems that the heuristics could be extended with some engineering effort
-to handle this transformation. A really satisfactory transformation between
+to handle this transformation.
+
+A really satisfactory transformation between
 user actions and module edits seems to be a ripe area for serious research.
 Incremental parsing seems a promising area to look to for inspiration,
 though the problem being explored here seems to be slightly richer.
@@ -642,12 +650,13 @@ newly parsed chunk of the tree and the old tree.
 
 \section{Conclusion}
 \label{sec:impl-conclusion}
-The full source is given in Appendix~\ref{chap:source}. It includes an
+The full source code of the prototype is given in
+Appendix~\ref{chap:source}. It includes an
 elegant core library, which is an indication that the theoretical
 foundations discussed in this dissertation can be realized as code, and an
 associated program which extends the foundations and shows one way to
-extract alignment information from observations of the actions taken to
-modify the repository. This observation process turned out to be
+extract alignment information from observations of the actions taken by the
+user to modify the repository. This observation process turned out to be
 surprisingly difficult; for the techniques discussed here to be practical,
 % TODO: what does robustness mean? I guess something about working well with
 % many different lenses, or possibly with many different user actions. think
@@ -655,9 +664,10 @@ surprisingly difficult; for the techniques discussed here to be practical,
 they will need to be refined to improve their robustness and to investigate
 their performance characteristics. Satisfactory progress may require a
 general theory for lifting parsing techniques to the domain of edits.
-Nevertheless, the framework built here could be used as the basis for a
-further studies in the usability of the syntax (by generating additional
-example lenses), performance, and the general practical applicability of
-edit lenses, including in applications such as file synchronization, text
-editing, database engines, client-server applications, system configuration,
-or software model transformations.
+Nevertheless, the framework built here could be used as the basis for
+further studies on performance, the usability of the syntax (by generating
+additional example lenses), and the general practical applicability of
+edit lenses. Applications such as file synchronization, text editing,
+database engines, client-server applications, system configuration, or
+software model transformations may all be able to reuse parts of the library
+given here.
