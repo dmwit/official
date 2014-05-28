@@ -12,7 +12,7 @@ two objects in these pairings \emph{repositories}. In each case, one would
 like the two repositories to stay ``in synch'': modifications to one
 repository should be propagated and reflected in the other.
 
-At the moment, one common way of tackling this problem is to design by hand
+At the moment, one common way of tackling this problem is to design, by hand,
 two programs that work together. Calling the two repositories $X$ and $Y$,
 the first program translates updates to $X$ into updates to $Y$, and the
 second translates in the other direction, turning updates to $Y$ into
@@ -87,7 +87,7 @@ support all four features.
 One well-studied approach to bidirectional programming is the framework of
 \emph{asymmetric}, \emph{state-based} lenses. A thorough review of this work
 is available elsewhere~\cite{FosterThesis}, so we will give only a brief
-introduction to the core concepts. Suppose we have two repositories; one
+introduction to the core concepts. Suppose there are two repositories; one
 repository stores a piece of data represented by an element of the set $S$,
 and the other stores an element of $V$. Then a lens connecting the two
 repositories has three components:
@@ -111,8 +111,8 @@ detail, it is sometimes convenient to demand (and rarely difficult to
 supply) a way to generate a value in the source repository with some sane
 defaults. This is the \CREATE component of the lens.
 
-Lenses have one more piece, which was alluded to above. The structure we
-have described so far already addresses the need to give two transformations
+Lenses have one more piece, which was alluded to above. The structure
+described so far already addresses the need to give two transformations
 (namely \GET and \PUT), but does not yet address our desire to prove that
 these two transformations work well together. Let us first try to build an
 intuition for what ``works well together'' might mean before we formalize
@@ -139,8 +139,8 @@ change to the view, no matter how tiny, voids all further guarantees; this
 has been viewed as a weakness of some previous approaches. It is very hard
 to come up with a better generic guarantee than this within the asymmetric,
 state-based lens framework, but Chapter~\ref{chap:delta} takes an unexpected
-step in refining this behavioral law. There is a third law,
-\rn{CreateGet}, which serves a similar purpose to the \rn{PutGet} law.
+step in refining this behavioral law. The third law, \rn{CreateGet}, serves
+a similar purpose to the \rn{PutGet} law.
 Collectively, these behavioral laws are often also called \emph{roundtrip
 laws}: another way to read them is that in a given ``round trip'' through
 the lens the repository returns to exactly the same state it started at.
@@ -196,9 +196,9 @@ calculate these numbers itself makes two calls to \map:
 \noindent\texttt{ghc -e 'interact \$ unlines . map show . scanl (+) 0 . map read . lines'}
 }. Most serious attempts at designing a bidirectional language therefore
 provide some variant of a mapping operation. Since it is such a popular
-operation, it is important to do a really good job of designing the
+operation, it is important to carefully address the behavior of the
 bidirectional \map (which we will denote by $-\LIST$ to distinguish it from
-the unidirectional version), and that job turns out to be surprisingly
+the unidirectional version), and that turns out to be surprisingly
 difficult! To see why, let us implement $-\LIST$ in the most obvious way;
 then we can discuss the deficiencies of this approach.
 
@@ -211,9 +211,9 @@ relying on some auxiliary definitions given in
 Figure~\ref{fig:uni-map-zip-const}. The \GET and \CREATE operations are
 fairly straightforward---direct analogues of the unidirectional
 version---but the \PUT operation is more delicate. Since \PUT takes one
-value from each repository, our $\ell\LIST.\aput$ operation takes two lists,
-of types $S\LIST$ and $V\LIST$. When these lists are the same length we can
-just zip them together, applying $\ell.\aput$ to pairs of elements in the
+value from each repository, the $\ell\LIST.\aput$ operation takes two lists,
+of types $S\LIST$ and $V\LIST$. When these lists are the same length they can
+just be zipped together, applying $\ell.\aput$ to pairs of elements in the
 same positions in the two lists. When they are different lengths, there have
 been insertions or deletions. Deletions can be reflected directly by
 deleting the last few elements of the $S\LIST$ list until the lengths match.
@@ -484,7 +484,7 @@ hints about the alignment; the implementation of alignment discovery is
 intermingled with the implementation of alignment usage and propagation
 inside each lens' definition; and alignment information cannot be internally
 communicated between lens components. The conclusion we must draw is that
-doing a really good job of implementing $-\LIST$ involves rethinking some or
+designing a well-behaved $-\LIST$ combinator involves rethinking some or
 all of the theoretical foundations of lenses to address the representation,
 propagation, and use of alignment information.
 
@@ -500,8 +500,8 @@ scenarios, one that highlights the need to relax this assumption, and one
 that identifies a useful feature of asymmetric lenses that has long been
 thought incompatible with symmetry.
 
-Continuing the example from \ref{sec:intro-alignment}, suppose our school
-secretary decided to begin tracking which room each teacher taught in. The
+Continuing the example from \ref{sec:intro-alignment}, suppose the school
+secretary decided to begin tracking which room each teacher uses. The
 two lower tables in Figure~\ref{fig:span-lenses} shows how the two
 repositories might look after this schema change. As before, the salary
 information should be hidden from the secretary for privacy reasons; on the
@@ -521,12 +521,12 @@ The two repositories we are really interested in sit below, and are derived
 via two lenses. (We introduce the notation $\pi_{i_1,\ldots,i_n}$ for the
 lens which projects out distinct fields $i_1,\ldots,i_n$ of a tuple. To be
 really precise, each omitted field would need an additional annotation
-giving a value to return from the \CREATE operation, but we elide these
-annotations to avoid clutter.)
+giving a value to return from the \CREATE operation, but these annotations
+are elided to avoid clutter.)
 
 Suppose the secretary updates the room assignments document. The process to
 find a corresponding update for the salary document involves two lens
-operations: first, we use $\pi_{1,3}\LIST.\aput$ to update the common
+operations: first $\pi_{1,3}\LIST.\aput$ to update the common
 source, then $\pi_{1,2}\LIST.\aget$ to regenerate the salary document from
 the common source.
 
