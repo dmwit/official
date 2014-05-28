@@ -331,6 +331,11 @@ handle insertions and deletions of nodes, but do not discuss reordering.
 Unlike our development, all repositories are homogeneous containers; in
 particular, their tensor product analog restricts the contained values in
 the two parts of the tuple to have identical types.
+% TODO: REW suggests: This is a lot of detail in the summary, but does not
+% relate explicitly how this type of approach satisfies or does not satisfy
+% your four criteria:  alignment, symmetry, performance, syntax.  Somehow,
+% the reader needs to be reminded what all of this means in that context.
+% [and similar comments at the end of all the other sections]
 
 \subsection{Symmetric}
 \label{sec:delta:symmetric}
@@ -627,12 +632,12 @@ does not change the view $f(\ds)\;\init_V$, then the edit we output should
 not change the source $\ds\;\init_S$.''.
 
 That work goes on to explore the properties of this kind of delta lens. One
-can take a lens-like sequence around $f\in\DS\to\DV$ equipped with a diffing
-operation $\dif\in|S|\times|V|\to\DV$ (satisfying the obvious sanity
-condition) and produce an asymmetric, state-based lens. Additionally, there
-is a close relationship between demanding the existence of inverse
-edits---that is, working with edit groups rather than edit monoids---and the
-\rn{PutPut} asymmetric lens law:
+can take a lens-like sequence around $f\in\DS\to\DV$ equipped with an
+operation to compute differences, denoted $\dif\in|S|\times|V|\to\DV$ and
+satisfying an obvious sanity condition, and produce an asymmetric,
+state-based lens. Additionally, there is a close relationship between
+demanding the existence of inverse edits---that is, working with edit groups
+rather than edit monoids---and the \rn{PutPut} asymmetric lens law:
 \infax[PutPut]{\aput(v,\aput(v',s))=\aput(v,s)}
 They show that one can define suitably restricted submonoids $\DV \subset V
 \to V$ and $\DS \subset S \to S$ and lift \rn{PutPut}-abiding asymmetric
@@ -892,7 +897,8 @@ trees, and rather than separating edits from the data, they merge them:
 edits are represented by annotating the trees with insertion, deletion, and
 modification markings. Reordering is not considered at all; furthermore,
 annotated trees are always at least as big as the real tree they represent,
-so size issues are not addressed. Additionally, their behavioral laws govern
+so the performance issues associated with the size of a repository are not
+addressed. Additionally, their behavioral laws govern
 how lenses treat annotated values. There is an erasure process to turn
 annotated trees into plain ones (by performing the respective insertions,
 deletions, and modifications), but no exploration of the interaction between
@@ -946,7 +952,7 @@ data types not considered in other bodies of work---particularly arithmetic
 and set theoretic operations---are discussed and implemented here.
 Nevertheless, general maintainer composition is shown to be uncomputable. A
 restricted composition in the case where one of the two maintainers
-corresponds to an asymmetric lens is given, and Meertens proposes the use of
+corresponds to an asymmetric lens is given, and there is a proposal to use
 maintainer chains when this is insufficient, but the properties of these
 chains are not considered. There is some exploration of how to deal with
 alignment issues; the main idea they propose is to lift relations on values
@@ -955,3 +961,14 @@ constraint maintainers which inspect such edit sequences. However, little
 consideration is given to desirable behavioral laws with respect to these
 more fine-grained structures; furthermore, the incremental capability we
 expose from our edit lenses to allow for small updates is not explored.
+
+% TODO: REW suggests: This review chapter seems to me to accomplish two
+% general themes:
+% 1. It lists some reasonable 'future work' directions for symmetric edit
+%    lenses.
+% 2. It illustrates how each alternative approach to edit languages succeeds
+%    or fails to meet the four objectives you have laid out in the
+%    introduction.
+%
+% So you need to follow the entire review with a summary of these two
+% points, and what you learned from them.
