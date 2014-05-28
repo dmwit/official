@@ -28,7 +28,8 @@ instance F.Lens l => F.Lens (Map l) where
 dputMapF l dput e cs = case e of
 	FailList    -> ([FailList], cs)
 	Modify p dx -> case split3 p cs of
-		Just (b, c, e) -> let (dy, c') = dput l (dx, c) in ([Modify p dy], b ++ [c'] ++ e)
+		Just (b, c, e) -> let (dy, c') = dput l (dx, c)
+		                  in  ([Modify p dy], b ++ [c'] ++ e)
 		Nothing        -> ([FailList], cs)
 	Insert i    -> ([Insert i], cs ++ genericReplicate i (F.missing l))
 	Delete i    -> ([Delete i], zipWith const cs (genericDrop i cs))
@@ -144,7 +145,10 @@ label = go (1,1) where
 	go (l,r) (R:xs) = Right r : go (l,r+1) xs
 
 isoInv c p = case findIndex (p==) (label c) of
-	Nothing -> error $ "went out of bounds while trying to compute index " ++ show p ++ " in complement " ++ show c
+	Nothing -> error $  "went out of bounds while trying to compute index "
+	                 ++ show p
+	                 ++ " in complement "
+	                 ++ show c
 	Just i  -> toInteger i+1
 
 ins p n = [Rearrange (Simple ([1 .. p-1] ++ [n+1] ++ [p+1 .. n])), Insert 1]

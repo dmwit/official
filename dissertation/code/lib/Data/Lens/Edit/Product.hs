@@ -60,8 +60,10 @@ instance (F.Lens k, F.Lens l) => F.Lens (Product k l) where
 	dputr   (Product k l) = F.foldState (dputProductF (F.dputr k) (F.dputr l))
 	dputl   (Product k l) = F.foldState (dputProductF (F.dputl k) (F.dputl l))
 
-dputProductF dputk dputl (Left  dx) (ck, cl) = let (dz, ck') = dputk (dx, ck) in ([Left  dz], (ck', cl))
-dputProductF dputk dputl (Right dy) (ck, cl) = let (dw, cl') = dputl (dy, cl) in ([Right dw], (ck, cl'))
+dputProductF dputk dputl (Left  dx) (ck, cl)
+	= let (dz, ck') = dputk (dx, ck) in ([Left  dz], (ck', cl))
+dputProductF dputk dputl (Right dy) (ck, cl)
+	= let (dw, cl') = dputl (dy, cl) in ([Right dw], (ck, cl'))
 
 instance (L.Lens k, L.Lens l) => L.Lens (Product k l) where
 	dputr (Product k l) = map (either (Left . L.dputr k) (Right . L.dputr l))

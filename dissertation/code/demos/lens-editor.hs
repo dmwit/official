@@ -23,12 +23,15 @@ instance Show COMMA     where show COMMA     {} = ","
 instance Show SEMICOLON where show SEMICOLON {} = ";"
 instance Show NEWLINE   where show NEWLINE   {} = "\n"
 
-commaToSemicolon = skipNonEmpty COMMA {} "," # op (skipNonEmpty SEMICOLON {} ";")
+commaToSemicolon
+                 =     skipNonEmpty COMMA     {} ","
+                 # op (skipNonEmpty SEMICOLON {} ";")
 composerName     = copyEmpty "[^,;\n]*"
 composerYear     = skipNonEmpty DATE {} "\\d\\d\\d\\d"
 composerCountry  = op (skipNonEmpty COUNTRY {} "[A-Z][^\n]*")
 newline          = copyNonEmpty NEWLINE {} "\n"
-(leftM, lens, rightM) = star (composerName # commaToSemicolon # composerYear # composerCountry # newline)
+(leftM, lens, rightM) = star (composerName # commaToSemicolon #
+                              composerYear # composerCountry  # newline)
 
 initView string = do
 	buffer <- textBufferNew Nothing

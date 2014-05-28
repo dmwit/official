@@ -46,7 +46,8 @@ instance (L.Lens k, L.Lens l, R k ~ L l) => L.Lens (Compose k l) where
 	dputl (Compose k l) = L.dputl k . L.dputl l
 
 data ComposeFL k l = ComposeFL k l deriving (Eq, Ord, Show, Read)
-instance (Bidirectional k, Bidirectional l, R k ~ L l) => Bidirectional (ComposeFL k l) where
+instance (Bidirectional k, Bidirectional l, R k ~ L l) =>
+          Bidirectional (ComposeFL k l) where
 	type L (ComposeFL k l) = L k
 	type R (ComposeFL k l) = R l
 
@@ -57,7 +58,8 @@ instance (F.Lens k, L.Lens l, R k ~ L l) => F.Lens (ComposeFL k l) where
 	dputl (ComposeFL k l) = F.dputl k . first (L.dputl l)
 
 data ComposeLF k l = ComposeLF k l deriving (Eq, Ord, Show, Read)
-instance (Bidirectional k, Bidirectional l, R k ~ L l) => Bidirectional (ComposeLF k l) where
+instance (Bidirectional k, Bidirectional l, R k ~ L l) =>
+          Bidirectional (ComposeLF k l) where
 	type L (ComposeLF k l) = L k
 	type R (ComposeLF k l) = R l
 

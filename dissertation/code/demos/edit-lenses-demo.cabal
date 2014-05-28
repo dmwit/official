@@ -1,8 +1,8 @@
 name:                edit-lenses-demo
 version:             0.1
 synopsis:            Programs demoing the use of symmetric, stateful edit lenses
-Description:         Some simple demo programs showing ways to use the edit-lenses package.
--- Homepage:            http://dmwit.com/edit-lenses
+Description:         Some simple demo programs showing ways to use the
+                     edit-lenses package.
 license:             BSD3
 license-file:        LICENSE
 author:              Daniel Wagner

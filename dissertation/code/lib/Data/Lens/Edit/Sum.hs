@@ -15,16 +15,22 @@ instance (Bidirectional k, Bidirectional l) => Bidirectional (CompactSum k l) wh
 instance (F.Lens k, F.Lens l) => F.Lens (CompactSum k l) where
 	type C  (CompactSum k l) = (F.C k, F.C l)
 	missing (CompactSum k l) = (F.missing k, F.missing l)
-	dputr (CompactSum k l) (M.Sum f dx dz, (ck, cl)) = (M.Sum (M.retype f) dy dw, (ck', cl')) where
+	dputr (CompactSum k l) (M.Sum f dx dz, (ck, cl))
+		= (M.Sum (M.retype f) dy dw, (ck', cl'))
+		where
 		(dy, ck') = F.dputr k (dx, M.bool f ck (F.missing k))
 		(dw, cl') = F.dputr l (dz, M.bool f cl (F.missing l))
-	dputl (CompactSum k l) (M.Sum f dy dw, (ck, cl)) = (M.Sum (M.retype f) dx dz, (ck', cl')) where
+	dputl (CompactSum k l) (M.Sum f dy dw, (ck, cl))
+		= (M.Sum (M.retype f) dx dz, (ck', cl'))
+		where
 		(dx, ck') = F.dputl k (dy, M.bool f ck (F.missing k))
 		(dz, cl') = F.dputl l (dw, M.bool f cl (F.missing l))
 
 instance (L.Lens k, L.Lens l) => L.Lens (CompactSum k l) where
-	dputr (CompactSum k l) (M.Sum f dx dz) = M.Sum (M.retype f) (L.dputr k dx) (L.dputr l dz)
-	dputl (CompactSum k l) (M.Sum f dy dw) = M.Sum (M.retype f) (L.dputl k dy) (L.dputl l dw)
+	dputr (CompactSum k l) (M.Sum f dx dz)
+		= M.Sum (M.retype f) (L.dputr k dx) (L.dputr l dz)
+	dputl (CompactSum k l) (M.Sum f dy dw)
+		= M.Sum (M.retype f) (L.dputl k dy) (L.dputl l dw)
 
 data SumFL k l = SumFL k l deriving (Eq, Ord, Show, Read)
 instance (Bidirectional k, Bidirectional l) => Bidirectional (SumFL k l) where

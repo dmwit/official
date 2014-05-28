@@ -8,7 +8,6 @@ import Data.Module.Class
 
 -- in the Simple variant, the elements of the list tell which index the
 -- corresponding element in the output list should come from, e.g.
---
 -- applyPermutation (Simple is) [1..length is] = is
 data Permutation = Simple [Integer] | Complex (Integer -> Integer -> Integer)
 
@@ -24,7 +23,9 @@ complexPermutation :: Permutation -> Integer -> Integer -> Integer
 complexPermutation (Simple is) = \n i -> case () of
 	_ | n < len   -> i
 	  | i > len   -> i
-	  | i > n     -> error ("asked a premutation for the origin of position " ++ show i ++ ", but the permutation is of a list of length only " ++ show n)
+	  | i > n     -> error
+	  	 $ "asked a premutation for the origin of position "    ++ show i
+	  	++ ", but the permutation is of a list of length only " ++ show n
 	  | otherwise -> genericIndex is (i-1)
 	where len = genericLength is
 complexPermutation (Complex f) = f
@@ -37,8 +38,9 @@ instance Show Permutation where
 	showsPrec d (Complex f) = showString "<fn>"
 	showsPrec d (Simple ns)
 		= showString "["
-		. showString (intercalate ", " (zipWith (\n i -> show n ++ "->" ++ show i) ns [1..]))
+		. showString (intercalate ", " (zipWith arrow ns [1..]))
 		. showString "]"
+		where arrow n i = show n ++ "->" ++ show i
 
 data ListAtom dX
 	= FailList

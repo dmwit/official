@@ -1,6 +1,8 @@
-{-# LANGUAGE FlexibleContexts, FlexibleInstances, GeneralizedNewtypeDeriving, ScopedTypeVariables, TypeFamilies #-}
+{-# LANGUAGE FlexibleContexts, FlexibleInstances, GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE ScopedTypeVariables, TypeFamilies #-}
 module Data.Module.String where
 
+import Control.Applicative
 import Control.Arrow
 import Control.Monad
 import Data.Algorithm.Diff
@@ -56,7 +58,8 @@ editProd (mx, my) (vx, vy) es = edit mx vx *** edit my vy $ case splitMap of
 	Nothing -> (replace sx sx', replace sy sy')
 	Just ms -> (exs, eys)
 	where
-	die = error "The impossible happened! A [Edit] didn't successfully apply to a String in editProd."
+	die = error "The impossible happened! \
+	            \A [Edit] didn't successfully apply to a String in editProd."
 	sx  = pprint mx vx
 	sy  = pprint my vy
 	sn  = fromMaybe die (apply es (sx ++ sy))
@@ -65,7 +68,8 @@ editProd (mx, my) (vx, vy) es = edit mx vx *** edit my vy $ case splitMap of
 	(sx', sy')   = splitAt newSplit sn
 	easySplits   = trackEdits [oldSplit] es
 	splitMap     = M.lookup newSplit easySplits
-	-- this is dangerous, only use the variables it binds when splitMap is definitely a Just!
+	-- this is dangerous, only use the variables it binds when splitMap is
+	-- definitely a Just!
 	(exs, eys)   = splitEdits (fromJust splitMap) oldSplit es
 	replace s s' = [Insert 0 s', Delete 0 (length s)]
 
@@ -94,10 +98,12 @@ trackEdit (Delete n n') (i, m)
 
 -- input: the locations of chunk boundaries, plus some edits
 -- returns:
---   The inner Map Int Int tells, for each index into the edits, whether to split the resulting edit and where.
---   The outer Map tells, for each position, if a chunk boundary ends up landing there, how to split the edits.
+--   The inner Map Int Int tells,
+--       for each index into the edits, whether to split the resulting edit and where.
+--   The outer Map tells,
+--       for each position, if a chunk boundary ends up landing there, how to split the edits.
 trackEdits :: [Int] -> [Edit] -> M.Map Int (M.Map Int Int)
-trackEdits boundaries = snd . foldr trackEdit (0, M.fromList (zip boundaries (repeat M.empty)))
+trackEdits bounds = snd . foldr trackEdit (0, M.fromList (zip bounds (repeat M.empty)))
 
 splitEdits :: M.Map Int Int -> Int -> [Edit] -> ([Edit], [Edit])
 splitEdits m split = snd . foldr splitEdit ((0, split), ([], [])) where
@@ -106,14 +112,18 @@ splitEdits m split = snd . foldr splitEdit ((0, split), ([], [])) where
 		| n > n' = splitEdit (Delete n' n) ((i, split), (els, ers))
 		| n' <= split = ((i+1, split-n'+n), (e:els, ers))
 		| n  >= split = ((i+1, split), (els, Delete (n-split) (n'-split) : ers))
-		| otherwise   = error "The impossible happened! A deletion crossed a chunk boundary."
-		--  | otherwise   = ((i+1, n), (Delete n split : els, Delete 0 (n'-split) : ers))
+		| otherwise   = error "The impossible happened! \
+		                      \A deletion crossed a chunk boundary."
 	splitEdit e@(Insert n s) ((i, split), (els, ers)) = case M.lookup i m of
 		Nothing
 			| n < split -> ((i+1, split+length s), (e:els, ers))
 			| n > split -> ((i+1, split), (els, Insert (n-split) s : ers))
-			| otherwise -> error "The impossible happened! An insertion crossed a chunk boundary without being in the splitting map."
-		Just n' -> ((i+1, split+n'), (consInsert n (take n' s) els, consInsert 0 (drop n' s) ers))
+			| otherwise -> error
+				"The impossible happened! An insertion crossed a \
+				\chunk boundary without being in the splitting map."
+		Just n' -> ((i+1, split+n'),
+		            (consInsert n (take n' s) els,
+		             consInsert 0 (drop n' s) ers))
 	consInsert n "" es = es
 	consInsert n s  es = Insert n s : es
 
@@ -159,7 +169,8 @@ editListExact m (v:vs) (olds:oldss) (news:newss) es i = case splitMap of
 	newSplit     = length news
 	easySplits   = trackEdits [oldSplit] es
 	splitMap     = M.lookup newSplit easySplits
-	-- this is dangerous, only use the variables it binds when splitMap is definitely a Just!
+	-- this is dangerous, only use the variables it binds when splitMap is
+	-- definitely a Just!
 	(e, erest)   = splitEdits (fromJust splitMap) oldSplit es
 	modifyHere   = [C.Modify i (edit m v e) | not (null e)]
 editListExact m [] [] [] [] i = Just []
@@ -172,21 +183,31 @@ editListDiff m oldss newss = result where
 	(countS, countF)   = (count S, count F)
 	match place B      = [True]
 	match place place' = [False | place == place']
-	reordered place    = map fst . uncurry (++) . partition snd . zip [0..] $ (tags >>= match place)
+	reordered place    = map fst
+	                   . uncurry (++)
+	                   . partition snd
+	                   . zip [0..]
+	                   $ tags >>= match place
 	needsReorder place = any (==B) (dropWhile (place /=) tags)
+	moveInsertions _ i = fromJust (findIndex (==i) (reordered S))
+	moveDeletions  _ i = reordered F !! i
 	create s = edit m def [Insert 0 s, Delete 0 . length . pprint m $ def]
 	result
-		=  [C.Rearrange (Sum 0) (\_ i -> fromJust (findIndex (==i) (reordered S))) | needsReorder S]
-		++ zipWith C.Modify [count B .. count B + count S - 1] [create news | (S, news) <- diff]
+		=  [C.Rearrange (Sum 0) moveInsertions | needsReorder S]
+		++ zipWith C.Modify
+			[count B .. count B + count S - 1]
+			[create news | (S, news) <- diff]
 		++ [C.Insert . Sum          $ countS | countS > 0]
 		++ [C.Delete . Sum . negate $ countF | countF > 0]
-		++ [C.Rearrange (Sum 0) (\_ i -> reordered F !! i) | needsReorder F]
+		++ [C.Rearrange (Sum 0) moveDeletions | needsReorder F]
 
 -- a few utilities for defining string modules whose default value is not ""
 newtype NewDefault v = NewDefault String deriving (Eq, Ord)
 instance Show (NewDefault v) where show (NewDefault s) = show s
-instance Read (NewDefault v) where readsPrec n s = map (first NewDefault) (readsPrec n s)
-instance (Default v, Show v) => Default (NewDefault v) where def = NewDefault (show (def :: v))
+instance Read (NewDefault v) where readsPrec n s = first NewDefault <$> readsPrec n s
+instance (Default v, Show v) => Default (NewDefault v) where
+	def = NewDefault (show (def :: v))
+
 newtype NewDefaultModule v = NewDefaultModule [Edit] deriving (Show, Read, Monoid)
 instance (Default v, Show v) => Module (NewDefaultModule v) where
 	type V (NewDefaultModule v) = NewDefault v

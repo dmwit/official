@@ -8,7 +8,12 @@ import Data.Set
 
 type family ShapeModule shape
 
-class (V (ShapeModule shape) ~ shape, Module (ShapeModule shape), PartialOrd shape, Ord (P shape)) => ContainerType shape where
+class ( V (ShapeModule shape) ~ shape
+      , Module (ShapeModule shape)
+      , PartialOrd shape
+      , Ord (P shape)
+      )
+      => ContainerType shape where
 	type P shape -- _p_ositions
 	live :: shape -> Set (P shape) -- monotone
 

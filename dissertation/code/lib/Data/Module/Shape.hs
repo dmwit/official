@@ -9,7 +9,8 @@ import qualified Data.Set as S
 
 instance Module (Sum Int) where
 	type V (Sum Int) = Int
-	apply (Sum di) i = Just (max 0 (di + i)) -- Okay, doesn't quite obey the laws, what with overflow and all.
+	apply (Sum di) i = Just (max 0 (di + i))
+	-- Okay, doesn't quite obey the laws, what with overflow and all.
 type instance ShapeModule Int = Sum Int
 instance PartialOrd Int where leq = (<=)
 instance ContainerType Int where

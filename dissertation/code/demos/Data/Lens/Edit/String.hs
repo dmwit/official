@@ -5,16 +5,20 @@ import Data.Lens.Edit.Primitive
 import Data.Lens.Edit.Product
 import Data.Module.String
 
+-- to shorten some type declarations
+type Match' = NewDefaultMatch
+type Edit'  = NewDefaultModule
+
 copyEmpty :: String -> (Match, Id [Edit], Match)
 copyEmpty s = (Match s, Id, Match s)
 
-copyNonEmpty :: v -> String -> (NewDefaultMatch v, Id (NewDefaultModule v), NewDefaultMatch v)
+copyNonEmpty :: v -> String -> (Match' v, Id (Edit' v), Match' v)
 copyNonEmpty v s = (NewDefaultMatch s, Id, NewDefaultMatch s)
 
 skipEmpty :: String -> (Match, Disconnect [Edit] [Edit], Match)
 skipEmpty s = (Match s, Disconnect, Match "")
 
-skipNonEmpty :: v -> String -> (NewDefaultMatch v, Disconnect (NewDefaultModule v) [Edit], Match)
+skipNonEmpty :: v -> String -> (Match' v, Disconnect (Edit' v) [Edit], Match)
 skipNonEmpty v s = (NewDefaultMatch s, Disconnect, Match "")
 
 (#) :: (a, k, b) -> (c, l, d) -> ((a, c), CompactProduct k l, (b, d))
