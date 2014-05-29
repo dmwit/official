@@ -1848,7 +1848,11 @@ most interesting case:\fi
 
             Hence we may assume we have consistent triples $(x,c,y) \in
             (\id\oplus\id).K$ and $(x,d,y) \in \id.K$ and an edit generator
-            $\dx$ for which $\dx\;x\Defined$. Since
+            $\dx$ for which $\dx\;x\Defined$. Both $\id\oplus\id$ and $\id$
+            are lenses, so we know that applying their $\dputr$ operations
+            to $\dx$ will produce an edit that restores consistency; this
+            means that we need only check that they output the \emph{same}
+            consistency-restoring edit. Since
             $\id.\dputr(\dx,d)=(\dx,\unit)$, we must show
             $(\id\oplus\id).\dputr(\dx,c)=(\dx,c')$ for some $c'$. This
             property is clearly true by inspecting the cases in the
