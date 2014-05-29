@@ -46,8 +46,8 @@ proposed in edit lenses
 allow for symmetric operation and eliminate the need to pass repositories to
 the lenses. Notably, annotation-based lenses extend a variant of the
 asymmetric, state-based lenses that allows for the construction of a lens
-that duplicates information, making it the only approach that takes a
-serious stab at alignment handling while enabling this lens. Finally,
+that duplicates information, making it the only approach that makes a
+serious attempt to handle alignment problems while enabling this lens. Finally,
 constraint maintainers tackle many practical issues, but do not fully
 explore the power of edits and lack the ability to perform sequential
 composition, a key piece of syntax.
@@ -111,9 +111,9 @@ composition, a key piece of syntax.
     \label{tab:related-commentary}
 \end{table}
 
-Though the issues that edit lenses handle are important ones, there remain
-many other foundational issues that one might want to tackle to strengthen
-the practicality of bidirectional transformation frameworks. The following
+Though the issues that edit lenses handle are important ones, future work
+could further strengthen the practicality of bidirectional transformation
+frameworks by tackling a few additional foundational issues. The following
 section surveys a few of the most pressing needs.
 
 \section{Future Work}
@@ -166,7 +166,7 @@ extension to the existing theory which addresses the problem of parsing in
 the presence of edits would be quite valuable.
 
 \paragraph*{Additional Syntax}
-We have noted in our discussions above several places where one could wish
+We have noted several places where one could wish
 for a more expressive collection of lens constructions. In particular, we
 were not able to recapitulate the symmetric lens' development of fold and
 unfold lens combinators for recursive types, in part because it is not clear
@@ -180,8 +180,8 @@ used in model-driven development---and relations---the data model usually
 used in databases. More speculatively, it is well-known that symmetric
 monoidal categories are closely connected to wiring
 diagrams~\cite{selinger2011survey} and to first-order linear lambda
-calculus~\cite{seely1987linear}. Perhaps one could exploit this
-correspondence to design a lambda-calculus-like syntax or diagrammatic
+calculus~\cite{seely1987linear}. Perhaps this correspondence could be
+exploited to design a lambda-calculus-like syntax or diagrammatic
 language for symmetric or edit lenses. The linear lambda calculus has
 judgments of the form $x_1{:}A_1,\dots,x_n{:}A_n\vdash t:A_0$, where
 $A_0,\dots,A_n$ are sets or possibly syntactic type expressions and where
@@ -211,7 +211,7 @@ question for some time, so it is nice that in the symmetric lens case we
 have settled this question by elucidating the symmetric monoidal structure
 available. On the other hand, this makes the lack of associativity for
 tensor sum in the edit lens category all the more surprising; it may be
-interesting to pursue (or prove impossible) an associative tensor sum.
+interesting to pursue an associative tensor sum (or prove it impossible).
 Similarly, we have shown that our tensor product has many of the properties
 we expect of a symmetric monoidal category structure, but not quite all. We
 conjecture that adding appropriate monoid laws would resolve this problem;
@@ -252,10 +252,11 @@ simple in the majority of cases; automatically discovering it for a broad
 class of lenses seems plausible and would remove a significant annoyance
 from the lens programmer. Next, in the passage from asymmetric, state-based
 lenses to symmetric lenses, we gave a theorem connecting various asymmetric
-lens constructions to symmetric lens constructions. It would be nice to know
-whether this connection could be extended to edit lenses. For example, do
-edit lens constructions like tensor product correspond in some way to the
-lifting of symmetric lens tensor product? One similarly wonders whether
+lens constructions to symmetric lens constructions, but have not explored
+the extension of this connection to edit lenses. Future work could
+investigate whether the edit lens tensor product, for example, corresponds
+in some way to the lifting of the symmetric lens tensor product. One
+similarly wonders whether
 there is an edit lens analog of the theorem showing how to split a symmetric
 lens into two asymmetric lenses. On a slightly different line of inquiry,
 one may wonder just how canonical our choices of edit structure and lens
@@ -265,8 +266,8 @@ some way of being undone, either with an inverse or something weaker---and
 stronger laws---for example, requiring that $\dputr$ and $\dputl$ produce
 minimal edits by adding a triple-trip law---without instantiating their
 frameworks. Perhaps enforcing stronger requirements would suggest ways to
-improve the behavior of our existing constructions, and on the other hand
-perhaps our constructions would reveal that some of the requirements are too
+improve the behavior of the existing constructions, and on the other hand
+perhaps the constructions would reveal that some of the requirements are too
 strong.
 
 Another idea suggested by related work is to consider typed edits. In our
@@ -274,7 +275,7 @@ development of edit lenses, we allow partial edits so that we may represent
 edits that work on some, but not all, repositories in a uniform way. We then
 go to great lengths to assure that the partiality is purely formal: we have
 a theorem showing that lenses never introduce partiality where none was
-before. On the other hand, the symmetric delta lens approach has no such
+before. In contrast, the symmetric delta lens approach has no such
 problem---each edit is applicable to one and only one repository---but pays
 the price of having to duplicate the modifications which can apply to many
 repositories~\cite{Diskin-Delta11}. Perhaps it would be possible to find a
