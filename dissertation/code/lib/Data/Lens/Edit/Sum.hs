@@ -70,14 +70,23 @@ instance (Bidirectional k, Bidirectional l) => Bidirectional (Sum k l) where
 instance (F.Lens k, F.Lens l) => F.Lens (Sum k l) where
 	type C  (Sum k l) = Either (C k) (C l)
 	missing (Sum k l) = Left (F.missing k)
-	dputr   (Sum k l) = F.foldState (dputSum (F.dputr k) (F.dputr l) (F.missing k) (F.missing l))
-	dputl   (Sum k l) = F.foldState (dputSum (F.dputl k) (F.dputl l) (F.missing k) (F.missing l))
+	dputr   (Sum k l) = F.foldState (dputSum (F.dputr k) (F.dputr l) k l)
+	dputl   (Sum k l) = F.foldState (dputSum (F.dputl k) (F.dputl l) k l)
 
-dputSum dputk dputl ck cl dv cv = case (dv, cv) of
-	(M.SwitchLL dx, Left  c) -> let (dy, c') = dputk (dx, ck) in ([M.SwitchLL dy], Left  c')
-	(M.SwitchLR dz, Left  c) -> let (dw, c') = dputl (dz, cl) in ([M.SwitchLR dw], Right c')
-	(M.SwitchRL dx, Right c) -> let (dy, c') = dputk (dx, ck) in ([M.SwitchRL dy], Left  c')
-	(M.SwitchRR dz, Right c) -> let (dw, c') = dputl (dz, cl) in ([M.SwitchRR dw], Right c')
-	(M.StayL    dx, Left  c) -> let (dy, c') = dputk (dx, c ) in ([M.StayL    dy], Left  c')
-	(M.StayR    dz, Right c) -> let (dw, c') = dputl (dz, c ) in ([M.StayR    dw], Right c')
+dputSum dputk dputl k l dv cv = case (dv, cv) of
+	(M.SwitchLL dx, Left  c) -> switchll $ dputk (dx, ck)
+	(M.SwitchLR dz, Left  c) -> switchlr $ dputl (dz, cl)
+	(M.SwitchRL dx, Right c) -> switchrl $ dputk (dx, ck)
+	(M.SwitchRR dz, Right c) -> switchrr $ dputl (dz, cl)
+	(M.StayL    dx, Left  c) -> stayl    $ dputk (dx, c )
+	(M.StayR    dz, Right c) -> stayr    $ dputl (dz, c )
 	(_, c) -> ([M.FailSum], c)
+	where
+	ck = F.missing k
+	cl = F.missing l
+	switchll (dy, c) = ([M.SwitchLL dy], Left  c)
+	switchlr (dw, c) = ([M.SwitchLR dw], Right c)
+	switchrl (dy, c) = ([M.SwitchRL dy], Left  c)
+	switchrr (dw, c) = ([M.SwitchRR dw], Right c)
+	stayl    (dy, c) = ([M.StayL    dy], Left  c)
+	stayr    (dw, c) = ([M.StayR    dw], Right c)

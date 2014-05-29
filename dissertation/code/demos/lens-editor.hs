@@ -83,12 +83,14 @@ main = do
 	v2@(buf2, view2, good2, del2, sigm2) <- initView rightM
 
 	window `on` objectDestroy $ mainQuit
-	sig1i <- buf1 `after` bufferInsertText $ \p s  -> insertEdit p s  >>= changeEventL cref v1 v2
-	sig1w <- buf1 `on`    deleteRange      $ \p p' -> deleteEdit p p' >>= writeIORef del1
-	sig1r <- buf1 `after` deleteRange      $ \p p' -> readIORef  del1 >>= changeEventL cref v1 v2
-	sig2i <- buf2 `after` bufferInsertText $ \p s  -> insertEdit p s  >>= changeEventR cref v1 v2
-	sig2w <- buf2 `on`    deleteRange      $ \p p' -> deleteEdit p p' >>= writeIORef del2
-	sig2r <- buf2 `after` deleteRange      $ \p p' -> readIORef  del2 >>= changeEventR cref v1 v2
+	-- abbreviations to save horizontal space
+	let ins = bufferInsertText; del = deleteRange
+	sig1i <- buf1 `after` ins $ \p s  -> insertEdit p s  >>= changeEventL cref v1 v2
+	sig1w <- buf1 `on`    del $ \p p' -> deleteEdit p p' >>= writeIORef del1
+	sig1r <- buf1 `after` del $ \p p' -> readIORef  del1 >>= changeEventL cref v1 v2
+	sig2i <- buf2 `after` ins $ \p s  -> insertEdit p s  >>= changeEventR cref v1 v2
+	sig2w <- buf2 `on`    del $ \p p' -> deleteEdit p p' >>= writeIORef del2
+	sig2r <- buf2 `after` del $ \p p' -> readIORef  del2 >>= changeEventR cref v1 v2
 	putMVar sigm1 [sig1i, sig1w, sig1r]
 	putMVar sigm2 [sig2i, sig2w, sig2r]
 
