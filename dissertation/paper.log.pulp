@@ -2,4 +2,6 @@ not
     ( boring | info | (under & hbox)
     | (package 'xparse/redefine-command' & warning & "\\footnote")
     | (package 'variant generation' & warning & "^Variant \\tl_put_right:NV")
+    | (package 'hyperref' & message & 'Driver \(autodetected\): hpdftex\.')
+    | 'Normal \\count register pool exhausted, switching to extended pool\.'
     )
