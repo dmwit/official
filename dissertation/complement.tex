@@ -2091,6 +2091,7 @@ We give just the retentive sum here, since it seems more useful; the
 forgetful sum can be found in the long version. 
 \fi
 
+\ifdissertation\breakifnearbottom\fi
 \begin{defn}[Retentive tensor sum lens]\ 
 \lensdef{sum}
 {
@@ -2328,8 +2329,13 @@ There are two things to show:
 \[\id_X \oplus^f \id_Y \equiv \id_{X+Y}\]
 \[(k \oplus^f k');(\ell \oplus^f \ell') \equiv (k;\ell)\oplus^f(k';\ell')\]
 
-For identity preservation, we use the total relation:
+For identity preservation, we use the total
+\ifdissertation
+relation which has $c \relR \unit$ for all $c$.
+\else
+relation:
 \[c \relR \unit\]
+\fi
 Clearly the initial condition $(\id \oplus^f \id).\missing \relR
 \id.\missing$ holds; we will also show that $(\id \oplus^f \id).\putr \sim_R
 \id.\putr$, eliding the similar proof relating the $\putl$ functions. So,
@@ -2398,6 +2404,23 @@ In the second representative case, we have
     c_b &= \mlinr (c_{k'},c_{\ell'})
 \end{align*}
 Then:
+\ifdissertation
+\begin{align*}
+    a.\putr(v,c_a) ={}
+    & \mllet(y_0,c_k) = k.\putr(x_0,k.\missing) \mline \\
+    & \mllet(z_0,c_\ell) = \ell.\putr(x_0,\ell.\missing) \mline \\
+    & (\mlinl z_0,(\mlinl c_k,\mlinl c_\ell)) \\
+\end{align*}
+\begin{align*}
+    b.\putr(v,c_b) ={}
+    & \mllet(z_0,c') = (k;\ell).\putr(x_0,(k;\ell).\missing) \mline \\
+    & (\mlinl z_0,\mlinl c') \\
+    ={}
+    & \mllet(y_0,c_k) = k.\putr(x_0,k.\missing) \mline \\
+    & \mllet(z_0,c_\ell) = \ell.\putr(y_0,\ell.\missing) \mline \\
+    & (\mlinl z_0,\mlinl (c_k,c_\ell))
+\end{align*}
+\else
 \begin{align*}
     a.\putr(v,c_a) ={}
     & \mllet(y_0,c_k) = k.\putr(x_0,k.\missing) \mline \\
@@ -2411,6 +2434,7 @@ Then:
     & \mllet(z_0,c_\ell) = \ell.\putr(y_0,\ell.\missing) \mline \\
     & (\mlinl z_0,\mlinl (c_k,c_\ell))
 \end{align*}
+\fi
 Again, since $z_0,c_k,c_\ell$ are computed identically in both equations,
 the relation is preserved.
 \end{functoriality}
@@ -2875,8 +2899,9 @@ to return an $\mlinlx$ value if there have been no tie breakers yet.
 Because of this preference, \iffull neither $\union$ nor $\union'$ can \else
 $\union$ cannot \fi be used to
 construct a true codiagonal. However, there are two useful related
-constructions: 
+constructions\ifdissertation, which we discuss below.\else:\fi
 
+\ifdissertation\breakifnearbottom\fi
 \begin{definition}[Switch lens]\ 
 \lensdef{switch}
 {\switch_X \in X+X \lens X}
@@ -4136,6 +4161,8 @@ merely check the round-trip laws.
     &=& (\ell.\aget(f(y)),f_{f(y)}) \\
     &=& (y,f_{f(y)}) 
 \end{eqnarray*}
+
+\ifdissertation\vspace{-5.2ex}\fi
 \end{goodlens}
 \fi
 
@@ -4144,6 +4171,9 @@ merely check the round-trip laws.
 Here are several useful asymmetric lenses (based on string lenses from
 \cite{Boomerang07}).
 
+\ifdissertation
+\begin{minipage}{0.4\linewidth}
+\fi
 \lensdef{a_copy}
 {\acopy_X \in X \alens X}
 {
@@ -4151,6 +4181,19 @@ Here are several useful asymmetric lenses (based on string lenses from
     \aput(x,x') &=& x \\
     \acreate(x) &=& x
 }
+\ifdissertation
+\end{minipage}
+\hfil
+\begin{minipage}{0.4\linewidth}
+\lensdef{a_const}
+{\infruleplain{v \in X}{\aconst_v \in X \alens \Unit}}
+{
+    \aget(x) &=& \unit \\
+    \aput(\unit,x) &=& x \\
+    \acreate(\unit) &=& v
+}
+\end{minipage}
+\fi%dissertation
 
 \lensdef{a_composition}
 {\infruleplain
@@ -4162,6 +4205,7 @@ Here are several useful asymmetric lenses (based on string lenses from
     \acreate(z) &=& k.\acreate(\ell.\acreate(z))
 }
 
+\ifcomplement
 \lensdef{a_const}
 {\infruleplain{v \in X}{\aconst_v \in X \alens \Unit}}
 {
@@ -4169,6 +4213,7 @@ Here are several useful asymmetric lenses (based on string lenses from
     \aput(\unit,x) &=& x \\
     \acreate(\unit) &=& v
 }
+\fi%complement
 
 \lensdef{a_product}
 {\infruleplain
