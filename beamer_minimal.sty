@@ -1,7 +1,8 @@
-\ProvidesPackage{beamer_minimal}
+\ProvidesPackage{beamer_minimal}[2014/06/01 Replace gaudy navigational material with a minimalistic progress bar]
 \newif\ifdraft
 \DeclareOption{draft}{\drafttrue}
 \ProcessOptions
+\RequirePackage{tikz}
 \usebeamercolor{palette primary}
 \colorlet{navfg}{fg!80!white}
 \colorlet{navbg}{fg!40!white}
