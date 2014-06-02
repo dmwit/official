@@ -18,6 +18,15 @@
         node[fill=navfg,minimum width={(\insertframenumber-1)/max(1,\thelastframe-1)*(\textwidth-\navradius)},right]{}
         (back.south) node[below]{}
         ;
+    \else
+    \pgfmathparse{\insertframenumber==\thelastframe+1}
+    \ifnum\pgfmathresult=1
+    \PackageWarning{beamer_minimal}{
+        Typesetting beyond the end of the presentation!\MessageBreak
+        Build again to correct the progress bar.\MessageBreak
+        First extra frame ended%
+    }
+    \fi
     \fi
     \ifdraft\insertframenumber/\inserttotalframenumber\fi
 }
