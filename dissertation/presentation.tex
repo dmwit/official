@@ -1,4 +1,9 @@
 \documentclass{beamer}
+% {0,51,128} is the Penn blue color; this must come before
+% \usepackage{beamer_minimal} so that the progress bar inherits the right
+% color; it should be possible to make this independent but I don't have the
+% time to learn the ins and outs of beamer colors
+\usecolortheme[RGB={0,51,128}]{structure}
 \usepackage{beamer_minimal}
 \title{Generalizing Lenses}
 \subtitle{A New Foundation for Bidirectional Programming}
@@ -11,3 +16,70 @@
 \maketitle
 
 \end{document}
+BCP says:
+    * give some motivation/perspective... but make it quick; almost
+      everybody in the audience has seen my talks before, so they know
+      what's going on
+    * plan to make it to the list of contributions within about five minutes
+    * two purposes for the presentation; should heavily weight my efforts
+      towards really satisfying the second goal
+        * as a public announcement of the work I've done and contributions
+          I've made
+        * gives the committee a chance to solidify their understanding and
+          opinions of my work
+SCW says:
+    * BUT the focus should be on what I have contributed; the
+      history/perspective should be there so that it's clear what I've
+      contributed to the historical understanding, the technical stuff
+      should be there so they understand what I've contributed, etc.; the
+      technical content isn't the focus, but a means to conveying the focus
+    * also, re-expressed the preference for explaining one thing well, i.e.
+      it's reasonable to skimp on old work in favor of a good, in-depth
+      explanation of the newest work
+    * she mentioned in passing something like, "maybe half the talk is on
+      your newest technical work, and five minutes is on how that connects
+      with older work"
+SAZ says:
+    * definitely reiterate the motivation for the work
+    * explain contributions to someone already familiar with the work
+    * very important: situate this work compared to other work
+    * might want to give the committee an overview of what they asked for at
+      the proposal and how I addressed those recommendations
+SAZ suggested a rough timing outline:
+    *  5min background + motivation
+    *  5min scope of my work + the thesis + my contributions
+    * 30min deep drill into something technical and cool
+    *  5min pop back up a level and give some perspective + summary
+
+
+
+outline proposal
+-  5: background + motivation
+-  5: scope of my work + the thesis + my contributions
+    - contributions:
+        - framework that supports symmetry, alignment, performance
+        - syntax inhabiting the framework, in part via algebraic study
+        - prototype implementation
+- 30: deep drill into something technical and cool; possibilities:
+    - containers + container mapping + how alignment is solved with the edit
+      language for containers; perhaps leading to container reshaping lens;
+      perhaps coming from discussion of why recursive types are hard to
+      design edit languages for
+        - skip the lenses, talk just about edit languages to begin with
+        - (free) edit monoid for products
+        - (free) edit monoid for sums
+        - make a couple attempts at an edit monoid for recursive types
+        - notice that what we really want is some concept of a pointer into
+          these structures
+        - so model it that way explicitly, use containers
+        - (free) edit monoid for containers
+        - mapping lens for containers
+        - observe how alignment is handled
+        - discuss reshaping lens
+    - behavioral laws: why the old ones don't cut it and how our
+      monoid-based ones help; observation that partition is tricky and may
+      require lax laws and what this tells us about the partition lens
+    - the category of (edit) lenses, the machinery needed to make it be a
+      category, what structure you get and don't (and why), what open
+      questions this settles/insight this gives
+-  5: pop back up a level and give some perspective + summary
