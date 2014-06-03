@@ -15,6 +15,189 @@
 \author{Daniel Wagner\\[3ex]\includegraphics[width=0.2\linewidth]{plclub-logo.pdf}} % for beamer
 \maketitle
 
+\begin{frame}
+    \frametitle{Bidirectional programming}
+    Keep two pieces of data in synch. It's a common problem.
+
+    Don't want to write two programs for maintenance reasons.
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Databases}
+    First interest was in the database community, via view-update problem.
+
+    Generated idea of constant-complement updating.
+
+    Basis for asymmetric lenses. Lots of language-based research followup.
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{UI}
+    Separate research thread on user interfaces.
+
+    Constraints between interface elements (e.g. when selecting a range, the
+    upper bound is above the lower bound). But don't want to constrain user.
+
+    So restore broken constraints. Led to constraint maintainers.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Dissatisfaction}
+    Basic assumption of asymmetric lenses: source contains all data. View
+    contains some chunk of interest to the user.
+
+    Behavioral laws not strong enough.
+
+    Surprisingly hard problem: alignment.
+
+    Need modularity.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Symmetric lenses}
+    First lens framework to support symmetry and address all the issues that
+    composition causes -- computability, behavioral equality.
+
+    But behavioral laws are no better, and no improvement on alignment.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Edit lenses}
+    Extend symmetric lenses with explicit alignment handling.
+
+    While we're at it, incremental operation for performance.
+
+    Did an algebraic study of the framework, resulting in a large collection
+    of abstract syntax.
+
+    Prototype implementation exploring the problem of generating alignment
+    information.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Related work preview}
+    Table proving we are better than everybody else.
+\end{frame}
+
+\begin{frame}
+    \frametitle{The inductive way to types}
+    Common way to build complex data types for functional languages:
+    products, sums, recursion.
+
+    Try to recapitulate with edits. Will need new approach: containers.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Modules}
+    Our model of edits: set for values + monoid for edits + partial action
+    for application.
+
+    Plus technical detail: default value. Convenient to demand, easy to
+    provide.
+
+    We'll see why when we get to sums. And again with containers.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Free monoids}
+    Often define some atomic changes + their effects.
+
+    Use free monoid for edits. Run edits in sequence for the partial action.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Products}
+    Edit to a product is either an edit to the left side or the right side.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Sums}
+    Choices are less canonical, and significantly more fiddly.
+
+    Reset on a side, or stay and apply an edit.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Recursive types}
+    Proposal 1: throw an ``unroll'' in the mix.
+
+    Doesn't work well: can't insert, delete, swap elements.
+
+    Can throw in insert, delete without much trouble.
+
+    Swap harder: have to rethink products.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Recursive types}
+    Proposal 2: start over from scratch with more types. Build new values by
+    pointing at paths in the old one.
+
+    Doesn't work well: environments get in the way. Type-based lets you look
+    at too many holes for lenses to be able to do sane things.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Containers instead of recursive types}
+    But the ``paths'' thing is a nice idea.
+
+    Containers abstract from paths to just have uninterpreted pointers.
+
+    Can't have pointers outside the container.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Containers}
+    Details of containers as given by previous authors.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Container restrictions}
+    Extra restrictions are needed for edits to make sense.
+
+    Positions are live or not, rather than having a shape-indexed set of
+    positions. Easier to model in non-dependent language.
+
+    Partial order of shapes, with associated edit module.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Container module}
+    Insertions/deletions are monotone shape edits. Rearrangements change
+    shape but not size.
+
+    Edit module for containers.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Container mapping lens}
+    Delegate mods, copy structure changes.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Alignment}
+    Explicit edit instructions simplifies alignment handling.
+
+    Alignment slightly implicit in the edits. But need not be made explicit
+    during handling.
+
+    When underlying lens has trivial complement, this has trivial
+    complement. (Lenses only make promises about good edits!)
+\end{frame}
+
+\begin{frame}
+    \frametitle{Reshaping}
+    Actually, not so important that source and target containers are the
+    same.
+
+    Position bijection $\Rightarrow$ lens. Bijection can even depend on
+    state to have some hysteresis.
+
+    Probably needs 2-3 more slides to do the details justice.
+\end{frame}
+
 \end{document}
 outline proposal
 -  5: background + motivation
@@ -28,7 +211,7 @@ outline proposal
         - framework that supports symmetry, alignment, performance
         - algebraic study of the framework + an inhabiting syntax
         - prototype implementation
-- 30: deep drill into something technical and cool; possibilities:
+- 25: deep drill into something technical and cool; possibilities:
     - containers + container mapping + how alignment is solved with the edit
       language for containers; perhaps leading to container reshaping lens;
       perhaps coming from discussion of why recursive types are hard to
@@ -44,17 +227,18 @@ outline proposal
         - mapping lens for containers
         - observe how alignment is handled
         - discuss reshaping lens
-    - behavioral laws: why the old ones don't cut it and how our
-      monoid-based ones help; observation that partition is tricky and may
-      require lax laws and what this tells us about the partition lens
     - the category of (edit) lenses, the machinery needed to make it be a
       category, what structure you get and don't (and why), what open
       questions this settles/insight this gives
+    - behavioral laws: why the old ones don't cut it and how our
+      monoid-based ones help; observation that partition is tricky and may
+      require lax laws and what this tells us about the partition lens
     - possibly: the monoid isomorphism route to lenses (i.e. start with
       isomorphisms, see why they are too strong, see how to relax them, then
       add complements; can also discuss the ``one module per type''
       philosophy along the way to motivate adding complements vs. choosing a
       different edit language when designing partition lens)
+-  5: overview of all results
 -  5: pop back up a level and give some perspective + summary
     - symmetric lenses: first framework to offer symmetry + serious study of
       composition and the associated machinery
