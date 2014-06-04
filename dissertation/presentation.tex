@@ -1,10 +1,5 @@
 \documentclass{beamer}
-% {0,51,128} is the Penn blue color; this must come before
-% \usepackage{beamer_minimal} so that the progress bar inherits the right
-% color; it should be possible to make this independent but I don't have the
-% time to learn the ins and outs of beamer colors
-\usecolortheme[RGB={0,51,128}]{structure}
-\usepackage{beamer_minimal}
+\usepackage{presentation}
 \title{Generalizing Lenses}
 \subtitle{A New Foundation for Bidirectional Programming}
 \author{Daniel Wagner} % for hyperref
@@ -82,12 +77,29 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{The inductive way to types}
-    Common way to build complex data types for functional languages:
-    products, sums, recursion.
+    \frametitle{Edits}
+    Why not $\DX = X \to X$?
 
-    Try to recapitulate with edits. Will need new approach: containers.
+    Introspection too hard. So use more structured set with a mapping to
+    such functions.
+
+    Key properties: identity + composition, i.e. a monoid.
 \end{frame}
+
+\begin{frame}
+    \frametitle{Totality}
+    But also totality isn't quite right.
+
+    Treating failure carefully is a core value.
+
+    Give a strong, but small example---perhaps exactly the one in the
+    dissertation---of where masking failure leads to oddities.
+\end{frame}
+
+% TODO: I think can steal some slides explaining why alignment is
+% important/hard to put here. Otherwise maybe it's hard to justify why
+% ``rewrite the list elements'' isn't a good replacement for ``reorder the
+% list'' later.
 
 \begin{frame}
     \frametitle{Modules}
@@ -98,6 +110,21 @@
     provide.
 
     We'll see why when we get to sums. And again with containers.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Data structures}
+
+    Common approach to implementing complex data structures:
+
+    \[\tau := 0 \mid 1 \mid X \mid \tau+\tau \mid \tau\times\tau
+           \mid \mu X\!.\;\tau {\color<2->{lightgray}\mid \tau\to\tau}\]
+
+    Try to design edit modules for each of these types.
+
+    \vpause
+
+    \uncover<3>{\alert{Does not work well.}}
 \end{frame}
 
 \begin{frame}
@@ -197,6 +224,27 @@
 
     Probably needs 2-3 more slides to do the details justice.
 \end{frame}
+
+\begin{frame}
+    \frametitle{Other results}
+    Lens equivalence needed for composition to be reasonable + proofs that
+    all combinators respect equivalence classes
+
+    CT-based study of algebra: tensor product/sum, but no real product/sum
+    (did we do some functoriality/naturality proofs, too, somewhere?)
+
+    Iterators for symmetric lenses
+
+    Symmetric lenses subsume asymmetric lenses; edit lenses subsume
+    symmetric lenses when given a diff operation
+
+    Implementation explores alignment generation problem
+
+    Maybe should be exploded into one slide each?
+\end{frame}
+
+% TODO: some slides covering the conclusion (i.e. summarize what we did, say
+% it was important, give a little context, and ask for questions)
 
 \end{document}
 outline proposal
