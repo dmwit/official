@@ -1,4 +1,4 @@
-!( boring | info | message | under | over
+!( boring | info | message | (under & threshold 9999)
  | warning & ( (package "Font" & ( 'Size substitutions with differences\nup to 1\.0pt have occurred\.'
                                  | 'Font shape `OT1/cmss/m/n\' in size <4> not available\nsize <5> substituted on input line [[:digit:]]+\.'
                                  )
