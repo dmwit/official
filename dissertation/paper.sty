@@ -55,8 +55,8 @@
 \ifdelta\newcommand{\missing}{\mathit{init}}
 \else\newcommand{\missing}{\mathit{missing}}
 \fi
-\ifdissertation\newcommand{\gen}{_\ml g}
-\else          \newcommand{\gen}{_g}
+\iffull\newcommand{\gen}{_\ml g}
+\else  \newcommand{\gen}{_g}
 \fi
 \newcommand{\mlinjargs}{
     \renewcommand{\mlinl}[1]{\ml{inl}(##1)}
@@ -220,7 +220,6 @@
 \newcommand{\imgsubfig}[4]{\begin{subfigure}{#1}\includegraphics[width=\textwidth]{images/#2}\caption{#3}\label{subfig:#4}\end{subfigure}}
 \newcommand{\infruleplain}[2]{\genfrac{}{}{}{0}{\begin{array}{c}#1\end{array}}{#2}}
 \newcommand{\INFTY}{^\omega}
-\newcommand{\init}{\mathit{init}}
 \newcommand{\inl}{\mathit{inl}}
 \newcommand{\Inl}{\mathit{inl}}
 \newcommand{\inr}{\mathit{inr}}
@@ -241,7 +240,6 @@
 \newcommand{\map}{\ensuremath{\ml{map}}\xspace}
 \newcommand{\mdomain}[1]{\mathit{dom}(#1)}
 \newcommand{\mh}[1]{\finish{MH: #1}}
-\newcommand{\ml}[1]{\mathsf{#1}}
 \newcommand{\mlbppg}{\ml{bPpg}}
 \newcommand{\mlcod}{\ml{cod}}
 \newcommand{\mlcount}{\ml{count}}
@@ -268,7 +266,6 @@
 \newcommand{\mlins}[1]{\ml{ins}(#1)}
 \newcommand{\mlinsert}{\ml{ins}}
 \newcommand{\mliso}{\ml{iso}}
-\newcommand{\mlleft}[1]{\ml{left}(#1)}
 \newcommand{\mlletarray}[1]{\begin{array}{l@{\;\;}c@{\;\;}l@{}l}#1\end{array}}
 \newcommand{\mllet}{\ml{let}\ }
 \newcommand{\mlmapmod}{\ml{mapmod}}
@@ -283,7 +280,6 @@
 \newcommand{\mlreset}{\ml{reset}}
 \newcommand{\mlresize}{\ml{resize}}
 \newcommand{\mlreverse}{\ml{reverse}}
-\newcommand{\mlright}[1]{\ml{right}(#1)}
 \newcommand{\mlshuffle}{\ml{shuffle}}
 \newcommand{\mlsnd}{\ml{snd}}
 \newcommand{\mlsplit}{\ml{split}}
@@ -318,7 +314,6 @@
 \newcommand{\Node}{\mathit{node}}
 \newcommand{\nondissenddis}{$\renewcommand{\dissdis}{\nondissstartdis}\xspace}
 \newcommand{\nondissstartdis}{\renewcommand{\dissdis}{\nondissenddis}$}
-\newcommand{\ONE}{\mbox{\bf{1}}}
 \newcommand{\Open}{\{\hspace{-2pt}|}
 \newcommand{\op}{^\mathit{op}}
 \newcommand{\oplusl}{\mathbin{\overshortleftarrow{\oplus}}}
@@ -326,7 +321,6 @@
 % cribbed from the definitions of \overleftarrow etc. in amsmath.sty
 \newcommand{\overshortleftarrow}{\mathpalette{\overarrow@\shortleftarrowfill@}}
 \newcommand{\overshortrightarrow}{\mathpalette{\overarrow@\shortrightarrowfill@}}
-\newcommand{\partialto}{\rightharpoonup}
 \newcommand{\partitionarray}[3]{%
     #1,\ \mbox{where}
     \ifdissertation

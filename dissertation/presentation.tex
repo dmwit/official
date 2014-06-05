@@ -75,39 +75,86 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Edits}
-    Why not $\DX = X \to X$?
+    \frametitle{Other models of edits}
 
-    Introspection too hard. So use more structured set with a mapping to
-    such functions.
-
-    Key properties: identity + composition, i.e. a monoid.
+    \begin{itemize}
+        \item $X \times X$ (before and after)
+            \begin{itemize}
+                \item State-based lenses
+                \item[\ybullet] Very simple starting point
+                \item[\nbullet] Not enough information about alignment
+            \end{itemize}
+        \item $X \to X$ (extensional edit operation)
+            \begin{itemize}
+                \item Stevens' algebraic study of delta lenses
+                \item[\ybullet] Models many behaviors
+                \item[\nbullet] Difficult to recover intensional data
+            \end{itemize}
+        \item category on $X$ (collection of edits for each before/after
+            pair)
+            \begin{itemize}
+                \item Diskin, et al's delta lenses
+                \item[\ybullet] Very rich information about change
+                \item[\nbullet] Very rich information about change
+            \end{itemize}
+    \end{itemize}
 \end{frame}
-
-\begin{frame}
-    \frametitle{Totality}
-    But also totality isn't quite right.
-
-    Treating failure carefully is a core value.
-
-    Give a strong, but small example---perhaps exactly the one in the
-    dissertation---of where masking failure leads to oddities.
-\end{frame}
-
-% TODO: I think can steal some slides explaining why alignment is
-% important/hard to put here. Otherwise maybe it's hard to justify why
-% ``rewrite the list elements'' isn't a good replacement for ``reorder the
-% list'' later.
 
 \begin{frame}
     \frametitle{Modules}
-    Our model of edits: set for values + monoid for edits + partial action
-    for application.
+    Keep the best features of each: collection of edits for easy
+    introspection + mapping to functions to cover many behaviors.
 
-    Plus technical detail: default value. Convenient to demand, easy to
-    provide.
+    \vpause
 
-    We'll see why when we get to sums. And again with containers.
+    Module $\left<X,\DX,\odot_X,\init_X\right>$ is:
+    \begin{itemize}
+        \item Set of values to be edited $X$
+        \item Monoid of edits $\DX$
+        \item Homomorphism from edits to operations $\odot_X \in \DX \to X
+            \partialto X$
+        \item Default value $\init_X$ is a technical detail; explanation
+            later
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Monoids}
+    Quick review: monoid means
+    \begin{itemize}
+        \item There is an identity $\ONE$
+        \item and an associative binary operation (juxtaposition).
+    \end{itemize}
+
+    Homomorphisms $f$ respect this structure.
+    \[f(\ONE) = \ONE\]
+    \[f(m\;n) = f(m)\;f(n)\]
+    In particular, for edits: identity always succeeds and does nothing, and
+    edits can be run in sequence.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Partiality}
+    \[\odot_X \in \DX \to \alert<2>{X \partialto X}\]
+
+    \pause\pause
+
+    Requiring totality forces you to include unnatural edits.
+
+    \[M \triangleq \{\ONE\} \cup \{a \mapsto b \mid a,b \in \N\}\]
+
+    With totality:
+    \begin{align*}
+        (a \mapsto b)\;(b \mapsto c) \odot a &= c \\
+        (a \mapsto b)\;(b \mapsto c) \odot b &= c
+    \end{align*}
+    \ldots must expand $M$ to accommodate this.
+
+    With partiality, can define
+    \[(a \mapsto b)\;(b \mapsto c) \triangleq a \mapsto c\]
+
+    \pause
+    Theorem: Partiality is an illusion.
 \end{frame}
 
 \begin{frame}
@@ -127,14 +174,27 @@
 
 \begin{frame}
     \frametitle{Free monoids}
-    Often define some atomic changes + their effects.
+    All modules in this talk based on lists:
+    \begin{align*}
+        \ONE &\triangleq \left<\right> \\
+        \left<a_0,\cdots,a_m\right>\;\left<b_0,\cdots,b_n\right>
+            &\triangleq \left<a_0,\cdots,a_m,b_0,\cdots,b_n\right>
+    \end{align*}
 
-    Use free monoid for edits. Run edits in sequence for the partial action.
+    Elements are atomic edits, and get run in sequence:
+    \[\left<a,b,c\right>\odot x \triangleq
+        a \odot\gen (b \odot\gen (c \odot\gen x))\]
 \end{frame}
 
 \begin{frame}
     \frametitle{Products}
-    Edit to a product is either an edit to the left side or the right side.
+    How to edit $X \times Y$? Either edit $X$ or edit $Y$.
+
+    \begin{align*}
+        \D(X\times Y) &\triangleq \DX + \DY \\
+        \mlleft \dx \odot\gen (x,y) &\triangleq (\dx \odot x, y) \\
+        \mlright\dy \odot\gen (x,y) &\triangleq (x, \dy \odot y)
+    \end{align*}
 \end{frame}
 
 \begin{frame}
@@ -143,6 +203,11 @@
 
     Reset on a side, or stay and apply an edit.
 \end{frame}
+
+% TODO: I think can steal some slides explaining why alignment is
+% important/hard to put here. Otherwise maybe it's hard to justify why
+% ``rewrite the list elements'' isn't a good replacement for ``reorder the
+% list'' later.
 
 \begin{frame}
     \frametitle{Recursive types}
@@ -235,6 +300,8 @@
 
     Symmetric lenses subsume asymmetric lenses; edit lenses subsume
     symmetric lenses when given a diff operation
+
+    Took a first step away from free monoid edit modules
 
     Implementation explores alignment generation problem
 
