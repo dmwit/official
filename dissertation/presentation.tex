@@ -313,6 +313,7 @@
 
 \begin{frame}
     \frametitle{Recursive types, take two}
+    % TODO
     Proposal 2: start over from scratch with more types. Build new values by
     pointing at paths in the old one.
 
@@ -322,6 +323,7 @@
 
 \begin{frame}
     \frametitle{Containers instead of recursive types}
+    % TODO
     But the ``paths'' thing is a nice idea.
 
     Containers abstract from paths to just have uninterpreted pointers.
@@ -331,17 +333,28 @@
 
 \begin{frame}
     \frametitle{Containers}
-    Details of containers as given by previous authors.
+    A standard container $\left<I,P\right>$ is
+    \begin{itemize}
+        \item A set of shapes $I$, and
+        \item For each shape $i$, a set $P_i$ of positions.
+    \end{itemize}
+    An \emph{instance} $\left<X,i,f\right>$ of container $\left<I,P\right>$ is
+    \begin{itemize}
+        \item A set of elements $X$,
+        \item A shape $i \in I$, and
+        \item A function $f \in P_i \to X$.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Container restrictions}
-    Extra restrictions are needed for edits to make sense.
+    Three important changes:
 
-    Positions are live or not, rather than having a shape-indexed set of
-    positions. Easier to model in non-dependent language.
-
-    Partial order of shapes, with associated edit module.
+    \begin{itemize}
+        \item Module of shape edits
+        \item Universe of positions
+        \item Partial order on shapes (with $P$ monotone)
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
