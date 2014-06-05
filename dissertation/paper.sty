@@ -30,7 +30,7 @@
 \usepackage[hidelinks,linktoc=all]{hyperref}
 % hyperref should come last according to the documentation, since it
 % redefines lots of commands
-\usetikzlibrary{calc,chains,fit,shadows,scopes,matrix,positioning}
+\usetikzlibrary{chains,fit,shadows,scopes,positioning}
 
 % conditional definitions {{{
 \ifboolexpr{bool{delta} or (bool{complement} and not bool{full})}{
@@ -283,17 +283,9 @@
 \newcommand{\mlshuffle}{\ml{shuffle}}
 \newcommand{\mlsnd}{\ml{snd}}
 \newcommand{\mlsplit}{\ml{split}}
-\newcommand{\mlstayl}[1]{\mlstay_L(#1)}
-\newcommand{\mlstay}{\ml{stay}}
-\newcommand{\mlstayr}[1]{\mlstay_R(#1)}
 \newcommand{\mlswap}{\ml{swap}}
-\newcommand{\mlswitchll}[1]{\mlswitch_{LL}(#1)}
 \newcommand{\mlswitchl}{\mlswitch_L}
-\newcommand{\mlswitchlr}[1]{\mlswitch_{LR}(#1)}
-\newcommand{\mlswitch}{\ml{switch}}
-\newcommand{\mlswitchrl}[1]{\mlswitch_{RL}(#1)}
 \newcommand{\mlswitchr}{\mlswitch_R}
-\newcommand{\mlswitchrr}[1]{\mlswitch_{RR}(#1)}
 \newcommand{\mlsymm}{\ml{symm}}
 \newcommand{\mltag}{\ml{tag}}
 \newcommand{\mltail}[1]{\ml{tail}(#1)}

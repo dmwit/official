@@ -163,7 +163,7 @@
     Common approach to implementing complex data structures:
 
     \[\tau := 0 \mid 1 \mid X \mid \tau+\tau \mid \tau\times\tau
-           \mid \mu X\!.\;\tau {\color<2->{lightgray}\mid \tau\to\tau}\]
+           \mid \fix X\tau {\color<2->{lightgray}\mid \tau\to\tau}\]
 
     Try to design edit modules for each of these types.
 
@@ -201,7 +201,89 @@
     \frametitle{Sums}
     Choices are less canonical, and significantly more fiddly.
 
-    Reset on a side, or stay and apply an edit.
+    \vspace{-2ex}
+
+    % TODO: for dogs, perhaps age them instead of adding an accessory
+    \begin{diagram}
+        \node[matrix of nodes
+             ,ampersand replacement=\&
+             ,column sep=8em
+             ,nodes={anchor=center}
+             ] (pictures) {
+                \strut Cats \&
+                \strut Dogs \\
+                \includegraphics[width=4em]{images/without_hat.jpg}   \&
+                \includegraphics[width=4em]{images/without_scarf.jpg} \\[4ex]
+                \includegraphics[width=4em]{images/with_hat.jpg}      \&
+                \includegraphics[width=4em]{images/with_scarf.jpg}    \\
+            }
+
+            ($(pictures-1-1)!.5!(pictures-1-2)$) node (plus) {\strut +}
+            (plus |- pictures-3-1.south) node[below]
+                {
+                    \strut%
+                    \only<2>{$\mlstayl{\mbox{+hat}}$}%
+                    \only<3>{$\mlstayr{\mbox{+scarf}}$}%
+                    \only<4>{$\mlswitchlr\ONE$}%
+                    \only<5>{$\mlswitchlr{\mbox{+scarf}}$}%
+                    \only<6>{$\mlswitchll\ONE$}%
+                }
+
+            (pictures-2-1.west) +(-1.5,0) node (spacer-l) {}
+            (pictures-2-2.east) +( 1.5,0) node (spacer-r) {}
+            ;
+
+        \path<2>
+            (pictures-2-1)     edge[->]                  (pictures-3-1)
+            (pictures-3-1.225) edge[->] node {\nbullet} +(-0.5,-0.5)
+            (pictures-2-2.315) edge[->] node {\nbullet} +( 0.5,-0.5)
+            (pictures-3-2.315) edge[->] node {\nbullet} +( 0.5,-0.5)
+            ;
+        \path<3>
+            (pictures-2-1.225) edge[->] node {\nbullet} +(-0.5,-0.5)
+            (pictures-3-1.225) edge[->] node {\nbullet} +(-0.5,-0.5)
+            (pictures-2-2)     edge[->]                  (pictures-3-2)
+            (pictures-3-2.315) edge[->] node {\nbullet} +( 0.5,-0.5)
+            ;
+        \path<4>
+            (pictures-2-1)     edge[->]                  (pictures-2-2)
+            (pictures-3-1)     edge[->]                  (pictures-2-2)
+            (pictures-2-2.315) edge[->] node {\nbullet} +( 0.5,-0.5)
+            (pictures-3-2.315) edge[->] node {\nbullet} +( 0.5,-0.5)
+            ;
+        \path<5>
+            (pictures-2-1)     edge[->]                  (pictures-3-2)
+            (pictures-3-1)     edge[->]                  (pictures-3-2)
+            (pictures-2-2.315) edge[->] node {\nbullet} +( 0.5,-0.5)
+            (pictures-3-2.315) edge[->] node {\nbullet} +( 0.5,-0.5)
+            ;
+        \path<6>
+            (pictures-2-1)     edge[loop right]          (pictures-2-1)
+            (pictures-3-1)     edge[->]                  (pictures-2-1)
+            (pictures-2-2.315) edge[->] node {\nbullet} +( 0.5,-0.5)
+            (pictures-3-2.315) edge[->] node {\nbullet} +( 0.5,-0.5)
+            ;
+    \end{diagram}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Sums, recap}
+    Six kinds of sum edit for $X + Y$:
+    \begin{center}
+        $\mlstayl\dx$
+
+        $\mlswitchll\dx$
+
+        $\mlswitchrl\dx$
+
+        \vspace{2ex}
+
+        $\mlstayr\dy$
+
+        $\mlswitchlr\dy$
+
+        $\mlswitchrr\dy$
+    \end{center}
 \end{frame}
 
 % TODO: I think can steal some slides explaining why alignment is
@@ -211,17 +293,26 @@
 
 \begin{frame}
     \frametitle{Recursive types}
-    Proposal 1: throw an ``unroll'' in the mix.
+    First idea: $\D(\fix X\tau)\simeq\D(\tau[\fix X\tau/X])$.
 
-    Doesn't work well: can't insert, delete, swap elements.
+    For lists with elements from module $A$, i.e. $\fix X1+A \times X$:
 
-    Can throw in insert, delete without much trouble.
+    \begin{description}[$\mlstayr{\mlright\dx}$]
+        \item[$\mlstayl\anything$] Do nothing to the currently empty list.
+        \item[$\mlswitch_{\anything L}(\anything)$] Delete the entire list.
+        \item[$\mlstayr{\mlleft{\d a}}$] Modify the head of the list.
+        \item[$\mlstayr{\mlright\dx}$] Modify the tail of the list.
+        \item[$\mlswitch_{\anything R}(\anything)$] Replace the current
+            list.
+    \end{description}
 
-    Swap harder: have to rethink products.
+    Information never migrates; can't swap list elements.
+
+    \alert{No way to insert or delete in the middle of the list.}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Recursive types}
+    \frametitle{Recursive types, take two}
     Proposal 2: start over from scratch with more types. Build new values by
     pointing at paths in the old one.
 
