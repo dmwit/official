@@ -311,27 +311,9 @@
 
     \alert{No way to insert or delete in the middle of the list.}
 
-    % TODO: and other ways don't work, either
-\end{frame}
+    \pause
 
-\begin{frame}
-    \frametitle{Recursive types, take two}
-    % TODO: delete
-    Proposal 2: start over from scratch with more types. Build new values by
-    pointing at paths in the old one.
-
-    Doesn't work well: environments get in the way. Type-based lets you look
-    at too many holes for lenses to be able to do sane things.
-\end{frame}
-
-\begin{frame}
-    \frametitle{Containers instead of recursive types}
-    % TODO: delete
-    But the ``paths'' thing is a nice idea.
-
-    Containers abstract from paths to just have uninterpreted pointers.
-
-    Can't have pointers outside the container.
+    More baroque approaches don't work well either.
 \end{frame}
 
 \begin{frame}
