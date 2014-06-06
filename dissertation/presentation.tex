@@ -335,13 +335,12 @@
     \frametitle{Containers}
     A standard container $\left<I,P\right>$ is
     \begin{itemize}
-        \item A set of shapes $I$, and
+        \item A set of shapes $I$ and
         \item For each shape $i$, a set $P_i$ of positions.
     \end{itemize}
-    An \emph{instance} $\left<X,i,f\right>$ of container $\left<I,P\right>$ is
+    An \emph{$X$-instance} $\left<i,f\right>$ of container $\left<I,P\right>$ is
     \begin{itemize}
-        \item A set of elements $X$,
-        \item A shape $i \in I$, and
+        \item A shape $i \in I$ and
         \item A function $f \in P_i \to X$.
     \end{itemize}
 \end{frame}
@@ -352,8 +351,8 @@
 
     \begin{itemize}
         \item Module of shape edits
-        \item Universe of positions
-        \item Partial order on shapes (with $P$ monotone)
+        \item Universe of positions $P_U$
+        \item Partial order $\le$ on shapes (with $P$ monotone)
     \end{itemize}
 \end{frame}
 
