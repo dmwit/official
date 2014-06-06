@@ -357,17 +357,38 @@
     \end{itemize}
 \end{frame}
 
+% TODO: give lists as an example here?
+% (could be a good excuse for a diagram break)
+
 \begin{frame}
     \frametitle{Container module}
-    Insertions/deletions are monotone shape edits. Rearrangements change
-    shape but not size.
-
-    Edit module for containers.
+    \begin{align*}
+        \D\left<I,P\right>_X
+            \triangleq{}&
+                \{\ml{mod}(p,\dx) \mid p \in P_U\}
+            \\ \mathrel{\cup}{}&
+                \{\ml{ins}(\d i) \mid \d i\;i \ge i\mbox{ whenever defined}\}
+            \\ \mathrel{\cup}{}&
+                \{\ml{del}(\d i) \mid \d i\;i \le i\mbox{ whenever defined}\}
+            \\ \mathrel{\cup}{}&
+                \{\ml{swap}(\d i,f) \mid f_i \in P_{\d i\;i} \simeq P_i
+                \mbox{ whenever defined} \}
+            \\ \mathrel{\cup}{}&
+                \{\ml{fail}\}
+    \end{align*}
 \end{frame}
 
 \begin{frame}
     \frametitle{Container mapping lens}
-    Delegate mods, copy structure changes.
+    The right edit set makes $\ml{map}$ easy.
+    \begin{align*}
+        \ml{map}(\ell).\dputr\gen(\ml{mod}(p,\dx))
+            &\triangleq \ml{mod}(p,\ell.\dputr(\dx)) \\
+        \ml{map}(\ell).\dputr\gen(\dv) &\triangleq \dv
+    \end{align*}
+
+    % TODO: perhaps should have a second slide with the real implementation,
+    % at least just to flash...?
 \end{frame}
 
 \begin{frame}
