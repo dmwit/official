@@ -10,8 +10,9 @@
 \setbeamercolor{alerted text}{fg=alertgreen}
 \newcommand{\vpause}{\vspace{5ex}}
 \newcommand{\ybullet}{{\color{alertgreen}\checkmark}}
-\newcommand{\nbullet}[1][0.9em]{\includegraphics[width=#1]{images/x.pdf}}
+\newcommand{\nbullet}[1][0.9em]{\img{#1}{x}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\gen}{_\ml g}
 \newcommand{\fix}[1]{\mu#1\!.\;}
 \newcommand{\anything}{\mbox{\textunderscore}}
+\newcommand{\img}[3][]{\includegraphics[width=#2,#1]{images/#3}}
