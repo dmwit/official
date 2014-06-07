@@ -18,7 +18,6 @@
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage{setspace}
-\usepackage{shared}
 \usepackage{stmaryrd}
 \usepackage{subcaption}
 \usepackage{tabularx}
@@ -30,6 +29,9 @@
 \usepackage[hidelinks,linktoc=all]{hyperref}
 % hyperref should come last according to the documentation, since it
 % redefines lots of commands
+\usepackage{shared}
+% shared must come after tikz so that \usetikzlibrary is
+% available and after hyperref so that we can renew \d
 \usetikzlibrary{chains,fit,shadows,scopes,positioning}
 
 % conditional definitions {{{
