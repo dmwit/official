@@ -14,6 +14,54 @@
 \maketitle
 
 \begin{frame}
+    \frametitle{History: a problem with databases}
+    \begin{diagram}[outer sep=1em]
+        \tikzstyle{DB}=
+            [draw, aspect=0.8
+            ,shape=cylinder
+            ,shape border rotate=90
+            ,minimum width=6em
+            ]
+        \tikzstyle{thought}=
+            [draw, aspect=4
+            ,cloud callout
+            ,cloud puffs=25
+            ,callout pointer segments=4
+            ,callout pointer start size=1.5ex
+            ,callout pointer end   size=0.5ex
+            ]
+        \path<+->
+            node[DB]              (db)     {\phantom{DB}}
+            node[right=6em of db] (result) {result}
+            (db.base) node[anchor=base] {DB}
+            (db) edge[->] node[above=-1em] (query) {query} (result)
+
+            % dummies so things don't jump around from slide to slide
+            node[DB,below=10.1ex of db,draw=none] {\phantom{DB}}
+            (result.west) node[anchor=west] {\phantom{new result}}
+            ;
+        \path<+->
+            node[below=10ex of db, DB] (db') {\phantom{DB}}
+
+            (db' -| result.west)
+            node[anchor=west] (result') {new result}
+
+            (db'.base) node[anchor=base] {new DB}
+
+            (db') edge[->] node[above=-1em] (query') {query} (result')
+            (db)  edge[->] (db')
+            ;
+        \path<+->
+            (db)  edge[->] coordinate[right=1em,pos=0.9] (update base)
+                           node[right=1em, pos=0.3, thought,
+                                callout absolute pointer=(update base)
+                               ] (update) {\tiny result $\to$ new result}
+                           (db')
+            ;
+    \end{diagram}
+\end{frame}
+
+\begin{frame}
     \frametitle{Bidirectional programming}
     Keep two pieces of data in synch. It's a common problem.
 
