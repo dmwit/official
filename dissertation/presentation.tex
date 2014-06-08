@@ -61,6 +61,8 @@
     \end{diagram}
 \end{frame}
 
+% TODO: maybe delete, and add a line to the ``other settings'' list on the
+% next slide
 \begin{frame}
     \frametitle{History: a problem in UIs}
     \begin{center}
@@ -74,11 +76,19 @@
 
 \begin{frame}
     \frametitle{Bidirectional programming}
-    Keep two pieces of data in synch. It's a common problem.
+    Many other settings with similar problems, like
+    \begin{itemize}
+        \item parsing (in-memory structures $\leftrightarrow$ serialization),
+        \item software model transformations (diagrams $\leftrightarrow$ code), and
+        \item sysadmin (custom configurations $\leftrightarrow$ unified format).
+    \end{itemize}
 
-    Don't want to write two programs for maintenance reasons.
+    In each setting,
+    \begin{itemize}
+        \item two pieces of data are related, and
+        \item we would like to avoid writing two related transformations.
+    \end{itemize}
 \end{frame}
-
 
 \begin{frame}
     \frametitle{Dissatisfaction}
