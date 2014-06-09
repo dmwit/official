@@ -1,4 +1,5 @@
 \newenvironment{diagram}[1][]{\begin{center}\begin{tikzpicture}[#1]}{\end{tikzpicture}\end{center}}
+
 \renewcommand{\d}{\textrm{d}}
 \newcommand{\D}{\partial}
 \newcommand{\ds}{\d s}
@@ -13,9 +14,11 @@
 \newcommand{\DX}{\D X}
 \newcommand{\DY}{\D Y}
 \newcommand{\DZ}{\D Z}
+
 \newcommand{\ONE}{\mbox{\bf{1}}}
 \newcommand{\init}{\mathit{init}}
 \newcommand{\partialto}{\rightharpoonup}
+
 \newcommand{\ml}[1]{\mathsf{#1}}
 \newcommand{\mlleft}[1]{\ml{left}(#1)}
 \newcommand{\mlright}[1]{\ml{right}(#1)}
@@ -27,6 +30,16 @@
 \newcommand{\mlswitchrl}[1]{\mlswitch_{RL}(#1)}
 \newcommand{\mlswitchrr}[1]{\mlswitch_{RR}(#1)}
 \newcommand{\mlstayr}[1]{\mlstay_R(#1)}
+
+\newcommand{\diag}{\mathit{diag}}
+\newcommand{\lens}{\leftrightarrow}
 \newcommand{\dputr}{\mathord{\Rrightarrow}}
 \newcommand{\dputl}{\mathord{\Lleftarrow}}
+
+\colorlet{accessiblegreen}{green!55!black!70!blue!40!white}
+\colorlet{accessiblered}{red!80!black!80!yellow!30!white}
+\newcommand{\Y}[1][\checkmark]{\cellcolor{accessiblegreen}#1}
+\newcommand{\N}[1][]{\cellcolor{accessiblered}#1}
+\renewcommand{\tabularxcolumn}[1]{>{\centering\arraybackslash}m{#1}}
+
 \usetikzlibrary{calc,matrix,positioning}

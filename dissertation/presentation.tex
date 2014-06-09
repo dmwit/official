@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[table]{beamer}
 \usepackage{presentation}
 \title{Generalizing Lenses}
 \subtitle{A New Foundation for Bidirectional Programming}
@@ -124,9 +124,62 @@
     information.
 \end{frame}
 
+% TODO: related work we haven't discussed includes TGGs, C-lenses
 \begin{frame}
-    \frametitle{Related work preview}
-    Table proving we are better than everybody else.
+    \frametitle{Related work}
+    \tiny
+    \begin{center}
+        \begin{tabularx}{\linewidth}{m{4.4em}|XXXX}
+        & Alignment & Symmetry & Performance & Syntax
+        \\\hline
+        asymm. $\delta$ &\Y[explicit alignments]
+                        &\N[not a goal]
+                        &\N[edits include repositories]
+                        &\Y[via alternate framework]
+        \\\hline
+        symm. $\delta$  &\Y[edits]
+                        &\Y[yes, but equiv. not explored]
+                        &\N[edits include repositories]
+                        &\N[alternate frameworks not instantiated]
+        \\\hline
+        algebraic       &\Y[edits]
+                        &\N[no]
+                        &\N[possibly, but unexplored]
+                        &\N[not a goal]
+        \\\hline
+        matching        &\Y[mapping from holes to holes]
+                        &\N[no]
+                        &\N[repository and alignment information both
+                        processed]
+                        &\Y[variants of most AS-lens combinators]
+        \\\hline
+        annotated       &\Y[insertion, deletion, modification markers]
+                        &\N[no]
+                        &\N[alignment information includes repository]
+                        &\Y[includes $\diag \in X \lens X \times X$]
+        \\\hline
+        const. maint.   &\Y[uninterpreted edits]
+                        &\Y[yes; does not require equiv.]
+                        &\N[no; all edits relative to $\init$]
+                        &\Y[many primitives, but no composition]
+        \\\hline
+        \multicolumn{2}{c}{}% drop the vertical bar
+        \\[-1.5ex]\hline
+        symm. state     &\N[very bad]
+                        &\Y[yes; requires equivalence]
+                        &\N[no]
+                        &\Y[mostly domain agnostic]
+        \\\hline
+        edit lenses     &\Y[edits]
+                        &\Y[yes; requires equivalence]
+                        &\Y[small edits support incremental operation]
+                        &\Y[most standard lenses, and container map]
+    \end{tabularx}
+    \end{center}
+
+    \small
+    \colorbox{accessiblegreen}{\strut green} means satisfies the objective,
+    \colorbox{accessiblered}{\strut red} indicates some shortcomings
 \end{frame}
 
 \begin{frame}
@@ -199,7 +252,7 @@
 
     \pause
 
-    \[M \triangleq \{\ONE\} \cup \{a \mapsto b \mid a,b \in \N\}\]
+    \[M \triangleq \{\ONE\} \cup \{a \mapsto b \mid a,b \in \nat\}\]
 
     With totality:
     \begin{align*}

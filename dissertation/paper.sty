@@ -97,8 +97,6 @@
 \else          \newcommand{\dotquote}{.''\xspace}\newcommand{\commaquote}{,''\xspace}
 \fi
 % }}}
-\colorlet{accessiblegreen}{green!55!black!70!blue!40!white}
-\colorlet{accessiblered}{red!80!black!80!yellow!30!white}
 \definecolor{bluegray}{rgb}{0.3,0.3,.6}
 \definecolor{blue}{rgb}{0,0,1}
 \definecolor{brown}{rgb}{.3,.3,.5}
@@ -162,7 +160,6 @@
 \newcommand{\Defined}{{\downarrow}} % double braces to affect spacing, see http://tex.stackexchange.com/a/38984/16779
 \newcommand{\Delete}{\mathit{delete}}
 \newcommand{\del}{\mathit{del}}
-\newcommand{\diag}{\mathit{diag}}
 \newcommand{\di}{\d i}
 \newcommand{\dif}{\mathit{dif}}
 \newcommand{\Directory}{\mathit{dir}}
@@ -230,7 +227,6 @@
 \newcommand{\Label}[1]{\ensuremath{\mathtt{#1}}}
 \newcommand{\Leaf}{\mathit{leaf}}
 \newcommand{\length}{\mathit{length}}
-\newcommand{\lens}{\leftrightarrow}
 \newcommand{\LENS}{{\sc lens}\xspace}
 \newcommand{\LENSop}{{\sc lens}$\op$\xspace}
 \newcommand{\liftedtolists}{_*}
@@ -302,7 +298,6 @@
 \newcommand{\Names}{\mathcal N}
 \newcommand{\NAT}{\mathbb{N}}
 \newcommand{\nextcase}[1]{\item[] {\bf Case} #1:}
-\newcommand{\N}[1][]{\cellcolor{accessiblered}#1}
 \newcommand{\Node}{\mathit{node}}
 \newcommand{\nondissenddis}{$\renewcommand{\dissdis}{\nondissstartdis}\xspace}
 \newcommand{\nondissstartdis}{\renewcommand{\dissdis}{\nondissenddis}$}
@@ -400,7 +395,6 @@
 \newcommand{\WBADLs}{wbad lenses\xspace}
 \newcommand{\x}{\mathbf x}
 \newcommand{\y}{\mathbf y}
-\newcommand{\Y}[1][\checkmark]{\cellcolor{accessiblegreen}#1}
 \newcommand{\zip}{\ensuremath{\ml{zip}}\xspace}
 \newenvironment{functoriality}{\begin{pflike}{Proof of functoriality}}{\end{pflike}}
 \newenvironment{goodlens}{\begin{pflike}{Proof of well-formedness}}{\end{pflike}}
@@ -410,7 +404,6 @@
 \pgfkeysdef{/bistable/post}{\def\bistablepost{#1}}
 \pgfkeysdef{/bistable/pre}{\def\bistablepre{#1}}
 \renewcommand{\P}{\mathcal{P}}
-\renewcommand{\tabularxcolumn}[1]{>{\centering\arraybackslash}m{#1}}
 \setlength{\afterruleskip}{\medskipamount}
 
 % Breaking if the page is too full when we're about to emit a header
