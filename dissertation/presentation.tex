@@ -92,34 +92,35 @@
 
 \begin{frame}
     \frametitle{Dissatisfaction}
-    Basic assumption of asymmetric lenses: source contains all data. View
-    contains some chunk of interest to the user.
+    Language-based research is centered on asymmetric lenses. But:
 
-    Behavioral laws not strong enough.
-
-    Surprisingly hard problem: alignment.
-
-    Need modularity.
+    \begin{itemize}
+        \item Core assumption that one database is canonical
+        \item Modular reasoning principles are valuable
+        \item Tracking changes is surprisingly difficult
+        \item Traditional model assumes batch processing
+        \item Behavioral laws do not constrain recovery
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Symmetric lenses}
-    First lens framework to support symmetry and address all the issues that
-    composition causes -- computability, behavioral equality.
+    \frametitle{Contributions}
+    Symmetric lenses are the first lens framework that:
+    \begin{itemize}
+        \item Gives both repositories equal status
+        \item Provide a computable sequential composition
+        \item Retain modular reasoning principles
+    \end{itemize}
+    Edit lenses extend symmetric lenses with:
+    \begin{itemize}
+        \item Explicit representation of and computation with changes
+        \item Support for incremental operation
+        \item Behavioral laws constraining update
+    \end{itemize}
 
-    But behavioral laws are no better, and no improvement on alignment.
-\end{frame}
+    \vpause
 
-\begin{frame}
-    \frametitle{Edit lenses}
-    Extend symmetric lenses with explicit alignment handling.
-
-    While we're at it, incremental operation for performance.
-
-    Did an algebraic study of the framework, resulting in a large collection
-    of abstract syntax.
-
-    Prototype implementation exploring the problem of generating alignment
+    A prototype implementation explores the problem of generating change
     information.
 \end{frame}
 
