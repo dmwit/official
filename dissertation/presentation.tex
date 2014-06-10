@@ -509,23 +509,59 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Other results}
-    Lens equivalence needed for composition to be reasonable + proofs that
-    all combinators respect equivalence classes
+    \frametitle{Other results: composition}
+    First in-depth study of machinery needed for sequential composition in
+    the presence of symmetry:
+    \begin{itemize}
+        \item Complements enable computable composition
+        \item Equality is too fine a distinction, but a coarser equivalence
+            relation identifies $j;(k;\ell)$ and $(j;k);\ell$
+        \item All lens combinators are proven to respect equivalence classes
+        \item An induced category whose arrows are lenses
+    \end{itemize}
+\end{frame}
 
-    CT-based study of algebra: tensor product/sum, but no real product/sum
-    (did we do some functoriality/naturality proofs, too, somewhere?)
+\begin{frame}
+    \frametitle{Other results: algebraic study}
+    For symmetric lenses:
+    \begin{itemize}
+        \item Symmetric monoidal product structure
+        \item Symmetric monoidal sum structure
+        \item \emph{Non}-existence of true products and sums
+        \item Projections (natural up to indexing)
+        \item Injections (non-natural)
+        \item Iterator lenses, combined folds and unfolds on inductive types
+        \item Functorial container mapping lens
+    \end{itemize}
+\end{frame}
 
-    Iterators for symmetric lenses
+\begin{frame}
+    \frametitle{Other results: algebraic study}
+    % TODO: add a question to the list of potential pain points: why didn't
+    % you try to recapitulate the symmetric lens exploration? e.g. why
+    % didn't you study naturality of projection, existence of injections,
+    % and explicitly prove products/sums don't exist?
+    For edit lenses:
+    \begin{itemize}
+        \item Symmetric monoidal product structure
+        \item Tensor sum structure which is bifunctorial and commutative (up
+            to $\init$ bias) but not associative
+        \item Functorial container mapping lens
+    \end{itemize}
+    Partition, reshaping (not motivated by algebraic considerations)
+\end{frame}
 
-    Symmetric lenses subsume asymmetric lenses; edit lenses subsume
-    symmetric lenses when given a diff operation
-
-    Took a first step away from free monoid edit modules
-
-    Implementation explores alignment generation problem
-
-    Maybe should be exploded into one slide each?
+\begin{frame}
+    \frametitle{Other results: miscellaneous}
+    \begin{itemize}
+        \item Asymmetric lenses can be lifted to symmetric lenses (and
+            lifting is compatible with many operators)
+        \item Symmetric lenses + change detection algorithms can be lifted
+            to edit lenses
+        \item Monoid homomorphism laws refine state-based behavioral laws
+        \item Prototype implementation explores the generation of alignment
+            information
+    \end{itemize}
 \end{frame}
 
 % TODO: some slides covering the conclusion (i.e. summarize what we did, say
