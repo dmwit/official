@@ -299,14 +299,43 @@
 
 \begin{frame}
     \frametitle{Products}
-    % TODO: turn this into a cats and dogs diagram
     How to edit $X \times Y$? Either edit $X$ or edit $Y$.
 
-    \begin{align*}
-        \D(X\times Y) &\triangleq \DX + \DY \\
-        \mlleft \dx \odot\gen (x,y) &\triangleq (\dx \odot x, y) \\
-        \mlright\dy \odot\gen (x,y) &\triangleq (x, \dy \odot y)
-    \end{align*}
+    \begin{diagram}
+        \node[matrix of nodes
+             ,ampersand replacement=\&
+             ] (pairs) {
+                Cats $\times$ Dogs                \&
+                \vimg{2em}{without_scarf}         \&[4em]
+                \vimg{2em}{with_scarf}            \\
+                \vimg{2em}{without_hat}           \&
+                \pair{without_hat}{without_scarf} \&
+                \pair{without_hat}{with_scarf}    \\[6ex]
+                \vimg{2em}{with_hat}              \&
+                \pair{with_hat}{without_scarf}    \&
+                \pair{with_hat}{with_scarf}       \\
+            }
+
+            ($(pairs-3-2.south)!0.5!(pairs-3-3.south)$) node[below]
+                {%
+                    \strut%
+                    \only<2>{$\mlleft{\mbox{+hat}}$}%
+                    \only<3>{$\mlright{\mbox{+scarf}}$}%
+                }
+            ;
+        \path<2>
+            (pairs-2-2)     edge[->]                  (pairs-3-2)
+            (pairs-2-3)     edge[->]                  (pairs-3-3)
+            (pairs-3-2.225) edge[->] node {\nbullet} +(-0.5,-0.5)
+            (pairs-3-3.315) edge[->] node {\nbullet} +( 0.5,-0.5)
+            ;
+        \path<3>
+            (pairs-2-2)     edge[->]                  (pairs-2-3)
+            (pairs-3-2)     edge[->]                  (pairs-3-3)
+            (pairs-2-3.315) edge[->] node {\nbullet} +( 0.5,-0.5)
+            (pairs-3-3.315) edge[->] node {\nbullet} +( 0.5,-0.5)
+            ;
+    \end{diagram}
 \end{frame}
 
 \begin{frame}

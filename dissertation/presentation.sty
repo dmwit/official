@@ -17,3 +17,5 @@
 \newcommand{\fix}[1]{\mu#1\!.\;}
 \newcommand{\anything}{\mbox{\textunderscore}}
 \newcommand{\img}[3][]{\includegraphics[width=#2,#1]{images/#3}}
+\newcommand{\vimg}[2]{\raisebox{-0.4\height}[0.5\height][0.5\height]{\img{#1}{#2}}}
+\newcommand{\pair}[3][2em]{\ensuremath{\left(\vimg{#1}{#2},\vimg{#1}{#3}\right)}}
