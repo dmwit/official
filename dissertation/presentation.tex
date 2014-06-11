@@ -62,26 +62,14 @@
     \end{diagram}
 \end{frame}
 
-% TODO: maybe delete, and add a line to the ``other settings'' list on the
-% next slide
-\begin{frame}
-    \frametitle{History: a problem in UIs}
-    \begin{center}
-        \img{0.5\textwidth}{viewport_slider}
-
-        \vfill\vfill
-
-        \img{0.5\textwidth}{range_slider}
-    \end{center}
-\end{frame}
-
 % TODO: Nicole says these next few slides did not go smoothly
 \begin{frame}
     \frametitle{Bidirectional programming}
     Many other settings with similar problems, like
     \begin{itemize}
         \item parsing (in-memory structures $\leftrightarrow$ serialization),
-        \item software model transformations (diagrams $\leftrightarrow$ code), and
+        \item software model transformations (diagrams $\leftrightarrow$ code),
+        \item user interfaces (connecting two widgets' state), and
         \item sysadmin (custom configurations $\leftrightarrow$ unified format).
     \end{itemize}
 
@@ -286,21 +274,6 @@
     \vpause
 
     \uncover<3>{\alert{Does not work well.}}
-\end{frame}
-
-% TODO: delete this slide now? doesn't seem that useful, really
-\begin{frame}
-    \frametitle{Free monoids}
-    All modules in this talk based on lists:
-    \begin{align*}
-        \ONE &\triangleq \left<\right> \\
-        \left<a_0,\cdots,a_m\right>\;\left<b_0,\cdots,b_n\right>
-            &\triangleq \left<a_0,\cdots,a_m,b_0,\cdots,b_n\right>
-    \end{align*}
-
-    Elements are atomic edits, and get run in sequence:
-    \[\left<a,b,c\right>\odot x \triangleq
-        a \odot\gen (b \odot\gen (c \odot\gen x))\]
 \end{frame}
 
 \begin{frame}
