@@ -34,16 +34,23 @@
             node[anchor=west] (result') {new result}
 
             (db'.base) node[anchor=base] {new DB}
-
+            ;
+        \path<.-.(1)>
             (db') edge[->] node[above=-1em] (query') {query} (result')
             (db)  edge[->] (db')
             ;
-        \path<+->
-            (db)  edge[->] coordinate[right=1em,pos=0.9] (update base)
-                           node[right=1em, pos=0.3, thought,
-                                callout absolute pointer=(update base)
-                               ] (update) {\tiny result $\to$ new result}
-                           (db')
+        \path<+>
+            (db)  edge[draw=none]
+                coordinate[right=1em,pos=0.9] (update base)
+                node[right=1em, pos=0.3, thought,
+                     callout absolute pointer=(update base)
+                    ] (update) {\tiny result $\to$ new result}
+            (db')
+            ;
+        \path<+>
+            (result)  edge[draw=none] coordinate[pos=1] (above result') (result')
+            (result)  edge[->] (result |- above result')
+            (result') edge[->] node[above=-1em] (inverse) {reverse query} (db')
             ;
     \end{diagram}
 \end{frame}
