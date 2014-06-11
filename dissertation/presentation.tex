@@ -68,24 +68,26 @@
 
     In each setting,
     \begin{itemize}
-        \item two pieces of data are related, and
+        \item two pieces of data (henceforth, \emph{repositories}) are related, and
         \item we would like to avoid writing two related transformations.
     \end{itemize}
 \end{frame}
 
-% TODO: this slide needs some work on content and some thought about what
-% you will say while it's up
+% TODO: this slide needs some thought about what to say while it's up
 \begin{frame}
     \frametitle{Dissatisfaction}
     Language-based research is centered on asymmetric lenses. But:
 
-    \begin{itemize}
-        \item Core assumption that one database is canonical
-        \item Modular reasoning principles are valuable
-        \item Tracking changes is surprisingly difficult
-        \item Traditional model assumes batch processing
-        \item Behavioral laws do not constrain recovery
-    \end{itemize}
+    \begin{description}[Misalignment]
+        \item[Asymmetry] A canonical repository stores all information,
+        \item[Misalignment] Lenses have limited access to information
+            connecting old and new repositories, and
+        \item[Performance] Traversing entire repositories requires high
+            computation and memory resources.
+    \end{description}
+
+    \ldots though the extensive {\usebeamercolor{palette
+    primary}\color{fg}syntax} is a key feature to keep.
 \end{frame}
 
 \begin{frame}
