@@ -7,15 +7,33 @@
 \usepackage{tabularx}
 \usepackage{shared}
 \usetikzlibrary{shapes.callouts,shapes.geometric,shapes.symbols}
+
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\gen}{_\ml g}
+\newcommand{\fix}[1]{\mu#1\!.\;}
+\newcommand{\anything}{\mbox{\textunderscore}}
+
 \colorlet{alertgreen}{green!55!black}
 \setbeamercolor{alerted text}{fg=alertgreen}
 \newcommand{\vpause}{\vspace{5ex}}
 \newcommand{\ybullet}{{\color{alertgreen}\checkmark}}
 \newcommand{\nbullet}[1][0.9em]{\img{#1}{x}}
-\newcommand{\nat}{\mathbb{N}}
-\newcommand{\gen}{_\ml g}
-\newcommand{\fix}[1]{\mu#1\!.\;}
-\newcommand{\anything}{\mbox{\textunderscore}}
+
 \newcommand{\img}[3][]{\includegraphics[width=#2,#1]{images/#3}}
 \newcommand{\vimg}[2]{\raisebox{-0.4\height}[0.5\height][0.5\height]{\img{#1}{#2}}}
 \newcommand{\pair}[3][2em]{\ensuremath{\left(\vimg{#1}{#2},\vimg{#1}{#3}\right)}}
+
+\tikzstyle{DB}=
+    [draw, aspect=0.8
+    ,shape=cylinder
+    ,shape border rotate=90
+    ,minimum width=6em
+    ]
+\tikzstyle{thought}=
+    [draw, aspect=4
+    ,cloud callout
+    ,cloud puffs=25
+    ,callout pointer segments=4
+    ,callout pointer start size=1.5ex
+    ,callout pointer end   size=0.5ex
+    ]
