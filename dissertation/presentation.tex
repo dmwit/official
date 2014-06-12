@@ -112,22 +112,11 @@
 \end{frame}
 
 % TODO: related work we haven't discussed includes TGGs, C-lenses
-% TODO: really need to figure out what you're going to say here
 \begin{frame}
     \frametitle{Related work}
     \tiny
     \begin{tabularx}{\linewidth}{m{4.4em}|X|X|X|X}
         & Alignment & Symmetry & Performance & Syntax
-        \\\hline
-        asymm. $\delta$ &\Y[explicit alignments]
-                        &\N[not a goal]
-                        &\N[edits include repositories]
-                        &\Y[via alternate framework]
-        \\\hline
-        symm. $\delta$  &\Y[edits]
-                        &\Y[yes, but equiv. not explored]
-                        &\N[edits include repositories]
-                        &\N[alternate frameworks not instantiated]
         \\\hline
         algebraic       &\Y[edits]
                         &\N[no]
@@ -144,6 +133,16 @@
                         &\N[no]
                         &\N[alignment information includes repository]
                         &\Y[includes $\diag \in X \lens X \times X$]
+        \\\hline
+        asymm. $\delta$ &\Y[explicit alignments]
+                        &\N[not a goal]
+                        &\N[edits include repositories]
+                        &\Y[via alternate framework]
+        \\\hline
+        symm. $\delta$  &\Y[edits]
+                        &\Y[yes, but equiv. not explored]
+                        &\N[edits include repositories]
+                        &\N[alternate frameworks not instantiated]
         \\\hline
         const. maint.   &\Y[uninterpreted edits]
                         &\Y[yes; does not require equiv.]
