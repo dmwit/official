@@ -6,7 +6,7 @@
 \usepackage[draft]{beamer_minimal} % TODO: end draft mode
 \usepackage{tabularx}
 \usepackage{shared}
-\usetikzlibrary{shapes.callouts,shapes.geometric,shapes.misc,shapes.symbols}
+\usetikzlibrary{shadows.blur,shapes.callouts,shapes.geometric,shapes.misc,shapes.symbols}
 
 \newcommand{\nat}{\mathbb{N}}
 \newcommand{\gen}{_\ml g}
@@ -56,3 +56,23 @@
             \bgroup\begin{tabular}{>{$}r<{$}l}
     }
     {\end{tabular}\egroup;\end{tikzpicture}}
+
+\definecolor{medgray}{RGB}{157,157,157}
+\tikzstyle{connection}=[line width=2.4pt,medgray,>=latex]
+\tikzstyle{put}=[bend left,->,connection]
+\tikzstyle{replica}=[draw,rounded corners,fill=lightyellow,
+    blur shadow={
+        shadow xshift=0,
+        shadow scale=1.05,
+        shadow yshift=-0.2ex,
+        shadow opacity=60
+        }
+    ]
+\tikzstyle{tabular}=[
+    ampersand replacement=\&,
+    matrix of nodes,
+    nodes={anchor=west,inner ysep=0},
+    column sep=1em,
+    execute at begin node=\strut
+    ]
+\newcommand{\finalizeboundingbox}{\path[use as bounding box];}

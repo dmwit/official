@@ -700,6 +700,216 @@
 \end{frame}
 
 \begin{frame}[noframenumbering]
+    \frametitle{Realistic assumption: symmetry}
+    \begin{diagram}
+        \draw
+            node[replica] (L) {
+                \begin{tabular}{ll}
+                    Mozart & Austria \\
+                    Mahler & Czech R. \\
+                    Stevens & England
+                \end{tabular}
+            }
+            node[replica,right=8em of L] (R) {
+                \begin{tabular}{ll}
+                    Mozart & 1756 \\
+                    Mahler & 1860 \\
+                    Stevens & 1948
+                \end{tabular}
+            }
+            (L.east) edge[put] (R.west)
+            (R.west) edge[put] (L.east)
+            ;
+    \end{diagram}
+\end{frame}
+
+% note to self: 14 slides of animation/signposting up to here
+
+\begin{frame}[noframenumbering]
+    \frametitle{Handling lists}
+    \begin{diagram}
+        \path
+            node[replica,tabular] (L) {
+                Mozart \& Austria \\
+                \only<2->{\alert<2>{Liszt} \& \color<2>{red}Czech R. \\}%
+                Mahler \& \only<1>{Czech R.}\only<2>{\color{red}England} \\
+                Stevens \& \only<1>{England}\only<2>{\color{red}missing} \\
+            }
+            node[replica,tabular,right=8em of L] (R) {
+                Mozart \& 1756 \\
+                \alert<1>{Liszt} \& \alert<1>{1811} \\
+                Mahler \& 1860 \\
+                Stevens \& 1948 \\
+            }
+            ;
+        \draw<1>
+            (L.east) edge[put] (R.west)
+            (R.west) edge[put,alertgreen] (L.east)
+            ;
+        \draw<2>
+            (L.east) edge[put] (R.west)
+            (R.west) edge[put] (L.east)
+            ;
+    \end{diagram}
+\end{frame}
+
+\begin{frame}[noframenumbering]
+    \frametitle{Alignment}
+    \small
+    \begin{diagram}
+        \node[replica,tabular] (L) {
+            Mozart \& Austria \\
+            Mahler \& Czech R. \\
+            Stevens \& England \\
+            };
+        \node[replica,tabular,right=12em of L] (R) {
+            Mozart \& 1756 \\
+            \alert{Liszt} \& \alert{1811} \\
+            Mahler \& 1860 \\
+            Stevens \& 1948 \\
+            };
+        \path
+            (L-1-2 -| L-2-2.east) coordinate (L-1-2-east)
+            (L-2-2 -| L-2-2.east) coordinate (L-2-2-east)
+            (L-3-2 -| L-2-2.east) coordinate (L-3-2-east)
+            ;
+        \path<3>
+            ($(L.east)!.5!(R.west)$)
+            node[replica,tabular] (R') {
+                Mozart \& 1756 \\
+                Mahler \& 1860 \\
+                Stevens \& 1948 \\
+            }
+            ;
+        \draw<2>[thick]
+            (R-1-1.west) -- (L-1-2-east)
+            (R-3-1.west) -- (L-2-2-east)
+            (R-4-1.west) -- (L-3-2-east)
+            ;
+        \draw<3>[thick]
+            (R-1-1.west) -- (R'-1-2.east)
+            (R-3-1.west) -- (R'-2-2.east)
+            (R-4-1.west) -- (R'-3-2.east)
+            (R'-1-1) -- (L-1-2-east)
+            (R'-2-1) -- (L-2-2-east)
+            (R'-3-1) -- (L-3-2-east)
+            ;
+    \end{diagram}
+\end{frame}
+
+\begin{frame}[noframenumbering]
+    \frametitle{Alignment failure modes}
+    \begin{diagram}
+        \path
+                            coordinate (UL)
+                 +(12em, 0) coordinate (UR)
+            (UL) +(0, -7em) coordinate (ML)
+            (ML -| UR)      coordinate (MR)
+            ($(ML)!.5!(MR)$) +(0,-7em) coordinate (BC)
+            ;
+        \path
+            (UL) node[replica,tabular] (align-L) {
+                Mozart \& 1756 \\
+                Mahler \& 1860 \\
+                Stevens \& 1948 \\
+                }
+            (UR) node[replica,tabular] (align-L') {
+                Mozart \& 1756 \\
+                Liszt \& 1811 \\
+                Mahler \& 1860 \\
+                Stevens \& 1948 \\
+                }
+            (ML) node[replica,tabular] (L') {
+                Mozart \& Austria \\
+                Mahler \& Czech R. \\
+                Stevens \& England \\
+                }
+            (MR) node[replica,tabular] (R) {
+                Mozart \& 1756 \\
+                Liszt \& 1811 \\
+                Mahler \& 1860 \\
+                Stevens \& 1948 \\
+                }
+            % TODO: can we put some ``Zalgo comes'' style decorations on the
+            % countries at the end of the third overlay?
+            (BC) node[replica,tabular] (R') {
+                Mozart \& \alt<3>{\color{red}England}{Austria} \\
+                Liszt \& \temporal<2>{\color{red}Czech R.}{missing}{\color{red}Austria} \\
+                Mahler \& \color{red}\temporal<2>{England}{missing}{\texttt{<<loop>>}} \\
+                Stevens \& \temporal<2>{\color{red}missing}{England}{\color{red}Austria} \\
+                }
+            ;
+        \path (R'.north) +(0,1ex) coordinate (up)
+              ($(L'.east)!.5!(R.west)$) coordinate (mid)
+              ;
+        \draw[put,alertgreen] (L'.east) .. controls (mid) and (up) .. (R'.north);
+        \draw[put,alertgreen] (R.west)  .. controls (mid) and (up) .. (R'.north);
+        \draw<1>[thick]
+            (align-L'-1-1.west) -- (align-L-1-2)
+            (align-L'-2-1.west) -- (align-L-2-2)
+            (align-L'-3-1.west) -- (align-L-3-2)
+            ;
+        \draw<2>[thick]
+            (align-L'-1-1.west) -- (align-L-1-2.east)
+            (align-L'-4-1.west) -- (align-L-3-2.east)
+            ;
+        \finalizeboundingbox
+        \path<3>
+            (align-L'.north west) +(0.85em,1em)
+            node[anchor=north east] {\includegraphics{images/wonky_lines.pdf}}
+            ;
+    \end{diagram}
+\end{frame}
+
+\newcommand{\col}[3]{(#2-row -| #3-col) node[#1] (#2-#3)}
+\newcommand{\row}[4]{
+    \col{tabular,replica}{#1}{new}{#2}
+    \col{tabular,replica}{#1}{old}{#3}
+    \col{}{#1}{descr}{#4}
+}
+\newcommand{\mozart}{Mozart \& 1756 \\}
+\newcommand{\liszt}{Liszt \& 1811 \\}
+\newcommand{\mahler}{Mahler \& 1860 \\}
+\newcommand{\stevens}{Stevens \& 1948 \\}
+\newcommand{\islam}{Islam \& 1948 \\}
+\newcommand{\mms}{\mozart\mahler\stevens}
+\newcommand{\bls}{Bach \& Germany \\ Liszt \& Hungary \\ Stevens \& England \\}
+\begin{frame}[noframenumbering]
+    \frametitle{Strange, but true}
+    \scriptsize
+    \begin{diagram}
+        \path
+            coordinate (heading-row)
+            ++(0,-3em) coordinate (insert-row)
+            ++(0,-5em) coordinate (typo-row)
+            ++(0,-5em) coordinate (replace-row)
+            ++(0,-5em) coordinate (name-row)
+            ++(0,-5em) coordinate (bachbach-row)
+            (heading-row) coordinate (old-col)
+            ++(11em,0) coordinate (new-col)
+            ++(10em,0) coordinate (descr-col)
+
+            ($(old-col)!.5!(new-col)$) node {Alignment}
+            \col{}{heading}{descr}{What Changed}
+            \row{insert}  {\mms}                {\mozart\stevens}                   {insert Mahler}
+            \row{typo}    {\mms}                {\mozart Maller \& 1860 \\ \stevens}{correct typo}
+            \row{replace} {\mms}                {\mozart\liszt\stevens}             {replace a composer}
+            \row{name}    {\mozart\mahler\islam}{\mms}                              {name change}
+            \row{bachbach}{\bls}                {\bls}                              {replace Bach with son}
+            ;
+        \foreach \name/\conns in {
+            insert/{1/1,3/2},
+            typo/{1/1,2/2,3/3},
+            replace/{1/1,3/3},
+            name/{1/1,2/2,3/3},
+            bachbach/{2/2,3/3}%
+            }
+            \foreach \i/\j in \conns
+                \draw[thick] (\name-new-\i-1.west) -- (\name-old-\j-2.east);
+    \end{diagram}
+\end{frame}
+
+\begin{frame}[noframenumbering]
     \frametitle{Future work}
     \begin{itemize}
         \item Hyperlenses: multi-repository lenses
