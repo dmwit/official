@@ -41,3 +41,18 @@
     ]
 \tikzstyle{repository}=[draw, rounded rectangle]
 \tikzstyle{relation}=[]
+
+\usebeamercolor{structure}
+\colorlet{darkblue}{fg}
+\definecolor{lightyellow}{rgb}{1,1,0.9}
+\tikzstyle{pronunciation}=
+    [fill=lightyellow
+    ,text=darkblue
+    ,font=\scriptsize
+    ]
+\newenvironment{pronunciation}
+    {\begin{tikzpicture}[remember picture, overlay]
+        \path (current page.north east) node[pronunciation, anchor=north east]
+            \bgroup\begin{tabular}{>{$}r<{$}l}
+    }
+    {\end{tabular}\egroup;\end{tikzpicture}}

@@ -8,9 +8,6 @@
 
 \begin{document}
 
-% TODO: Dad suggests: how about a ``pronunciation guide'' box in the upper
-% right corner to remind you to talk about each piece of new syntax?
-
 % TODO: practice, word for word, your first few sentences
 \author{Daniel Wagner\\[3ex]\img{0.2\linewidth}{plclub-logo}} % for beamer
 \maketitle
@@ -215,6 +212,13 @@
         \item Default value $\init_X$ is a technical detail; explanation
             later
     \end{itemize}
+
+    \begin{pronunciation}
+        \D & changes to \\
+        \odot & apply \\
+        \init & initial \\
+        \partialto & partial function to
+    \end{pronunciation}
 \end{frame}
 
 \begin{frame}
@@ -230,6 +234,11 @@
     \[f(m\;n) = f(m)\;f(n)\]
     In particular, for edits: identity always succeeds and does nothing, and
     edits can be run in sequence.
+
+    \begin{pronunciation}
+        \ONE & identity \\
+        m\;n & $m$ times $n$
+    \end{pronunciation}
 \end{frame}
 
 \begin{frame}
@@ -254,6 +263,11 @@
 
     With partiality, can define
     \[(a \mapsto b)\;(b \mapsto c) \triangleq a \mapsto c\]
+
+    \begin{pronunciation}
+        \triangleq & is defined equal to \\
+        \mapsto & becomes
+    \end{pronunciation}
 
     \pause
     Theorem: Partiality is an illusion.
@@ -424,6 +438,10 @@
 
     Information never migrates; can't swap list elements.
 
+    \begin{pronunciation}
+        \tau[X/Y] & replace $Y$ by $X$ in $\tau$
+    \end{pronunciation}
+
     \pause
 
     More baroque approaches have other problems.
@@ -458,6 +476,10 @@
         &\mbox{elif}&p=1\mbox{ then }&6\\
         &\mbox{elif}&p=2\mbox{ then }&2
     \end{array}\right>\]
+
+    \begin{pronunciation}
+        \nat & natural numbers
+    \end{pronunciation}
 \end{frame}
 
 \begin{frame}
@@ -490,6 +512,10 @@
             \\ \mathrel{\cup}{}&
                 \{\ml{fail}\}
     \end{align*}
+
+    \begin{pronunciation}
+        \simeq & bijection to
+    \end{pronunciation}
 \end{frame}
 
 \begin{frame}
@@ -576,6 +602,10 @@
             (I2) -- (append)    (center) -- (length) -- (O2)
             ;
     \end{diagram}
+
+    \begin{pronunciation}
+        -^\star & list
+    \end{pronunciation}
 \end{frame}
 
 \begin{frame}
