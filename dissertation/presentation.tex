@@ -440,6 +440,23 @@
 \end{frame}
 
 \begin{frame}
+    \frametitle{Lists as containers}
+    \begin{align*}
+        I   &\triangleq \nat \\
+        P_i &\triangleq \{0,\ldots,i-1\}
+    \end{align*}
+
+    \vpause
+
+    The list $[3,6,2]$ is represented as the pair
+    \[\left<\begin{array}{l@{\;}l@{\ }r@{}l}3,\lambda p.
+        &\mbox{if}  &p=0\mbox{ then }&3\\
+        &\mbox{elif}&p=1\mbox{ then }&6\\
+        &\mbox{elif}&p=2\mbox{ then }&2
+    \end{array}\right>\]
+\end{frame}
+
+\begin{frame}
     \frametitle{Container restrictions}
     Three important changes:
 
