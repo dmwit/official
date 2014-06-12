@@ -575,7 +575,6 @@
 % TODO: could save some horizontal space and maybe make the trees look more
 % regular by putting Beethoven last and arranging the data nodes by their
 % right border rather than their left
-% TODO: could use some more color/highlighting
 \begin{frame}
     \frametitle{Edit parsing}
     \begin{diagram}
@@ -587,16 +586,16 @@
                 \end{tabular}}
             node[below=12ex of raw before] (raw after) {\begin{tabular}{r@{, }l}
                 Beethoven & 1770 \\
-                Bach & 1685 \\
-                Haydn & 1732
+                Bach & 16{\color{alertgreen}85} \\
+                {\color{alertgreen}Hayd}n & 1732
                 \end{tabular}}
 
             (raw before.north east) +(2em, 0)
             node[anchor=north west] (parsed before top) {(Beethoven, 1770)}
             (raw before.south east) +(5em, 0)
-            node[anchor=south west] (parsed before bot) {(Hayn, 1732)}
+            node[anchor=south west] (parsed before bot) {({\color{alertgreen}Hayn}, 1732)}
             ($(parsed before top.west)!.5!(parsed before bot.west)$)
-            node[anchor=west]       (parsed before mid) {(Bach, 1675)}
+            node[anchor=west]       (parsed before mid) {(Bach, {\color{alertred}1675})}
 
             node[above right=1ex of parsed before top] (before cons top) {cons}
             (before cons top) +(1ex, -4ex) node        (before cons mid) {cons}
@@ -615,9 +614,9 @@
             (raw after.north east) +(2em, 0)
             node[anchor=north west] (parsed after top) {(Beethoven, 1770)}
             (raw after.south east) +(4em, 0)
-            node[anchor=south west] (parsed after bot) {(Haydn, 1732)}
+            node[anchor=south west] (parsed after bot) {({\color{alertgreen}Haydn}, 1732)}
             ($(parsed after top.west)!.5!(parsed after bot.west)$)
-            node[anchor=west]       (parsed after mid) {(Bach, 1685)}
+            node[anchor=west]       (parsed after mid) {(Bach, {\color{alertred}1685})}
 
             node[above right=1ex of parsed after top] (after cons top) {cons}
             (after cons top) +(1ex, -4ex) node        (after cons mid) {cons}
@@ -634,13 +633,13 @@
                 edge (after nil)
 
             (raw before) edge[->]
-                node[right,pos=0.4]  {\tiny Delete 24 30}
-                node[right,pos=0.53] {\tiny Insert \ 24 ``85\textbackslash nHayd''}
+                node[right,pos=0.40,text=alertred]   {\tiny Delete 24 30}
+                node[right,pos=0.53,text=alertgreen] {\tiny Insert \ 24 ``85\textbackslash nHayd''}
             (raw after)
 
             (parsed before bot) edge[->]
-                node[right,pos=0.4]  {\tiny mod(1,right(1685))}
-                node[right,pos=0.53] {\tiny mod(2,left(Haydn))}
+                node[right,pos=0.40,text=alertred]   {\tiny mod(1,right(1685))}
+                node[right,pos=0.53,text=alertgreen] {\tiny mod(2,left(Haydn))}
             (parsed after top.north -| parsed before bot)
             ;
     \end{diagram}
