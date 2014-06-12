@@ -1,6 +1,8 @@
 !( boring | info | message
  | warning & ( (package "Font" & ( 'Size substitutions with differences\nup to 1\.0pt have occurred\.'
                                  | 'Font shape `OT1/cmss/m/n\' in size <4> not available\nsize <5> substituted on input line [[:digit:]]+\.'
+                                 | 'Font shape `OMS/cmss/m/n\' undefined\nusing `OMS/cmsy/m/n\' instead\nfor symbol `textbackslash\' on input line [[:digit:]]+\.'
+                                 | 'Some font shapes were not available, defaults substituted\.'
                                  )
                )
              | (package "hyperref" & 'Option `pdfauthor\' has already been used,\nsetting the option has no effect on input line [[:digit:]]+\.')

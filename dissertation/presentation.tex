@@ -539,21 +539,111 @@
     \end{itemize}
 \end{frame}
 
-% TODO: plan a transition from the results to here
-% TODO: Nicole says I paused a lot on this slide, so work out what to say
-% aloud
 \begin{frame}
-    \frametitle{Future work}
-    \begin{itemize}
-        \item Hyperlenses: multi-repository lenses
-        \item Transforming string edits into structured edits
-        \item Further exploration of the possible edit lenses
-        \item More breadth in the algebraic study of edit lenses
-        \item Many ideas for applications
-        \item Others: variations of the behavioral laws, typed edits,
-            asymmetric edit lenses, connections between various lens
-            frameworks, automatic weight function discovery
-    \end{itemize}
+    \frametitle{Hyperlenses}
+    Bidirectional transformations:
+    \begin{diagram}[start chain=going right, node distance=1em]
+        \draw
+            node[repository,on chain,join] {$(X+Y)^\star$}
+            node[relation  ,on chain,join] {partition}
+            node[repository,on chain,join] {$X^\star\times Y^\star$}
+            node[relation  ,on chain,join] {$\pi_1$}
+            node[repository,on chain,join] {$Y^\star$}
+            ;
+    \end{diagram}
+
+    \vpause
+
+    Multi-directional transformations:
+    \begin{diagram}[node distance=1em]
+        \draw
+            node[repository] (center) {$\nat^\star$}
+            node[relation,left=of center] (append) {append}
+            node[repository,above left=of append] (I1) {$\nat^\star$}
+            node[repository,below left=of append] (I2) {$\nat^\star$}
+            node[relation,below right=of center] (length) {length}
+            node[repository,right=of length] (O2) {$\nat$}
+            coordinate[above right=of center] (sum coord)
+            (sum coord -| length) node[relation,anchor=south] (sum) {sum}
+            (sum -| O2) node[repository] (O1) {$\nat$}
+            (I1) -- (append) -- (center) -- (sum)    -- (O1)
+            (I2) -- (append)    (center) -- (length) -- (O2)
+            ;
+    \end{diagram}
+\end{frame}
+
+% TODO: could save some horizontal space and maybe make the trees look more
+% regular by putting Beethoven last and arranging the data nodes by their
+% right border rather than their left
+% TODO: could use some more color/highlighting
+\begin{frame}
+    \frametitle{Edit parsing}
+    \begin{diagram}
+        \draw
+            node (raw before) {\begin{tabular}{r@{, }l}
+                Beethoven & 1770 \\
+                Bach & 16\alert{75} \\
+                \alert{Hay}n & 1732
+                \end{tabular}}
+            node[below=12ex of raw before] (raw after) {\begin{tabular}{r@{, }l}
+                Beethoven & 1770 \\
+                Bach & 1685 \\
+                Haydn & 1732
+                \end{tabular}}
+
+            (raw before.north east) +(2em, 0)
+            node[anchor=north west] (parsed before top) {(Beethoven, 1770)}
+            (raw before.south east) +(5em, 0)
+            node[anchor=south west] (parsed before bot) {(Hayn, 1732)}
+            ($(parsed before top.west)!.5!(parsed before bot.west)$)
+            node[anchor=west]       (parsed before mid) {(Bach, 1675)}
+
+            node[above right=1ex of parsed before top] (before cons top) {cons}
+            (before cons top) +(1ex, -4ex) node        (before cons mid) {cons}
+            (before cons mid) +(1ex, -4ex) node        (before cons bot) {cons}
+            (before cons bot) +(1ex, -4ex) node        (before nil)      {nil}
+            (before cons top)
+                edge (parsed before top.north east)
+                edge (before cons mid)
+            (before cons mid)
+                edge (parsed before mid.5)
+                edge (before cons bot)
+            (before cons bot)
+                edge (parsed before bot.5)
+                edge (before nil)
+
+            (raw after.north east) +(2em, 0)
+            node[anchor=north west] (parsed after top) {(Beethoven, 1770)}
+            (raw after.south east) +(4em, 0)
+            node[anchor=south west] (parsed after bot) {(Haydn, 1732)}
+            ($(parsed after top.west)!.5!(parsed after bot.west)$)
+            node[anchor=west]       (parsed after mid) {(Bach, 1685)}
+
+            node[above right=1ex of parsed after top] (after cons top) {cons}
+            (after cons top) +(1ex, -4ex) node        (after cons mid) {cons}
+            (after cons mid) +(1ex, -4ex) node        (after cons bot) {cons}
+            (after cons bot) +(1ex, -4ex) node        (after nil)      {nil}
+            (after cons top)
+                edge (parsed after top.north east)
+                edge (after cons mid)
+            (after cons mid)
+                edge (parsed after mid.5)
+                edge (after cons bot)
+            (after cons bot)
+                edge (parsed after bot.5)
+                edge (after nil)
+
+            (raw before) edge[->]
+                node[right,pos=0.4]  {\tiny Delete 24 30}
+                node[right,pos=0.53] {\tiny Insert \ 24 ``85\textbackslash nHayd''}
+            (raw after)
+
+            (parsed before bot) edge[->]
+                node[right,pos=0.4]  {\tiny mod(1,right(1685))}
+                node[right,pos=0.53] {\tiny mod(2,left(Haydn))}
+            (parsed after top.north -| parsed before bot)
+            ;
+    \end{diagram}
 \end{frame}
 
 \begin{frame}
@@ -573,6 +663,20 @@
         %\img{0.8\linewidth}{questions}
         \img{0.5\linewidth}{question_tail}
     \end{center}
+\end{frame}
+
+\begin{frame}[noframenumbering]
+    \frametitle{Future work}
+    \begin{itemize}
+        \item Hyperlenses: multi-repository lenses
+        \item Transforming string edits into structured edits
+        \item Further exploration of the possible edit lenses
+        \item More breadth in the algebraic study of edit lenses
+        \item Many ideas for applications
+        \item Others: variations of the behavioral laws, typed edits,
+            asymmetric edit lenses, connections between various lens
+            frameworks, automatic weight function discovery
+    \end{itemize}
 \end{frame}
 
 % TODO: perhaps make this a table with a tad more info?
