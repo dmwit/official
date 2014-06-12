@@ -313,10 +313,6 @@
 
 \begin{frame}
     \frametitle{Sums}
-    Choices are less canonical, and significantly more fiddly.
-
-    \vspace{-2ex}
-
     % TODO: for dogs, perhaps age them instead of adding an accessory
     \begin{diagram}
         \node[matrix of nodes
@@ -586,14 +582,14 @@
                 \end{tabular}}
             node[below=12ex of raw before] (raw after) {\begin{tabular}{r@{, }l}
                 Beethoven & 1770 \\
-                Bach & 16{\color{alertgreen}85} \\
-                {\color{alertgreen}Hayd}n & 1732
+                Bach & 16{\color{purple}85} \\
+                {\color{purple}Hayd}n & 1732
                 \end{tabular}}
 
             (raw before.north east) +(2em, 0)
             node[anchor=north west] (parsed before top) {(Beethoven, 1770)}
             (raw before.south east) +(5em, 0)
-            node[anchor=south west] (parsed before bot) {({\color{alertgreen}Hayn}, 1732)}
+            node[anchor=south west] (parsed before bot) {({\color{purple}Hayn}, 1732)}
             ($(parsed before top.west)!.5!(parsed before bot.west)$)
             node[anchor=west]       (parsed before mid) {(Bach, {\color{alertred}1675})}
 
@@ -614,7 +610,7 @@
             (raw after.north east) +(2em, 0)
             node[anchor=north west] (parsed after top) {(Beethoven, 1770)}
             (raw after.south east) +(4em, 0)
-            node[anchor=south west] (parsed after bot) {({\color{alertgreen}Haydn}, 1732)}
+            node[anchor=south west] (parsed after bot) {({\color{purple}Haydn}, 1732)}
             ($(parsed after top.west)!.5!(parsed after bot.west)$)
             node[anchor=west]       (parsed after mid) {(Bach, {\color{alertred}1685})}
 
@@ -633,13 +629,13 @@
                 edge (after nil)
 
             (raw before) edge[->]
-                node[right,pos=0.40,text=alertred]   {\tiny Delete 24 30}
-                node[right,pos=0.53,text=alertgreen] {\tiny Insert \ 24 ``85\textbackslash nHayd''}
+                node[right,pos=0.40,text=alertred] {\tiny Delete 24 30}
+                node[right,pos=0.53,text=purple]   {\tiny Insert \ 24 ``85\textbackslash nHayd''}
             (raw after)
 
             (parsed before bot) edge[->]
-                node[right,pos=0.40,text=alertred]   {\tiny mod(1, right(1685))}
-                node[right,pos=0.53,text=alertgreen] {\tiny mod(2, left(Haydn))}
+                node[right,pos=0.40,text=alertred] {\tiny mod(1, right(1685))}
+                node[right,pos=0.53,text=purple]   {\tiny mod(2, left(Haydn))}
             (parsed after top.north -| parsed before bot)
             ;
     \end{diagram}
