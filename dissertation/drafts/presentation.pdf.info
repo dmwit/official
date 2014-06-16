@@ -1,0 +1,9 @@
+# -*- coding: iso-8859-1 -*-
+
+Fullscreen = True
+TransitionDuration = 200
+AvailableTransitions = [Crossfade]
+Overscan = 0
+
+PageProps = {
+}
