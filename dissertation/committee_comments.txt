@@ -3,6 +3,9 @@ huge {{{
 }}}
 large {{{
 - could use some more early setup/motivation, especially exploration of related approaches and why they don't work well -- especially good if it can be used as motivation for design decisions as they arise
+- could do better signposting by introducing constraint maintainers at the beginning of chapter 2, and explaining what pieces are unsatisfactory that we plan on improving on
+    SAZ 3.1 p080 A bit more high-level sign-posting would be nice. -- remind us what an 'edit' and 'edit lens' are
+    SCW 3.1 p080 Reprise the motivation; this dives into things pretty fast
 - in the implementation chapter, focus more on what was accomplished; compare to other Haskell lens libraries; and give some explanations of Haskell syntax and introductory material for people who aren't familiar with Haskell (e.g. dropping CT into Haskell wholesale is no big deal for Haskell folks, but could be very surprising to others)
     - the problems identified by an implementation are themselves contributions
     - don't make the implementation come across as a negative -- portray it is a contribution (can't remember who said it but: current presentation is 30% contribution/70% problems, and that's backwards; should be 70% talking about how it's a contribution/30% describing problems)
@@ -10,9 +13,6 @@ large {{{
     - the many libraries are a contribution
     - Haskell [probably this is a request to give more explanation about the language]
     SCW 4.3 p155 This chapter is really hard to follow.
-- could do better signposting by introducing constraint maintainers at the beginning of chapter 2, and explaining what pieces are unsatisfactory that we plan on improving on
-    SAZ 3.1 p080 A bit more high-level sign-posting would be nice. -- remind us what an 'edit' and 'edit lens' are
-    SCW 3.1 p080 Reprise the motivation; this dives into things pretty fast
 - more related work: BX workshop (talk to Nate)
 }}}
 medium {{{
