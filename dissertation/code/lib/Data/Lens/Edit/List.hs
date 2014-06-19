@@ -128,7 +128,6 @@ dputlPartitionDelete j c = (del p n, c') where
 
 failPartition = [Left [FailList], Right [FailList]]
 
--- TODO: implement in terms of functions like length/filter
 count p []     = (1,1)
 count 1 cs     = (1,1)
 count p (c:cs) = (nL + isL, nR + isR) where

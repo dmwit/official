@@ -9,7 +9,7 @@ database and some particular summary of interest; or two distant but
 partially replicated computers~\cite{pierce2004unison} are all examples of
 areas where two pieces of data are very similar. We will call each of the
 two objects in these pairings \emph{repositories}. In each case, one would
-like the two repositories to stay ``in synch'': modifications to one
+like the two repositories to stay ``in sync'': modifications to one
 repository should be propagated and reflected in the other.
 
 At the moment, one common way of tackling this problem is to design, by hand,
@@ -54,9 +54,10 @@ alignment (the ability to represent data evolution precisely,
 connected data than on the other, \S\ref{sec:intro-symmetry}), performance
 (handling data in an incremental way, \S\ref{sec:intro-performance}), and
 syntax (the existence of example transformations, \S\ref{sec:intro-syntax}).
-Table~\ref{tab:related-work-matrix} shows how other approaches stack up on
-these four key features. We will discuss this figure in depth in
-Chapter~\ref{chap:related}; for now, it suffices to observe that the edit
+Table~\ref{tab:related-work-matrix} compares extant lens frameworks with
+respect to these four key features, with a focus on frameworks which aim at
+dealing with the problem of alignment. We will discuss this figure in depth
+in Chapter~\ref{chap:related}; for now, it suffices to observe that the edit
 lens framework as described in this document is the first framework to
 support all four features.
 
@@ -68,12 +69,12 @@ support all four features.
         \hline
         group-based lenses      &\Y&\N&\N&\N\\
         symmetric delta lenses  &\Y&\Y&\N&\N\\
-        symmetric lenses        &\N&\Y&\N&\Y\\
 %        triple graph grammars   &\N&\Y&\N&\Y\\
         asymmetric delta lenses &\Y&\N&\N&\Y\\
         matching lenses         &\Y&\N&\N&\Y\\
         hole-based delta lenses &\Y&\N&\N&\Y\\
         constraint maintainers  &\Y&\Y&\N&\Y\\
+        symmetric lenses        &\N&\Y&\N&\Y\\
         edit lenses             &\Y&\Y&\Y&\Y\\
     \end{tabular}
     \end{center}
@@ -119,7 +120,8 @@ intuition for what ``works well together'' might mean before we formalize
 this. Suppose we have a lens $\ell$; to simplify things, we will take
 $\ell.\aget$ to be unassailable\footnote{We will use record notation for
 lens components, so that $\ell.\aget$ is the \GET component of $\ell$.} and
-phrase all our desires in terms of constraints on $\ell.\aput$. It is
+phrase all our desires in terms of constraints on $\ell.\aput$ and
+$\ell.\acreate$. It is
 natural to expect two things from our lens: first, that $\ell.\aput$ changes
 enough---that whatever change we make to the view is faithfully reflected in
 the source so that future calls to $\ell.\aget$ give exactly the value we
@@ -230,7 +232,7 @@ elements to insert.
         } \\
         \tolower.\acreate(c) &= c
     \end{align*}
-    \caption{The \tolower lens to convert a possibly-upper-case letter into
+    \caption{The \tolower lens converts a possibly-upper-case letter into
     a definitely-lower-case one}
     \label{fig:tolower-lens}
 \end{figure}
@@ -792,9 +794,10 @@ Real-world synchronization tools inevitably address a third concern:
 performance. Typical repositories are large objects; consequently, there can
 be significant time or memory costs associated with processing the data in a
 repository or transmitting a repository across a network. For existing file
-system synchronization tools like rsync, DropBox, and Unison and revision
+system synchronization tools like rsync, DropBox, and Unison; collaborative
+document editing tools like Apache Wave and Google Docs; and revision
 control systems like CVS, SVN, darcs, mercurial, and git~%
-\cite{Tridgell96rsync,dropbox,pierce2004unison,berliner1990cvs,subversion,darcs,mercurial,git},
+\cite{Tridgell96rsync,dropbox,pierce2004unison,berliner1990cvs,subversion,darcs,mercurial,git,ApacheWave,GoogleDocs},
 network speed is a significant bottleneck. For these tools, where little
 computation on the repositories themselves is required, the relatively
 simple \emph{delta compression} technique, which involves noting what has
@@ -815,10 +818,10 @@ states.
 \label{sec:intro-syntax}
 
 One of the outstanding features of the body of asymmetric, state-based lens
-work and its closest variants is the devotion to retaining a rich
-syntax---that is, a large collection of particular lenses and lens
-combinators that have the appropriate shape and behavior for the given lens
-framework. This is a feature well worth emulating, for several reasons. The
+work and its closest variants is the devotion to retaining a large
+collection of lenses and lens combinators that have the appropriate types
+and behavior for the given lens framework. This feature---which we will call
+a \emph{syntax}---is well worth emulating, for several reasons. The
 simplest stems from the variety of examples given in previous sections. Even
 in seemingly simple scenarios, there is often endless variation. Instead of
 designing a synchronization tool that addresses one of these scenarios, we
@@ -842,7 +845,7 @@ into an HTML page that includes both a table of contents and a content body.
 One might structure this as duplicating the markup, then extracting the
 section titles from one duplicate and rendering the other.}. Many lens
 frameworks rule this transformation illegal (including ours), because
-supporting it involves relaxing the restriction that a single run of the
+supporting it involves relaxing the restriction that a single pass of the
 synchronization tool produces a synchronized state. Whether one prioritizes
 behavioral guarantees like single-pass synchronization or richer syntax like
 duplication lenses may be a matter of taste; but the choice would not be
@@ -1026,7 +1029,7 @@ summarizes them.
         $S$ & ${}\alens    {}$ & $V$ & asymmetric, state-based lenses connecting $S$ and $V$ \\
         $X$ & ${}\cmaint   {}$ & $Y$ & constraint maintainers connecting $X$ and $Y$ \\
         $X$ & ${}\lens     {}$ & $Y$ & (Chapter~\ref{chap:symm}) symmetric, state-based lenses connecting $X$ and $Y$ \\
-            &                  &     & (Chapter~\ref{chap:edits}) symmetric, edit-based lenses connecting $X$ and $Y$
+        $X$ & ${}\lens     {}$ & $Y$ & (Chapter~\ref{chap:edits}) symmetric, edit-based lenses connecting $X$ and $Y$
         % TODO: is this really all the kinds of arrows we have everywhere?
     \end{tabular}
     \caption{Function and lens types}

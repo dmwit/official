@@ -68,10 +68,10 @@ JNF 3.1 p084 "In general... also small compared to the size of the repositories.
 JNF 3.3 p120 what is the case analysis in? Ah, I see. Would be clearer to label them with intuitive names.
 JNF 3.6 p149 can differ emit non-total lenses [probably means to ask edits]
 }}}
-tiny {{{
+completed {{{
 SAZ 1.0 p001 "in synch": sync or synch?
 SAZ 1.0 p002 Why isn't 'asymmetric lenses' in this list?
-             "Table 1.1 shows how other approaches stack up" what does "other" mean? other than asymmetric lenses, or what?
+SAZ 1.0 p002 "Table 1.1 shows how other approaches stack up" what does "other" mean? other than asymmetric lenses, or what?
 SAZ 3.1 p084 "The solution is to store a small list, called a complement," maybe refer to the earlier chapter?
 SCW 1.2 p005 "The lower lens to convert a possibly-upper-case letter" to convert -> converts
 SCW 1.5 p013 "devotion to retaining a rich syntax---that is, a large collection" is this [syntax] the right word?

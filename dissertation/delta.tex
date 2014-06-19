@@ -149,7 +149,7 @@ from the left side to the right, written $(\ell\LIST).\dputr \in \partial(X
   ``put right\dotquote It is the {\edit}-analog of the $\putr$ function of the
   state-based symmetric lenses in\symmlenses and the
   $\PUT$ function of the state-based asymmetric lenses
-  in~\cite{Focal2005,Boomerang07}.} and another for transporting
+  in~\cite{Focal2005-shortcite,Boomerang07}.} and another for transporting
 edits from right to left, written $(\ell\LIST).\dputl \in \partial(X \times
 Z)\LIST \to \partial(X \times Y)\LIST$.
 %
@@ -237,7 +237,8 @@ are interleaved on the left.
   example, even with the complement, there is still some arbitrary choice in
   where an inserted element on the right appears in the list on the left.}\fi
 
-The solution is to store a small list, called a {\em complement}, off to the
+\ifdissertation As in Chapter~\ref{chap:complement}, the \else The \fi
+solution is to store a small list, called a {\em complement}, off to the
 side, recording the \emph{tags} ($\ml{inl}$ or $\ml{inr}$) from the
 original, intermingled list, and pass this list as an extra argument to
 translation.  We then enrich the types of the edit translation functions to
@@ -465,7 +466,7 @@ However, although the framework allows for the possibility of edits failing,
 we still want to know that the edits produced by our lenses will never
 actually fail when applied to \replica states arising in practice.  This
 requirement, corresponding to the {\em totality} property of previous
-presentations of lenses~\cite{Focal2005}, is formalized in Theorem
+presentations of lenses~\cite{Focal2005-shortcite}, is formalized in Theorem
 \ref{nofail}.  In general, we adopt the design principle that partiality
 should be kept to a minimum; this simplifies the definitions.
 
@@ -1150,8 +1151,8 @@ category of lenses is self-dual.
 \end{defn}
 
 \begin{lemma}
-    This is a good lens: $\dputr$ and $\dputl$ are homomorphisms, and $K$ is
-    preserved.
+    This lens is well-defined: $\dputr$ and $\dputl$ are homomorphisms, and
+    $K$ is preserved.
 \end{lemma}
 \begin{proof}
     First we show that $\dputr$ is a stateful monoid homomorphism. There are
