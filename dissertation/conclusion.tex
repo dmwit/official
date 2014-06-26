@@ -27,31 +27,6 @@ edit language design results in the ability to compose lenses that need not
 refer to the repositories themselves nor to large complements during
 transformation of the edits.
 
-Related approaches to this problem are summarized in
-Table~\ref{tab:related-commentary}; the edit lens framework is the first
-approach to address all of the issues raised above. Asymmetric delta lenses
-seem like a promising approach for their ability to handle alignment well,
-but the formalism does not accomodate small edits well even if syntax could
-be designed that could operate on them. Symmetric delta lenses extend these
-to the symmetric setting, but the reasoning principles that require
-behavioral equivalence discussed in conjunction with our symmetric lenses
-are not considered, and the framework itself is not yet instantiated with a
-syntax. The algebraic study of asymmetric lenses exposes many surprising
-features of edits, but does not address many of the issues needed to create
-a practical system. Matching lenses and annotation-based lenses are very
-natural extensions of asymmetric, state-based lenses, but are also
-conservative, retaining the basic repository-passing architecture while
-adding alignment information as a separate input. The more radical changes
-proposed in edit lenses
-allow for symmetric operation and eliminate the need to pass repositories to
-the lenses. Notably, annotation-based lenses extend a variant of the
-asymmetric, state-based lenses that allows for the construction of a lens
-that duplicates information, making it the only approach that makes a
-serious attempt to handle alignment problems while enabling this lens. Finally,
-constraint maintainers tackle many practical issues, but do not fully
-explore the power of edits and lack the ability to perform sequential
-composition, a key piece of syntax.
-
 \begin{table}
     \begin{center}
         \begin{tabularx}{\linewidth}{m{4.65em}|XXXX}
@@ -116,6 +91,33 @@ composition, a key piece of syntax.
         some shortcomings)}
     \label{tab:related-commentary}
 \end{table}
+
+Related approaches to this problem are summarized in
+Table~\ref{tab:related-commentary}, which is an expanded version of
+Table~\ref{tab:related-work-matrix-2}; the edit lens framework is the first
+approach to address all of the issues raised above. Asymmetric delta lenses
+seem like a promising approach for their ability to handle alignment well,
+but the formalism does not accomodate small edits well even if syntax could
+be designed that could operate on them. Symmetric delta lenses extend these
+to the symmetric setting, but the reasoning principles that require
+behavioral equivalence discussed in conjunction with our symmetric lenses
+are not considered, and the framework itself is not yet instantiated with a
+syntax. C-lenses provide a nice approach for giving strong behavioral
+guarantees, but each instantiation must be proven correct by an expert. The
+algebraic study of asymmetric lenses exposes many surprising features of
+edits, but does not address many of the issues needed to create a practical
+system. Matching lenses and annotation-based lenses are very natural
+extensions of asymmetric, state-based lenses, but are also conservative,
+retaining the basic repository-passing architecture while adding alignment
+information as a separate input. The more radical changes proposed in edit
+lenses allow for symmetric operation and eliminate the need to pass
+repositories to the lenses. Notably, annotation-based lenses extend a
+variant of the asymmetric, state-based lenses that allows for the
+construction of a lens that duplicates information, making it the only
+approach that makes a serious attempt to handle alignment problems while
+enabling this lens. Finally, constraint maintainers tackle many practical
+issues, but do not fully explore the power of edits and lack the ability to
+perform sequential composition, a key piece of syntax.
 
 Though the issues that edit lenses handle are important ones, future work
 could further strengthen the practicality of bidirectional transformation
