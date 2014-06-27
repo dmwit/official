@@ -1369,11 +1369,13 @@ have very different structure. What we want to show is that the
 directionality of arrows in \LENS is not important; we can formalize this by
 saying that \LENS and \LENSop have the same structure, provided we can
 formalize what it means for two categories have the same structure. There
-are many ways to define equivalence between categories; we give a
-particularly strong one here.
+are many ways to define equivalence between categories; a particularly
+strong one is to apply the standard categorical notion of isomorphism to
+\CAT, the category whose objects are categories and whose arrows are
+functors. That is:
 \begin{definition}
-    Categories \catC and \catD are isomorphic if there are functors $F :
-    \catC \to \catD$ and $G : \catD \to \catC$ for which $F;G$ is the
+    Categories \catC and \catD are \emph{isomorphic} if there are functors
+    $F : \catC \to \catD$ and $G : \catD \to \catC$ for which $F;G$ is the
     identity on \catC and $G;F$ is the identity on \catD.
 \end{definition}
 \fi%dissertation

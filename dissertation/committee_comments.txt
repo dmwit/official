@@ -42,15 +42,8 @@ JNF 2.2 p025 motivate ≈ vs. ≡??
 JNF 5.5 p178 put first? expand.
 }}}
 small {{{
-- cite our own papers early on, and make it clear that this work is based on them (perhaps in Acknowledgments); and talk about funding in the Acknowledgments
-    SAZ 1.6 p014 Say what papers this document is based on
-    SCW Acknowledgements: NSF or other funding agency?
-- the abstract ended on a real downer -- spin it better. an implementation is a contribution, so sell it as one
-    SCW Abstract: [The last sentence is marked. Perhaps this is to reiterate the complaint from elsewhere that it should be reworked to be more positive.]
-    JNF Abstract: "Finally, a prototype... representation of edits." Kind of a downer!
 SAZ 6.0 p180 [In Table 6.1, specifically in the caption, green and red backgrounds are] hard to distinguish in black + white
 SCW 1.6 p015 references to related publications?
-SCW 2.3 p034 where is this defn from? [Definition 2.3.16 of isomorphism of categories]
 SCW 2.4 p041 "algebraically quite well behaved" This means, has lots of laws?
 SCW 2.5 p044 "which we called retentive and forgetful in \S2.1" ? [the words "retentive and forgetful" are circled]
 SCW 4.1 p151 "it is not clear that avoiding dependent types entirely was beneficial." say what you mean more plainly. =)
@@ -86,6 +79,13 @@ JNF 1.1 p003 "in terms of constraints on l.put" and create
 JNF 1.4 p012 "CVS, SVN" Google Wave?
 JNF 1.7 p016 [the empty space in the last row, first column of Table 1.2 describing arrow types is circled] ?
 JNF 3.3 p095 "This is a good lens" inf. ["good lens" is underlined; probably stands for "informal"]
+- cite our own papers early on, and make it clear that this work is based on them (perhaps in Acknowledgments); and talk about funding in the Acknowledgments
+    SAZ 1.6 p014 Say what papers this document is based on
+    SCW Acknowledgements: NSF or other funding agency?
+- the abstract ended on a real downer -- spin it better. an implementation is a contribution, so sell it as one
+    SCW Abstract: [The last sentence is marked. Perhaps this is to reiterate the complaint from elsewhere that it should be reworked to be more positive.]
+    JNF Abstract: "Finally, a prototype... representation of edits." Kind of a downer!
+SCW 2.3 p034 where is this defn from? [Definition 2.3.16 of isomorphism of categories]
 }}}
 probably no change required {{{
 questions on the front page of Steve's copy:
