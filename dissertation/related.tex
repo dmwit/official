@@ -7,7 +7,7 @@
 %        triple graph grammars   &\N&\Y&\N&\Y&\\
         asymmetric delta lenses &\Y&\N&\N&\Y&\S\ref{sec:delta:asymmetric}\\
         symmetric delta lenses  &\Y&\Y&\N&\N&\S\ref{sec:delta:symmetric}\\
-        categorical lenses      &\Y&\N&\N&\N&\S\ref{sec:clenses}\\
+        comma category lenses   &\Y&\N&\N&\N&\S\ref{sec:clenses}\\
         group-based lenses      &\Y&\N&\N&\N&\S\ref{sec:algebraic}\\
         matching lenses         &\Y&\N&\N&\Y&\S\ref{sec:matching}\\
         annotation-based lenses &\Y&\N&\N&\Y&\S\ref{sec:annotations}\\
@@ -487,6 +487,62 @@ be quite natural restrictions. Our development does not have analogous laws,
 and it seems that including them would necessitate a stronger equational
 theory for many of the modules proposed above. Exploring the consequences of
 these laws could be an interesting avenue for future work on edit lenses.
+
+\section{Comma category lenses}
+\label{sec:clenses}
+% TODO: the chapter summary at the beginning needs a sentence about these
+Johnson, Rosebrugh, and Wood independently developed a lens framework with a
+very similar flavor to asymmetric delta lenses%
+~\cite{Johnson11,johnson2013delta,johnson2001view,johnson2012lens}. Like the
+asymmetric delta lens framework, the \emph{comma category lens} (henceforth
+\emph{C-lens}) framework is based on a category whose objects are meant to
+model states and whose arrows are meant to model edits. However, for
+C-lenses, the category's arrows are not intended to span all possible edits,
+as we will see, but only those edits which model ``insertions''. Handling
+edits which model deletions and support composition requires significant
+extra machinery. Before defining what a C-lens is, we will review the
+definition of a comma category; the $\aput$ of a C-lens will map objects in
+the comma category representing an edit to a view tagged with the source the
+original view came from to objects in the source category representing an
+updated source.
+
+\begin{definition}
+    Given a functor $\aget \in S \to V$, we can form the comma category
+    $\aget\comma\id_V$ as follows:
+    \begin{itemize}
+        \item Objects are pairs $(s,f : \aget(s) \to v)$ of an object $s$ of
+            $S$ and an arrow $f$ of $V$.
+        \item Arrows are pairs $(g,g')$ of an arrow from $S$ and an arrow
+            from $V$ that forms a commuting square:
+            \begin{diagram}
+                \path
+                    node              (s)  {$\aget(s)$}
+                    node[right=of s]  (s') {$\aget(s')$}
+                    node[below=of s]  (v)  {$v\vphantom{'}$}
+                    (s' |- v) node    (v') {$v'$}
+
+                    (s)  edge[->] node[above] (above) {$\aget(g)$} (s')
+                    (v)  edge[->] node[below] (below) {$g'$}       (v')
+                    (s)  edge[->] node[left]  (left)  {$f$}        (v)
+                    (s') edge[->] node[right] (right) {$f'$}       (v')
+                    ;
+            \end{diagram}
+        \item The identity arrows are pairs $(\id,\id)$ of appropriate
+            identities from $S$ and $V$, and composition corresponds to
+            diagram pasting, so that $(g_s, g_v); (g_s', g_v') = (g_s;
+            g_s', g_v; g_v')$.
+    \end{itemize}
+\end{definition}
+
+We are now ready for the main definition, which establishes the behavioral
+laws that C-lenses must satisfy.
+
+\begin{definition}
+    A \emph{C-lens} $\ell \in S \clens V$ between categories $S$ and $V$ is
+    a pair $\left<\aget,\aput\right>$ of functors $\aget \in S \to V$ and
+    $\aput \in V \to \aget\comma\id_V$ satisfying the behavioral laws:
+    % TODO
+\end{definition}
 
 \section{Algebraic rephrasing}
 \label{sec:algebraic}
