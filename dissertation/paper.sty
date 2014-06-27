@@ -426,6 +426,22 @@
 \newenvironment{longitem}{\begin{itemize}}{\end{itemize}}
 }
 
+\newcommand{\commaarrowpath}[9][ca]{\path
+    node                 (#1-s)  {$\aget(#2)$}
+    node[right=of #1-s]  (#1-s') {$\aget(#5)$}
+    node[below=of #1-s]  (#1-v)  {\strut$#4$}
+    (#1-s' |- #1-v) node (#1-v') {\strut$#7$}
+
+    (#1-s)  edge[->] node[above] (#1-g)  {$\aget(#8)$} (#1-s')
+    (#1-v)  edge[->] node[below] (#1-g') {$#9$}        (#1-v')
+    (#1-s)  edge[->] node[left]  (#1-f)  {$#3$}        (#1-v)
+    (#1-s') edge[->] node[right] (#1-f') {$#6$}        (#1-v')
+    ;
+}
+\newcommand{\commaarrowpathdef}[1][g]{\commaarrowpath sfv{s'}{f'}{v'}{#1}{#1'}}
+\newcommand{\commaarrow}[8]{\begin{tikzpicture}[baseline=(ca-f.base)]\commaarrowpath{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}\end{tikzpicture}}
+\newcommand{\commaarrowdef}{\begin{tikzpicture}[baseline=(ca-f.base)]\commaarrowpathdef\end{tikzpicture}}
+
 \newcount\lastcolumn
 \tikzstyle{hline}=[
     row 1/.style={execute at end cell={\global\lastcolumn\pgfmatrixcurrentcolumn}},
