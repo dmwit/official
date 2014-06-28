@@ -44,22 +44,10 @@ JNF 5.5 p178 put first? expand.
 small {{{
 SAZ 6.0 p180 [In Table 6.1, specifically in the caption, green and red backgrounds are] hard to distinguish in black + white
 SCW 1.6 p015 references to related publications?
-SCW 2.4 p041 "algebraically quite well behaved" This means, has lots of laws?
-SCW 2.5 p044 "which we called retentive and forgetful in \S2.1" ? [the words "retentive and forgetful" are circled]
-SCW 4.1 p151 "it is not clear that avoiding dependent types entirely was beneficial." say what you mean more plainly. =)
-SCW 5.4 p177 "addresses this niche" is it really a niche?
-SCW 6.0 p180 [Table 6.1] group based = [algebraic]?
-SCW 6.0 p180 [Table 6.1] what is the connection with Table 5.1
-JNF 1.2 p008 "Because of this... cannot be internally communicated between lens components." minor, but not true of matching lenses
 JNF 1.5 p013 "Whether one prioritizes... in parallel with the semantics." but you did it semantically by showing LENS does not have products
 JNF 1.7 p015 "and C for complement sets" first use of "complements"
-JNF 2.1 p023 [Put-Put Laws] context?
-JNF 2.4 p038 "Building a categorical product from a tensor product is not the most familiar presentation." ?
-JNF 2.6 p061 "\exists suitable w" ? w ∉ this defn?
 JNF 2.8 p076 "We suspect there might be an asymmetric fold... but have not explored this carefully." the has this, I think [the words aren't really legible, might be worth asking what this means]
-JNF 3.1 p084 "In general... also small compared to the size of the repositories." is this claim true?
 JNF 3.3 p120 what is the case analysis in? Ah, I see. Would be clearer to label them with intuitive names.
-JNF 3.6 p149 can differ emit non-total lenses [probably means to ask edits]
 }}}
 completed {{{
 SAZ 1.0 p001 "in synch": sync or synch?
@@ -86,6 +74,17 @@ JNF 3.3 p095 "This is a good lens" inf. ["good lens" is underlined; probably sta
     SCW Abstract: [The last sentence is marked. Perhaps this is to reiterate the complaint from elsewhere that it should be reworked to be more positive.]
     JNF Abstract: "Finally, a prototype... representation of edits." Kind of a downer!
 SCW 2.3 p034 where is this defn from? [Definition 2.3.16 of isomorphism of categories]
+SCW 2.4 p041 "algebraically quite well behaved" This means, has lots of laws?
+SCW 4.1 p151 "it is not clear that avoiding dependent types entirely was beneficial." say what you mean more plainly. =)
+SCW 5.4 p177 "addresses this niche" is it really a niche?
+SCW 6.0 p180 [Table 6.1] group based = [algebraic]?
+SCW 6.0 p180 [Table 6.1] what is the connection with Table 5.1
+JNF 1.2 p008 "Because of this... cannot be internally communicated between lens components." minor, but not true of matching lenses
+JNF 2.1 p023 [Put-Put Laws] context?
+JNF 2.4 p038 "Building a categorical product from a tensor product is not the most familiar presentation." ?
+JNF 2.6 p061 "\exists suitable w" ? w ∉ this defn?
+JNF 3.1 p084 "In general... also small compared to the size of the repositories." is this claim true?
+JNF 3.6 p149 can differ emit non-total lenses [probably means to ask edits]
 }}}
 probably no change required {{{
 questions on the front page of Steve's copy:
@@ -99,6 +98,7 @@ questions on the front page of Steve's copy:
 SAZ 2.4 p041 Is LENS symmetric monoidal closed? i.e. does it admit -o? i.e. is it a model of linear logic?
 SCW 1.2 p004 after the footnote: =) could do more [no idea what this is supposed to mean]
 SCW 2.3 p029 "Thus symmetric lenses form a category... composition is [k]; [l] = [k; l]." [This sentence is marked, but there's no indication of why.]
+SCW 2.5 p044 "which we called retentive and forgetful in \S2.1" ? [the words "retentive and forgetful" are circled]
 SCW 3.2 p085 "For a simple example of (a), ... (unless the first is the unit):" Maybe is a monoid [no indication that this is supposed to correspond to a change -- probably just a comment summarizing this chunk of text.]
 SCW 5.0 p163 "The two variants of delta lenses... causing performance problems." why perf is not checked [may not be asking for a change]
 JNF 1.3 p009 "One could continue by designing a 'bi-bidirectional' language" =)

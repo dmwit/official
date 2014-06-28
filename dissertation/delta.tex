@@ -265,7 +265,12 @@ information in the \replicas; indeed, our earlier example illustrates the
 common
 case in which $C$ is the trivial single-element set $\Unit$.  The
 translation functions manipulate just the complements and the edits, which
+\iffull
+we also expect will be small compared to the size of the \replicas in
+most cases.
+\else
 are also small compared to the size of the \replicas.
+\fi
 
 %% \finish{Someplace, we need to talk about what happens to edits that don't
 %%   make sense on the current state.  There are three possibilities, with a
@@ -4767,8 +4772,9 @@ S$, so we are done.
 \fi
 
 Let $X$ be a module. A \emph{differ} for $X$ is a binary operation
-$\dif \in X\times X \rightarrow \partial X$ satisfying
-$\dif(x,x')x=x'$ and $\dif(x,x)=\ONE$.
+$\dif \in \iffull|X|\times|X|\else X\times X\fi \rightarrow \partial X$
+satisfying $\dif(x,x')x=x'$ and $\dif(x,x)=\ONE$. \iffull (The edit
+$\dif(x,x')$ is permitted to be partial everywhere except $x$.) \fi
 %
 Thus, a differ finds, for given states $x,x'$, an edit operation $\dx$
 such that $\dx\ x=x'$ and $\dx$ is ``reasonable'' at least in the sense that

@@ -521,6 +521,22 @@ $\partition$.
 \iffull
 \paragraph*{Put-Put Laws}
 
+Studies of asymmetric lenses sometimes consider a fourth behavioral law not
+discussed above:
+\ifdissertation
+\infax[PutPut]{\aput(v', \aput(v, s)) = \aput(v', s)}
+\else
+\infax[PutPut]{\aput y' (\aput y x) = \aput y' x}
+\fi
+This law is somewhat controversial: some reasonable $\aget$
+operations---such as the mapping operation that applies a transformation to
+each element of a list---cannot be paired with a $\aput$ that satisfies this
+law, but relying on this law allows one to optimize chains of successive
+puts and strongly constrains the operation of $\aput$, preventing some
+clearly unsatisfactory $\aput$ implementations. We will explore some of the
+ways one might generalize of this law to the realm of symmetric lenses
+below.
+
 \begin{lemma} The following ``put the same thing twice'' laws follow from
 the ones we have:
 \infrule[PutR2]{\putr(x,c) = (y,c')}{\putr(x,c') = (y,c')}
@@ -1642,20 +1658,17 @@ The former diagram says that the result of applying $\diag$ is an element
 whose components are both equal to the original. The latter diagram says
 that the application of $\diag$ results in independent copies of the
 original.
-
 \fi % full
 %
+\iffull
+See Proposition~13 in~\cite{AbrTze09} for a proof that these conditions are
+equivalent to the standard presentation of products in terms of universal
+properties.
+\else
 Building a categorical product from a tensor product is not the most
 familiar presentation, but it can be shown to be equivalent
 (see Proposition~13 in~\cite{AbrTze09}, for example).  
-%% It is useful for our
-%% purposes because it allows us to identify precisely where the difficulty is
-%% in finding products in the category \LENS{}: everything works except the
-%% diagonal, which is deeply broken. \iflater \finish{This makes quite a bit of
-%%   intuitive sense when we note that $\diag$ is the first example we've seen
-%%   of a non-affine operation: it intuitively copies information.  Various
-%%   prople (Tokyo group, in particular) have tried to make sense of copying,
-%%   but this generally (always?) involves weakening the behavioral laws.} \fi
+\fi
 
 In the category \LENS{}, we can build a tensor product and can also build
 projection lenses with reasonable behaviors.  However, these projections are
@@ -1836,7 +1849,9 @@ right-unitor, and symmetry, respectively.
 
 Knowing that \LENS{} is a symmetric monoidal category is useful for several
 reasons.  First, it tells us that, even though it is not quite a full-blown
-product, the tensor construction is algebraically quite well behaved.
+product, the tensor construction \iffull still supports many of the operations
+traditionally associated with products. \else is algebraically quite well
+behaved. \fi
 Second, it justifies a convenient intuition where lenses built from multiple
 tensors are pictured as graphical ``wiring diagrams\commaquote and suggests a
 possible syntax for lenses that shuffle product components (which we briefly
@@ -3284,7 +3299,8 @@ the machinery we need to define $\comp$ from the introduction:
 We define the lens $\IT(\ell)$ explicitly. 
 %
 \lensdef{iteration}
-{\infruleplain{\ell \in T\LIST_X(Z) \lens Z \andalso \exists\mbox{ suitable } w}
+{\infruleplain{\ell \in T\LIST_X(Z) \lens Z \andalso \exists\mbox{ suitable
+} w\iffull\mbox{ (discussed below)}\fi}
    {\IT(\ell) \in X\LIST \lens Z} }
 {
 \IT(\ell).C &=& (\ell.C)\INFTY \\
