@@ -587,8 +587,37 @@ when the vertical arrows are identities or compositions.
 
 A major result of the work is that these behavioral laws have a hidden
 consequence: in a certain strong sense, the edits output by $\aput$ are
-\emph{minimal}.
-% TODO
+\emph{minimal}. Specifically, if $\ds$ is in the image of $\aput$, then it
+is very special: any arrow $\ds''$ whose image factors in $V$ as
+$\aget(\ds'')=\aget(\ds);\dv'$ also factors (uniquely) in $S$ as
+$\ds''=\ds;\ds'$ for some $\ds'$ such that $\aget(\ds')=\dv'$. The existence
+of such unique factorizations in $S$ greatly restricts the edit categories
+you may choose; the examples given in their work all involve data structures
+with a suitable notion of ``insertion''; the only edits in the edit
+categories then consist of insertions. It is possible to recover edits which
+represent deletions and modifications, and to still support edit
+composition~\cite{johnson2012lens}. One can define an auxiliary
+operation---built out of two lenses---which rather than taking an edit,
+operates on spans of edits. Span composition involves taking a pullback in
+the category of edits. Supporting this properly involves defining an
+equivalence relation on spans and showing that the lenses in question
+respect the equivalence relation\footnote{There is a strong parallel here to
+the need for an equivalence relation when discussing symmetric, state-based
+lenses. Symmetric lenses are spans of asymmetric lenses, and supporting
+composition properly requires an equivalence relation. Symmetric edits are
+spans of asymmetric insertion edits, and supporting composition properly
+requires an equivalence relation. Both of these are essentially because
+pullbacks are only unique up to isomorphism.}. The behavioral properties of
+the auxiliary operation which manipulates spans of edits are not explored in
+detail. Exploring which edit lenses, if any, satisfy an analogous
+factorization property would be an interesting area for future work.
+
+Johnson and Rosebrugh advocate the development of lenses ``from whole
+cloth'': defining the entire transformation up front, then proving that it
+satisfies the necessary behavioral properties. As a result, they do not
+explore the possibility of lens combinators and basic lens building blocks
+as we do. This could be a significant limitation for non-experts who want to
+use a lens-based system.
 
 \section{Algebraic rephrasing}
 \label{sec:algebraic}
