@@ -564,26 +564,26 @@ development.
 The three behavioral laws may seem daunting at first, but the bulk of their
 character can be understood by considering their implications on the
 behavior of $\aget$ and $\aput$ on objects (which is induced by
-functoriality). For example, on objects, \rn{CPutGet} says
-$\aget(\aput(\dv : \aget(s) \to v))=v$, that is, if we update the view to $v$,
-then the resulting updated source corresponds via $\aget$ to $v$. This is
-somewhat like our behavioral law which requires translated edits to move
-from consistent triples to consistent triples. On objects, \rn{CGetPut} says
+functoriality). For example, on objects, \rn{CPutGet} says $\aget(\aput(\dv
+: \aget(s) \to v))=v$, that is, if we update the view to $v$, then the
+resulting updated source corresponds via $\aget$ to $v$. This is somewhat
+like our behavioral law which requires translated edits to move from
+consistent triples to consistent triples. On objects, \rn{CGetPut} says
 $\aput(\id : \aget(s) \to \aget(s)) = s$, that is, if we do not change the
 view, the source also does not change, much like our behavioral law
 requiring the identity edit to be translated to the identity edit. Finally,
 \rn{CPutPut}, when restricted to objects, is about translating two edits at
-once: the computation $\aput(\dv;\dv' : \aget(s) \to v'')$ should have the same
-result as computing $\aput(\dv : \aget(s) \to v')$ (producing a source state
-$s'$ for which $\aget(s')=v'$) and then $\aput(\dv' : \aget(s') \to v'')$. This is
-quite similar in flavor to our law requiring that edit translations respect
-the edit monoid's binary operator structure. The latter two laws, while
-having a very strong functorial flavor---they prescribe the behavior of
-$\aput$ on identity and composition edits---are independent of the
-requirement that $\aput$ be a functor. The distinction is that the functor
-laws prescribe the behavior when the horizontal arrows are identities or
-compositions, while the behavioral laws prescribe the behavior when the
-vertical arrows are identities or compositions.
+once: the computation $\aput(\dv;\dv' : \aget(s) \to v'')$ should have the
+same result as computing $\aput(\dv : \aget(s) \to v')$ (producing a source
+state $s'$ for which $\aget(s')=v'$) and then $\aput(\dv' : \aget(s') \to
+v'')$. This is quite similar in flavor to our law requiring that edit
+translations respect the edit monoid's binary operator structure. The latter
+two laws, while having a very strong functorial flavor---they prescribe the
+behavior of $\aput$ on identity and composition edits---are independent of
+the requirement that $\aput$ be a functor. The distinction is that the
+functor laws prescribe the behavior when the horizontal arrows are
+identities or compositions, while the behavioral laws prescribe the behavior
+when the vertical arrows are identities or compositions.
 
 A major result of the work is that these behavioral laws have a hidden
 consequence: in a certain strong sense, the edits output by $\aput$ are
