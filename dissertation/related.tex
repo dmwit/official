@@ -510,18 +510,18 @@ updated source.
     Given a functor $\aget \in S \to V$, we can form the comma category
     $\aget\comma\id_V$ as follows:
     \begin{itemize}
-        \item Objects are pairs $(s,f : \aget(s) \to v)$ of an object $s$ of
-            $S$ and an arrow $f$ of $V$.
-        \item Arrows are pairs $(g,g')$ of an arrow $g : s \to s'$ from $S$
-            and an arrow $g' : v \to v'$ from $V$ that forms a commuting
+        \item Objects are pairs $(s,\dv : \aget(s) \to v)$ of an object $s$ of
+            $S$ and an arrow $\dv$ of $V$.
+        \item Arrows are pairs $(\ds,\dv)$ of an arrow $\ds : s \to s'$ from $S$
+            and an arrow $\dv : v \to v'$ from $V$ that forms a commuting
             square:
             \begin{diagram}
                 \commaarrowpathdef
             \end{diagram}
         \item The identity arrows are pairs $(\id,\id)$ of appropriate
             identities from $S$ and $V$, and composition corresponds to
-            diagram pasting, so that $(g_s, g_v); (g_s', g_v') = (g_s;
-            g_s', g_v; g_v')$.
+            diagram pasting, so that $(\ds, \dv); (\ds', \dv') = (\ds;
+            \ds', \dv; \dv')$.
     \end{itemize}
 \end{definition}
 
@@ -532,14 +532,16 @@ laws that C-lenses must satisfy.
     A \emph{C-lens} $\ell \in S \clens V$ between categories $S$ and $V$ is
     a pair $\left<\aget,\aput\right>$ of functors $\aget \in S \to V$ and
     $\aput \in V \to \aget\comma\id_V$ satisfying the behavioral laws:
-    \infax[CPutGet]{\aget\left(\aput\left(\commaarrowdef\right)\right) = g'}
-    \infax[CGetPut]{\aput\left(\commaarrow s{\aget(\id)}{\aget(s)}{s'}{\aget(\id)}{\aget(s')}g{\aget(g)}\right)=g}
+    \infax[CPutGet]{\aget\left(\aput\left(\commaarrowdef\right)\right) = \dv}
+    \infax[CGetPut]{\aput\left(\commaarrow s{\aget(\id)}{\aget(s)}{s'}{\aget(\id)}{\aget(s')}\ds{\aget(\ds)}\right)=\ds}
     \infrule[CPutPut]
-        {\aput\left(\commaarrow sgu{s'}{g'}{u'}f{f'}\right)=p : t \to t'}
+        {\aput\left(\commaarrow s{\dv_\mldom}v{s'}{\dv_\mlcod}{v'}\ds{\dv}\right)=p : t \to t' \\
+         \aput\left(\commaarrow t{\dw_\mldom}w{t'}{\dw_\mlcod}{w'}{p}{\dw}\right)=p' : u \to u'
+        }
         {
-        \aput\left(\commaarrow thv{t'}{h'}{v'}{p}{f''}\right)
+        \aput\left(\commaarrow s{\dv_\mldom;\dw_\mldom}w{s'}{\dv_\mlcod;\dw_\mlcod}{w'}\ds\dw\right)
         =
-        \aput\left(\commaarrow s{g;h}v{s'}{g';h'}{v'}f{f''}\right)
+        p'
         }
 \end{definition}
 
@@ -547,7 +549,7 @@ The three behavioral laws may seem daunting at first, but the bulk of their
 character can be understood by considering their implications on the
 behavior of $\aget$ and $\aput$ on objects (which is induced by
 functoriality). For example, on objects, \rn{CPutGet} says
-$\aget(\aput(f : \aget(s) \to v))=v$, that is, if we update the view to $v$,
+$\aget(\aput(\dv : \aget(s) \to v))=v$, that is, if we update the view to $v$,
 then the resulting updated source corresponds via $\aget$ to $v$. This is
 somewhat like our behavioral law which requires translated edits to move
 from consistent triples to consistent triples. On objects, \rn{CGetPut} says
@@ -555,9 +557,9 @@ $\aput(\id : \aget(s) \to \aget(s)) = s$, that is, if we do not change the
 view, the source also does not change, much like our behavioral law
 requiring the identity edit to be translated to the identity edit. Finally,
 \rn{CPutPut}, when restricted to objects, is about translating two edits at
-once: the computation $\aput(g;h : \aget(s) \to v)$ should have the same
-result as computing $\aput(g : \aget(s) \to u)$ (producing a source state
-$t$ for which $\aget(t)=u$) and then $\aput(h : \aget(t) \to v)$. This is
+once: the computation $\aput(\dv;\dv' : \aget(s) \to v'')$ should have the same
+result as computing $\aput(\dv : \aget(s) \to v')$ (producing a source state
+$s'$ for which $\aget(s')=v'$) and then $\aput(\dv' : \aget(s') \to v'')$. This is
 quite similar in flavor to our law requiring that edit translations respect
 the edit monoid's binary operator structure. The latter two laws, while
 having a very strong functorial flavor---they prescribe the behavior of
