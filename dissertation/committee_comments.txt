@@ -1,6 +1,3 @@
-huge {{{
-- Nate wants to see some discussion about C-lenses and the Johnson/Rosebrugh work -- he has some ideas about how to compare, so talk to him about it
-}}}
 large {{{
 - could use some more early setup/motivation, especially exploration of related approaches and why they don't work well -- especially good if it can be used as motivation for design decisions as they arise
 - could do better signposting by introducing constraint maintainers at the beginning of chapter 2, and explaining what pieces are unsatisfactory that we plan on improving on
@@ -85,6 +82,7 @@ JNF 2.4 p038 "Building a categorical product from a tensor product is not the mo
 JNF 2.6 p061 "\exists suitable w" ? w ∉ this defn?
 JNF 3.1 p084 "In general... also small compared to the size of the repositories." is this claim true?
 JNF 3.6 p149 can differ emit non-total lenses [probably means to ask edits]
+- Nate wants to see some discussion about C-lenses and the Johnson/Rosebrugh work -- he has some ideas about how to compare, so talk to him about it
 }}}
 probably no change required {{{
 questions on the front page of Steve's copy:
