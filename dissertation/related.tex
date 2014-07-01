@@ -545,6 +545,22 @@ laws that C-lenses must satisfy.
         }
 \end{definition}
 
+It is perhaps unusual from a user interface point of view to have an
+operation that expects a commuting diagram. In comparison, our design's edit
+translation function accepts an edit and produces an edit, which may seem
+more natural to some. This kind of operation is also supported by C-lenses;
+for example, to translate a view edit $\dv : \aget(s) \to v$, we may
+construct a commuting diagram as follows:
+\[\aput\left(\commaarrow s\id{\aget(s)}s\dv v\id\dv\right)\]
+If the object part of $\aput$ produces a new state $s' = \aput(\dv :
+\aget(s) \to v)$, then calling $\aput$ with the commuting diagram as above
+produces an arrow $\ds$ in $S$ with the type $\aput(\id : \aget(s) \to
+\aget(s)) \to \aput(\dv : \aget(s) \to v)$, that is, $\ds : s \to s'$. Thus
+the interface provided by C-lenses is rich enough to, among other things,
+turn an arrow $\dv : \aget(s) \to v$ into a suitably updated source $s'$ and
+recover the edit $\ds$ which turns $s$ into $s'$, just as in our
+development.
+
 The three behavioral laws may seem daunting at first, but the bulk of their
 character can be understood by considering their implications on the
 behavior of $\aget$ and $\aput$ on objects (which is induced by
