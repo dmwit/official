@@ -824,6 +824,8 @@ begin in this section with several relatively simple constructions.
 
 % % \paragraph*{Identity and Composition}
 
+\ifdissertation\breakifnearbottom\fi
+
 \begin{defn}[Identity lens] Let $\Unit$ be a distinguished singleton set and
 $\unit$ its only element.  
 \lensdef{id}
@@ -876,23 +878,15 @@ such that $k.\putr(x,c_k)=(y,c_k')$ and $\ell.\putr(y,c_\ell)=(z,c_\ell')$.
     & \mllet (x', c_k'') = k.\putl(y', c_k') \mline \nonumber\\
     & (x', (c_k'', c_\ell'')) \nonumber\\
     ={}
-    & \mllet (y', c_\ell'') = (y, c_\ell') \mline \label{cg:putrll}\\
-    & \mllet (x', c_k'') = k.\putl(y', c_k') \mline \nonumber\\
-    & (x', (c_k'', c_\ell'')) \nonumber\\
-    ={}
     & \mllet (x', c_k'') = k.\putl(y, c_k') \mline \label{cg:computel}\\
-    & (x', (c_k'', c_\ell')) \nonumber\\
-    ={}
-    & \mllet (x', c_k'') = (x, c_k') \mline \label{cg:putrlk}\\
     & (x', (c_k'', c_\ell')) \nonumber\\
     ={}
     & (x, (c_k', c_\ell')) \label{cg:computek}
 \end{align}
 Equation~\ref{cg:def} comes from expanding the definition of
-$(k;\ell).\putl$; equation~\ref{cg:putrll} from applying \rn{PutRL} to
-$\ell$; equation~\ref{cg:computel} from substituting let-bound variables;
-equation~\ref{cg:putrlk} from applying \rn{PutRL} to $k$; and
-equation~\ref{cg:computek} from again substituting let-bound variables.
+$(k;\ell).\putl$; equation~\ref{cg:computel} from applying \rn{PutRL} to
+$\ell$ and substituting let-bound variables; and equation~\ref{cg:computek}
+from applying \rn{PutRL} to $k$ and again substituting let-bound variables.
 Moreover, this last equation is exactly what is demanded from applying
 \rn{PutRL} to $k;\ell$, so we are done.
 \end{goodlens}
@@ -1310,6 +1304,8 @@ The $(-)\op$ operation can be lifted to a contravariant endofunctor on the
 category \LENS{}, mapping each arrow
 $\EQCLASS{\ell}$ to $\EQCLASS{\ell\op}$. 
 \end{lemma}
+
+\ifdissertation\breakifnearbottom\fi
 
 \begin{proof}
 We must show three things:
@@ -2274,17 +2270,17 @@ nearly identical, and we conclude that $a.\putr \sim_R b.\putr$.
     C &=& k.C + \ell.C \\
     \missing &=& \mlinl k.\missing \\
     \putr(\mlinl x,\mlinl c_k)
-    &=& \mllet (z,c_k') = k.\putr(x,c_k) \mline \\
-    & & (\mlinl z,\mlinl c_k') \\
+    &=& \mlletinbreak{(z,c_k') = k.\putr(x,c_k)}
+                     {(\mlinl z,\mlinl c_k')}
     \putr(\mlinl x,\mlinr c_\ell)
-    &=& \mllet (z,c_k) = k.\putr(x,k.\missing) \mline \\
-    & & (\mlinl z,\mlinl c_k) \\
+    &=& \mlletinbreak{(z,c_k) = k.\putr(x,k.\missing)}
+                     {(\mlinl z,\mlinl c_k)}
     \putr(\mlinr y,\mlinl c_k)
-    &=& \mllet (w,c_\ell) = \ell.\putr(y,\ell.\missing) \mline \\
-    & & (\mlinr w,\mlinr c_\ell) \\
+    &=& \mlletinbreak{(w,c_\ell) = \ell.\putr(y,\ell.\missing)}
+                     {(\mlinr w,\mlinr c_\ell)}
     \putr(\mlinr y,\mlinr c_\ell)
-    &=& \mllet (w,c_\ell') = k.\putr(y,c_\ell) \mline \\
-    & & (\mlinr w,\mlinr c_\ell') \\
+    &=& \mlletinbreak{(w,c_\ell') = k.\putr(y,c_\ell)}
+                     {(\mlinr w,\mlinr c_\ell')}
     \\
     \putl\mbox{ is similar}
 }
@@ -3258,7 +3254,9 @@ g(\mlinr(\mlinr((x_1,xs_1),(x_2,xs_2)))) &=& (x_1:xs_1,x_2:xs_2)
 \end{eqnarray*}
 \else\ 
 \fi
-Then we can create
+\ifdissertation\breakifnearbottom\fi
+Then we can create\iffull a lens to serve as the basis for a partitioning
+iterator.\fi
 \lensdef{filter_iterator}
 {\ell \in \Unit + ((X_1+X_2) \times Z) \lens Z}
 {
@@ -3959,7 +3957,7 @@ $B$ then embeds positions of a smaller tree canonically into positions of a
 bigger tree. The meet of two trees is the greatest common subtree starting
 from the root.
 
-\breakifnearbottom
+\breakifoverfraction{0.7}
 
 \begin{defn}[Container mapping lens]\ 
 \lensdef{container_map}

@@ -96,6 +96,9 @@
 \ifdissertation\newcommand{\dotquote}{''.\xspace}\newcommand{\commaquote}{'',\xspace}
 \else          \newcommand{\dotquote}{.''\xspace}\newcommand{\commaquote}{,''\xspace}
 \fi
+\ifdissertation\newcommand{\mlletinbreak}[2]{\mllet#1\mlinm#2\\}
+\else          \newcommand{\mlletinbreak}[2]{\mllet#1\mline\\&&#2\\}
+\fi
 % }}}
 \definecolor{bluegray}{rgb}{0.3,0.3,.6}
 \definecolor{blue}{rgb}{0,0,1}
