@@ -29,13 +29,12 @@ high abstraction levels, supports rapid prototyping, and has good library
 support. Because one of our primary goals was experimentation, we wanted to
 retain a lightweight approach throughout; in particular we chose not to
 begin with a mechanization of the theory in a dependently-typed language.
-In retrospect, while it still seems worthwhile to have avoided reproving
-all of our results in Coq from an experimentation point of view, the
-availability of dependent types would have made some parts of the
-implementation more straightforward. For example, we used Haskell's
-typeclass mechanism to model modules, which requires a separate type for
-each separate behavior. As a result, one wants the ability to define a new
-types for each choice of $\init$ value, that is, a dependent type. We
+While avoiding the need for proofs significantly reduced the implementation
+effort, several implementation details would have been more naturally
+expressed in a dependent language: instances of container types are
+dependent pairs of a shape and a function whose domain is that shape, and
+module types are essentially dependent functions which take a value and
+produce the type of the module with that value as its $\init$ field. We
 also investigated extending Boomerang~\cite{Boomerang07}, an existing
 asymmetric, state-based string lens implementation. Boomerang is very
 complete, and consequently would have required many tangential coding
@@ -43,7 +42,23 @@ efforts; to avoid distractions, we chose to take a less feature-complete
 route. However, we retained Boomerang's choice of string-based data model
 since, as discussed above, this closely matches real-world scenarios.
 
-Our primary challenge, which we will discuss in detail below, is analogous
+Several Haskell packages offer implementations of asymmetric, state-based
+lenses, typically with the goal of providing an improved alternative syntax
+for Haskell's built-in mechanisms for updating complicated data structures.
+The largest one, \texttt{lens}~\cite{lens-package}, has found wide use in a
+variety of applications, and is intended to be a one-stop library for
+modifying data, includes an enormous array of utilities, including many
+useful operations which do not at first glance appear related to asymmetric,
+state-based lenses. It has been developed by a large team of volunteers over
+several years, resulting in tens of thousands of lines of code. In contrast,
+the demonstration discussed here was developed by a single researcher over
+the course of several months, so its goals and scope are necessarily more
+focused. In particular, we do not try to match the breadth of lens and lens
+combinators provided by \texttt{lens}, though our lenses do offer additional
+capabilities for parsing, serialization, and edit discovery.
+
+Indeed, supporting edit discovery is our primary challenge. We will discuss
+this problem in detail below; in short, it is an edit-based analog
 to the problem of parsing. With edit lenses, there are always two domains of
 discourse: the collection of repositories and the collection of edits.
 Repositories store ordinary data, and the problem of connecting strings with
@@ -56,11 +71,12 @@ describe the connection between string modifications and edits in the sense
 described in Chapter~\ref{chap:delta}. One could avoid the situation
 entirely by designing a structured editor. Historically, though, structured
 editors have failed to take---perhaps because their strictures are too
-confining for day-to-day editing tasks---so we chose to avoid this route. We
-have proposed a few heuristics that seem to behave acceptably in a number of
-standard cases; however, they are relatively special-purpose, tailored to
-the file format under consideration here, and do not adequately reflect all
-user actions as analogous edits.
+confining for day-to-day editing tasks---so we chose to avoid this route.
+Below, we propose heuristics that seem to behave acceptably in a number of
+standard cases. Though they are somewhat tailored to the file format under
+consideration here and reflect some unusual user actions as edits with
+slightly different meanings, they nevertheless enable an editor with none of
+the restrictions traditionally associated with structured editors.
 
 \section{Usage Example and Functionality}
 \label{sec:impl-usage}
@@ -396,7 +412,7 @@ consider the edit which inserts \lstinline!"Ludwig van "! and changes
 It seems clear that the right way to split this up is to group together (and
 re-index) the edit \lstinline![Delete 2 3, Insert 2 "6"]! to the date, give
 an empty edit \lstinline![]! for the separator, and separate the final
-insertion \lstinline![Insert 0 "Ludwig van "]! to the composer.
+edit \lstinline![Insert 0 "Ludwig van "]! to the composer.
 
 There are several tricky cases to consider, which we discuss in turn below:
 insertions may happen at the boundary, deletions may span a boundary,
@@ -404,9 +420,9 @@ deletions may cause candidate boundaries to coincide, and the boundary may
 jump if an insertion or deletion significantly changes the parse tree. We
 will tackle the first two problems by nondeterministically guessing the
 right way to move the boundary at such edits; the third problem by choosing
-an arbitrary tie-breaking rule; and the fourth problem by having a ``nuclear
-option'' backup plan of doing a complete re-parse (losing all alignment
-information) if all else fails.
+an arbitrary tie-breaking rule; and the fourth problem by having a backup
+plan of doing a complete re-parse (and consequently losing all alignment
+information).
 
 Consider the difference between the following two insertions:
 \begin{center}
@@ -633,9 +649,9 @@ translated to reordering edits; however, unlike the previous considerations,
 it seems that the heuristics could be extended with some engineering effort
 to handle this transformation.
 
-A really satisfactory transformation between
-user actions and module edits seems to be a ripe area for serious research.
-Incremental parsing seems a promising area to look to for inspiration,
+A really satisfactory transformation between user actions and module edits
+seems to be a ripe area for serious research. It may be possible to draw
+some inspiration from the incremental parsing literature,
 though the problem being explored here seems to be slightly richer.
 Incremental parsers are very good at improving the efficiency of parsing
 when the string under consideration has not changed much; however, they do
