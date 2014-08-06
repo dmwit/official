@@ -87,6 +87,15 @@ contain all the information that is missing from $y$.  Moreover, instead of
 a separate
 $\CREATE$ function, we can simply pick a distinguished element
 $\missing\in C$ and define $\CREATE(y)$ as $\PUT(y,\missing)$.
+\ifcomplement
+In many realistic cases, this modified form of \GET will not be surjective:
+there will be pairs of complements and views which do not match up. One may
+worry that this makes the implementation of \PUT functions more difficult,
+as they may need to merge a view and a complement which are not in the image
+of \GET; however, as we discuss below, it turns out that this is no more
+difficult than the task that asymmetric lenses already handle of merging a
+view and source which do not match.
+\fi
 
 Formally, an {\em asymmetric lens with complement}
 mapping between $X$ and $Y$ consists of a set $C$, a

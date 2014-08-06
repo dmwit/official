@@ -1,0 +1,120 @@
+> SUBSTANTIVE ISSUES
+>
+> p3, bottom: I'm a bit surprised by the discussion about complements, especially the footnote on p4 - it's not obvious to me that they always exist. But the footnote gives an argument as to why they do. Perhaps it's worth adding a comment to allay the fears of readers like me. (I worry particularly about examples in which it isn't possible to cleanly separate the source into orthogonal view and complement. Common instances are "shape and content" decompositions of data structures, such as inorder traversal as a get function from trees to lists: the view is the list of tree elements, and the complement is the unlabelled tree shape. Then get is not surjective; it yields only matching shape-content pairs. It's easy to make a total put function in this case: if the updated list is too long, extend the tree with a right spine; if the list is too short, prune part of the tree. Can that always be done?)
+
+In general it is definitely true that put functions of asymmetric lenses with complements may be given a view and a complement that do not match. In fact, the hard work of defining lenses involves handling these cases gracefully. In the case of traditional asymmetric lenses, one can indeed always find a suitable complement, with the original lens specifying the behavior to use when complements and views do not match. If the lens is very well behaved (that is, satisfies a PutPut law) then one can go even farther and say that the complements are completely orthogonal after all -- complements and views always match. This latter observation is discussed more carefully in Nate Foster's thesis, "Bidirectional Programming Languages"; and we have added a few sentences outlining the former observation to the text.
+
+> p11l30: The proof layout here is terrible. It would be much better using "Dijkstra-Feijen style". For one thing, align the first expression to the right, not the left, so that you have more space for the remainder. Then explain the reasoning behind each step at the place where you make each step, rather than labelling the steps and explaining the reasoning in a following paragraph.
+>
+> starting expression
+> = { reason why starting expression equals second }
+> second expression
+> = { reason why second expression equals third }
+> ...
+> = { reason why penultimate expression equals final }
+> final expression
+>
+> Similarly proof of 4.3(1) on p12.
+>
+> p13l25-29: You might observe here that the paper by Mu et al (2004) that you already cite (building on the same authors' "An Injective Language for Reversible Computation" at MPC 2004) does indeed offer programmers a notation for writing injections. Conversely, Wang et al in "Gradual Refinement" at MPC 2010 offer a notation for writing surjections. These would be useful stepping stones towards a notation for writing bijections. Both papers also already do something analogous to your proposed future work (p54l8-11) of constructing list operations such as map and reverse out of more basic combinators.
+>
+> p39l51: Generally you don't get unique solutions for hylomorphisms (eg in CPO or in REL), so it's no surprise that you can't find them here either. However, in both those ordered settings, you do get least solutions.
+>
+> p41l48: You should cite Ahman, Chapman and Uustalu ("When is a Container a Comonad?", FOSSACS 2012) for "containers with ordered shapes", which they call "directed containers".
+>
+> p44l40: Introducing f_x here is bizarre, especially within the scope of another variable f to which it bears no relation. You used a lambda on p4; do the same here. It's even crazier to define f to be the identity function (p46l52), because it breaks your calculations (p47l7-15) when the local variable f shadows this definition! Just write "id"; if you really feel you have to, "(where id denotes the identity function)". And why "define f_c(())=c", when you can perfectly well write "lambda ().c" or "() |-> c"?
+>
+> p46l48: It's lazy to use "a" and "b" for the left- and right-hand sides of the equations you have to prove, and most unhelpful to the reader, since they give no hint about the structure of the expression you're manipulating. They're all short; write them out.
+>
+> p47: The proof layout here is even worse than on p11: poor Dijkstra must be rotating rapidly in his grave. What is x_a (p47l29)? Is this step supposed to be defining it? What is the status of the three unconnected equations (p47l33-37)? Presumably they're related by implication; so say so. "These clearly satisfy ()=()..." (p48l36,l45) is a nonsensical statement. Rewrite these proofs as calculations, so that the structure of the argument is clear. (And by what reasoning do you conclude that u|->c equals ()|->c?)
+>
+> MINOR ISSUES
+>
+> p2l50: There's an unfortunate name clash between "fold and unfold" in the sense of the two halves of the isomorphism between an inductive datatype and its components, and "fold" (and unfold, although that's not used here) as in patterns of recursion. It's particularly bad on p35, where both senses appear in close proximity. Much better to disambiguate; either eg "constructor and deconstructor" for the former sense, or "catamorphism (and anamorphism)" for the latter.
+>
+> p3l35: "put" is uncurried elsewhere, so write "put (y,x)" not "put y x"
+>
+> p4l32: Is C_X x C_Y the canonical combined complement? Also, perhaps say a little more: does "get" ignore the C_X part, or must that part match the X? And similarly for put.
+>
+> p4l39: You could make a forward reference from the footnote to Defn 9.1.
+>
+> p5, Fig 1: the text in the diagram is rather small - is it at least footnote-sized?
+>
+> p5l44: Perhaps observe that putr(x,c)=(y,c) is equivalent to putl(y,c)=(x,c), so the apparent asymmetry is illusory.
+>
+> p6l6: X* x Y* is not equivalent to (X x Y)* - the mapping from right to left yields only same-length lists
+>
+> p8l37: Be more precise in the cross-reference: Defn 6.14, 6.15, not just S6
+>
+> p9l25: Unless you mean strict inclusion, use \subseteq rather than \subset. Also numerous other places throughout, eg p29. You do the right thing on p38l20. The \supset on p42l30 is surprising; use a short double right arrow, or just write "implies", instead.
+>
+> p9l27: "take equal inputs..."
+>
+> p10l18: I'd find it helpful to have more insight into "put-objects" and function "apply". Say that apply returns a list of put-objects; maybe also say which list. It applies a mixed sequence of putr and putl operations, one after the other, and yields the complementary restoring sequence as a result, right?
+>
+> p10l35: d is in l.C, not k.C
+>
+> p12l20: Best not to use \Longleftrightarrow both for logical equivalence and for equivalence classes of lenses. You could use \Leftrightarrow for one - I suggest for the latter, to match the \leftrightarrow you use for lenses themselves.
+>
+> p13l36: What are "stateless lenses"? those with unit complement?
+>
+> p17l27: "k.putl((), k.missing) = (x,c) for some c"
+>
+> p17l30: l is a lens, not an arrow; either you mean \leftrightarrow, or [l]. You did say on p9 that you were prepared to abuse notation, but it wouldn't be too pedantic to be precise here. Also p36l22, p36l28, p37l19, p38l10, p39l36
+>
+> p18, bottom: You could give a bit more of the intuition here - that LENS doesn't have products for the same reason that BIJ (the category of finite sets and bijections) doesn't: if A ~= B and A ~= C then usually A and B x C have different cardinalities.
+>
+> p22l9: "even though the tensor [as opposed to the category, which is the sense of the sentence as it stands] is not quite a full-blown product, the construction..."
+>
+> p24l26: "a tensor \oplus can be extended"
+>
+> p26l40: I was going to suggest here that you use a different symbol, such as \boxplus from the AMS fonts, rather than \oplus^f. But that doesn't really work for map^f on p34.
+>
+> pp29l37: "Then the oplus bifunctor gives rise to ... respectively; and similarly for oplus^f"
+>
+> p32l22: I think you're missing a space in "ways.The"
+>
+> p34l16: Drop the exclamation mark.
+>
+> p35l35: You might say here that the self-duality of LENS means that your hylomorphisms are more like those in REL (eg in Bird and de Moor's "Algebra of Programming") than those in CPO (as in Meijer et al).
+>
+> p35l48: "w here plays the role of a termination measure in the right-to-left direction"
+>
+> p36l18: Vene is an odd and obscure choice of reference for inductive datatypes. I suggest the Bird and de Moor book again, or Meijer Fokkinga and Paterson (1991) which you already cite.
+>
+> p36l28: The lens e is introduced in S2, not in the introduction. (Similarly for comp on p37l25, and p50l29.) "Sneaky" is unclear - neither seems obviously sneakier to me; use something like "infinite-complement" instead.
+>
+> p37l22: Explain what "filter" is.
+>
+> p37l24: "More complicated" is better than "trickier".
+>
+> p40l14: Odd comment about "the mapping operation available for containers". Indeed, in general containers will give you only map; but they're closed under sum, product, composition, and you have initial algebras, so you have all the usual fold stuff on (some) containers too.
+>
+> p41l18: Why introduce "@" when you already have "concat"?
+>
+> p47l7: You used lambda expressions on p4; why write "|->" here? Be consistent.
+>
+> p50l11: Something went wrong with "is do be putl-ed".
+>
+> p50l36: Presumably ALENS is the category of asymmetric lenses; you haven't defined it.
+>
+> p53l28: Is the "community of researchers in Tokyo" the BiG Laboratory (http://www.biglab.org/)? If so, say so.
+>
+> p53l47: You said earlier (p50l26) that the ^sym functor from ALENS to LENS is not full; doesn't that mean that the ALENS is in fact not a full subcategory of LENS? (Disclaimer: I am not a category theorist.)
+>
+> p54l16: My understanding of a "folklore result" is one that is widely known but not written down. The result about symmetric monoidal categories and wiring diagrams is documented; for example, in arXiv:0908.3347, and in Baez and Stay's "Physics, topology, logic and computation: a Rosetta Stone", but surely earlier too - I know about it from Cazanescu and Stefanescu (Fundamenta Informaticae 13:171-210, 1990), but I expect it was independently discovered by several people.
+>
+> p54l32: Is the "upcoming workshop paper" published yet? Presumably the present journal paper has been a while in the making.
+>
+> p54l52: Maybe cite Diskin for delta lenses.
+>
+> p55l21: You could cite Hegner ("An order-based theory of updates for closed database views", AMAI 40, 2004) for ordered updates.
+>
+> p55l46-50: Diskin 2008a and 2008b are the same paper.
+>
+> p56l28: Capitalize "XQuery".
+
+The following minor comments are implemented:
+
+> - P15, L19
+> R \in k.C x l.C should be R \subset k.C x l.C.
