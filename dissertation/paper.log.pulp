@@ -1,5 +1,5 @@
 not
-    ( boring | info | (under & hbox)
+    ( boring | info | under | over
     | (package 'xparse/redefine-command' & warning & "\\footnote")
     | (package 'variant generation' & warning & "^Variant \\tl_put_right:NV")
     | (package 'hyperref' & message & 'Driver \(autodetected\): hpdftex\.')
