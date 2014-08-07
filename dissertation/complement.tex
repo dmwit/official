@@ -881,6 +881,25 @@ We show that the lens satisfies \rn{PutRL}; the proof that it satisfies
 \rn{PutRL}, and that $(k;\ell).\putr(x,(c_k,c_\ell))=(z,(c_k',c_\ell'))$.
 From the definition of $(k;\ell).\putr$, we can conclude that there is a $y$
 such that $k.\putr(x,c_k)=(y,c_k')$ and $\ell.\putr(y,c_\ell)=(z,c_\ell')$.
+\ifcomplement
+\begin{itemize}
+    \item[]
+        $(k;\ell).\putl(z,(c_k',c_\ell'))$
+    \item[$=$] \{definition of $(k;\ell).\putl$\}
+    \item[]
+        $\mllet (y', c_\ell'') = \ell.\putl(z, c_\ell') \mlinm
+         \mllet (x', c_k'') = k.\putl(y', c_k') \mlinm
+         (x', (c_k'', c_\ell''))$
+    \item[$=$] \{\rn{PutRL} applied to $\ell$\}
+    \item[]
+        $\mllet (x', c_k'') = k.\putl(y, c_k') \mlinm
+         (x', (c_k'', c_\ell'))$
+    \item[$=$] \{\rn{PutRL} applied to $k$\}
+    \item[] $(x, (c_k', c_\ell'))$
+\end{itemize}
+Since this final equation is exactly what is demanded from applying
+\rn{PutRL} to $k;\ell$, we are done.
+\else%complement
 \begin{align}
     (k;\ell).\putl(z,(c_k',c_\ell')) ={}
     & \mllet (y', c_\ell'') = \ell.\putl(z, c_\ell') \mline \label{cg:def}\\
@@ -898,6 +917,7 @@ $\ell$ and substituting let-bound variables; and equation~\ref{cg:computek}
 from applying \rn{PutRL} to $k$ and again substituting let-bound variables.
 Moreover, this last equation is exactly what is demanded from applying
 \rn{PutRL} to $k;\ell$, so we are done.
+\fi%complement
 \end{goodlens}
 \fi
 
@@ -925,6 +945,15 @@ The following function on relations is convenient here:
   things to show.
 
   \begin{longenum}
+      \ifboolexpr{bool{complement} and bool{full}}{
+      \item Since $R_k$ and $R_\ell$ are simulation relations, we know:\\
+          \phantom{$\iff$}$k.\missing \relRk k'.\missing\land\ell.\missing\relRl\ell'.\missing$\\
+          $\iff$ \{definition of $R$\}\\
+          \phantom{$\iff$}$(k.\missing, \ell.\missing)\relR(k'.\missing,\ell'.\missing)$\\
+          $\iff$ \{definition of $k;\ell$\}\\
+          \phantom{$\iff$}$(k; \ell).\missing\relR(k'; \ell').\missing$\\
+          This is what we wished to show.
+      }{
       \item We wish to show the first line:
           \begin{align*}
                   &(k; \ell).\missing\relR(k'; \ell').\missing \\
@@ -933,6 +962,7 @@ The following function on relations is convenient here:
           \end{align*}
           But the final line is certainly true, since $R_k$ and $R_\ell$ are
           simulation relations.
+      }
 
       \item We must show that $(k;\ell).\putr\sim_R(k';\ell').\putr$. So
           take $c_k,c_\ell,c_{k'},c_{\ell'}$ such that

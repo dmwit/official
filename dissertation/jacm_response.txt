@@ -4,18 +4,6 @@
 
 In general it is definitely true that put functions of asymmetric lenses with complements may be given a view and a complement that do not match. In fact, the hard work of defining lenses involves handling these cases gracefully. In the case of traditional asymmetric lenses, one can indeed always find a suitable complement, with the original lens specifying the behavior to use when complements and views do not match. If the lens is very well behaved (that is, satisfies a PutPut law) then one can go even farther and say that the complements are completely orthogonal after all -- complements and views always match. This latter observation is discussed more carefully in Nate Foster's thesis, "Bidirectional Programming Languages"; and we have added a few sentences outlining the former observation to the text.
 
-> p11l30: The proof layout here is terrible. It would be much better using "Dijkstra-Feijen style". For one thing, align the first expression to the right, not the left, so that you have more space for the remainder. Then explain the reasoning behind each step at the place where you make each step, rather than labelling the steps and explaining the reasoning in a following paragraph.
->
-> starting expression
-> = { reason why starting expression equals second }
-> second expression
-> = { reason why second expression equals third }
-> ...
-> = { reason why penultimate expression equals final }
-> final expression
->
-> Similarly proof of 4.3(1) on p12.
->
 > p13l25-29: You might observe here that the paper by Mu et al (2004) that you already cite (building on the same authors' "An Injective Language for Reversible Computation" at MPC 2004) does indeed offer programmers a notation for writing injections. Conversely, Wang et al in "Gradual Refinement" at MPC 2010 offer a notation for writing surjections. These would be useful stepping stones towards a notation for writing bijections. Both papers also already do something analogous to your proposed future work (p54l8-11) of constructing list operations such as map and reverse out of more basic combinators.
 >
 > p39l51: Generally you don't get unique solutions for hylomorphisms (eg in CPO or in REL), so it's no surprise that you can't find them here either. However, in both those ordered settings, you do get least solutions.
@@ -118,3 +106,15 @@ The following minor comments are implemented:
 
 > - P15, L19
 > R \in k.C x l.C should be R \subset k.C x l.C.
+
+> p11l30: The proof layout here is terrible. It would be much better using "Dijkstra-Feijen style". For one thing, align the first expression to the right, not the left, so that you have more space for the remainder. Then explain the reasoning behind each step at the place where you make each step, rather than labelling the steps and explaining the reasoning in a following paragraph.
+>
+> starting expression
+> = { reason why starting expression equals second }
+> second expression
+> = { reason why second expression equals third }
+> ...
+> = { reason why penultimate expression equals final }
+> final expression
+>
+> Similarly proof of 4.3(1) on p12.
