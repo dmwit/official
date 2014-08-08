@@ -4,4 +4,7 @@ not
     | (package 'variant generation' & warning & "^Variant \\tl_put_right:NV")
     | (package 'hyperref' & message & 'Driver \(autodetected\): hpdftex\.')
     | 'Normal \\count register pool exhausted, switching to extended pool\.'
+    | (package 'caption' & warning & "^Unsupported document class")
+    | '(Using )?ACM, (Production Font style|JACM\'s option): [[:digit:]/]* by Aptara'
+    | 'Non-PDF special ignored!'
     )
