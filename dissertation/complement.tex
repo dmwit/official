@@ -4358,16 +4358,17 @@ definition.\fi
 left-hand side of the equivalence, and $b$ to refer to the right-hand side.
 
 \begin{longenum}
-\item Defining $f$ to be the identity function $f(x)=x$, the singleton
-relation $f \relR \unit$ witnesses the equivalence. Since $a.\missing(x) =
+\item The singleton
+relation $\id \relR \unit$ witnesses the equivalence (where here $\id$ is
+the identity \emph{function} on $X$). Since $a.\missing(x) =
 x$, we have $a.\missing \relR b.\missing$. Furthermore:
 \begin{align*}
-    a.\putr(x,f) &= (x,x' \mapsto \acopy_X.\aput(x',x)) \\
+    a.\putr(x,\id) &= (x,x' \mapsto \acopy_X.\aput(x',x)) \\
     &= (x, x' \mapsto x') \\
-    &= (x, f) \\
+    &= (x, \id) \\
     b.\putr(x,\unit) &= (x,\unit) \\
-    a.\putl(x,f) &= (f(x),x' \mapsto \acopy_X.\aput(x',x)) \\
-    &= (x,f) \\
+    a.\putl(x,\id) &= (\id(x),x' \mapsto \acopy_X.\aput(x',x)) \\
+    &= (x,\id) \\
     b.\putl(x,\unit) &= (x,\unit)
 \end{align*}
 This establishes that $a.\putr \sim_R b.\putr$ and that $a.\putl \sim_R
@@ -4455,19 +4456,19 @@ so the second parts of the outputs are related after all, and $a.\putl
 witnesses the equivalence. Since $a.\missing = \unit \mapsto x$ and
 $b.\missing = x$, we see $a.\missing \relR b.\missing$.
 
-To show that $a.\putr \sim_R b.\putr$, choose arbitrary $x,c \in X$ and
-define $f_c(\unit)=c$:
+To show that $a.\putr \sim_R b.\putr$, choose arbitrary $x,c \in X$:
 \begin{align*}
-    a.\putr(x,f_c) &= (\unit,\unit \mapsto x) \\
+    a.\putr(x,\unit \mapsto c) &= (\unit,\unit \mapsto x) \\
     b.\putr(x,c) &= (\unit,x)
 \end{align*}
 These clearly satisfy $\unit = \unit$ and $(\unit \mapsto x) \relR x$, so we
 can conclude that $a.\putr \sim_R b.\putr$.
 
-To show that $a.\putl \sim_R b.\putl$, choose arbitrary $c \in X$ and define
-$f_c(\unit)=c$ as before. Then:
+To show that $a.\putl \sim_R b.\putl$, choose arbitrary $c \in X$ as before.
+Then:
 \begin{align*}
-    a.\putl(\unit,f_c) &= (f_c(\unit),u \mapsto \aconst_x.\aput(u,f_c(\unit)) \\
+    a.\putl(\unit,\unit \mapsto c) &= ((\unit \mapsto c)(\unit),u \mapsto
+    \aconst_x.\aput(u,(\unit \mapsto c)(\unit)) \\
     &= (c,u \mapsto c) \\
     b.\putl(\unit,c) &= (c,c)
 \end{align*}
