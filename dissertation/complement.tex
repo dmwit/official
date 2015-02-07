@@ -49,10 +49,10 @@ must obey two ``round-tripping'' laws for every $x \in X$ and $y
 \in Y$:
 %
 \infax[GetPut]{
-  \PUT\; (\GET \; x)\; x = x 
+  \PUT(\GET \; x, x) = x 
 }
 \infax[PutGet]{
-  \GET\; (\PUT \; y \; x) = y  
+  \GET\; (\PUT(y,x)) = y  
 }
 %
 It is also useful to be able to create an element of $x$ given just an
@@ -532,11 +532,9 @@ $\partition$.
 
 Studies of asymmetric lenses sometimes consider a fourth behavioral law not
 discussed above:
-\ifdissertation
+
 \infax[PutPut]{\aput(v', \aput(v, s)) = \aput(v', s)}
-\else
-\infax[PutPut]{\aput y' (\aput y x) = \aput y' x}
-\fi
+
 This law is somewhat controversial: some reasonable $\aget$
 operations---such as the mapping operation that applies a transformation to
 each element of a list---cannot be paired with a $\aput$ that satisfies this
@@ -567,7 +565,7 @@ them).  The reason is that they demand that the effect of every update is
 completely undoable---not only the effect on the other \replica, but also the
 effect of the first update on the complement must be completely forgotten if
 we make a second update.  In particular, neither of the list-mapping lenses
-in \S\ref{lists} satisfy these laws.
+in \S\ref{lists}, i.e.\ Defs.~ \ref{delala} \& \ref{dedaja}, satisfy these laws.
 \fi
 
 %% But this means we
@@ -668,10 +666,10 @@ hold ``on the nose\commaquote but only up to equivalence.
 \else
 \begin{defn}
 \fi
-Given \iffull sets \fi $X,Y,C_f,C_g$ and a relation $R \subset C_f \times C_g$,
+Given \iffull sets \fi $X,Y,C_f,C_g$ and a relation $R \subseteq C_f \times C_g$,
 we say that functions 
 $f \in X \times C_f \to Y \times C_f$ and $g \in X \times C_g \to Y \times C_g$
-are {\em $R$-similar}, written $f \sim_R g$, if they take inputs with $R$-related
+are {\em $R$-similar}, written $f \sim_R g$, if they take equal inputs with $R$-related
 complements to equal outputs with $R$-related complements:
 \infrule{
     (c_f,c_g) \in R \\
@@ -684,7 +682,7 @@ complements to equal outputs with $R$-related complements:
 
 \begin{defn}[Lens equivalence]
 Two lenses $k$ and $\ell$ are {\em equivalent} (written $k \equiv \ell$) if
-there is a relation $R \subset k.C \times \ell.C$ \iffull on their complement
+there is a relation $R \subseteq k.C \times \ell.C$ \iffull on their complement
 sets \fi with
 \begin{enumerate}
     \item $(k.\missing, \ell.\missing) \in R$
@@ -783,7 +781,7 @@ of that lens' complement set, and a list of put objects as follows\iftext{}
 \apply(\ell,c,\NIL) &=&  \NIL
 \end{eqnarray*}
 \end{defn}
-
+A put object describes one interaction with the lens. A put object of the form $\mlinl x$ is supposed to be sent through the lens using $\putr$; a put object of the form $\mlinr y$ is supposed to be sent using $\putl$. Given a sequence of such put objects the function $\apply$ sends them throught the lens one after the other updating the complements as it goes. It returns the sequence of corresponding outputs in the form of complementary put objects. 
 \begin{defn}[Observational equivalence]
 Lenses $k,\ell \in X \lens Y$ are \emph{observationally equivalent} (written
 $k \approx \ell$) if, for every sequence of put objects $P \in (X + Y)\LIST$
@@ -792,7 +790,7 @@ we have
 \end{defn}
 
 \iffull
-\begin{theorem}[Equivalence of equivalence]
+\begin{theorem}
 \else
 \begin{theorem}
 \fi
@@ -802,7 +800,7 @@ we have
 \begin{proof}
 $(\Longleftarrow)$ Suppose that $k\equiv \ell$ via relation $R$. For all
 sequences of put objects $P$, and for
-elements $c \in k.C$ and $d\in k.C$ such that $(c,d) \in R$, we have
+elements $c \in k.C$ and $d\in \ell.C$ such that $(c,d) \in R$, we have
 $\apply(k,c,P)=\apply(\ell,d,P)$. This follows by induction on the length of $P$
 from the definition of $\apply$.
 Thus, $k\approx \ell$ follows by specialization to $c=k.\missing$ and
@@ -1125,7 +1123,8 @@ of symmetric lenses.)
     complement, $\unit$, validating the law.
 \end{goodlens}
 
-In fact, any stateless lens is an instance of a bijection lens:
+In fact, any stateless lens, i.e., a lens with trivial complement, is
+an instance of a bijection lens:
 \begin{lemma}
 If $\ell \in X \lens Y$ and $h \in \ell.C \to \Unit$ is a bijection, then
 there exists a bijection $f \in X \to Y$ such that $\ell \equiv \bij_f$.
@@ -1247,7 +1246,7 @@ reachable complements.  More precisely:
 \begin{lemma}
 Suppose we have lenses $k \in X \lens Y$ and $\ell \in Y \lens X$ such that
 $k;\ell \equiv \id_X$ and $\ell;k \equiv \id_Y$. Then there is a relation
-$R \subset k.C \times \ell.C$ satisfying the following conditions:
+$R \subseteq k.C \times \ell.C$ satisfying the following conditions:
 \infax[1]{(k;\ell).\missing \in R}
 \infrule[2]
     {(k;\ell).\putr(x,c) = (x',c') \andalso c \in R}
@@ -1475,13 +1474,13 @@ holds as well.
 \begin{prop}[Uniqueness of terminal lens]\label{conuni}
 Lenses with the same type as a terminal lens are equivalent to a terminal
 lens. More precisely, suppose $k \in X \lens \Unit$ and $k.\putl(\unit,
-k.\missing) = (x, c)$. Then $k \equiv \const_{x}$.
+k.\missing) = (x, c)$ for some $c$. Then $k \equiv \const_{x}$.
 \end{prop}
 
 Of course, there may be many (pairwise non-equivalent) terminal lenses of a
 particular type; for any two $x,y\in X$ with $x \ne y$, it's clear that
 $\const_x \not\equiv \const_y$. Proposition~\ref{conuni} tells us 
-that there are exactly as many arrows $\ell : X \Lens \Unit$ as there are
+that there are exactly as many arrows $\ell : X \lens \Unit$ as there are
 elements of $X$.
 
 \iffull
@@ -1883,8 +1882,8 @@ right-unitor, and symmetry, respectively.
 \end{prop}
 
 Knowing that \LENS{} is a symmetric monoidal category is useful for several
-reasons.  First, it tells us that, even though it is not quite a full-blown
-product, the tensor construction \iffull still supports many of the operations
+reasons.  First, it tells us that, even though the tensor construction is not quite a full-blown
+product, it \iffull still supports many of the operations
 traditionally associated with products. \else is algebraically quite well
 behaved. \fi
 Second, it justifies a convenient intuition where lenses built from multiple
@@ -2072,7 +2071,7 @@ a choice operation on lenses.  \iffull But these constructions are
 even farther away from being categorical sums than what we saw with
 products.
 
-As with products, a tensor can be extended to a sum by providing three
+As with products, a tensor $\oplus$ can be extended to a sum by providing three
 natural transformations---this time written $\inl$, $\inr$, and $\codiag$;
 that is, for each pair of objects $X$ and $Y$, there must be arrows
 \[\begin{array}{r@{\;\in\;}l}
@@ -2501,8 +2500,8 @@ For bijections $f$ and $g$,
 \iffull
 \begin{proof}
 Write $k = \bij_f\oplus\bij_g$, $k^f = \bij_f\oplus^f\bij_g$, and $\ell =
-\bij_{f+g}$.  The total relation $R \subset (\Unit \times \Unit) \times
-\Unit$ is a witness that $k \equiv \ell$ and the total relation $R^f \subset
+\bij_{f+g}$.  The total relation $R \subseteq (\Unit \times \Unit) \times
+\Unit$ is a witness that $k \equiv \ell$ and the total relation $R^f \subseteq
 (\Unit + \Unit) \times \Unit$ is a witness that $k^f \equiv \ell$.  It's
 clear that $k.\missing\relR\ell.\missing$ and
 $k^f.\missing\mathrel{R^f}\ell.\missing$, so let's show that the puts are
@@ -2539,17 +2538,12 @@ symmetric monoidal\ifcomplement\iffull categories\else category\fi\fi]
 In \SET, the disjoint union gives rise to a symmetric monoidal category with
 $\emptyset$ as unit. Let $\alpha^+,\lambda^+,\rho^+,\gamma^+$ be associator,
 left-unitor, right-unitor, and symmetry natural isomorphisms.
-%
-\iffull
-Then the $\oplus$ and $\oplus^f$ bifunctors each give rise
-\else
 Then the $\oplus$ bifunctor gives rise
-\fi
-%
 to a symmetric monoidal category of lenses with $\emptyset$ as unit and
 $\alpha^\oplus=\bij\circ\alpha^+$, $\lambda^\oplus=\bij\circ\lambda^+$,
 $\rho^\oplus=\bij\circ\rho^+$, and $\gamma^\oplus=\bij\circ\gamma^+$ as
-associator, left-unitor, right-unitor, and symmetry, respectively.
+associator, left-unitor, right-unitor, and symmetry, respectively\iffull;
+and similarly for $\oplus^f$. \else.\fi
 
 The types of these natural isomorphisms are:
 \begin{eqnarray*}
@@ -2769,7 +2763,7 @@ Occasionally, a value that is both an $X$ and a $Y$ may be put to the left
 across one of these union lenses. In this situation, the lens may
 legitimately choose either an $\mlinrx$ tag or an $\mlinlx$ tag.
 \iffull Below, we propose two lenses that break this tie in different ways. \fi
-The $\union$ lens uses the most recent unambiguous put to break the tie.
+ The $\union$ lens uses the most recent unambiguous put to break the tie.
 \iffull\else (In the long version, we also define a variant that looks back
 to the last tagged value that was put to the right that was in both
 sets.)\fi
@@ -3014,7 +3008,7 @@ We can also define a variety of lenses operating on lists.  We only
 consider mapping here, because in the next section we show how to
 obtain this and a whole variety of other functions on lists as instances of
 a powerful generic theorem, but it is useful to see one concrete instance
-first!
+first.
 
 Write $X\LIST$ for the set of lists with elements from the set $X$.  Write
 $\NIL$ for the 
@@ -3025,7 +3019,7 @@ and tail $ss$.  Write $x\INFTY \in X\INFTY$ for the infinite
 list of $x$'s.
 
 \breakifnearbottom
-\begin{defn}[Retentive list mapping lens]\ 
+\begin{defn}[Retentive list mapping lens]\ \label{delala}
 \lensdef{map}
 {\infruleplain{\ell \in X \lens Y}{\map(\ell) \in X\LIST \lens Y\LIST}}
 {
@@ -3058,7 +3052,7 @@ $e\LIST = \map(e)$.
 
 \iffull
 \breakifnearbottom
-\begin{defn}[Forgetful list mapping lens]\ 
+\begin{defn}[Forgetful list mapping lens]\ \label{dedaja}
 \lensdef{map_prime}
 {\infruleplain{\ell \in X \lens Y}{\map^f(\ell) \in X\LIST \lens Y\LIST}}
 {
@@ -3158,7 +3152,7 @@ We write $T\LIST_X$ for the functor that sends any lens $k$ to $\id_\Unit
 \oplus (\id_X \otimes k)$.
 \end{defn}
 
-The function $w$ here plays the role of a termination measure. We will be
+The function $w$ here plays the role of a termination measure in the right-to-left direction. We will be
 iterating $\ell.\putl$, producing a stream of values of type $Z$, which we
 would like to guarantee eventually ends.
 
@@ -3219,7 +3213,7 @@ The $F$-algebras thus form a category themselves. An initial $F$-algebra is
 an initial object in that category (an initial object has exactly one arrow
 to each other object, and is unique up to isomorphism).
 $F$-algebras can be used to model a wide variety of inductive datatypes,
-including lists and various kinds of trees~\cite{vene2000categorical}.
+including lists and various kinds of trees~\cite{meijer1991functional,vene2000categorical}.
 %
 Using this terminology, Theorem~\ref{listiter}
 says that $\bij_\foldlist$ is an initial object in the
@@ -3254,8 +3248,8 @@ A suitable weight function is given by $w(ys)=\length(ys)$.
 The induced lens $\IT(\ell) \in X\LIST \Lens Y\LIST$ is the lens analog of
 the familiar list mapping function. In fact, substituting
 the lens $e \in X\times Y \Lens Y\times Z$ (from
-the introduction) for $k$ in the above diagram, we find
-that $\IT(\ell)$ is the sneakier variant of the lens $e\LIST$.
+\S\ref{symm}) for $k$ in the above diagram, we find
+that $\IT(\ell)$ is the infinite-complement variant of the lens $e\LIST$.
 (Again, we are ignoring the important question of alignment here. A
 hand-written map lens could perform a more sophisticated alignment analysis
 to associate ``similar'' items in a sequence of puts and recover more
@@ -3311,9 +3305,11 @@ The lens $\IT(\ell) \in (X_1+X_2)\LIST \Lens X_1\LIST \times X_2\LIST$ that
 we obtain from iteration partitions the input list in one direction and uses
 a stream of booleans from the state to put them back in the right order in
 the other direction. Indeed, $\IT(\ell)$ is exactly the $\partition$ lens
-described in the introductory examples. Composing it with a projection
-yields a filter lens. (Alternatively, the filter lens could be obtained
-directly by iterating a slightly trickier $\ell$.) Consequently, we now have
+described in the introductory examples. 
+
+Composing it with the second projection
+yields a lens whose forward direction removes all the inl-entries and thus forms a special case of the well-known filter functional. Alternatively, this ``filter lens'' could be obtained
+directly by iterating a slightly more complicated $\ell$.) Consequently, we now have
 the machinery we need to define $\comp$ from the introduction:
 \begin{align*}
     \filter &= \partition;\pi_{1\NIL} \\
@@ -3539,8 +3535,10 @@ from the result of the recursive call and the auxiliary data.
 This gives us a lens version of the hylomorphism pattern from
 functional programming \cite{meijer1991functional}.
 %
-Unfortunately, we were unable to prove or disprove the
-uniqueness of $\HYLO(k,\ell)$.
+Unfortunately, we were unable to prove or disprove the uniqueness of
+$\HYLO(k,\ell)$. However, given that hylomorphisms are usually not
+unique, e.g.\ in the categories of relations or complete partial
+orders this might not be considered an important issue.
 
 We have not formally studied the question of whether $\IT(\ell)$
 is actually an initial algebra, i.e., whether it can
@@ -3557,7 +3555,8 @@ particular those that are built up from variables by $+$ and $\times$.
 All of these can also be construed as containers (see
 \S\ref{contain}), but the iterator and hylomorphism patterns
 provide more powerful operations for the construction of lenses than
-the mapping operation available for general containers. Moreover, the
+the mapping operation available for general containers.\footnote{One anonymous referee remarked that suitable categories of containers have initial algebras thus providing ``the usual fold stuff''. We disagree with this; the morphisms in the categories of containers are rather restricted and require, for instance, any reordering of the positions to be independent of the actual data contained in those. Thus, for example, a sorting function is not a container morphism and can thus not be construed as an initial algebra map in the category of containers.} 
+ Moreover, the
 universal property of the iterator provides a modular proof method,
 allowing one to deduce equational laws which can be cumbersome to
 establish directly because of the definition of equality as behavioral
@@ -3998,6 +3997,8 @@ from the root.
 
 \breakifoverfraction{0.7}
 
+We remark that this ordered version of containers has been independently and in the meantime been discovered and studied by Ahman et al. \cite{ahman2012container}. 
+
 \begin{defn}[Container mapping lens]\ 
 \lensdef{container_map}
 {\infruleplain{\ell \in X \lens Y}{F_{I,B}(\ell) \in F_{I,B}(X) \lens
@@ -4006,7 +4007,7 @@ F_{I,B}(Y)}}
 C = \\\colspan{\mlletarray{
   \{t \in \prod_{i\in I}B(i)\arrow \ell.(C) \mid \\
   \ \ 
-  \forall i, i'.\; i\leq{}i' \supset \forall b{\in}B(i).\;
+  \forall i, i'.\; i\leq{}i' \Rightarrow \forall b{\in}B(i).\;
   t(i')(b|i')=t(i)(b)\} 
   }}
 \\
@@ -4174,6 +4175,7 @@ the first presentation of asymmetric lenses from \S\ref{symm}, with
 \else
 \begin{defn}
 \fi
+\label{symmeze}
 Every asymmetric lens can be embedded in a symmetric one.
 %
 \lensdef{symmetrize}
@@ -4382,14 +4384,19 @@ $f_{k\ell}\relR(f_k,f_\ell)$. We first compute $a.\putr(x,f_{k\ell})$.
     a.\putr(x,f_{k\ell}) &=& ((k;\ell).\aget(x),z \mapsto (k;\ell).\aput(z,x)) \\
     &=& (\ell.\aget(k.\aget(x)), \\
     & & z \mapsto k.\aput(\ell.\aput(z,k.\aget(x)),x)) \\
-    &=& (x_a,f_{k\ell}')
+    &=:& (x_a,f_{k\ell}')
 \end{eqnarray*}
-And now $b.\putr(x,(f_k,f_\ell))$:
+And now $b.\putr(x,(f_k,f_\ell))$. We have
 \begin{eqnarray*}
     k\sym.\putr(x,f_k) &=& (k.\aget(x),y \mapsto k.\aput(y,x)) \\
     \ell\sym.\putr(k.\aget(x),f_\ell) &=& (\ell.\aget(k.\aget(x)), \\
-    & & z \mapsto \ell.\aput(z,k.\aget(x))) \\
-    b.\putr(x,(f_k,f_\ell)) &=& (x_b,(f_k',f_\ell'))
+    & & z \mapsto \ell.\aput(z,k.\aget(x))) 
+\end{eqnarray*}
+Therefore, $b.\putr(x,(f_k,f_\ell)) = (x_b,(f_k',f_\ell'))$ where
+\begin{eqnarray*}
+x_b &=& (\ell.\aget(k.\aget(x)))\\
+f_k' &=& y \mapsto k.\aput(y,x)\\
+f_\ell' &=& z \mapsto \ell.\aput(z,k.\aget(x))) 
 \end{eqnarray*}
 It's now clear that
 \begin{eqnarray*}
@@ -4462,10 +4469,9 @@ $f_c(\unit)=c$ as before. Then:
 \begin{align*}
     a.\putl(\unit,f_c) &= (f_c(\unit),u \mapsto \aconst_x.\aput(u,f_c(\unit)) \\
     &= (c,u \mapsto c) \\
-    &= (c,\unit \mapsto c) \\
     b.\putl(\unit,c) &= (c,c)
 \end{align*}
-These again clearly satisfy $c = c$ and $(\unit \mapsto c) \relR c$, so
+Now, since  $(u \mapsto c) \relR c$ we conclude
 $b.\putl \sim_R b.\putl$.
 
 \item The relation
@@ -4557,7 +4563,7 @@ $x_i=f_i(y_i)$ when $i\leq n$ and $x_i=\ell.\acreate(y_i)$ otherwise.
 Clearly, the two ``missings'' are thus related and it is also easy to see
 that $\putr$ is respected. As for the $\putl$ direction consider that
 $f$ and $[f_1,\dots,f_n]$ are related and that $ys=[y_1,\dots,y_m]$ is
-do be $\putl$-ed. Let $[x_1,\dots,x_k]$ be the result in the
+to be $\putl$-ed. Let $[x_1,\dots,x_k]$ be the result in the
 $(f^*)\sym$ direction. It follows $k=m$ and
 $[x_1,\dots,x_m]=f([y_1,\dots,y_m])$. If $[x_1',\dots,x_m']$ is the
  result in the
@@ -4594,7 +4600,7 @@ terms of asymmetric ones in a slightly more elaborate way.
   Given any arrow $\ell$ of \LENS{}, there are asymmetric lenses
   $k_1,k_2$ such that \displayifspace{ (k_1\sym)\op; k_2\sym \equiv \ell.
   } \iffull This suggests that the category \LENS{} could be
-  constructed from spans in \ALENS.
+  constructed from spans in the category of asymmetric lenses.
   \ifcomplement
   We choose not to try this because
   it makes many things more awkward. While it is possible to define
@@ -5159,7 +5165,7 @@ We have proposed the first notion of symmetric bidirectional transformations
 that supports composition. Composability opens up the study of symmetric
 bidirectional transformations from a category-theoretic perspective. The
 category of symmetric lenses is self-dual and has the category of bijections
-and that of asymmetric lenses each as full subcategories. We have surveyed
+and that of asymmetric lenses each as subcategories. We have surveyed
 the structure of this category and found it to admit tensor product
 structures that are the Cartesian product and disjoint union on objects. We
 have also investigated data types both inductively and as ``containers'' and
