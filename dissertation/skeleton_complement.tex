@@ -425,7 +425,8 @@ to contain such a proposal.
 
 More speculatively, it is a well-known folklore result that symmetric
 monoidal categories 
-are in 1-1 correspondence with wiring diagrams and with first-order
+are in 1-1 correspondence with wiring
+diagrams\iffull~\cite{selinger2011survey}\fi\ and with first-order
 linear lambda calculus. We would like to exploit this correspondence to design a
 lambda-calculus-like syntax for symmetric lenses and perhaps also a
 diagrammatic language. The linear lambda calculus has judgments of
@@ -450,9 +451,9 @@ and swapping tensor products.
 
 \paragraph*{Complements as States}
 One benefit of treating complements explicitly is that it opens the way
-to a {\em stateful} presentation of lenses.  An upcoming workshop paper will
+to a {\em stateful} presentation of lenses. \iffull\else An upcoming workshop paper will
 discuss our work on a Haskell implementation of symmetric lenses in this
-vein.  The idea is that the complement
+vein. \fi The idea is that the complement
 of a lens can be thought of as its local storage---the part of the heap that
 belongs to it.  An obvious next step is that, instead of the lens components
 taking the local storage as an argument and returning an updated version as
@@ -547,7 +548,7 @@ Foundation under grant IIS-0534592 \emph{Linguistic Foundations for XML View
 \else
 \bibliographystyle{plainnat}
 \fi
-\bibliography{bcp,harmony,complement}
+\bibliography{bcp,harmony,complement,dissertation}
 
 \end{document}
 
