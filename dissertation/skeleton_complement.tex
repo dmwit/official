@@ -46,10 +46,11 @@ PIERCE and DANIEL WAGNER \affil{University of Pennsylvania}}
 
 \iftext
 \begin{abstract}
+\bcp{Maybe change DW's address to Galois (with a note that the work was done
+at Penn)?}%
 {\em Lenses}---bidirectional transformations between pairs of connected
-structures---have been extensively studied and are beginning to find their
-way into industrial practice. However, some aspects of their foundations
-remain poorly understood.
+structures---have been studied extensively, but some aspects of their
+foundations remain poorly understood.
 %
 In particular, most previous work has focused on the special case of {\em
   asymmetric lenses}, where one of the structures is taken as primary and
@@ -103,8 +104,8 @@ Supported by the National Science Foundation under grants IIS-0534592,
 \section{Introduction}
 
 The electronic world is rife with partially synchronized data---replicated
-structures that are not identical but share some common parts, and
-where the shared parts need to be kept up to date as the structures change.
+structures that are not identical but share some common parts that must
+be kept up to date as the structures change.
 Examples include databases and materialized views, in-memory and on-disk
 representations of heap structures, connected components of user interfaces,
 and models representing different aspects of the same software system.
@@ -117,14 +118,14 @@ transformation that maps $Y$ changes to $X$ changes.  However, when the
 structures 
 involved are complex, managing such pairs of transformations manually can be a
 maintenance nightmare.
-
+%
 This has led to a burgeoning interest in {\em bidirectional programming
   languages}, in which every expression denotes a related pair of
 transformations.  A great variety of bidirectional languages have been
 proposed (see~\cite{FosterThesis,DBLP:conf/icmt/CzarneckiFHLST09} for recent
   surveys), and these ideas are 
 beginning to see commercial application, e.g., in RedHat's system
-administration tool, Augeas~\cite{Augeas}.
+administration tool, Augeas~\cite{Augeas}.  \bcp{Mention the Haskell lens libraries?}
 
 One particularly well-studied
 class of bidirectional programming languages is the framework of {\em
@@ -152,7 +153,8 @@ diskin2009model,hidaka2009compositional,hidaka2009towards}.
 \fi
 %
 By contrast, our aim in this paper is to advance the {\em foundations} of
-lenses in two significant respects.
+lenses in two significant respects.  \bcp{We probably need some citations
+  after 2010...}
 
 %% \finish{Another citation that we might include (but it's not directly
 %%     relevant): \cite{voigtlander2009bidirectionalization} }
@@ -175,12 +177,12 @@ symmetric lenses need to be proved correct modulo a notion of {\em behavioral
 
 Second, we undertake a systematic investigation of the {\em
   algebraic structure} of the space of lenses, using the concepts of
-elementary category theory as guiding and organizing principles.  (Our
+elementary category theory as guiding and organizing principles.  Our
 presentation is self contained, but some prior familiarity
 with basic concepts of category theory will be helpful.\iffull \else{} Most
   proofs 
 are omitted for brevity; they can be found in a long
-version of the paper, available from the second author's web page.\fi)
+version of the paper, available from the second author's web page.\fi
 
 We begin this algebraic investigation with some simple generic constructions
 on symmetric 
@@ -196,7 +198,7 @@ whether the pairing and projection operations formed a full categorical
 product, while the {injection arrows} from $X$ to $X + Y$ and from $Y$ to
 $X + Y$ were not definable at all in the asymmetric setting. We prove that
 the category of symmetric lenses does \emph{not} have full categorical
-products or sums, but does have ``symmetric monoidal'' structures
+products or sums, but that it does have ``symmetric monoidal'' structures
 with many of the useful properties of products and sums.
 
 Next, we consider how to build lenses over more complex data
@@ -227,7 +229,7 @@ constructing ``mapping lenses'' that apply the action of a given sublens to
 all the elements of some data structure (\S\ref{contain}).  This
 technique applies not only to algebraic data structures but to an arbitrary
 {\em container} in the sense of Abbot, Altenkirch, and
-Ghani~\cite{1195941}.  This extends the variety of list and tree mapping
+Ghani~\citeyear{1195941}.  This extends the variety of list and tree mapping
 combinators that we can construct from first principles to include
 non-inductive datatypes such as labeled dags and graphs.  
 \iflater
@@ -249,14 +251,14 @@ non-inductive datatypes such as labeled dags and graphs.
 %%   not!}
 
 We carry out these investigations in the richer space of symmetric lenses,
-but many of the results and techniques should also apply to the special case of
+but many of the results and techniques also apply to the special case of
 asymmetric lenses.  Indeed, we can show (\S\ref{asymm}) that
 asymmetric lenses form a subcategory
 of symmetric ones in a natural way: every
 asymmetric lens can be embedded in a symmetric lens, and many of the
 algebraic operators on symmetric lenses specialize to known constructions on
 asymmetric lenses.  Conversely, a symmetric lens can be factored into a
-``back to back'' assembly of two asymmetric ones.
+``back-to-back'' assembly of two asymmetric ones.
 
 \S\ref{sec:relwork} and \S\ref{sec:future} discuss related and future
 work. 

@@ -58,7 +58,7 @@ must obey two ``round-tripping'' laws for every $x \in X$ and $y
 It is also useful to be able to create an element of $x$ given just an
 element of $y$, with no ``original $x$'' to put it into; in order to handle
 this in a 
-uniform way, each lens is also equipped with a
+uniform way, each lens is equipped with a
 function $\CREATE\in Y\arrow X$, and we assume one more axiom:
 \infax[CreateGet]{
     \GET\; (\CREATE \; y) = y
@@ -70,9 +70,9 @@ function $\CREATE\in Y\arrow X$, and we assume one more axiom:
 The key  step toward symmetric lenses is the notion
 of {\em complements}.  The idea dates back to a famous paper in the
 database literature on the view update
-problem~\cite{DBLP:journals/tods/BancilhonS81} and was adapted to
-lenses in~\cite{Matching10} (and, for a slightly different
-definition,~\cite{matsuda2007btb}), and it is quite simple.  If we think of
+problem~\cite{DBLP:journals/tods/BancilhonS81} that was adapted to
+lenses by~\citeN{Matching10} (and, for a slightly different
+definition,by~\citeN{matsuda2007btb}), and it is quite simple.  If we think of
 the    
 \GET{} component of a lens as a sort of projection function, then we can find
 another projection from $X$ into some set $C$ that
@@ -93,8 +93,8 @@ there will be pairs of complements and views which do not match up. One may
 worry that this makes the implementation of \PUT functions more difficult,
 as they may need to merge a view and a complement which are not in the image
 of \GET; however, as we discuss below, it turns out that this is no more
-difficult than the task that asymmetric lenses already handle of merging a
-view and source which do not match.
+difficult than the task (already handled by asymmetric lenses) of merging a
+view and source that do not match.
 \fi
 
 Formally, an {\em asymmetric lens with complement}
@@ -178,7 +178,8 @@ $\PUT \in Y \times C \arrow X \times C$.
 \fi
 %
 We can think of the combined complement $C$ as $C_X \times
-C_Y$---that is, each complement contains some ``private information from
+C_Y$---that is, each element of the complement contains some ``private
+information from 
 $X$'' and some ``private information from $Y$''; by convention, the \GET{}
 function reads the $C_Y$ part and writes the $C_X$ part, while the \PUT{}
 reads the $C_X$ part and writes the $C_Y$ part.  
