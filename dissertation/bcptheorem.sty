@@ -149,7 +149,9 @@
 \def\noendofpf{\gdef\endofpf{}}
 \def\startofpf{\gdef\endofpf{\endofpfcommands\gdef\endofpf{}}}
 
-\newcommand{\prooflabelface}{\bf}
+\ifdefined\prooflabelface\else
+  \newcommand{\prooflabelface}{\bf}
+\fi
 \newenvironment{pflike}[1]{%
    \startofpf \trivlist
      \item[\hskip \labelsep{\prooflabelface

@@ -190,7 +190,7 @@ our core definition.
 
 \iffull
 \begin{figure*}[t!] \centering
-\vspace*{-4ex}
+\vspace*{-2ex}
 \hspace*{-1em}
 \begin{tabular}{@{}cc}
   \ifpdf\tikz\pdf{symmetric-minus};\vspace*{-1ex}
@@ -289,10 +289,12 @@ alternate equation $\putl(y,c)=(x,c)$ has the same solutions.}.  In
 general, a \PUT{} of a new $x'$ from the left entails finding a $y'$ and a
 $c'$ that restore consistency.  Additionally, we often wish this
 process to involve the
-complement $c$ from the previous steady state; as a result, it can be
-delicate to choose a good value of $\missing$. This value can often be
-chosen compositionally; each of our primitive lenses and lens combinators
-specify one good choice for $\missing$.
+complement $c$ from the previous steady state; as a result\bcp{Not clear why
+  this follows}, it can be
+somewhat delicate to choose a good value for $\missing$. Fortunately, this
+value can often be 
+calculated compositionally: each of our primitive lenses and lens combinators
+specifies one good choice for $\missing$.
 
 \iflater\finish{There's a good technical discussion of the options for
   dealing with creation in symmetric.v --- might be worth including it
@@ -367,7 +369,7 @@ Viewed more abstractly, the
 connection between the information about a single composer in the two tables
 is a lens from $X \times Y$ to $Y \times Z$, with complement $X
 \times Z$---let's call this lens $e$.  Its \PUTR{} component is given $(x,y)$ as
-input and has $(x',z)$ in its complement; it constructs a new complement by
+input and $(x',z)$ as complement; it constructs a new complement by
 replacing $x'$ by $x$ to form $(x,z)$, and it constructs its output by
 pairing the $y$ from its input and the $z$ from its complement to form
 $(y,z)$. The \PUTL{} component does the opposite, replacing the $z$ part of
@@ -450,7 +452,7 @@ behavior of the lens-summing operator $\oplus$ in the specification
 $e\LIST \simeq \id_\Unit \oplus (e \otimes e\LIST)$ of the list mapping lens.
 
 \begin{figure*}[t!] \centering
-\vspace*{-4ex}
+% \vspace*{-4ex}
 \begin{tabular}{@{}ccc}
   \tikz\pdf{sums1};
   &
@@ -517,11 +519,11 @@ $\putl((\left<a,b,c\right>,\left<1,2\right>),\left<\false,\true,\false\right>) =
 \\[1.5ex]
 \noindent The $\putl$ fills in as much of the beginning of the list as it
 can, using the complement to indicate whether to draw elements from $X\LIST$
-or from $Y\LIST$.  (How the remaining $X$ and $Y$ elements are interleaved
+or from $Y\LIST$.  How the remaining $X$ and $Y$ elements are interleaved
 is a free choice, not specified by the lens laws, since this case only
 arises when we are {\em not} in a round-tripping situation. The strategy
 shown here, where all new $X$ entries precede all new $Y$ entries, is just
-one possibility.)
+one possibility.
 
 Given $\partition$, we can obtain $\comp$ by composing three lenses in
 sequence: from $(X+Y)\LIST$ we get to $X\LIST \times Y\LIST$ using
@@ -537,14 +539,14 @@ discussed above:
 
 \infax[PutPut]{\aput(v', \aput(v, s)) = \aput(v', s)}
 
-This law is somewhat controversial: some reasonable $\aget$
+This law is somewhat controversial: on one hand, some reasonable $\aget$
 operations---such as the mapping operation that applies a transformation to
 each element of a list---cannot be paired with a $\aput$ that satisfies this
-law, but relying on this law allows one to optimize chains of successive
-puts and strongly constrains the operation of $\aput$, preventing some
-clearly unsatisfactory $\aput$ implementations. We will explore some of the
-ways one might generalize of this law to the realm of symmetric lenses
-below.
+law; but, on the other hand, relying on this law allows one to optimize
+chains of successive 
+puts and strongly constrains the operation of $\aput$, ruling out some
+clearly unsatisfactory $\aput$ implementations. We briefly explore some of the
+ways one might generalize this law to the realm of symmetric lenses.
 
 \begin{lemma} The following ``put the same thing twice'' laws follow from
 the ones we have:
@@ -567,7 +569,7 @@ them).  The reason is that they demand that the effect of every update is
 completely undoable---not only the effect on the other \replica, but also the
 effect of the first update on the complement must be completely forgotten if
 we make a second update.  In particular, neither of the list-mapping lenses
-in \S\ref{lists}, i.e.\ Defs.~ \ref{delala} \& \ref{dedaja}, satisfy these laws.
+in \S\ref{lists} (Defs.~\ref{delala} \& \ref{dedaja}) satisfy these laws.
 \fi
 
 %% But this means we
@@ -623,7 +625,7 @@ The present chapter does \emph{not} deal with the important goal of
 alignment; we
 \else
 One important {\em non}-goal of the present paper is dealing with
-the (important) issue of {\em alignment}~\cite{Boomerang07,Matching10}. We
+the challenging issue of {\em alignment}~\cite{Boomerang07,Matching10}. We
 \fi
 consider only the simple case of lenses
 that work ``positionally\dotquote For example, the lens $e\LIST$ in the example
@@ -652,7 +654,7 @@ propagation}; see \S\ref{sec:future}.
 %% Separate complements, already in the asymmetric case, give
 %% rise to a nontrivial equivalence on lenses, and we'll need to work up
 %% to this equivalence in everything we do from now on.  
-Since each lens carries its own complement---and since this need
+Since each lens carries its own complement---which need
 not be the same as the 
 complement of another lens with the same domain and codomain---we now need to
 define what it means for two lenses to be indistinguishable, in the sense
@@ -705,6 +707,7 @@ Lens equivalence is an equivalence relation.
 \end{lemma}
 \begin{proof}
 Reflexivity and symmetry are obvious. We briefly sketch transitivity.
+
 % (reflexivity) Choose an arbitrary lens $\ell \in X \lens Y$; we then must
 % show $\ell\equiv\ell$. Take $R$ to be equality. It's clear that
 % $(\ell.\missing,\ell.\missing) \in R$. To show that $\ell.\putr \sim_R
@@ -721,7 +724,7 @@ Reflexivity and symmetry are obvious. We briefly sketch transitivity.
 % \end{align*}
 % This last line is just what we needed, so $\ell.\putr \sim_R \ell.\putr$.
 % The proof that $\ell.\putl \sim_R \ell.\putl$ is similar.
-
+%
 % (symmetry) Suppose $k \equiv \ell$, as witnessed by $R$. Then the converse
 % relation
 % \[R\op=\{(c_\ell,c_k) \mid (c_k,c_\ell)\in R\}\]
@@ -732,7 +735,7 @@ Reflexivity and symmetry are obvious. We briefly sketch transitivity.
 % makes them evidently equivalent conditions, and similarly for the pair of
 % $k.\putl \sim_R \ell.\putl$ and $\ell.\putl \sim_{R\op} k.\putl$. Hence
 % $\ell \equiv k$.
-
+%
 Suppose $k \equiv \ell$ (as witnessed by $R_{k\ell}$) and
 $\ell \equiv m$ (as witnessed by $R_{\ell m}$). We show that the
 relation
@@ -828,8 +831,9 @@ $k\equiv \ell$ via relation $R$.
 
 \section{Basic Constructions}\label{basic}
 
-With the basic definitions in hand, we can start defining lenses.  We
-begin in this section with several relatively simple constructions.  
+With the basic definitions in hand, our next task is to show how lenses can
+be built, either from scratch or by composing other lenses in various ways.
+We begin in this section with several relatively simple constructions.
 
 % % \paragraph*{Identity and Composition}
 
@@ -1209,7 +1213,7 @@ lenses are isomorphisms in the category of lenses. However, not every
 isomorphism in \LENS{} is of that form. This is because a bijective
 lens displays no dependency on the complement at all, whereas an
 isomorphism in the category of lenses still allows for some limited
-interaction with the complement as in the following counterexample.
+interaction with the complement, as in the following counterexample.
 
 Define the set $\Trit=\{-1,0,1\}$ and the function $f \in
 \Trit \times \Trit \to \Trit$ which returns its arguments if they are equal
@@ -1370,10 +1374,8 @@ We sketch the proofs in that order.
 %         \[k\op.\putl = k.\putr \sim_R \ell.\putr = \ell\op.\putl\]
     \item In fact, $\id\op = \id$; \ifdissertation and \fi
     \item The relation $(c_k,c_\ell) \relR (c_\ell,c_k)$ whenever $c_k \in
-        k.C$ and $c_\ell \in \ell.C$ witnesses the equivalence.
-        \ifdissertation\endofpf\fi
-
-
+        k.C$ and $c_\ell \in \ell.C$ witnesses the
+        \hbox{equivalence}.
 % We observe
 %         that:
 %         \begin{align*}
@@ -1394,6 +1396,7 @@ We sketch the proofs in that order.
 %         which shows the desired relationship. Showing that
 %         $(k;\ell)\op.\putl \sim_R (\ell\op;k\op).\putl$ is similar.
 \end{enumerate}
+\noendofpf
 \end{proof}
 
 \ifdissertation
@@ -1518,7 +1521,9 @@ $k.\putl(\unit,c') = (z,c')$, and hence $c' \relR z$.
 \end{proof}
 \fi
 
-\iffull\ifdissertation\else\clearpage\fi\fi
+\iffull\ifdissertation\else
+% \clearpage
+\fi\fi
 
 \begin{defn}[Disconnect lens]\ 
 \lensdef{disconnect}
@@ -1541,7 +1546,7 @@ $;$ construct lenses from lenses.)  \fi
 \section{Products}\label{prod}
 
 A few additional notions from elementary category theory will be useful for
-\ifdissertation generating \else giving us \fi
+suggesting
 ideas about what sorts of properties to look for and for
 structuring the discussion of which of these properties hold and which fail
 for lenses.
@@ -1565,7 +1570,7 @@ If a category \catC has a product for each pair of objects, we say that
 \fi
   \LENS{} does not have products.
 \end{theorem}
-{\bf Proof idea:} Suppose we have lenses $k \in Z \Lens X$ and $\ell \in Z
+{\sc Proof idea:} Suppose we have lenses $k \in Z \Lens X$ and $\ell \in Z
 \Lens Y$. Informally, the lens $k$ includes a way to take any $Z$ and choose
 a corresponding $X$ and a way to take any $X$ and find a corresponding $Z$.
 Many common categories with products include the former, but the latter is
@@ -1697,7 +1702,7 @@ original.
 \fi % full
 %
 \iffull
-See Proposition~13 in~\cite{AbrTze09} for a proof that these conditions are
+See Proposition~13 in~\citeN{AbrTze09} for a proof that these conditions are
 equivalent to the standard presentation of products in terms of universal
 properties.
 \else
@@ -2002,12 +2007,12 @@ the copies of $X$ whenever possible, preferring the left one when it cannot
     \putr(x, \mlinr x') &=& ((x, x'), \eq(x, x')) \\
     \putl((x, x'), c) &=& (x, \eq(x, x'))
 }
-where here the $\eq$ function tests its arguments for equality\iffull:
+where here the $\eq$ function tests its arguments for equality\iffull
 \[\eq(x,x') = \cond{
     \mlinl \unit & x = x' \\
     \mlinr x' & x \ne x'
 }\]
-\fi---$\eq(x,x')$ yields $\mlinl \unit$ if $x = x'$ and 
+i.e., \else---\fi$\eq(x,x')$ yields $\mlinl \unit$ if $x = x'$ and 
 yields $x'$ if not.
 \iffull
 This assumes that $X$ possesses a decidable equality, a reasonable
@@ -2050,7 +2055,7 @@ However, neither of these proposals satisfy all the required laws.
 \iffull Historically, the \else The \fi status of sums has been even more
 mysterious than
 that of products.  In particular, the {\em injection arrows} from $A$ to $A
-+ B$ and $B$ to $A + B$ do not even make sense in the asymmetric setting; as
++ B$ and $B$ to $A + B$ do not even make sense in the asymmetric setting: as
 functions, they are not surjective, so they cannot satisfy \rn{PutGet}.
 
 \iffull
@@ -3557,7 +3562,9 @@ particular those that are built up from variables by $+$ and $\times$.
 All of these can also be construed as containers (see
 \S\ref{contain}), but the iterator and hylomorphism patterns
 provide more powerful operations for the construction of lenses than
-the mapping operation available for general containers.\footnote{One anonymous referee remarked that suitable categories of containers have initial algebras thus providing ``the usual fold stuff''. We disagree with this; the morphisms in the categories of containers are rather restricted and require, for instance, any reordering of the positions to be independent of the actual data contained in those. Thus, for example, a sorting function is not a container morphism and can thus not be construed as an initial algebra map in the category of containers.} 
+the mapping operation available for general containers.\bcp{Do we want this
+  argument with the reviewer in the published paper?  If so, perhaps we can
+  reword it as ``One might wonder whether...'' or some such?}\footnote{An anonymous referee remarked that suitable categories of containers have initial algebras thus providing ``the usual fold stuff.'' We disagree: the morphisms in the categories of containers are rather restricted and require, for instance, any reordering of the positions to be independent of the actual data contained in those. Thus, for example, a sorting function is not a container morphism and cannot be construed as an initial algebra map in the category of containers.} 
  Moreover, the
 universal property of the iterator provides a modular proof method,
 allowing one to deduce equational laws which can be cumbersome to

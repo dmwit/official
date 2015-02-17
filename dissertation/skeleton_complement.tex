@@ -271,16 +271,15 @@ work.
 There is a large literature on lenses and related approaches to
 propagating updates between connected structures.  We discuss only the most
 closely related work here; good general surveys of the area can be found
-in~\cite{FosterThesis,DBLP:conf/icmt/CzarneckiFHLST09}.  Connections to the
+in~\citeN{FosterThesis} and~\citeN{DBLP:conf/icmt/CzarneckiFHLST09}.  Connections to the
 literature on {\em view update} in databases are surveyed
-in~\cite{Focal2005-shortcite}. \iffull A short version of this paper is available
-in~\cite{HofmannPierceWagner10}.\fi
+in~\cite{Focal2005-shortcite}. \iffull A short version of this paper
+appeared in~\cite{HofmannPierceWagner10}.\fi
 
 The first symmetric approach to update propagation was proposed by
-Meer\-tens~\cite{Meertens98} and followed up \iffull in the context of
-model-driven design \fi by Stevens~\cite{Stevens07},
-Diskin~\cite{DBLP:conf/models/Diskin08}, and Xiong, et
-al~\cite{xiong2009supporting}.
+\citeN{Meertens98} and followed up \iffull in the context of
+model-driven design \fi by \citeN{Stevens07},
+\citeN{DBLP:conf/models/Diskin08}, and \citeN{xiong2009supporting}.
 %
 Meertens suggests modeling synchronization between two sets
 $X$ and $Y$ by a {\em consistency relation} $R\subseteq
@@ -347,11 +346,11 @@ replace the \rn{PutGet} law with a somewhat looser \rn{PutGetPut} law,
 permitting a broader range of useful behaviors for lenses that duplicate
 information.  It would be interesting to see what kind of categorical
 structures arise from these choices.  The proposal by Matsuda et
-al.~\cite{matsuda2007btb} is particularly interesting because it also employs
+al.~\citeyear{matsuda2007btb} is particularly interesting because it also employs
 the idea of complements.  Conversely, stronger laws can be imagined, such as
 the \rn{PutPut} law discussed by Foster et
-al.~\cite{Focal2005-shortcite}\iffull{} and the more refined variants
-in~\cite{updatable-security-views}\fi\iflater\finish{Say something more
+al.~\citeyear{Focal2005-shortcite}\iffull{} and the more refined variants
+in~\citeN{updatable-security-views}\fi\iflater\finish{Say something more
   about this?}\fi.
 
 A different foundation for defining lenses by recursion was explored by
