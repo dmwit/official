@@ -4367,7 +4367,7 @@ definition.\fi
 left-hand side of the equivalence, and $b$ to refer to the right-hand side.
 
 \begin{longenum}
-\item The singleton
+\item We have $a=\acopy_X\sym$ and $b=\id_X$. The singleton
 relation $\id \relR \unit$ witnesses the equivalence (where here $\id$ is
 the identity \emph{function} on $X$). Since $a.\missing(x) =
 x$, we have $a.\missing \relR b.\missing$. Furthermore:
@@ -4383,7 +4383,7 @@ x$, we have $a.\missing \relR b.\missing$. Furthermore:
 This establishes that $a.\putr \sim_R b.\putr$ and that $a.\putl \sim_R
 b.\putl$.
 
-\item The relation
+\item We have $a=(k;\ell)\sym$ and $b=k\sym;\ell\sym$. The relation
 \[R = \{(f_{k\ell},(f_k,f_\ell)) \mid f_{k\ell} = f_\ell;f_k\}\]
 witnesses the equivalence. The fact that $a.\missing \relR b.\missing$ is
 immediate from the definitions.
@@ -4460,7 +4460,7 @@ that last line becomes
 so the second parts of the outputs are related after all, and $a.\putl
 \sim_R b.\putl$.
 
-\item The relation
+\item We have $a=\aconst_x\sym$ and $b=\const_x$. The relation
 \[R = \{(\unit \mapsto c,c) \mid c \in X\}\]
 witnesses the equivalence. Since $a.\missing = \unit \mapsto x$ and
 $b.\missing = x$, we see $a.\missing \relR b.\missing$.
@@ -4484,7 +4484,7 @@ Then:
 Now, since  $(u \mapsto c) \relR c$ we conclude
 $b.\putl \sim_R b.\putl$.
 
-\item The relation
+\item We have $a=(k\cdot\ell)\sym$ and $b=k\sym\otimes\ell\sym$. The relation
 \[R = \{(f_{k\ell},(f_k,f_\ell)) \mid \forall y,w. f_{k\ell}(y,w)=(f_k(y),f_\ell(w)) \}\]
 witnesses the equivalence. We can compute
 \begin{align*}
@@ -4537,7 +4537,8 @@ $f_{k\ell}(y,w)=(f_k(y),f_\ell(w))$. Then we can define a few things:
 \end{align*}
 So $v_a=v_b$ and $f_a \relR f_b$ -- that is, $a.\putl \sim_R b.\putl$.
 
-\item Suppose $k \in X \alens Y$ and $\ell \in Z \alens W$.  Define the
+\item We have $a=(k|\ell)\sym$ and $b=(k\sym\oplus^f\ell\sym);\union$.
+    Suppose $k \in X \alens Y$ and $\ell \in Z \alens W$.  Define the
 following functions:
 \[g \in ((Y \to X) + (W \to Z)) \times (Y \cup W) \to X + Z\]
 \begin{align*}
@@ -4559,7 +4560,8 @@ Then we can define the relation
 \[R = \{(g(f),(f,\mltag(f))) \mid f \in (k\sym \oplus^f \ell\sym).C\}.\]
 It is tedious but straightforward to verify that this witnesses the
 equivalence.
-\item $(\ell^*)\sym.C$ comprises functions $f:Y^*\to X^*$ such that
+\item We have $a=(\ell\LIST)\sym$ and $b=\map^f(\ell\sym)$. $(\ell^*)\sym.C$
+comprises functions $f:Y^*\to X^*$ such that
 \ifdissertation whenever \fi $f([y_1,\dots,y_n])=[x_1,\dots,x_m]$
 \ifdissertation we can conclude \else implies \fi $m=n$ and
 $\ell.\aget(x_i)=y_i$.
