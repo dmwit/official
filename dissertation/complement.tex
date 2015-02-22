@@ -3141,7 +3141,11 @@ methodology carries over to other polynomial inductive datatypes.
 \subsect{Lists}
 
 Let $\foldlist \in \Unit + (X \mathord{\times} X\LIST) \rightarrow
-X\LIST$ be the bijection between ``unfolded'' lists and lists; $\foldlist$ takes $\mlinl
+X\LIST$ be the bijection between ``unfolded'' lists and lists\footnote{We
+    have now introduced two senses of the word ``fold'' (and ``unfold''):
+    as a recursion pattern, and as an isomorphism between two
+    representations of a recursive data type. Context will make it clear
+which of these are meant in the remainder.}; $\foldlist$ takes $\mlinl
 \unit$ to $\NIL$ and $\mlinr (x,xs)$ to $x{\CONS}xs$.  Note that $\bij_\foldlist
 \in \Unit + (X \mathord{\times} X\LIST) \Lens X\LIST$ is then a bijective arrow
 in the category \LENS{}.
