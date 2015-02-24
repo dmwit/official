@@ -745,14 +745,20 @@ relation
 \[R_{km} = R_{k\ell}\circ R_{\ell m} = \{(c_k,c_m) \mid \exists c_\ell.\ c_k \relRx{k\ell} c_\ell
 \land c_\ell \relRx{\ell m} c_m\}\]
 witnesses the equivalence $k \equiv m$. It is clear that
-\[(k.\missing,m.\missing) \in R_{km},\]
+$(k.\missing,m.\missing) \in R_{km}$,
 since we can choose $c_\ell = \ell.\missing$. Next, we show that $k.\putr
 \sim_{R_{km}} m.\putr$. We may assume three things:
-\begin{align*}
-    (c_k,c_m) &\in R_{km} \\
-    k.\putr(x,c_k) &= (y_k, c_k') \\
-    m.\putr(x,c_m) &= (y_m, c_m')
-\end{align*}
+\ifdissertation
+  \begin{align*}
+      (c_k,c_m) &\in R_{km} \\
+      k.\putr(x,c_k) &= (y_k, c_k') \\
+      m.\putr(x,c_m) &= (y_m, c_m')
+  \end{align*}
+\else
+that $      (c_k,c_m) \in R_{km}$, 
+that $     k.\putr(x,c_k) = (y_k, c_k')$, 
+and that $ m.\putr(x,c_m) = (y_m, c_m')$.
+\fi
 Since $(c_k,c_m) \in R_{km}$, we can choose $c_\ell$ such that $(c_k,c_\ell)
 \in R_{k\ell}$ and $(c_\ell,c_m) \in R_{\ell m}$. Choosing
 $(y_\ell,c_\ell')=\ell.\putr(x,c_\ell)$, we then conclude that $y_k=y_\ell$
@@ -889,6 +895,7 @@ We show that the lens satisfies \rn{PutRL}; the proof that it satisfies
 From the definition of $(k;\ell).\putr$, we can conclude that there is a $y$
 such that $k.\putr(x,c_k)=(y,c_k')$ and $\ell.\putr(y,c_\ell)=(z,c_\ell')$.
 \ifcomplement
+\begin{quotation}
 \begin{itemize}
     \item[]
         $(k;\ell).\putl(z,(c_k',c_\ell'))$
@@ -904,6 +911,7 @@ such that $k.\putr(x,c_k)=(y,c_k')$ and $\ell.\putr(y,c_\ell)=(z,c_\ell')$.
     \item[$=$] \{\rn{PutRL} applied to $k$\}
     \item[] $(x, (c_k', c_\ell'))$
 \end{itemize}
+\end{quotation}
 Since this final equation is exactly what is demanded from applying
 \rn{PutRL} to $k;\ell$, we are done.
 \else%complement
@@ -1002,8 +1010,8 @@ The following function on relations is convenient here:
 \end{pfof}
 
 \begin{lemma}[Associativity of composition]
-\displayifspace{
-j;(k;\ell) \equiv (j;k);\ell \iffull\else.\fi}
+$
+j;(k;\ell) \equiv (j;k);\ell$.
 %
 (The equivalence is crucial here: $j;(k;\ell)$ and $(j;k);\ell$ are not
 the same lens because their complements are structured differently.)
@@ -1046,7 +1054,12 @@ The verification is then straightforward.
 
 \begin{lemma}[Identity arrows]
 \iftext The identity lens is a left and right identity for composition: \fi
+\ifdissertation
 \displayifspace{\id_X;\ell \equiv \ell;\id_Y \equiv \ell\iffull\else.\fi}
+\else
+$\id_X;\ell \equiv \ell;\id_Y \equiv \ell$.
+\fi
+
 %% \iftext
 %% (Again, note that this is not true at the level of lenses, only equivalence
 %% classes\iffull{} of lenses\fi.)
@@ -1085,8 +1098,9 @@ For left identity we use the simulation relation $R$ given by $(\unit,c)
 % Thus, the output of $(\id;\ell).\putl$ matches the output of $\ell.\putl$,
 % and the output states will be related whenever the input ones were. So
 % $\id;\ell \equiv \ell$.
-
+%
 The proof of the right-identity law $\ell;\id \equiv \ell$ is analogous.
+\quad \endofpfmarker\noendofpf
 \end{proof}
 \fi
 
@@ -1205,7 +1219,7 @@ complement is a singleton set, Lemma~\ref{trivial_complement_bijection}
 tells us that $\bij_f;\bij_g \equiv \bij_h$, where
 \[h(x) = \mlfst((\bij_f;\bij_g).\putr(x,(\unit,\unit))),\]
 which can be reduced to:
-\[h(x) = g(f(x))\]
+$h(x) = g(f(x))$.
 Thus $\bij_f;\bij_g \equiv \bij_{f;g}$ as desired.
 \end{proof}
 \fi
@@ -1496,9 +1510,9 @@ elements of $X$.
 The behavior of $k$ is uniquely defined by the given data: $\putl$ must
 return $x$ the first time and echo the last $\putr$ henceforth. Formally, we
 may define a simulation relation as follows:
-\[
+$
 R = \{(c,y)\mid \mlfst(k.\putl(\unit,c))=y\}
-\]
+$.
 It's clear that $k.\missing \relR x$, since we have chosen $x$ specifically
 so that \dissdis\mlfst(k.\putl(\unit,k.\missing))=x.\dissdis
 
@@ -1515,10 +1529,10 @@ and hence that $c' \relR y$.
 
 Finally, we must show that $k.\putr \sim_R \const_x.\putr$. Again, choose
 $c$ and $y$ such that $\mlfst(k.\putl(\unit,c))=y$ and arbitrary $z \in X$.
-\begin{align*}
-    k.\putr(z,c) &= (\unit,c') \\
-    \const_x.\putr(z,y) &= (\unit,z)
-\end{align*}
+\[
+    k.\putr(z,c) = (\unit,c') \qquad
+    \const_x.\putr(z,y) = (\unit,z)
+\]
 It's clear that $\unit=\unit$, and law \rn{PutRL} tells us that
 $k.\putl(\unit,c') = (z,c')$, and hence $c' \relR z$.
 \end{proof}
@@ -1686,9 +1700,12 @@ arrows with the same endpoints represent equal arrows:
         edge[->] node[right=1em,near start] {$\id$} (right)
         edge[->] node[right] {$\diag$} (prod)
     ;
+\ifdissertation
 
 \medskip
 
+\else \quad
+\fi
 \tikz \draw[node distance=11em]
     node                (prod)  {$X \otimes Y$}
     node[right of=prod] (right) {$(X \otimes Y)\otimes(X \otimes Y)$}
@@ -1751,19 +1768,15 @@ satisfying law \ref{beta_3}), none of them
 \begin{goodlens}
 We will show that \rn{PutRL} holds; a similar argument shows that \rn{PutLR}
 holds. Suppose
-\begin{align*}
-k.\putr(x,c_k)&=(z,c_k') \\
-\ell.\putr(y,c_\ell)&=(w,c_\ell')
-\end{align*}
-so that:
-\[(k \otimes \ell).\putr((x,y),(c_k,c_\ell))=((z,w),(c_k',c_\ell'))\]
+$
+k.\putr(x,c_k)=(z,c_k') $ and
+$ \ell.\putr(y,c_\ell)=(w,c_\ell')$,
+so that
+$(k \otimes \ell).\putr((x,y),(c_k,c_\ell))=((z,w),(c_k',c_\ell'))$.
 Applying \rn{PutRL} to the lenses $k$ and $\ell$, we learn that
-\begin{align*}
-k.\putl(z,c_k')&=(x,c_k') \\
-\ell.\putl(w,c_\ell')&=(y,c_\ell')
-\end{align*}
+$k.\putl(z,c_k')=(x,c_k')$ and $\ell.\putl(w,c_\ell')=(y,c_\ell')$,
 so that:
-\[(k \otimes \ell).\putl((z,w),(c_k',c_\ell')) = ((x,y),(c_k',c_\ell'))\]
+$(k \otimes \ell).\putl((z,w),(c_k',c_\ell')) = ((x,y),(c_k',c_\ell'))$.
 But this is exactly what we need to show for rule \rn{PutRL}.
 \end{goodlens}
 
@@ -1775,8 +1788,8 @@ $\ell \equiv \ell'$, then $R = R_k \swizzle R_\ell$ witnesses $k \otimes
 Since $k.\missing \relRk k'.\missing$ and $\ell.\missing
 \relRl \ell'.\missing$, we know that
 \dissdis(k.\missing,\ell.\missing) \relR (k'.\missing,\ell'.\missing),\dissdis
-that is:
-\[(k \otimes \ell).\missing \relR (k' \otimes \ell').\missing\]
+that is,
+$(k \otimes \ell).\missing \relR (k' \otimes \ell').\missing$.
 
 Choose arbitrary $(x,y) \in X \times Y$ and related complements
 $(c_k,c_\ell) \relR (c_{k'},c_{\ell'})$. Define:
@@ -1804,18 +1817,16 @@ similar.
 \begin{lemma}[Functoriality of $\otimes$]
 The tensor product operation on lenses induces a bifunctor on the category
 \LENS{}, that is,
-\begin{itemize}
-    \item[] $\id_X \otimes \id_Y \equiv \id_{X \times Y}$, and
-    \item[] $(k_1 ; \ell_1) \otimes (k_2 ; \ell_2) \equiv (k_1 \otimes k_2)
+ $\id_X \otimes \id_Y \equiv \id_{X \times Y}$, and
+ $(k_1 ; \ell_1) \otimes (k_2 ; \ell_2) \equiv (k_1 \otimes k_2)
 ; (\ell_1 \otimes \ell_2)$.
-\end{itemize}
 \end{lemma}
 
 \begin{functoriality}
 Corollary~\ref{singleton_id} implies the former equivalence. The latter has
 an intricate (but uninteresting) witness:
-\[((c_{k_1},c_{\ell_1}),(c_{k_2},c_{\ell_2})) \relR
-((c_{k_1},c_{k_2}),(c_{\ell_1},c_{\ell_2}))\]
+$((c_{k_1},c_{\ell_1}),(c_{k_2},c_{\ell_2})) \relR
+((c_{k_1},c_{k_2}),(c_{\ell_1},c_{\ell_2}))$.
 That is, one state is related to another precisely when it is a
 rearrangement of the component states. It is clear that this relates the
 $\missing$ states of each lens, and the $\putr$ and $\putl$ components do
@@ -1828,7 +1839,7 @@ The verification that this forms a lens is straightforward.
 
 \begin{lemma}[Product bijection]\label{lemma:bij_product}
 For bijections $f$ and $g$,
-\[\bij_f\otimes\bij_g \equiv \bij_{f \times g}.\]
+$\bij_f\otimes\bij_g \equiv \bij_{f \times g}$.
 \iffull
 \begin{proof}
 Write $k = \bij_f\otimes\bij_g$ and $\ell = \bij_{f \times g}$.  The total
@@ -1918,8 +1929,8 @@ isomorphism. Showing that they are natural is a straightforward
 calculation\footnote{For example, showing that $\gamma^\otimes$ is natural
 requires showing that for any two lenses $k : X \lens Z$ and $\ell : Y \lens
 W$,
-\[(k \otimes \ell);\gamma^\otimes_{Z,W} \equiv \gamma^\otimes_{X,Y};(\ell
-\otimes k).\]
+$(k \otimes \ell);\gamma^\otimes_{Z,W} \equiv \gamma^\otimes_{X,Y};(\ell
+\otimes k)$.
 The complements for these two lenses are $(k.C \times \ell.C) \times \Unit$
 and $\Unit \times (\ell.C \times k.C)$; the isomorphism that simply
 rearranges the parts of the complement is a witness to the lenses'
@@ -1944,8 +1955,8 @@ Returning to the example in the introduction, recall that we wish to
 create a lens $e : X \times Y \lens Y \times Z$ with missing elements $m \in
 X$ and $M \in Z$. We now have the machinery necessary to construct this
 lens: 
-\[e = \pi_{2m}\,;\,\pi_{1M}\op\]
-
+$e = \pi_{2m}\,;\,\pi_{1M}\op$.
+%
 The extra parameter to the projection (e.g. $m$ or $M$ above) needs to be
 chosen with some care.  Some sets may have clear neutral elements; for
 example, a projection from $A \times B\LIST \to A$ will likely use the empty
@@ -1988,7 +1999,7 @@ $(k \otimes \ell); \pi_{1y_i} \equiv \pi_{1x_i};k$.
 
 To show that the top square commutes, we invoke functoriality of $\otimes$
 and the property of identities; all that remains is to show that
-\[\ell;\const_{y_i} \equiv \const_{x_i}\]
+$\ell;\const_{y_i} \equiv \const_{x_i}$,
 which follows from the uniqueness of terminal lenses and the definition of
 $x_i$. The bottom square commutes because $\rho$ is a natural isomorphism.
 \end{proof}
@@ -2028,6 +2039,7 @@ However, neither of these proposals satisfy all the required laws.
 \begin{goodlens}\ 
 
 \noindent\rn{PutLR}:
+\vspace*{-17pt}
 \begin{eqnarray*}
     \putr(\putl((x,x'),c))
     &=& \putr(x,\eq(x,x')) \\
@@ -2042,6 +2054,7 @@ However, neither of these proposals satisfy all the required laws.
     &=& ((x,x'),\eq(x,x'))
 \end{eqnarray*}
 \rn{PutRL}:
+\vspace*{-17pt}
 \begin{eqnarray*}
     \putl(\putr(x,\mlinl\unit))
     &=& \putl((x,x),\mlinl\unit) \\
@@ -2084,18 +2097,24 @@ products.
 As with products, a tensor $\oplus$ can be extended to a sum by providing three
 natural transformations---this time written $\inl$, $\inr$, and $\codiag$;
 that is, for each pair of objects $X$ and $Y$, there must be arrows
-\[\begin{array}{r@{\;\in\;}l}
-\inl_{X,Y} & X \to X \oplus Y \\
-\inr_{X,Y} & Y \to X \oplus Y \\
-\codiag_X  & X \oplus X \to X
-\end{array}\]
+\ifdissertation
+  \[\begin{array}{r@{\;\in\;}l}
+  \inl_{X,Y} & X \to X \oplus Y \\
+  \inr_{X,Y} & Y \to X \oplus Y \\
+  \codiag_X  & X \oplus X \to X
+  \end{array}\]
+\else
+$   \inl_{X,Y}  X \to X \oplus Y $ and
+$   \inr_{X,Y}  Y \to X \oplus Y $ and
+$   \codiag_X  X \oplus X \to X$
+\fi
 such that
 \iffull
-\[\begin{array}{r@{\;=\;}l}
-\inl ; (f \oplus g) & f ; \inl \\
-\inr ; (f \oplus g) & g ; \inr \\
-(f \oplus f) ; \codiag & \codiag ; f 
-\end{array}\]
+\[
+\inl ; (f \oplus g) = f ; \inl \qquad
+\inr ; (f \oplus g) = g ; \inr \qquad
+(f \oplus f) ; \codiag = \codiag ; f 
+\]
 \else
 \[\begin{array}{r@{\;=\;}l}
 \inl ; (f \oplus g) & f ; \inl \\
@@ -2119,7 +2138,10 @@ and making the following diagrams commute:
         edge[<-] node[right=1em] {$\id$}     (right)
         edge[<-] node[right]     {$\codiag$} (sum)
     ;
+\ifdissertation
 
+\else \quad
+\fi
 \tikz \draw[node distance=11em]
     node               (sum)    {$X \oplus Y$}
     node[right of=sum] (right)  {$(X \oplus Y)\oplus(X \oplus Y)$}
@@ -2220,10 +2242,10 @@ arbitrary $v \in X+Y,c_k \in k.C,c_{k'} \in k'.C,c_\ell \in
 \relRk c_{k'}$ and that $c_\ell \relRl c_{\ell'}$.  There are two cases to
 consider: either $v = \mlinl x$ for some $x \in X$ or $v = \mlinr y$ for
 some $y \in Y$. In the first case, define
-\begin{align*}
-    (z,c_k') &= k.\putr(x,c_k) \\
-    (z',c_{k'}') &= k'.\putr(x,c_{k'})
-\end{align*}
+\[
+    (z,c_k') = k.\putr(x,c_k) \qquad
+    (z',c_{k'}') = k'.\putr(x,c_{k'})
+\]
 Since $c_k \relRk c_{k'}$, we can conclude $z=z'$ and $c_k' \relRk c_{k'}'$.
 Therefore,
 \begin{align*}
@@ -2285,10 +2307,9 @@ Choose arbitrary $v \in X+X',c_a \in a.C,c_b \in b.C$ such that $c_a
 ((c_k,c_\ell),(c_{k'},c_{\ell'}))$ and $c_b =
 ((c_k,c_{k'}),(c_\ell,c_{\ell'}))$. There are two cases to consider: either
 $v=\mlinl x$ or $v=\mlinr x'$. In the first case, we can define
-\begin{align*}
-    (y,c_k') &= k.\putr(x,c_k) \\
-    (z,c_\ell') &= \ell.\putr(y,c_\ell),
-\end{align*}
+$
+    (y,c_k') = k.\putr(x,c_k) $ and
+$    (z,c_\ell') = \ell.\putr(y,c_\ell)$,
 and compute:
 \begin{align*}
     a.\putr(\mlinl x,((c_k,c_\ell),(c_{k'},c_{\ell'}))) &= (\mlinl
@@ -2297,16 +2318,17 @@ and compute:
     z,((c_k',c_{k'}),(c_\ell',c_{\ell'})))
 \end{align*}
 Since $\mlinl z = \mlinl z$ and
-\ifcomplement\[\else$\fi
+$
 ((c_k',c_\ell'),(c_{k'},c_{\ell'})) \relR
-((c_k',c_{k'}),(c_\ell',c_{\ell'})),
-\ifcomplement\]\else$\ \fi
+((c_k',c_{k'}),(c_\ell',c_{\ell'}))
+$,
 we have finished the first case. The second case, where $v=\mlinr x'$, is
 nearly identical, and we conclude that $a.\putr \sim_R b.\putr$.
 \end{functoriality}
 \fi
 
 \iffull
+\ifdissertation\else \breakifnearbottom \fi
 \begin{definition}[Forgetful tensor sum]\ 
 \lensdef{forgetful_sum}
 {
@@ -2363,16 +2385,30 @@ cases are similar.
 Therefore, consider arbitrary $x \in X, c_a \in a.C, c_b \in b.C$ such that
 $c_a \relR c_b$. Project these complements into $k.C$ and $k'.C$,
 respectively, as follows:
-\begin{align*}
-    c_a' &= \left\{\begin{array}{ll}
-        c_k & c_a = \mlinl c_k \\
-        k.\missing & c_a = \mlinr c_\ell
-    \end{array}\right. \\
-    c_b' &= \left\{\begin{array}{ll}
-        c_{k'} & c_b = \mlinl c_{k'} \\
-        k'.\missing & c_b = \mlinr c_{\ell'}
-    \end{array}\right.
-\end{align*}
+\ifdissertation
+  \begin{align*}
+      c_a' &= \left\{\begin{array}{ll}
+          c_k & c_a = \mlinl c_k \\
+          k.\missing & c_a = \mlinr c_\ell
+      \end{array}\right. \\
+      c_b' &= \left\{\begin{array}{ll}
+          c_{k'} & c_b = \mlinl c_{k'} \\
+          k'.\missing & c_b = \mlinr c_{\ell'}
+      \end{array}\right.
+  \end{align*}
+\else
+\[
+      c_a' = \left\{\begin{array}{ll}
+          c_k & c_a = \mlinl c_k \\
+          k.\missing & c_a = \mlinr c_\ell
+      \end{array}\right.
+\qquad\qquad
+      c_b' = \left\{\begin{array}{ll}
+          c_{k'} & c_b = \mlinl c_{k'} \\
+          k'.\missing & c_b = \mlinr c_{\ell'}
+      \end{array}\right.
+\]
+\fi
 Since $c_a \relR c_b$, we know they have the same tag, and hence that $c_a'$
 and $c_b'$ follow the same ``branch'' in their definition; in either branch,
 we find that $c_a' \relRk c_b'$, because $c_a \relR c_b$ and $k.\missing
@@ -2387,16 +2423,11 @@ $c_a' \relRk c_b'$.
 
 \begin{functoriality}
 There are two things to show:
-\[\id_X \oplus^f \id_Y \equiv \id_{X+Y}\]
-\[(k \oplus^f k');(\ell \oplus^f \ell') \equiv (k;\ell)\oplus^f(k';\ell')\]
+\[\id_X \oplus^f \id_Y \equiv \id_{X+Y} \qquad
+(k \oplus^f k');(\ell \oplus^f \ell') \equiv (k;\ell)\oplus^f(k';\ell')\]
 
 For identity preservation, we use the total
-\ifdissertation
 relation which has $c \relR \unit$ for all $c$.
-\else
-relation:
-\[c \relR \unit\]
-\fi
 Clearly the initial condition $(\id \oplus^f \id).\missing \relR
 \id.\missing$ holds; we will also show that $(\id \oplus^f \id).\putr \sim_R
 \id.\putr$, eliding the similar proof relating the $\putl$ functions. So,
@@ -2416,7 +2447,8 @@ choose arbitrary $v \in X+Y$ and $c \in \Unit + \Unit$.
         x\\\mlinr\unit & v = \mlinr y\end{array}\right\}\right) \\
     \id.\putr(v,c) &= (v,\unit)
 \end{align*}
-Since $v=v$ and the complements are always related, this shows that
+Since $v=v$ and the complements are always related, \ifdissertation this
+shows that \fi
 \dissdis(\id\oplus^f\id).\putr\sim_R\id.\putr.\dissdis
 
 For preservation of composition, we use the relation $R$ defined by:
@@ -2436,11 +2468,11 @@ $a.\putl \sim_R b.\putl$.
 Choose arbitrary $v \in X_0+X_1,c_a \in a.C,c_b \in b.C$ such that $c_a
 \relR c_b$. There are many cases to consider, but two of them are
 representative of the remainder. In the first representative case, we have
-\begin{align*}
-    v &= \mlinl x_0 \\
-    c_a &= (\mlinl c_k, \mlinl c_\ell) \\
-    c_b &= \mlinl (c_k,c_\ell)
-\end{align*}
+\[
+      v = \mlinl x_0 \qquad
+      c_a = (\mlinl c_k, \mlinl c_\ell) \qquad
+      c_b = \mlinl (c_k,c_\ell)
+\]
 Then:
 \begin{align*}
     a.\putr(v,c_a) ={}
@@ -2456,14 +2488,14 @@ Then:
     & (\mlinl z_0,\mlinl (c_k',c_\ell'))
 \end{align*}
 Since $z_0,c_k',c_\ell'$ are computed identically in the two equations, the
-relation is preserved in this case.
+relation is preserved.
 
 In the second representative case, we have
-\begin{align*}
-    v &= \mlinl x_0 \\
-    c_a &= (\mlinr c_{k'}, \mlinr c_{\ell'}) \\
-    c_b &= \mlinr (c_{k'},c_{\ell'})
-\end{align*}
+\[
+    v = \mlinl x_0 \qquad
+    c_a = (\mlinr c_{k'}, \mlinr c_{\ell'}) \qquad
+    c_b = \mlinr (c_{k'},c_{\ell'})
+\]
 Then:
 \ifdissertation
 \begin{align*}
@@ -2496,15 +2528,15 @@ Then:
     & (\mlinl z_0,\mlinl (c_k,c_\ell))
 \end{align*}
 \fi
-Again, since $z_0,c_k,c_\ell$ are computed identically in both equations,
+Again, since $z_0,c_k,c_\ell$ are the same in both equations,
 the relation is preserved.
 \end{functoriality}
 \fi
 
 \begin{lemma}[Sum bijection]\label{lemma:bij_sum}
 For bijections $f$ and $g$,
-\[\bij_f\oplus\bij_g \iffull \equiv \bij_f\oplus^f\bij_g \fi \equiv \bij_{f
-  + g}\] 
+$\bij_f\oplus\bij_g \iffull \equiv \bij_f\oplus^f\bij_g \fi \equiv \bij_{f
+  + g}$.
 \end{lemma}
 
 \iffull
@@ -2520,18 +2552,24 @@ equal input values yield equal output values.
 
 \begin{eqnarray*}
     k.\putr(\mlinl x,(\unit,\unit))
-    &=& \mllet (z,c_k) = \bij_f.\putr(x,\unit) \mline \\
-    & & (\mlinl z,(c_k,\unit)) \\
-    &=& \mllet (z,c_k) = (f(x),\unit) \mline \\
-    & & (\mlinl z,(c_k,\unit)) \\
+    &=& \mllet (z,c_k) = \bij_f.\putr(x,\unit) \mline \ 
+     (\mlinl z,(c_k,\unit)) \\
+    &=& \mllet (z,c_k) = (f(x),\unit) \mline \ 
+     (\mlinl z,(c_k,\unit)) \\
     &=& (\mlinl f(x),(\unit,\unit)) \\
-    k.\putr(\mlinr y,(\unit,\unit)) &=& (\mlinr g(y),(\unit,\unit)) \\
+k.\putr(\mlinr y,(\unit,\unit)) &=& (\mlinr g(y),(\unit,\unit)) 
+\\
     k^f.\putr(\mlinl x,c)
-    &=& \mllet (z,c_k) = \bij_f.\putr(x,\unit) \mline \\
-    & & (\mlinl z,\mlinl c_k) \\
-    &=& \mllet (z,c_k) = (f(x),\unit) \mline \\
-    & & (\mlinl z,\mlinl c_k) \\
-    &=& (\mlinl f(x),\mlinl\unit) \\
+    &=& \mllet (z,c_k) = \bij_f.\putr(x,\unit) \mline \ 
+    (\mlinl z,\mlinl c_k) \\
+    &=& \mllet (z,c_k) = (f(x),\unit) \mline \ 
+    (\mlinl z,\mlinl c_k) \\
+    &=& (\mlinl f(x),\mlinl\unit) 
+\ifdissertation \\ \else 
+\end{eqnarray*}
+
+\begin{eqnarray*}
+\fi
     k^f.\putr(\mlinr y,c) &=& (\mlinr g(y),\mlinr\unit) \\
     \ell.\putr(\mlinl x,\unit)
     &=& ((f+g)(\mlinl x),\unit) \\
@@ -2544,7 +2582,7 @@ The $\putl$ direction is similar.
 \fi
 
 \begin{prop}[\LENS{},$\oplus$\iffull,$\oplus^f$ are \else{} is a \fi
-symmetric monoidal\ifcomplement\iffull categories\else category\fi\fi]
+symmetric monoidal \ifcomplement\iffull categories\else category\fi\fi]
 In \SET, the disjoint union gives rise to a symmetric monoidal category with
 $\emptyset$ as unit. Let $\alpha^+,\lambda^+,\rho^+,\gamma^+$ be associator,
 left-unitor, right-unitor, and symmetry natural isomorphisms.
@@ -2556,13 +2594,17 @@ associator, left-unitor, right-unitor, and symmetry, respectively\iffull;
 and similarly for $\oplus^f$. \else.\fi
 
 The types of these natural isomorphisms are:
-\begin{eqnarray*}
+\[
+\begin{array}{lll}
     \alpha^\oplus_{X,Y,Z}  &\in& (X + Y) + Z \lens X + (Y + Z) \\
-    \lambda^\oplus_X       &\in& \emptyset + X \lens X \\
+    \lambda^\oplus_X       &\in& \emptyset + X \lens X 
+\end{array}
+\qquad
+\begin{array}{lll}
     \rho^\oplus_X          &\in& X + \emptyset \lens X \\
     \gamma^\oplus_{X,Y}    &\in& X + Y \lens Y + X
-\end{eqnarray*}
-
+\end{array}
+\]
 \end{prop}
 
 \iffull
@@ -2573,11 +2615,11 @@ isomorphism. Showing that they are natural is a straightforward calculation.
 The only subtlety comes in showing that $(k\oplus^f\ell);\gamma^\oplus \equiv
 \gamma^\oplus;(\ell\oplus^fk)$. We must be careful to include the $\missing$
 complements in the relation; the following relation will do:
-\begin{eqnarray*}
-    R &=& \{(\mlinl c,\mlinr c) \mid c \in k.C\}\cup \\
-      & & \{(\mlinr c,\mlinl c) \mid c \in \ell.C\}\cup \\
-      & & \{(\mlinl k.\missing,\mlinl \ell.\missing)\}
-\end{eqnarray*}
+\[
+    R = \{(\mlinl c,\mlinr c) \mid c \in k.C\}\cup 
+       \{(\mlinr c,\mlinl c) \mid c \in \ell.C\}\cup 
+       \{(\mlinl k.\missing,\mlinl \ell.\missing)\}
+\]
 
 The five coherence conditions follow from coherence in \SET, functoriality of
 $\bij$, and Lemma~\ref{lemma:bij_sum}.
@@ -2610,23 +2652,41 @@ We also define $\inr_y = \inl_y;\gamma^\oplus_{Y,X}$.
 \begin{goodlens}
 For \rn{PutRL}, we consider two cases: either the complement has the form
 $(x_c, \mlinl \unit)$ or the form $(x_c,\mlinr y)$.
+\ifdissertation
 \begin{align*}
     \putl(\putr(x,(x_c,\mlinl \unit))) &= \putl(\mlinl x, (x, \mlinl \unit)) \\
     &= (x, (x, \mlinl \unit)) \\
     \putl(\putr(x,(x_c,\mlinr y))) &= \putl(\mlinr y, (x, \mlinr y)) \\
     &= (x, (x, \mlinr y))
 \end{align*}
+\else
+\begin{align*}
+    \putl(\putr(x,(x_c,\mlinl \unit))) &= \putl(\mlinl x, (x, \mlinl \unit)) 
+    = (x, (x, \mlinl \unit)) \\
+    \putl(\putr(x,(x_c,\mlinr y))) &= \putl(\mlinr y, (x, \mlinr y)) 
+    = (x, (x, \mlinr y))
+\end{align*}
+\fi
 Thus, in each case, the output value is equal to the input value and the
 complement is unaffected by the $\putl$, as required by \rn{PutRL}.
 
 To show \rn{PutLR} holds, we again consider two cases: either we start with
 $\mlinl x$ or $\mlinr y$.
+\ifdissertation
 \begin{align*}
     \putr(\putl(\mlinl x, (x_c, y_c))) &= \putr(x, (x, \mlinl \unit)) \\
     &= (\mlinl x, (x, \mlinl \unit)) \\
     \putr(\putl(\mlinr y, (x_c, y_c))) &= \putr(x_c, (x_c, \mlinr y)) \\
     &= (\mlinr y, (x_c, \mlinr y))
 \end{align*}
+\else
+\begin{align*}
+    \putr(\putl(\mlinl x, (x_c, y_c))) &= \putr(x, (x, \mlinl \unit)) 
+    = (\mlinl x, (x, \mlinl \unit)) \\
+    \putr(\putl(\mlinr y, (x_c, y_c))) &= \putr(x_c, (x_c, \mlinr y)) 
+    = (\mlinr y, (x_c, \mlinr y))
+\end{align*}
+\fi
 In both cases, the value output matches the value input and the complement
 remains unaffected by $\putr$.
 \end{goodlens}
@@ -2634,6 +2694,7 @@ remains unaffected by $\putr$.
 As with the projection lenses for tensor products, we may ask whether the
 injection lenses for tensor sums are natural. If they were, we would expect
 a diagram like the following one to commute for all $f$:
+\vspace*{-2ex}
 \begin{center}
 \tikz \draw[node distance=4em]
     node                 (X)  {$X$}
@@ -2652,7 +2713,7 @@ running the $\putr$ function, the path along the top always invokes
 $f.\putr$, whereas the path along the bottom may sometimes invoke
 $\id.\putr$ instead; at that moment, the complements of $f$ (on the top
 path) and $f\oplus\id$ (on the bottom path) get out of synch. As we show in the following proposition this can be used to produce a subsequent observable difference, i.e., not only at the level of complements. 
-
+%
 The situation with the forgetful sum is similar, but offers an
 additional way to desynchronize the two complements: when resetting
 $f$'s complement along the bottom path to $\missing$.  \fi
@@ -2670,8 +2731,8 @@ $\putl$ direction:
     \NAT}} {
   C &=& X \times \Bool \times \NAT \\
   \missing &=& (x,\true,0) \\
-  \putr(x,(x',b,n)) &=& \\
-  \colspan{\cond{
+  \putr(x,(x',b,n)) &=& \ifdissertation \\ 
+  \colspan \fi {\cond{
       (\mlinl\unit,(x,b,n)) & x = x' \land \lnot b \\
       (\mlinr n,(x,b,n)) & x = x' \land b \\
       (\mlinr (n+1),(x,\true,n+1)) & x \ne x'
@@ -2840,9 +2901,9 @@ C &=& \Bool \\
 \missing &=& \false \\
 \putr(\mlinl x,c) &=& (x,\false) \\
 \putr(\mlinr y,c) &=& (y,\true) \\
-\putl(xy,c) \\
-\colspan{
-= \cond{
+\putl(xy,c) \ifdissertation \\ 
+\colspan = \else &=& \fi {
+\cond{
     (\mlinl xy,\false) & xy \notin Y \lor (xy \in X \land \lnot c) \\
     (\mlinr xy,\true ) & xy \notin X \lor (xy \in Y \land c)
     }
@@ -2851,6 +2912,7 @@ C &=& \Bool \\
 \end{definition}
 
 \iffull
+\ifdissertation \else \breakifnearbottom \fi
 \begin{goodlens}\ 
 
 \noindent\rn{PutRL}:
@@ -2957,7 +3019,7 @@ $\union$ cannot \fi be used to
 construct a true codiagonal. However, there are two useful related
 constructions\ifdissertation, which we discuss below.\else:\fi
 
-\ifdissertation\breakifnearbottom\fi
+\breakifnearbottom
 \begin{definition}[Switch lens]\ 
 \lensdef{switch}
 {\switch_X \in X+X \lens X}
@@ -4372,6 +4434,7 @@ definition.\fi
 \iffull
 \begin{proof} Throughout the proofs, we will use $a$ to refer to the
 left-hand side of the equivalence, and $b$ to refer to the right-hand side.
+\noendofpf
 
 \begin{longenum}
 \item We have $a=\acopy_X\sym$ and $b=\id_X$. The singleton
@@ -4594,7 +4657,7 @@ The new $(\ell^*)\sym$ complement then is $\lambda
 ys.(\ell^*).\aput(ys,xs)$. The new $\map^f(\ell\sym)$ complement is
 $[g_1,\dots,g_m]$ where $g_i(y)=\ell.\aput(x_i,y)$. These are clearly
 related again. 
-\endofpf
+~\hfill\endofpfmarker\noendofpf
 \end{longenum}
 \end{proof}
 \fi
