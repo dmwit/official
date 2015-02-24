@@ -46,8 +46,8 @@ PIERCE and DANIEL WAGNER \affil{University of Pennsylvania}}
 
 \iftext
 \begin{abstract}
-\bcp{Maybe change DW's address to Galois (with a note that the work was done
-at Penn)?}%
+% \bcp{Maybe change DW's address to Galois (with a note that the work was done
+% at Penn)?}%
 {\em Lenses}---bidirectional transformations between pairs of connected
 structures---have been studied extensively, but some aspects of their
 foundations remain poorly understood.
@@ -125,7 +125,8 @@ transformations.  A great variety of bidirectional languages have been
 proposed (see~\cite{FosterThesis,DBLP:conf/icmt/CzarneckiFHLST09} for recent
   surveys), and these ideas are 
 beginning to see commercial application, e.g., in RedHat's system
-administration tool, Augeas~\cite{Augeas}.  \bcp{Mention the Haskell lens libraries?}
+administration tool, Augeas~\cite{Augeas}, and the Haskell Lens
+libraries~\cite{HaskellLensLibrary}.  
 
 One particularly well-studied
 class of bidirectional programming languages is the framework of {\em
@@ -153,8 +154,7 @@ diskin2009model,hidaka2009compositional,hidaka2009towards}.
 \fi
 %
 By contrast, our aim in this paper is to advance the {\em foundations} of
-lenses in two significant respects.  \bcp{We probably need some citations
-  after 2010...}
+lenses in two significant respects. 
 
 %% \finish{Another citation that we might include (but it's not directly
 %%     relevant): \cite{voigtlander2009bidirectionalization} }
@@ -166,7 +166,8 @@ fully {\em symmetric} version where each of the two structures may
 contain information that is not present in the other (\S\ref{symm}).
 This generalization is significantly more expressive than any previously
 known: although symmetric variants of lenses have been
-studied~\cite{Meertens98,stevens2008tat,DBLP:conf/models/Diskin08}, they
+studied
+previously~\cite{Meertens98,stevens2008tat,DBLP:conf/models/Diskin08}, these
 all lack a notion of sequential composition of lenses, a significant
 technical and practical limitation (see \S\ref{sec:relwork}).
 %
@@ -268,13 +269,16 @@ work.
 \iftext
 \section{Related Work}\label{sec:relwork}
 
-There is a large literature on lenses and related approaches to
-propagating updates between connected structures.  We discuss only the most
-closely related work here; good general surveys of the area can be found
-in~\citeN{FosterThesis} and~\citeN{DBLP:conf/icmt/CzarneckiFHLST09}.  Connections to the
-literature on {\em view update} in databases are surveyed
-in~\cite{Focal2005-shortcite}. \iffull A short version of this paper
-appeared in~\cite{HofmannPierceWagner10}.\fi
+\iffull A short version of this paper
+appeared in~\citeN{HofmannPierceWagner10:POPL}, and a longer version appeared
+as a chapter in Wagner's PhD dissertation~\citeyear{WagnerThesis}.  \fi
+
+There is a large literature on lenses and related approaches to propagating
+updates between connected structures.  We discuss only the most closely
+related work here; good general surveys of the area can be found
+in~\citeN{FosterThesis}, \citeN{DBLP:conf/icmt/CzarneckiFHLST09}, and
+\citeN{WagnerThesis}.  Connections to the literature on {\em view update} in
+databases are surveyed in~\cite{Focal2005-shortcite}.
 
 The first symmetric approach to update propagation was proposed by
 \citeN{Meertens98} and followed up \iffull in the context of
@@ -334,6 +338,19 @@ above for synchronizing languages does not have it.
 Meertens recommends using a {\em chain} of consistency maintainers in such a
 situation to achieve a similar effect; however, the properties of such
 chains have not been explored.
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+Diskin et al.\@ also consider what machinery is needed to support
+transformations between domains that each have missing
+information~\cite{Diskin-Delta11}. As we observed above, passing from
+asymmetric to symmetric lenses is cleanest if one introduces a
+complement---some extra information about how the values in the two
+repositories correspond. Their development similarly allows for extra
+information, with a little bit of extra notational complexity arising from
+the pervasive use of typing: their ``edits'' are typed via a category, and
+complements are also typed.  See~\citeN[Section 5.1.2]{WagnerThesis} for a
+deeper comparison.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

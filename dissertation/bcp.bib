@@ -1047,6 +1047,19 @@ keys         =   "harmony",
 slides       =   "http://www.cis.upenn.edu/~bcpierce/papers/icmt-2009-slides.pdf",
 }
 
+@misc            {Pierce:CERNtalk,
+author       =   "Benjamin C. Pierce",
+title        =   "Mysteries of Dropbox",
+note         =   "Keynote address at CERN {\em Workshop on Cloud Services for File Synchronisation and Sharing}",
+year         =   2014,
+month        =   nov,
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "harmony",
+slides       =   "https://indico.cern.ch/event/336753/session/1/contribution/28",
+video       =   "https://indico.cern.ch/event/336753/session/1/contribution/28",
+}
+
 @misc            {Pierce:LambdaTA,
 author       =   "Benjamin C. Pierce",
 title        =   "Lambda, The Ultimate {TA}: {U}sing a Proof Assistant to Teach 
@@ -3139,10 +3152,11 @@ slides         =   {http://www.cis.upenn.edu/~bcpierce/papers/popl09-chairs-repo
 }
 
 @book            {Pierce:SF,
-author       =   "Benjamin C. Pierce and Chris Casinghino and 
-                  Michael Greenberg and C\v{a}t\v{a}lin Hri\c{t}cu and Vilhelm Sjoberg and Brent Yorgey",
+author       =   "Benjamin C. Pierce and Chris Casinghino and Marco Gaboardi and
+                  Michael Greenberg and C\v{a}t\v{a}lin Hri\c{t}cu 
+                  and Vilhelm Sjoberg and Brent Yorgey",
 title        =   "Software Foundations",
-year         =   "2012",
+year         =   "2014",
 publisher    =   "Electronic textbook",                  
 plclub       =   yes,                  
 bcp          =   yes,
@@ -3160,6 +3174,7 @@ plclub       =   yes,
 bcp          =   yes,
 keys         =   "mobileagents",                  
 manuscript   =   "http://www.cis.upenn.edu/~bcpierce/papers/spider_calculus.pdf",
+note = "Manuscript, available from \url{http://www.cis.upenn.edu/~bcpierce/papers/spider_calculus.pdf}"                  
 }
 
 @inproceedings   {DPCS2010,
@@ -3186,7 +3201,7 @@ short        =   "http://www.cis.upenn.edu/~bcpierce/papers/symmetric.pdf",
 full         =   "http://www.cis.upenn.edu/~bcpierce/papers/symmetric-full.pdf",
 }
                   
-@inproceedings            {HofmannPierceWagner10,
+@inproceedings {HofmannPierceWagner10:POPL,
 author       =   {Martin Hofmann and Benjamin C. Pierce and Daniel Wagner},
 title        =   {Symmetric Lenses},
 year         =   {2011},
@@ -3199,7 +3214,19 @@ short        =   "http://www.cis.upenn.edu/~bcpierce/papers/symmetric.pdf",
 full         =   "http://www.cis.upenn.edu/~bcpierce/papers/symmetric-full.pdf",
 }
                   
-@inproceedings {HofmannPierceWagner12,
+@article         {HofmannPierceWagner13,
+author       =   {Martin Hofmann and Benjamin C. Pierce and Daniel Wagner},
+title        =   {Symmetric Lenses},
+year         =   {2015},
+journal      =   {Journal of the ACM},
+note         =   "To appear; extended abstract in POPL 2011",
+bcp          =   "yes",
+plclub       =   "yes",
+keys         =   "harmony",
+short        =   "http://www.cis.upenn.edu/~bcpierce/papers/symmetric.pdf",
+}
+                  
+@inproceedings   {HofmannPierceWagner12,
 author       =   {Martin Hofmann and Benjamin C. Pierce and Daniel Wagner},
 title        =   {Edit Lenses},
 year         =   {2012},
@@ -3224,13 +3251,13 @@ month        =   jan,
 tr           =   "http://repository.upenn.edu/cis_reports/915/",
 }
                   
-@inproceedings {Matching10,
+@inproceedings   {Matching10,
 author       =   {Davi M. J. Barbosa and Julien Cretin and Nate Foster
                   and Michael Greenberg and Benjamin C. Pierce},
 title        =   {Matching Lenses: Alignment and View Update},
 year         =   {2010},
 month        =   sep,
-booktitle        =   icfp10,
+booktitle    =   icfp10,
 bcp          =   "yes",
 plclub       =   "yes",
 keys         =   "harmony",
@@ -3280,6 +3307,57 @@ bcp          =   "yes",
 plclub       =   "yes",
 keys         =   "security",
 }
+
+@inproceedings{D'Antoni:2013:SAU:2505351.2505353,
+author = {D'Antoni, Loris and Gaboardi, Marco and Gallego Arias, Emilio Jes\'{u}s and Haeberlen, Andreas and Pierce, Benjamin},
+title = {Sensitivity analysis using type-based constraints},
+booktitle = {Proceedings of the 1st annual workshop on Functional programming concepts in domain-specific languages},
+series = {FPCDSL '13},
+year = {2013},
+isbn = {978-1-4503-2380-2},
+location = {Boston, Massachusetts, USA},
+pages = {43--50},
+numpages = {8},
+url = {http://doi.acm.org/10.1145/2505351.2505353},
+doi = {10.1145/2505351.2505353},
+acmid = {2505353},
+publisher = {ACM},
+address = {New York, NY, USA},
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "inference",
+} 
+
+@article{DBLP:journals/jar/PierceW12,
+author       =   {Benjamin C. Pierce and
+                  Stephanie Weirich},
+title        =   {Preface to Special Issue on the POPLMark Challenge},
+journal      =   {J. Autom. Reasoning},
+volume       =   {49},
+number       =   {3},
+year         =   {2012},
+pages        =   {301-302},
+ee           =   {http://dx.doi.org/10.1007/s10817-012-9254-5},
+bibsource    =   {DBLP, http://dblp.uni-trier.de},
+bcp          =   "yes",
+plclub       =   "yes",
+}
+
+@Article{JAR-POPLMark,
+author       =   {Benjamin C. Pierce and
+                  Stephanie Weirich, editors},
+title        =   {Special Issue on the POPLMark Challenge},
+journal      =   {J. Autom. Reasoning},
+volume       =   {49},
+number       =   {3},
+year         =   {2012},
+ee           =   {http://dx.doi.org/10.1007/s10817-012-9254-5},
+bibsource    =   {DBLP, http://dblp.uni-trier.de},
+bcp          =   "yes",
+plclub       =   "yes",
+}
+}
+
 
 @inproceedings   {Haeberlen&11,
 author       =   {Andreas Haeberlen and Benjamin C. Pierce and 
@@ -3350,34 +3428,6 @@ ee           =   {http://dx.doi.org/10.1007/978-3-642-19718-5},
 bibsource    =   {DBLP, http://dblp.uni-trier.de}
 }
                   
-@InProceedings{SAFEPLOS11,
-  author =	 {
-  Andr\'{e} DeHon and
-  Ben Karel and
-  Thomas F. {Knight, Jr.} and
-  Gregory Malecha and
-  Beno\^{i}t Montagu and
-  Robin Morisset and
-  Greg Morrisett and
-  Benjamin C. Pierce and
-  Randy Pollack and
-  Sumit Ray and
-  Olin Shivers and
-  Jonathan M. Smith and
-  Gregory Sullivan
-  },
-  title =	 {Preliminary Design of the {SAFE} Platform},
-  month =	 oct,
-  year =	 2011,
-  url = {http://www.crash-safe.org/sites/default/files/plos11-final_0.pdf},
-  booktitle =	 {Proceedings of the 6th Workshop on Programming
-  Languages and Operating Systems},
-  series = {PLOS},
-  location = {Cascais, Portugal},
-bcp          =   yes,
-keys         =   "security",
-}
-
 @misc            {Pierce:PLMW-talk,
 author       =   "Benjamin C. Pierce",
 title        =   "Types",
@@ -3431,7 +3481,7 @@ bcp          =   yes,
 @misc            {Pierce-PODS12,
 author       =   "Benjamin C. Pierce",
 title        =   "Linguistic Foundations for Bidirectional Transformations",
-month        =   may,
+Month        =   may,
 year         =   2012,
 note         =   "Invited tutorial at {\em Principles of Database Systems (PODS)}", 
 slides       =   "http://www.cis.upenn.edu/~bcpierce/papers/PODStutorial2012.pdf",
@@ -3440,7 +3490,7 @@ plclub       =   yes,
 bcp          =   yes,
 }
 
-@misc{GenLabels,
+@misc{GenLabels-old,
 title        =   {A Theory of Information-Flow Labels},
 author       =   {Beno\^it Montagu and
                   Benjamin C. Pierce and
@@ -3449,12 +3499,10 @@ author       =   {Beno\^it Montagu and
 month        =   jul,
 year         =   {2012},
 howpublished =   {Draft},
-bcp          =   yes,
-keys         =   "security",
 manuscript   =   "http://www.cis.upenn.edu/~bcpierce/papers/toifl-prelim.pdf",
 }
 
-@misc            {NaVs,
+@misc            {NaVs:old,
 title        =   {Exceptionally Available Dynamic IFC},
 author       =   {C\u{a}t\u{a}lin Hri\c{t}cu and
                   Michael Greenberg and
@@ -3464,9 +3512,167 @@ author       =   {C\u{a}t\u{a}lin Hri\c{t}cu and
 month        =   jul,
 year         =   {2012},
 howpublished =   {Draft},
-bcp          =   yes,
 keys         =   "security",
 manuscript   =   "http://www.cis.upenn.edu/~bcpierce/papers/navs-prelim.pdf",
+}
+
+@inproceedings   {DFuzz,
+author       =   {Marco Gaboardi and Andreas Haeberlen and Justin Hsu and 
+                  Arjun Narayan and Benjamin C. Pierce},
+title        =   {Linear Dependent Types for Differential Privacy},
+year         =   {2013},
+booktitle    =   popl13, 
+short        =   "http://www.cis.upenn.edu/~bcpierce/papers/dfuzz2013.pdf",
+month        =   jan,
+bcp          =   "yes",
+plclub       =   "yes",
+keys         =   "security",
+}
+
+@misc            {DIMACS-2012,
+author       =   "Benjamin C. Pierce",
+title        =   "Differential Privacy in the Programming Languages Community",
+month        =   oct,
+year         =   2012,
+video        =   "http://www.youtube.com/watch/ci2aueqZ6CU",                  
+slides       =   "http://www.cis.upenn.edu/~bcpierce/papers/DIMACS-DP-PL.pdf",
+note         =   "Invited tutorial at {\em DIMACS Workshop on Recent Work 
+                  on Differential Privacy across Computer Science}", 
+keys         =   "security",
+plclub       =   yes,                  
+bcp          =   yes,
+}
+
+@InProceedings{SAFEPLOS11,
+  author =	 {
+  Andr\'{e} DeHon and
+  Ben Karel and
+  Thomas F. {Knight, Jr.} and
+  Gregory Malecha and
+  Beno\^{i}t Montagu and
+  Robin Morisset and
+  Greg Morrisett and
+  Benjamin C. Pierce and
+  Randy Pollack and
+  Sumit Ray and
+  Olin Shivers and
+  Jonathan M. Smith and
+  Gregory Sullivan
+  },
+  title =	 {Preliminary Design of the {SAFE} Platform},
+  month =	 oct,
+  year =	 2011,
+  url = {http://www.crash-safe.org/sites/default/files/plos11-final_0.pdf},
+  booktitle =	 {6th Workshop on Programming
+  Languages and Operating Systems},
+  series = {PLOS},
+  location = {Cascais, Portugal}
+}
+
+@inproceedings{GenLabels,
+  title = {A Theory of Information-Flow Labels},
+  author = {Beno\^it Montagu and
+    Benjamin C. Pierce and
+    Randy Pollack},
+  month = jun,
+  year = {2013},
+  location = {New Orleans, Louisiana, USA},
+  booktitle = {Proceedings of the 2013 IEEE Computer Security Foundations Symposium},
+  short = {http://www.cis.upenn.edu/~bcpierce/papers/csf2013.pdf},
+  coq = {http://www.cis.upenn.edu/~bcpierce/papers/label_algebras.tar.gz},
+plclub       =   yes,                  
+keys         =   "security",
+bcp          =   yes
+}
+
+@inproceedings{Exceptional,
+  author = {C\u{a}t\u{a}lin Hri\c{t}cu and
+            Michael Greenberg and
+            Ben Karel and
+            Benjamin C. Pierce and
+            Greg Morrisett},
+  title = {All Your {IFCException} Are Belong To Us},
+  booktitle = {34th IEEE Symposium on Security and Privacy (Oakland)},
+  year = {2013},
+  month = may,
+plclub       =   yes,                  
+bcp          =   yes,
+  short = {http://www.crash-safe.org/node/23},
+}
+
+@inproceedings   {TestingNI:ICFP,
+author       =   {C\u{a}t\u{a}lin Hri\c{t}cu and
+                  John Hughes and
+                  Benjamin C. Pierce and
+                  Antal Spector-Zabusky and
+                  Dimitrios Vytiniotis and
+                  Arthur Azevedo de Amorim and
+                  Leonidas Lampropoulos},
+title        =   {Testing Noninterference, Quickly},
+booktitle    =   {18th ACM SIGPLAN International
+                  Conference on Functional Programming (ICFP)},
+shortbooktitle = {ICFP},
+year         =   {2013},
+month        =   sep,
+url          =   {http://www.crash-safe.org/node/24},
+bcp          =   "yes",
+plclub       =   "yes",
+keys         =   "security",
+}
+
+@inproceedings   {ieee_hst2013:SAFE,
+author       =   {Silviu Chiricescu and Andr\'{e} DeHon and
+                  Delphine Demange and Suraj Iyer and Aleksey Kliger and Greg Morrisett
+                  and Benjamin C. Pierce and Howard Reubenstein and Jonathan M. Smith
+                  and Gregory T. Sullivan and Arun Thomas and Jesse Tov and Christopher M. White
+                  and David Wittenberg},
+title        =   {SAFE: A Clean-Slate Architecture for Secure Systems},
+booktitle    =   {Proceedings of the {IEEE} International Conference on 
+                  Technologies for Homeland Security},
+year         =   {2013},
+month        =   nov,
+bcp          =   "yes",
+plclub       =   "yes",
+keys         =   "security",
+}
+
+@inproceedings   {pump_hasp2014,
+author       =   {Udit Dhawan and Nikos Vasilakis and Raphael Rubin
+                  and Silviu Chiricescu and Jonathan M. Smith 
+and Thomas F. Knight and Benjamin C. Pierce and Andr\'e DeHon}, 
+title        =   {{PUMP -- A Programmable Unit for Metadata Processing}},
+booktitle    =   {Proceedings of the 3rd International Workshop on Hardware and Architectural Support for Security and Privacy},
+series       =   {HASP '14},
+year         =   {2014},
+isbn         =   {},
+location     =   {Minneapolis, USA},
+pages        =   {},
+articleno    =   {},
+numpages     =   {8},
+url          =   {http://www.crash-safe.org/node/32},
+doi          =   {},
+acmid        =   {},
+publisher    =   {ACM},
+address      =   {New York, NY, USA},
+bcp          =   "yes",
+plclub       =   "yes",
+keys         =   "security",
+} 
+                  
+@unpublished     {TestingNI:old,
+author       =   {C\u{a}t\u{a}lin Hri\c{t}cu and
+                  John Hughes and
+                  Benjamin C. Pierce and
+                  Antal Spector-Zabusky and
+                  Dimitrios Vytiniotis and
+                  Arthur Azevedo de Amorim and
+                  Leonidas Lampropoulos},
+title        =   {Testing Noninterference, Quickly},
+note         =   {Submitted to 18th ACM SIGPLAN International Conference on
+                  Functional Programming (ICFP)},
+year         =   {2013},
+month        =   mar,
+url          =   {http://www.crash-safe.org/node/24},
 }
 
 @InProceedings{interlocks_ahns2012,
@@ -3482,7 +3688,7 @@ manuscript   =   "http://www.cis.upenn.edu/~bcpierce/papers/navs-prelim.pdf",
   Thomas F. {Knight, Jr.} and
   Andrew Sutherland and
   Tom Hawkins and 
-  Amanda Strnad and
+  Amanda Zyxnfryx and
   David Wittenberg and
   Peter Trei and
   Sumit Ray and
@@ -3493,36 +3699,238 @@ manuscript   =   "http://www.cis.upenn.edu/~bcpierce/papers/navs-prelim.pdf",
   url = {http://www.crash-safe.org/sites/default/files/interlocks_ahns2012.pdf},
   month =	 sep,
   year =	 2012,
-  booktitle =	 {Proceedings of the SASO Workshop on Adaptive Host and  Network Security},
-bcp          =   yes,
-keys         =   "security",
-}
-
-@inproceedings   {DFuzz,
-author       =   {Marco Gaboardi and Andreas Haeberlen and Justin Hsu and 
-                  Arjun Narayan and Benjamin C. Pierce},
-title        =   {Linear Dependent Types for Differential Privacy},
-year         =   {2013},
-booktitle    =   popl13, 
-short        =   "http://www.cis.upenn.edu/~bcpierce/papers/sized-types-for-DP.popl12.pdf",
-month        =   jan,
+  booktitle =	 {SASO Workshop on Adaptive Host and  Network Security},
 bcp          =   "yes",
 plclub       =   "yes",
+keys         =   "harmony",
+}
+
+@inproceedings {HofmannPierceWagner13a,
+author       =   {Martin Hofmann and Benjamin C. Pierce and Daniel Wagner},
+title        =   {Edit languages for information trees},
+year         =   {2013},
+booktitle    =   "Second International Workshop on Bidirectional Transformations (BX)", 
+month        =   apr,
+bcp          =   "yes",
+plclub       =   "yes",
+keys         =   "harmony",
+}
+                  
+@misc            {Pierce:CSFTalk2013,
+author       =   "Benjamin C. Pierce",
+title        =   "The {SAFE} Machine: {A}n Architecture for 
+                  Pervasive Information Flow",
+month        =   jun,
+year         =   2013,
+slides       =   "http://www.cis.upenn.edu/~bcpierce/papers/csf-2013-pierce.pdf", 
+note         =   "Invited talk at {\em Computer Security 
+                  Foundations Symposium (CSF)}",
+plclub       =   yes,                  
+bcp          =   yes,
 keys         =   "security",
 }
 
-@misc            {DIMACS-2012,
-author       =   "Benjamin C. Pierce",
-title        =   "Differential Privacy in the Programming Languages Community",
-month        =   oct,
-year         =   2012,
-video        =   "http://youtu.be/ci2aueqZ6CU",
-slides       =   "http://www.cis.upenn.edu/~bcpierce/papers/DIMACS-DP-PL.pdf",
-note         =   "Invited tutorial at {\em DIMACS Workshop on Recent Work on Differential 
-                  Privacy across Computer Science}", 
-keys         =   "security",
+@inproceedings   {Epsilon2014,
+title        =   {Differential Privacy: An Economic Method for Choosing
+                  Epsilon},
+author       =   {Justin Hsu and Marco Gaboardi and
+                  Andreas Haeberlen and Sanjeev Khanna and 
+                  Arjun Narayan and Benjamin C. Pierce and Aaron Roth},
+booktitle    =   {Computer Security 
+                  Foundations Symposium (CSF)},
+year         =   2014,
+url          =   {http://www.cis.upenn.edu/~bcpierce/papers/epsilon-csf.pdf},
 plclub       =   yes,                  
 bcp          =   yes,
+keys         =   "security",
+}
+
+@InProceedings{PicoCoq2013:POPL,
+  title = {A Verified Information-Flow Architecture},
+  author = {
+    Arthur {Azevedo de Amorim} and
+    Nathan Collins and
+    Andr\'e DeHon and
+    Delphine Demange and
+    C\u{a}t\u{a}lin Hri\c{t}cu and
+    David Pichardie and
+    Benjamin C. Pierce and
+    Randy Pollack and
+    Andrew Tolmach
+  },
+  booktitle={Proceedings of the 41st Symposium on Principles of Programming Languages},
+  series={POPL},
+  month = jan,
+  year = 2014,
+  url = {http://www.cis.upenn.edu/~bcpierce/papers/verified-ifc.pdf},
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "security",
+}
+
+@InProceedings{SAFEPLOS11:PreliminaryDesign,
+  author =	 {
+  Andr\'{e} DeHon and
+  Ben Karel and
+  Thomas F. {Knight, Jr.} and
+  Gregory Malecha and
+  Beno\^{i}t Montagu and
+  Robin Morisset and
+  Greg Morrisett and
+  Benjamin C. Pierce and
+  Randy Pollack and
+  Sumit Ray and
+  Olin Shivers and
+  Jonathan M. Smith and
+  Gregory Sullivan
+  },
+  title =	 {Preliminary Design of the {SAFE} Platform},
+  month =	 oct,
+  year =	 2011,
+  url = {http://www.crash-safe.org/sites/default/files/plos11-final_0.pdf},
+  booktitle =	 {6th Workshop on Programming
+  Languages and Operating Systems},
+  series = {PLOS},
+  shortbooktitle = {PLOS},
+  location = {Cascais, Portugal},
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "security",
+}
+
+@misc            {Pierce:PiPTalk2014,
+author       =   "Benjamin C. Pierce",
+title        =   "Principles, Meet Practice: An Early Retrospective on SAFE",
+month        =   jan,
+year         =   2014,
+slides       =   "http://www.cis.upenn.edu/~bcpierce/papers/safe-PiP-140126.pdf", 
+note         =   "Talk at {\em Principles in Practice Workshop (PiP)}",
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "security",
+}
+
+@misc            {Pierce:HCSSTalk2014,
+author       =   "Benjamin C. Pierce",
+title        =   "Programmable Hardware Support for Ubiquitous Micro-Policy
+  Enforcement",
+month        =   may,
+year         =   2014,
+slides       =   "http://www.cis.upenn.edu/~bcpierce/papers/hcss2014-slides.pdf", 
+note         =   "Talk at {\em High-Confidence Software Systems}",
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "security",
+}
+
+@misc            {Pierce:LukeInterview,
+author       =   "Benjamin C. Pierce",
+title        =   "Interview with Luke Muehlhauser on Clean-Slate Security Architectures for Machine Intelligence Research Institute blog",
+Month        =   may,
+year         =   2014,
+transcript   =   "http://intelligence.org/2014/05/11/benjamin-pierce/", 
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "security",
+}
+
+@misc{pump_popl2014,
+  author = {  Arthur Azevedo de Amorim and
+              Maxime D\'en\`es and
+              Nick Giannarakis and
+              C\u{a}t\u{a}lin Hri\c{t}cu and
+              Benjamin C. Pierce and
+              Antal Spector-Zabusky and
+              Andrew Tolmach},
+  title = {Micro-Policies: A Framework for Verified, 
+           Hardware-Assisted Security Monitors},
+  howpublished = {Under Review, July},
+  year = {2014},
+  month = jul,
+short        =   "http://www.cis.upenn.edu/~bcpierce/papers/pump-framework-draft.pdf", 
+}
+
+@misc            {pump_oakland2015,
+author       =   {  Arthur Azevedo de Amorim and
+                  Maxime D\'en\`es and
+                  Nick Giannarakis and
+                  C\u{a}t\u{a}lin Hri\c{t}cu and
+                  Benjamin C. Pierce and
+                  Antal Spector-Zabusky and
+                  Andrew Tolmach},
+title        =   {Micro-Policies: A Framework for Verified, 
+                  Tag-Based Security Monitors},
+howpublished =   {Under Review},
+year         =   {2014},
+month        =   nov,
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "security",
+}
+
+@phdthesis       {WagnerThesis,
+author       =   "Daniel Wagner",
+title        =   "Symmetric Edit Lenses:
+                 A New Foundation for Bidirectional Languages",
+school       =   "University of Pennsylvania",
+year         =   "2014",
+bcp          =   yes,
+keys         =   "harmony",
+plclub       =   yes,                  
+pdf          =   "http://www.cis.upenn.edu/~bcpierce/papers/wagner-thesis.pdf",
+}
+
+@misc{jfpsubmission2014,
+author       =   {C\u{a}t\u{a}lin Hri\c{t}cu and
+                  Leonidas Lampropoulos and
+                  Antal Spector-Zabusky and
+                  Arthur Azevedo de Amorim and
+                  Maxime D\'{e}n\`{e}s and
+                  John Hughes and
+                  Benjamin C. Pierce and
+                  Dimitrios Vytiniotis},
+title        =   {Testing Noninterference, Quickly},
+url          =   {http://arxiv.org/abs/1409.0393},
+howpublished =   {arXiv:1409.0393; Submitted to Special Issue of
+Journal of Functional Programming for ICFP 2013},
+month        =   sep,
+year         =   {2014},
+}
+
+@inproceedings{Denes:VSL2014,
+author = "Maxime D\'en\`es and Catalin Hritcu and Leonidas Lampropoulos and Zoe Paraskevopoulou and Benjamin C. Pierce",
+title = "{QuickChick}: {P}roperty-Based Testing for {C}oq (abstract)",
+booktitle = "VSL",
+url = "http://www.easychair.org/smart-program/VSL2014/index.html"
+}
+                  
+
+@misc{pump:asplos2015,
+  author = {Udit Dhawan and
+          C\u{a}t\u{a}lin Hri\c{t}cu and
+          Rafi Rubin and
+          Nikos Vasilakis and
+          Silviu Chiricescu and
+          Jonathan M. Smith and
+          Thomas F. {Knight, Jr.} and
+          Benjamin C. Pierce and
+          Andr\'{e} DeHon},
+  title = {Architectural Support for Software-Defined Metadata Processing},
+  howpublished = {To appear in ASPLOS},
+  year = {2015},
+  url = {http://ic.ese.upenn.edu/abstracts/sdmp_asplos2015.html},
+}
+
+@misc            {Pierce:MicroPoliciesTalk2014,
+author       =   "Benjamin C. Pierce",
+title        =   "Micro-Policies: A Framework for Tag-Based Security Monitors",
+month        =   dec,
+year         =   2014,
+slides       =   "http://www.cis.upenn.edu/~bcpierce/papers/upolicies-201412.pdf", 
+note         =   "Distinguished Lecture at University of Minnesota",
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "security",
 }
 
 
@@ -6805,6 +7213,24 @@ month        =   {August},
 %%                           Other papers                             %%
 %%                                                                    %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@inproceedings{narayan-2012-djoin,
+ author = {Arjun Narayan and Andreas Haeberlen},
+ title = {{DJoin:} Differentially Private Join Queries over Distributed Databases},
+ booktitle = {Proceedings of the 10th USENIX Symposium on Operating Systems Design and Implementation (OSDI'12)},
+ location = {Hollywood, CA},
+ month = oct,
+ year = 2012
+}
+
+@inproceedings{aviv-2011-botnets,
+ author = {Adam J. Aviv and Andreas Haeberlen},
+ title = {Challenges in Experimenting with Botnet Detection Systems},
+ booktitle = {Proceedings of the 4th USENIX Workshop on Cyber Security Experimentation and Test (CSET'11)},
+ location = {San Francisco, CA},
+ month = aug,
+ year = 2011
+}
 
 @inproceedings   { FrischCardelli2004,
 author       =   "Alain Frisch and Luca Cardelli",
@@ -10345,9 +10771,9 @@ year         =   "2000" }
 
 
 @article{knuth:goto,
-    title   = "Structured programming with 'go to' statments",
+    title   = "Structured programming with go to statements",
     author  = "Donald E. Knuth",
-    journal = "Communications of the {A}{C}{M}",
+    journal = "Computing Surveys",
     volume  = "6",
     number  = "4",
     pages   = "261--301",
@@ -21904,7 +22330,7 @@ languages},
 @article         {Dijkstra68, 
 author       =   "Edsger W. Dijkstra", 
 title        =   "Go To Statement Considered Harmful",
-journam      =   CACM, 
+journal      =   CACM, 
 volume       =   11, 
 number       =   3, 
 month        =   mar,
@@ -22087,6 +22513,13 @@ year         =   "2004",
   month =        {January},
   series =       {LNCS},
   publisher =    {Springer-Verlag},
+}
+
+@misc            {DARCS,
+author       =   "David Roundy",
+title        =   "The {DARCS} System",
+note         =   "\url{http://abridgegame.org/darcs/}",
+year         =   2004,
 }
 
 @TechReport{AITR-474,
@@ -22494,7 +22927,7 @@ publisher    =   {ACM Press New York, NY, USA}
 @inproceedings   {Hu04,
 author       =   {Zhenjiang Hu and Shin-Cheng Mu and Masato Takeichi},
 title        =   {A Programmable Editor for Developing Structured
-                  Documents Based on Bidirectional Transformations},
+                  Documents Based on Bi-directional Transformations},
 year         =   2004,
 booktitle    =   "Partial Evaluation and Program Manipulation (PEPM)",
 pages        =   {178--189},
@@ -22930,6 +23363,22 @@ note = "Manuscript",
 year = 2009
 }
 
+@misc            {HaskellLensLibrary,
+author       =   "Edward Kmett",
+title        =   "Haskell {Lens} libraries",
+note         =   "https://github.com/ekmett/lens",
+year         =   2012
+}
+
+@article         {hermann2013model,
+title        =   {Model synchronization based on triple graph grammars: correctness, completeness and invertibility},
+author       =   {Hermann, Frank and Ehrig, Hartmut and Orejas, Fernando and Czarnecki, Krzysztof and Diskin, Zinovy and Xiong, Yingfei and Gottmann, Susann and Engel, Thomas},
+journal      =   {Software \& Systems Modeling},
+pages        =   {1--29},
+year         =   {2013},
+publisher    =   {Springer}
+}
+
 @article{     Johnson11,
 key =             "Johnson11",
 author =          "Michael Johnson and Robert Rosebrugh and Richard Wood",
@@ -23159,3 +23608,104 @@ booktitle    =   {15th International Conference on Fundamental
 year         =   {2012},
 }
 
+@inproceedings{DBLP:conf/approx/BlumR13,
+  author    = {Avrim Blum and
+               Aaron Roth},
+  title     = {Fast Private Data Release Algorithms for Sparse Queries},
+  booktitle = {APPROX-RANDOM},
+  year      = {2013},
+  pages     = {395-410},
+  ee        = {http://dx.doi.org/10.1007/978-3-642-40328-6_28},
+  crossref  = {DBLP:conf/approx/2013},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@inproceedings{DBLP:conf/stoc/HardtR13,
+  author    = {Moritz Hardt and
+               Aaron Roth},
+  title     = {Beyond worst-case analysis in private singular vector computation},
+  booktitle = {STOC},
+  year      = {2013},
+  pages     = {331-340},
+  ee        = {http://doi.acm.org/10.1145/2488608.2488650},
+  crossref  = {DBLP:conf/stoc/2013},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@inproceedings{DBLP:conf/stoc/HsuRU13,
+  author    = {Justin Hsu and
+               Aaron Roth and
+               Jonathan Ullman},
+  title     = {Differential privacy for the analyst via private equilibrium
+               computation},
+  booktitle = {STOC},
+  year      = {2013},
+  pages     = {341-350},
+  ee        = {http://doi.acm.org/10.1145/2488608.2488651},
+  crossref  = {DBLP:conf/stoc/2013},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+@inproceedings{DBLP:conf/stoc/HardtR12,
+  author    = {Moritz Hardt and
+               Aaron Roth},
+  title     = {Beating randomized response on incoherent matrices},
+  booktitle = {STOC},
+  year      = {2012},
+  pages     = {1255-1268},
+  ee        = {http://doi.acm.org/10.1145/2213977.2214088},
+  crossref  = {DBLP:conf/stoc/2012},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+@inproceedings{DBLP:conf/icalp/HsuKR12,
+  author    = {Justin Hsu and
+               Sanjeev Khanna and
+               Aaron Roth},
+  title     = {Distributed Private Heavy Hitters},
+  booktitle = {ICALP (1)},
+  year      = {2012},
+  pages     = {461-472},
+  ee        = {http://dx.doi.org/10.1007/978-3-642-31594-7_39},
+  crossref  = {DBLP:conf/icalp/2012-1},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@inproceedings{schwartz2010all,
+  title={All you ever wanted to know about dynamic taint analysis and forward symbolic execution (but might have been afraid to ask)},
+  author={Schwartz, Edward J and Avgerinos, Thanassis and Brumley, David},
+  booktitle={Security and Privacy (SP), 2010 IEEE Symposium on},
+  pages={317--331},
+  year={2010},
+  organization={IEEE}
+}
+
+@inproceedings{ClaessenHughes00,
+  author    = {Koen Claessen and
+               John Hughes},
+  title     = {{QuickCheck}: a lightweight tool
+               for random testing of {Haskell} programs},
+  booktitle = {5th ACM SIGPLAN International Conference
+               on Functional Programming (ICFP)},
+  shortbooktitle = {ICFP},
+  series    = {ICFP},
+  publisher = {ACM},
+  year      = {2000},
+  pages     = {268-279},
+  ee        = {http://doi.acm.org/10.1145/351240.351266},
+  bibsource = {DBLP, http://dblp.uni-trier.de},
+  url       = {http://www.eecs.northwestern.edu/~robby/courses/395-495-2009-fall/quick.pdf}
+}
+
+@Article{Fischer1979,
+ Title                    = {Propositional dynamic logic of regular
+programs},
+ Author                   = {Michael J. Fischer and Richard E. Ladner},
+ Journal                  = {Journal of Computer and System Sciences},
+ Year                     = {1979},
+ Number                   = {2},
+ Pages                    = {194--211},
+ Volume                   = {18},
+
+ Doi                      = {10.1016/0022-0000(79)90046-1},
+ Url                      =
+{http://www.sciencedirect.com/science/article/pii/0022000079900461}
+}

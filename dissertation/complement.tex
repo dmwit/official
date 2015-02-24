@@ -299,7 +299,6 @@ specifies one good choice for $\missing$.
 \iflater\finish{There's a good technical discussion of the options for
   dealing with creation in symmetric.v --- might be worth including it
   here.}\fi \fi
-
 \iffull\else One can imagine other laws.  In particular, the long version of
 the paper considers symmetric forms of the asymmetric ``\rn{PutPut}'' laws,
 which specify that two \PUT{} operations in a row should have the same
@@ -350,13 +349,13 @@ composers. The partially synchronized records (a) have a name and two dates
 on the left and a name and a country on the right.
 %
 The complement (b) contains all the information that is discarded by both
-$\PUT$s---all the dates from the left-hand structure and all the countries
+$\PUT$s---the dates from the left-hand structure and the countries
 from the right-hand structure.  (It can be viewed as a pair of lists of
 strings, or equivalently as a list of pairs of strings; the way we build
 list lenses later actually corresponds to the latter.)  If we add a
 new record to the left hand structure (c) and use the $\PUTR$ operation to
 propagate it through the lens (d), we copy the shared information (the new
-name) directly from left to right, store the private information (the new
+name) from left to right, store the private information (the new
 dates) in the complement, and use a default string to fill in both the
 private information on the right and the corresponding right-hand part of
 the complement.  If we now update the right-hand structure to fill in the
@@ -430,12 +429,16 @@ value being \PUT, but we keep the infinite tail so that, later, we have
 %%   checked, to save space.}
 % \iffull
 \[
+\hspace*{-2.5em}
 \begin{array}{ll}
 & \PUTR (\left<(a,1)\right>,\;
          \left<(p,P),(q,Q),(m,M),(m,M),\ldots\right>) 
 \\
 = & ( \left<(1,P)\right>,\; \left<(a,P),(q,Q),(m,M),(m,M),\ldots\right>)
-\\ [1.5ex]
+\end{array}
+\]
+\[
+\begin{array}{ll}
 & \PUTR (\left<(a,1),(b,2)\right>,\;
          \left<(a,P),(q,Q),(m,M),(m,M),\ldots\right>)
 \\
