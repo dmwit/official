@@ -1,11 +1,14 @@
 #!/bin/sh
 FORMAT=$(echo -e "\033[1;33m%w%f\033[0m written")
-"$@"
+
+# this trick allows the arguments to include shell stuff like ; and &&
+( eval "$@" )
+
 # ignore noise from gvim:
 # * 4913: a file written to test directory permissions
 # * .swx: temporary swap file, created and deleted when opening a new buffer
 # * .swp: semipermanent swap file, exists while editing a buffer
 while inotifywait -qre close_write --format "$FORMAT" --exclude '(/4913|.swx|.swp)$' .
 do
-    "$@"
+    ( eval "$@" )
 done
