@@ -72,7 +72,7 @@ of {\em complements}.  The idea dates back to a famous paper in the
 database literature on the view update
 problem~\cite{DBLP:journals/tods/BancilhonS81} that was adapted to
 lenses by~\citeN{Matching10} (and, for a slightly different
-definition,by~\citeN{matsuda2007btb}), and it is quite simple.  If we think of
+definition, by~\citeN{matsuda2007btb}), and it is quite simple.  If we think of
 the    
 \GET{} component of a lens as a sort of projection function, then we can find
 another projection from $X$ into some set $C$ that
@@ -3210,7 +3210,7 @@ X\LIST$ be the bijection between ``unfolded'' lists and lists\footnote{We
     have now introduced two senses of the word ``fold'' (and ``unfold''):
     as a recursion pattern, and as an isomorphism between two
     representations of a recursive data type. Context will make it clear
-which of these are meant in the remainder.}; $\foldlist$ takes $\mlinl
+which of these are meant in what follows.}; $\foldlist$ takes $\mlinl
 \unit$ to $\NIL$ and $\mlinr (x,xs)$ to $x{\CONS}xs$.  Note that $\bij_\foldlist
 \in \Unit + (X \mathord{\times} X\LIST) \Lens X\LIST$ is then a bijective arrow
 in the category \LENS{}.
@@ -3631,9 +3631,14 @@ particular those that are built up from variables by $+$ and $\times$.
 All of these can also be construed as containers (see
 \S\ref{contain}), but the iterator and hylomorphism patterns
 provide more powerful operations for the construction of lenses than
-the mapping operation available for general containers.\bcp{Do we want this
-  argument with the reviewer in the published paper?  If so, perhaps we can
-  reword it as ``One might wonder whether...'' or some such?}\footnote{An anonymous referee remarked that suitable categories of containers have initial algebras thus providing ``the usual fold stuff.'' We disagree: the morphisms in the categories of containers are rather restricted and require, for instance, any reordering of the positions to be independent of the actual data contained in those. Thus, for example, a sorting function is not a container morphism and cannot be construed as an initial algebra map in the category of containers.} 
+the mapping operation available for general containers.\footnote{Readers
+  might wonder whether, since suitable categories of containers have initial
+  algebras, they already provide ``the usual fold stuff.''  In fact, they do
+  not: the morphisms in the categories of containers are rather restricted
+  and require, for instance, any reordering of the positions to be
+  independent of the actual data contained in those. Thus, for example, a
+  sorting function is not a container morphism and cannot be construed as an
+  initial algebra map in the category of containers.}  
  Moreover, the
 universal property of the iterator provides a modular proof method,
 allowing one to deduce equational laws which can be cumbersome to
