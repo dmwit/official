@@ -11,17 +11,6 @@
 % ##########################################################################
 % ##########################################################################
 
-%% To do:
-%% insert first names wherever possible
-%% regularize POPL spellings
-%% get rid of ACM Press when it appears with POPL
-%%    - find volume numbers of LNCS, etc.
-%%    - fix up "to appear"
-%%    - find journal versions of conference papers
-%%    - find published versions of TRs
-%%    - find spellings of first names
-%%    - nuke crossreferences
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%		      						       	 %%
 %%		     Benjamin Pierce's Bibliography    			 %%
@@ -1058,6 +1047,18 @@ bcp          =   yes,
 keys         =   "harmony",
 slides       =   "https://indico.cern.ch/event/336753/session/1/contribution/28",
 video       =   "https://indico.cern.ch/event/336753/session/1/contribution/28",
+}
+
+@misc            {Pierce:ChalmersDeepspecTalk,
+author       =   "Benjamin C. Pierce",
+title        =   "The Age of Deep Specification",
+note         =   "Honorary doctorate address at Chalmers University",
+year         =   2015,
+month        =   may,
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "security",
+slides       =   "http://www.cis.upenn.edu/~bcpierce/papers/chalmers-deepspec-2015.pdf",
 }
 
 @misc            {Pierce:LambdaTA,
@@ -3156,7 +3157,7 @@ author       =   "Benjamin C. Pierce and Chris Casinghino and Marco Gaboardi and
                   Michael Greenberg and C\v{a}t\v{a}lin Hri\c{t}cu 
                   and Vilhelm Sjoberg and Brent Yorgey",
 title        =   "Software Foundations",
-year         =   "2014",
+year         =   "2015",
 publisher    =   "Electronic textbook",                  
 plclub       =   yes,                  
 bcp          =   yes,
@@ -3617,7 +3618,7 @@ month        =   sep,
 url          =   {http://www.crash-safe.org/node/24},
 bcp          =   "yes",
 plclub       =   "yes",
-keys         =   "security",
+keys         =   "testing,security",
 }
 
 @inproceedings   {ieee_hst2013:SAFE,
@@ -3850,19 +3851,23 @@ keys         =   "security",
 short        =   "http://www.cis.upenn.edu/~bcpierce/papers/pump-framework-draft.pdf", 
 }
 
-@misc            {pump_oakland2015,
-author       =   {  Arthur Azevedo de Amorim and
+@inproceedings   {pump_oakland2015,
+author       =   {Arthur {Azevedo de Amorim} and
                   Maxime D\'en\`es and
                   Nick Giannarakis and
                   C\u{a}t\u{a}lin Hri\c{t}cu and
                   Benjamin C. Pierce and
                   Antal Spector-Zabusky and
                   Andrew Tolmach},
-title        =   {Micro-Policies: A Framework for Verified, 
-                  Tag-Based Security Monitors},
-howpublished =   {Under Review},
-year         =   {2014},
-month        =   nov,
+title        =   {Micro-Policies: Formally Verified, Tag-Based Security Monitors},
+booktitle    =   {36th IEEE Symposium on Security and Privacy (Oakland S\&P)},
+year         =   {2015},
+month        =   may,
+short        =   {http://prosecco.gforge.inria.fr/personal/hritcu/publications/micro-policies.pdf},
+full         =   "https://www.cis.upenn.edu/~aarthur/micro-policies-full.pdf",
+slides       =   "www.seas.upenn.edu/~aarthur/micro-policies-slides.pdf",
+publisher    =   {IEEE},
+acceptance   =   {55/420=0.13},
 plclub       =   yes,                  
 bcp          =   yes,
 keys         =   "security",
@@ -3895,15 +3900,36 @@ howpublished =   {arXiv:1409.0393; Submitted to Special Issue of
 Journal of Functional Programming for ICFP 2013},
 month        =   sep,
 year         =   {2014},
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "testing",
 }
 
-@inproceedings{Denes:VSL2014,
-author = "Maxime D\'en\`es and Catalin Hritcu and Leonidas Lampropoulos and Zoe Paraskevopoulou and Benjamin C. Pierce",
-title = "{QuickChick}: {P}roperty-Based Testing for {C}oq (abstract)",
-booktitle = "VSL",
-url = "http://www.easychair.org/smart-program/VSL2014/index.html"
+@inproceedings   {Denes:VSL2014,
+author       =   "Maxime D\'en\`es and Catalin Hritcu and Leonidas Lampropoulos and Zoe Paraskevopoulou and Benjamin C. Pierce",
+title        =   "{QuickChick}: {P}roperty-Based Testing for {C}oq (abstract)",
+booktitle    =   "VSL",
+url          =   "http://www.easychair.org/smart-program/VSL2014/index.html",
+year         =   2014,
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "testing",
 }
-                  
+
+@inproceedings   {Paraskevopoulou:ITP2015,
+author       =   {Zoe Paraskevopoulou and
+C\u{a}t\u{a}lin Hri\c{t}cu and
+                  Maxime D\'en\`es and
+                  Leonidas Lampropoulos and
+                  Benjamin C. Pierce},
+title        =   "Foundational Property-Based Testing",
+booktitle    =   "International Conference 
+                  on Interactive Theorem Proving (ITP)",
+year         =   2015,
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "testing",
+}
 
 @misc{pump:asplos2015,
   author = {Udit Dhawan and
@@ -3916,9 +3942,12 @@ url = "http://www.easychair.org/smart-program/VSL2014/index.html"
           Benjamin C. Pierce and
           Andr\'{e} DeHon},
   title = {Architectural Support for Software-Defined Metadata Processing},
-  howpublished = {To appear in ASPLOS},
+  howpublished = ASPLOS,
   year = {2015},
   url = {http://ic.ese.upenn.edu/abstracts/sdmp_asplos2015.html},
+plclub       =   yes,                  
+bcp          =   yes,
+keys         =   "security",
 }
 
 @misc            {Pierce:MicroPoliciesTalk2014,
@@ -22523,7 +22552,7 @@ year         =   2004,
 }
 
 @TechReport{AITR-474,
-  author =       "Jr. Guy Lewis Steele",
+  author="Steele, Jr., Guy L.",
   title =        "{RABBIT}: {A} Compiler for {SCHEME}",
   institution =  "MIT Artificial Intelligence Laboratory",
   number =       "AITR-474",
@@ -22998,7 +23027,7 @@ publisher    =   {ACM New York, NY, USA}
 }
                   
 @article{DBLP:journals/lisp/Steele99,
-  author    = {Guy L. Steele Jr.},
+  author="Steele, Jr., Guy L.",
   title     = {Growing a Language},
   journal   = {Higher-Order and Symbolic Computation},
   volume    = {12},
