@@ -107,6 +107,7 @@ distinguished element $\missing \in C$, and two functions
 \end{array}
 \]
 obeying the following laws for every $x \in X$, $y \in Y$, and $c \in C$:%
+\iffull\else
 \footnote{We can convert back and
 forth between the two presentations; in particular, if $(\GET, \PUT,
 \CREATE)$ are the components of a traditional lens, then we define a
@@ -115,14 +116,8 @@ y.\;\GET(f(y))=y\}$. We then define the components $\missing'$, $\GET'$, and
 $\PUT'$ 
 of an asymmetric lens with complement as $\missing'=\CREATE$ and
 $\GET'(x)=(\GET(x),\lambda y.\PUT(y,x))$ and $\PUT'(y,f)=f(y)$.
-\iffull
-Going the other way, if $(\aget, \aput, \missing)$ are the components of an
-asymmetric lens with complement, we can define a traditional lens by
-$\aget'(x) = \mlfst(\aget(x))$ and $\aput'(y,x) = \aput(y,\mlsnd(\aget(x)))$
-and $\acreate(y) = \aput(y,\missing)$.
-\fi
 }
-%
+\fi%full
 \infrule[GetPut]{
   \GET\; x = (y,c)
 }{
@@ -138,6 +133,37 @@ $C$ is an internal component, not part of the externally visible type.
 In symbols, $ \mathit{Lens}(X,Y) =
 \exists C.\; \{ \mathord{\missing}:\, C,\; \GET:\,X \arrow Y
 \times C,\; \PUT:\,Y \times C \arrow X \}$.
+
+\iffull
+One may worry that there may be useful transformations which form asymmetric
+lenses but not asymmetric lenses with complements, because the view
+structure $Y$ and the complement structure $C$ are not orthogonal -- that
+is, that $\GET$ is not surjective but rather only produces values of $Y
+\times C$ that satisfy some invariant connecting the view $Y$ and the
+structure $C$. In such cases, $\PUT$ must be prepared to handle values of $Y
+\times C$ that violate this invariant. An example of this, suggested by a
+reviewer of an early version of the paper, is one in which the $\GET$
+transformation is a tree traversal, producing a list of the tree's elements
+as the view and a tree shape (without elements inside) as the complement.
+This always produces lists and tree shapes with the same number of holes.
+Then $\PUT$ would need to be able to handle being provided with a list and
+tree shape whose sizes do not match. However, the corresponding lens without
+complement must also face this problem, when its $\PUT$ is provided a tree
+and a list whose sizes do not match. So the asymmetric lens with complement
+can steal whatever conflict resolution policy the asymmetric lens uses. This
+``policy-stealing'' argument is fully general, as we show now.
+
+We can convert back and forth between the two presentations; in particular,
+if $(\GET, \PUT, \CREATE)$ are the components of a traditional lens, then we
+define a canonical complement by $C=\{f\in Y{\rightarrow}X\mid \forall
+y.\;\GET(f(y))=y\}$. We then define the components $\missing'$, $\GET'$, and
+$\PUT'$ of an asymmetric lens with complement as $\missing'=\CREATE$ and
+$\GET'(x)=(\GET(x),\lambda y.\PUT(y,x))$ and $\PUT'(y,f)=f(y)$. Going the
+other way, if $(\aget, \aput, \missing)$ are the components of an asymmetric
+lens with complement, we can define a traditional lens by $\aget'(x) =
+\mlfst(\aget(x))$ and $\aput'(y,x) = \aput(y,\mlsnd(\aget(x)))$ and
+$\acreate(y) = \aput(y,\missing)$.
+\fi%full
 
 \SMALLSECTIONHEADER{Symmetric Lenses}
 %
